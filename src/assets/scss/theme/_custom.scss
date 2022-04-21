@@ -1,0 +1,436 @@
+/**=====================
+     01. Custom CSS Start
+==========================**/
+//Custom css Start
+
+body {
+    font-family: sans-serif !important;
+}
+.searchBox{
+    margin-top: 11px;
+}
+.searchBox>.custom-select:not(:last-child), .searchBox>.form-control:not(:last-child){
+    padding: 5px;
+    height: 32px;
+    margin: 5px 0px 6px 15px;
+}
+.searchBox>.input-group-append {
+    height: 33px;
+    margin-top: 4px;
+}
+.searchBox>.input-group-append button{
+    margin-left: 0px !important;
+}
+.page-wrapper .page-body-wrapper .page-sidebar .sidebar-menu .sidebar-submenu > li > a{
+    font-family: sans-serif !important;
+}
+
+.container-fluid{
+    width: 100%;
+    padding-right: 0px !important;
+    padding-left: 0px !important;
+    margin-right: auto;
+    margin-left: auto;
+    padding-top: 10px !important;
+}
+
+
+// Form Start 
+.form-control{
+    padding: 3px 7px;
+}
+.form-group div{
+    padding-left: 0px;
+}
+.theme-form .form-group input[type=text], .theme-form .form-group input[type=email], .theme-form .form-group input[type=search], .theme-form .form-group input[type=password], .theme-form .form-group input[type=number], .theme-form .form-group input[type=tel], .theme-form .form-group input[type=date], .theme-form .form-group input[type=datetime-local], .theme-form .form-group input[type=time], .theme-form .form-group input[type=datetime-local], .theme-form .form-group input[type=month], .theme-form .form-group input[type=week], .theme-form .form-group input[type=url], .theme-form .form-group input[type=file], .theme-form .form-group select{
+    border-color: rgb(196, 196, 196) !important;
+}
+select.form-control:not([size]):not([multiple]){
+    height: calc(1.6695rem + 2px);
+}
+.theme-form .form-group textarea{
+    border-color: rgb(196, 196, 196) !important;
+    margin-bottom: 5px
+}
+.theme-form .form-group{
+    margin-bottom: 0px !important;
+}
+form fieldset legend{
+    font-size: 14px;
+    font-weight: 600;
+}
+form fieldset{
+    padding: 0px 8px 13px 0px !important;
+}
+
+.form-group label{
+    font-size: 12px;
+}
+.rbt-token{
+    color: black !important;
+}
+
+// Toggle Start
+.dialog-button{
+    padding: 5px 0 !important;
+    font-size: 12px;
+    width: 52px !important;
+}
+.toggle-container{
+    height: 27px !important;
+    margin-top: 2px;
+    width: 85px !important;
+}
+// Toggle End
+
+// Form End
+
+
+.card{
+    border: 1px solid rgb(196, 196, 196);
+}
+.card .card-header{
+    border: 1px solid #c4c4c4;
+}
+.card .module-page{
+    height: 60px;
+    padding: 4px;
+}
+.card .module-page .logo-wrapper a img {
+    height: 45px;
+}
+.card .card-header h5{
+    font-size: 13px;
+}
+.card a.btn {
+    padding: 7px 12px !important;
+}
+.datatable-react .pagination {
+    margin-top: 10px;
+}
+table.mdb-dataTable thead, table thead.mdb-dataTable-head{
+    border: 1px solid #dee2e6;
+}
+table.table th {
+    border: 1px solid #c5c7cc !important;
+    padding: 6px 16px !important;
+    vertical-align: center !important;
+}
+table.table td{
+    border: 1px solid #c5c7cc !important;
+    padding: 2px 8px !important;
+    vertical-align: center !important;
+}
+
+table.mdb-dataTable thead .sorting:after, table.mdb-dataTable thead .sorting_asc:after, table.mdb-dataTable thead .sorting_desc:after, table.mdb-dataTable thead .sorting_asc_disabled:after, table.mdb-dataTable thead .sorting_desc_disabled:after, table thead.mdb-dataTable-head .sorting:after, table thead.mdb-dataTable-head .sorting_asc:after, table thead.mdb-dataTable-head .sorting_desc:after, table thead.mdb-dataTable-head .sorting_asc_disabled:after, table thead.mdb-dataTable-head .sorting_desc_disabled:after {
+    bottom: 5px !important;
+    padding-left: 8px !important;
+}
+table.mdb-dataTable thead .sorting:before, table.mdb-dataTable thead .sorting_asc:before, table.mdb-dataTable thead .sorting_desc:before, table.mdb-dataTable thead .sorting_asc_disabled:before, table.mdb-dataTable thead .sorting_desc_disabled:before, table thead.mdb-dataTable-head .sorting:before, table thead.mdb-dataTable-head .sorting_asc:before, table thead.mdb-dataTable-head .sorting_desc:before, table thead.mdb-dataTable-head .sorting_asc_disabled:before, table thead.mdb-dataTable-head .sorting_desc_disabled:before {
+    bottom: 5px !important;
+    padding-left: 8px !important;
+}
+.custom-table-pagination .pagi-select {
+    height: calc(2rem + 2px) !important;
+}
+.page-wrapper .page-main-header{
+    border: 1px solid rgb(196, 196, 196);
+}
+
+
+// SIDEBAR START
+.page-wrapper .page-body-wrapper .page-sidebar{
+    background-color: #f6f7fb !important;
+    color: black;
+    border: 1px solid rgb(196, 196, 196);
+}
+.page-wrapper .page-body-wrapper .page-sidebar .sidebar-user h6{
+    color: black;
+}
+.page-wrapper .page-body-wrapper .page-sidebar .sidebar-menu .sidebar-header{
+    color: black;
+}
+.page-wrapper .page-body-wrapper .page-sidebar .sidebar-menu > li > a:hover{
+    color: rgb(22, 22, 22);
+}
+.page-wrapper .page-body-wrapper .page-sidebar .sidebar-menu > li:hover > a, .page-wrapper .page-body-wrapper .page-sidebar .sidebar-menu > li.active > a, body.dark-only .page-wrapper .page-body-wrapper .page-sidebar .sidebar-menu > li:hover > a, body.dark-sidebar-body-mix .page-wrapper .page-body-wrapper .page-sidebar .sidebar-menu > li:hover > a{
+    color: black;
+}
+.page-wrapper .page-body-wrapper .page-sidebar .sidebar-menu .sidebar-submenu > li.active > a{
+    color: black;
+}
+.page-wrapper .page-body-wrapper .page-sidebar .sidebar-menu .sidebar-submenu > li.active > a.active{
+    color: black;
+}
+.page-wrapper .page-body-wrapper .page-sidebar .sidebar-menu .sidebar-submenu > li > a:hover{
+    color: black;
+}
+.page-wrapper .page-body-wrapper .page-sidebar .sidebar-menu .sidebar-submenu > li > a{
+    color: black;
+}
+.page-wrapper .page-body-wrapper .page-sidebar .sidebar-menu .sidebar-submenu > li > a.active{
+    color: black;
+}
+// SIDEBAR END
+
+
+
+.cursor-pointer {
+    cursor: pointer;
+}
+.required::after {
+    content: " *";
+    font-weight: bold;
+    color: red;
+}
+
+
+.nestable-list.nestable-group {
+    display: block!important;
+}
+.listMenu {
+    padding: 5px 10px;
+    margin: 5px;
+    background: #303030;
+    color: #f7f7f7;
+}
+.iconCollapse {
+    padding: 5px;
+    cursor: pointer;
+}
+
+// NASTABLE START
+
+.listMenu {
+    padding: 10px 16px;
+    margin: 5px;
+    background: #303030;
+    color: #f7f7f7;
+}
+.iconCollapse {
+    padding: 5px;
+    cursor: pointer;
+}
+.nestable-item .nestable-list, .nestable-item-copy .nestable-list{
+    display: block;
+}
+.nestable > .nestable-list{
+    display: block;
+}
+
+li.nestable-item.is-dragging {
+    display: block;
+}
+
+// NASTABLE END
+
+/*------- Default ---------*/
+
+.custom-select{
+    border: 1px solid #303030;
+}
+.card-body:focus{
+    border:none;
+}
+
+/*-------- Accessing System ----------*/
+
+label.accessMenuName {
+    width: 60%;
+    background-color: #0062cc;
+    border-color: #0062cc;
+    color: white;
+    padding: 7px;
+}
+.accessMenu>.menuSelect{
+    margin-left: 10px;
+    width: 73px;
+    height: 36px;
+}
+.menu-all{
+    padding: 25px 28px;
+}
+.accessMenu> .multiSelect{
+    width: 50%;
+    margin-left: 15px;
+    margin-bottom: 10px;
+}
+
+//folder widget
+.chart-widget{
+    border: 1px solid #303030;
+    padding: 20px;
+}
+
+// change Image Hover
+.containerImage {
+    position: relative;
+  }
+  
+  .image {
+    opacity: 1;
+    display: block;
+    height:250px!important;
+    width:250px!important;
+    height: auto;
+    transition: .5s ease;
+    backface-visibility: hidden;
+  }
+  
+  .middle {
+    transition: .5s ease;
+    opacity: 0;
+    position: absolute;
+    top: 90%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    text-align: center;
+    height: 50px;
+    width: 250px;
+    background-color: #67d1d4;
+  }
+  
+  .containerImage:hover .image{
+    opacity: 0.3;
+  }
+  
+  .containerImage:hover .middle {
+    opacity: 1;
+  }
+  
+  .text {
+    color: white;
+    font-size: 16px;
+    margin-top: 15px;
+  }
+
+//  End change Image Hover
+
+// Accessing System Css Start
+.panel-accordion .accordion .accordion-item .title{
+    background-color: #4466f2 !important;
+    color: white;
+    margin-top: 5px;
+    padding: .7rem 1rem !important;
+}
+.accordion .accordion-item.active .title{
+    background-color: #4466f2 !important;
+    color: white;
+}
+.default-according .card-header{
+    margin-left: 18px;
+}
+.checkbox .parentLabel::before{
+    top: -10px;
+    margin-left: 10px;
+}
+// Accessing System Css End
+
+
+//Select with add button start
+.customReactSelectMenu{
+    position: absolute;
+    width: 100%;
+    background: #f3f3f3;
+    border: 1px solid rgb(196, 196, 196);;
+}
+.customReactSelectMenu div{
+    font-size: 14px;
+    font-family: sans-serif;
+    padding: 1px 5px 1px 5px !important;
+}
+.customReactSelectMenu div ul li:hover{
+    background: #4285f4;
+}
+.css-g1d714-ValueContainer{
+    margin-left: 14px;
+    padding: 0px !important;
+}
+.css-tlfecz-indicatorContainer{
+    padding: 0px !important;
+}
+.css-1okebmr-indicatorSeparator{
+    display: none;
+}
+.css-tlfecz-indicatorContainer:hover {
+    color: #4a4747 !important;
+}
+.css-tlfecz-indicatorContainer{
+    color: black !important;
+}
+.css-yk16xz-control{
+    min-height: 28px !important;
+    height: 30px !important;
+}
+.css-1pahdxg-control{
+    min-height: 28px !important;
+    height: 30px !important;
+}
+.css-tlfecz-indicatorContainer svg{
+    height: 16px;
+    width: 21px;
+}
+.modal-body form{
+    position:relative ;
+}
+.modal-xlg {
+    max-width: 95%;
+}
+
+.dynamicFormByTotalCylQtyHeader th{
+    border: 1px solid gray;
+    text-align: center;
+}
+.dynamicFormByTotalCylQtyBody td{
+    border: 1px solid gray;
+    text-align: center;
+}
+input[type="checkbox"]{
+    text-align: center;
+}
+
+// DISPLAY INFO TABLE
+.helper-classes {
+    padding: 15px!important;
+    margin-bottom: 0;
+    white-space: pre-line;
+    border: 2px dashed #4466f2 !important;
+}
+.display-div table tr td {
+    border: none !important;
+}
+.display-div table.table-bordered tr td {
+    border: 1px solid #ddd!important;
+}
+
+//PLATING DEPARTMENT
+.platingDept{
+    margin: 0 auto;
+}
+.platingDept .btn{
+    margin-right: 5px;
+    margin-top: 5px;
+}
+.tankBtn a{
+    margin: 1px;
+    font-size: 10px;
+}
+
+// TypeHead CSS start
+.dropdown-menu li {
+    border: 1px solid gray;
+    padding: 0px !important;
+}
+.dropdown-menu li a:hover{
+    background:#4285f4;
+    color: white;
+}
+.dropdown-menu .dropdown-item, span.twitter-typeahead .tt-menu .dropdown-item, .dropdown-menu span.twitter-typeahead .tt-suggestion, span.twitter-typeahead .dropdown-menu .tt-suggestion, span.twitter-typeahead .tt-menu .tt-suggestion{
+    padding: 3px !important;
+}
+//TypeHead CSS end
+
+/**=====================
+      01. Custom CSS Ends
+==========================**/

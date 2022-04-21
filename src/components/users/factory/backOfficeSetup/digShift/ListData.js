@@ -1,0 +1,243 @@
+import React, { Fragment, useEffect, useState } from 'react';
+import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
+import { Link } from 'react-router-dom';
+import { DIG_SHIFT_RSURL, userHasAccess } from '../../../../../api/userUrl';
+import { userGetMethod, userDeleteMethod } from '../../../../../api/userAction';
+import { AddButton, EditButton, DeleteButton, PerPageBox, PanelRefreshIcons } from '../../../../common/GlobalButton';
+import Pagination from "react-js-pagination";
+
+export default function ListData(props) {
+    const [digShiftData, setDigShiftData] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [searchText, setSearchText] = useState('');
+    const [hasAccess, setHasAccess] = useState({});
+    const [accLoad, setAccLoad] = useState(true);
+    const [currentPage, setCurrentPage] = useState();
+    const [perPage, setPerPage] = useState();
+    const [totalData, setTotalData] = useState(0);
+    const [ascDesc, setAscDesc] = useState(false);
+
+    var menuId = 0;
+    if (props.location.state === undefined) {
+        menuId = 0;
+    } else {
+        menuId = props.location.state.params.menuId;
+    }
+
+    useEffect(() => {
+        // ADD,EDIT,DELETE,SHOW ACCESS CHECK
+        userGetMethod(`${userHasAccess}/${menuId}`)
+            .then(response => {
+                setHasAccess(response.data);
+                setAccLoad(false);
+            });
+        
+        // TABLE DATA READY
+        pageChange();
+    },[]);
+
+    const handleSearchText = (e) => {
+        setSearchText(e);
+    }
+    const searchHandler = (e) => {
+        setIsLoading(true);
+        userGetMethod(DIG_SHIFT_RSURL+'?searchText='+searchText)
+        .then(response => {
+            setDigShiftData(response.data.platingShifts.data)
+            setIsLoading(false);
+        })
+        .catch(error => console.log(error)); 
+    }
+
+    const deleteHandler = (itemId, deleteLink) => {
+        // const getConfirmation = () => {
+            
+        // }
+        
+        userDeleteMethod(deleteLink, itemId)
+            .then(response => {
+                if (response.data.status == 1) {
+                    setIsLoading(true);
+                    let newData = digShiftData.filter(data => data.id != itemId);
+                    setDigShiftData(newData);
+                    setIsLoading(false);
+                    toast.success(response.data.message);
+                } else {
+                    toast.error(response.data.message);
+                }
+            })
+            .catch(error => toast.error(error));
+    }
+
+    const pageChange = (pageNumber = 1) => {
+        setIsLoading(true);
+        // TABLE DATA READY
+        userGetMethod(`${DIG_SHIFT_RSURL}?page=${pageNumber}`)
+            .then(response => {
+                setCurrentPage(response.data.platingShifts.current_page)
+                setPerPage(response.data.platingShifts.per_page)
+                setTotalData(response.data.platingShifts.total)
+                setDigShiftData(response.data.platingShifts.data)
+                setIsLoading(false);
+            })
+            .catch(error => console.log(error))
+    }
+
+    const perPageBoxChange = (e) => {
+        let paramValue = e.target.value;
+        let paramName = e.target.name;
+        setIsLoading(true);
+        // TABLE DATA READY
+        userGetMethod(`${DIG_SHIFT_RSURL}?${paramName}=${paramValue}`)
+            .then(response => {
+                setCurrentPage(response.data.platingShifts.current_page)
+                setPerPage(response.data.platingShifts.per_page)
+                setTotalData(response.data.platingShifts.total)
+                setDigShiftData(response.data.platingShifts.data)
+                setIsLoading(false)
+            })
+            .catch(error => console.log(error))
+    }
+
+    const sortHandler = (params) => {
+        setAscDesc(!ascDesc);
+        let ascUrl = '';
+        if (ascDesc === true) {
+            ascUrl = `${DIG_SHIFT_RSURL}?asc=${params}&desc=`;
+        } else {
+            ascUrl = `${DIG_SHIFT_RSURL}?asc=&desc=${params}`;
+        }
+        
+        setIsLoading(true);
+        // TABLE DATA READY
+        userGetMethod(ascUrl)
+            .then(response => {
+                setCurrentPage(response.data.platingShifts.current_page)
+                setPerPage(response.data.platingShifts.per_page)
+                setTotalData(response.data.platingShifts.total)
+                setDigShiftData(response.data.platingShifts.data)
+                setIsLoading(false)
+            })
+            .catch(error => console.log(error))
+    }
+
+    return (
+        
+        <Fragment>
+            <div className="container-fluid">
+                <div className="row">
+                    <div className="col-sm-12 col-md-12 col-lg-12">
+                        <div className="card">
+                            <div className="card-header">
+                                <div className="row">
+                                    <div className="col-md-6">
+                                        <h5>Dig Shift List</h5>
+                                    </div>
+                                    <div className="col-md-6">
+                                        <PanelRefreshIcons panelRefresh={pageChange} />
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="col-md-3 col-lg-3">
+                                    <div className="input-group text-box searchBox">
+                                        <input
+                                            type="text"
+                                            className="form-control input-txt-bx"
+                                            placeholder="Type to Search..."
+                                            onChange={(e) => handleSearchText(e.target.value)}
+                                        />
+                                        <div className="input-group-append">
+                                            <button 
+                                                className="btn btn-primary btn-sm" 
+                                                type="button" 
+                                                onClick={searchHandler} 
+                                            >Go
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="col-md-5 col-lg-5">
+                                    <div className="custom-table-pagination m-r-10">
+                                        <label className="mt-3">
+                                            <span>
+                                                <select className="form-control pagi-select" name="shift_type" onChange={perPageBoxChange} >
+                                                    <option value="0" selected={digShiftData.shift_type == 0 ? true : false}>All</option>
+                                                    <option value="1" selected={digShiftData.shift_type == 1 ? true : false}>Day</option>
+                                                    <option value="2" selected={digShiftData.shift_type == 2 ? true : false}>Evening</option>
+                                                    <option value="3" selected={digShiftData.shift_type == 3 ? true : false}>Night</option>
+                                                </select>
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div className="col-md-4 col-lg-4">
+                                    <AddButton link="platingShift/add" menuId={menuId} />
+                                    <PerPageBox pageBoxChange={perPageBoxChange}/>
+                                </div>
+                            </div>
+                            
+                            <div className="card-body datatable-react">
+                                {isLoading ? (<img src={process.env.PUBLIC_URL+'/preloader.gif'} alt="Data Loading"/>):
+                                (
+                                    <div className="table-responsive">
+                                        <table className="table table-border-horizontal">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col" width="10%" onClick={() => sortHandler(1)} ><i className="fa fa-sort"></i> SL.</th>
+                                                    <th scope="col" width="20%" onClick={() => sortHandler(2)} ><i className="fa fa-sort"></i> Date</th>
+                                                    <th scope="col" width="50%" onClick={() => sortHandler(3)} ><i className="fa fa-sort"></i> Shift In Charge</th>
+                                                    <th scope="col" width="15%" onClick={() => sortHandler(4)} ><i className="fa fa-sort"></i> Shifting</th>
+                                                    <th scope="col" width="5%">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                { 
+                                                    digShiftData.length > 0 ? 
+                                                        <>
+                                                            {digShiftData.map((item, index) =>           
+                                                                (
+                                                                    <tr key={index}>
+                                                                        <td scope="row">{ ((index+1) + (currentPage == 1 ? 0 : (currentPage*perPage - perPage))) }</td>
+                                                                        <td>{item.shift_date}</td>
+                                                                        <td>{item.employee_id} - {item.employee_name}</td>
+                                                                        <td>
+                                                                            {item.shift_type == 1 ? 'Day' : (item.shift_type == 2 ? 'Evening' : 'Night')}
+                                                                        </td>
+                                                                        <td className="">
+                                                                            { accLoad === false ? 
+                                                                                <>
+                                                                                    {hasAccess.edit === true ? <EditButton link={`/platingShift/edit/${item.id}`} menuId={ menuId } /> : ''} 
+                                                                                    {hasAccess.destroy === true ? <DeleteButton deleteLink={DIG_SHIFT_RSURL} deleteHandler={ deleteHandler } menuId={ menuId } /> : ''} 
+                                                                                </> : ''
+                                                                            }
+                                                                        </td>
+                                                                    </tr>
+                                                                )                
+                                                            )}
+                                                        </> 
+                                                    : <tr><td colSpan="5" className="text-center">No data found</td></tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                )}
+                                <Pagination 
+                                    activePage={currentPage}
+                                    itemsCountPerPage={perPage}
+                                    totalItemsCount={totalData}
+                                    onChange={pageChange}
+                                    itemClass="page-item"
+                                    linkClass="page-link"
+                                    firstPageText="First"
+                                    lastPageText="Last"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </Fragment>
+    )
+}

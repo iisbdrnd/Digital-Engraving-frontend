@@ -1,0 +1,142 @@
+.report-header {
+    .company-info {
+        text-align: right;
+        padding: 50px 20px;
+        display: flex;
+        justify-content: right;
+        
+        img {
+            height: auto;
+            width: 200px;
+        }
+
+        h1 {
+            text-transform: uppercase;
+        }
+        .company-moto {
+            font-size: 16px;
+        }
+    }
+    .report-for {
+        width: 30%;
+        margin: 0 auto;
+        text-align: center;
+
+        h2:nth-child(1) {
+            font-weight: 400;
+            border: 2px solid black;
+        }
+        h2:nth-child(2) {
+            width: 30%;
+            margin: 0 auto;
+            font-weight: 400;
+            border: 2px solid black;
+        }
+    }
+}
+.report-header .company-info{
+    justify-content: left !important;
+}
+.cylImgDiv{
+    padding: 10px;
+    padding-bottom : 20px;
+    text-align: center;
+    position: relative;
+}
+.cylImgTag{
+    text-align: center;
+}
+.fl{
+    position: absolute;
+    top: 5px;
+    left: 45%;
+    // left: 480px;
+}
+.flValue{
+    position: absolute;
+    top: 5px;
+    right: 45%;
+    // right: 480px;
+}
+.upsPrintArea{
+    position: absolute;
+    top: 55px;
+    left: 42%;
+    // width: 35px;
+    // left: 480px;
+}
+.upsPrintAreaValue{
+    position: absolute;
+    top: 55px;
+    right: 42%;
+    // right: 480px;
+}
+.cirRpt{
+    position: absolute;
+    top: 45px;
+    left: 71%;
+}
+.cirRptValue{
+    position: absolute;
+    top: 45px;
+    right: 22%;
+}
+
+.designHeight{
+    position: absolute;
+    bottom: 5px;
+    left: 30%;
+}
+.designWidth{
+    position: absolute;
+    bottom: 5px;
+    right: 30%;
+}
+
+@media screen and (min-width: 1300px) {
+    .cirRpt{
+        left: 65%;
+    }
+    .cirRptValue{
+        right: 30%;
+    }
+
+    .designHeight{
+        left: 35%;
+    }
+    .designWidth{
+        right: 35%;
+    }
+}
+  
+
+.report-footer {
+    .copyRemark{
+        height: 45px;
+        bottom: 10px;
+        margin-top: 35px;
+    }
+    .copyRemarkSpan{
+        border: 1px dotted black;
+        padding: 5px;
+    }
+    .put-signature {
+        height: 50px;
+        width: 30%;
+        border-bottom: 2px solid black;
+    }
+    .footer-signature {
+        width: 10%;
+        // text-decoration: overline;
+        
+    }
+}
+hr{
+    border: 1.5px dotted black !important;
+}
+@media print
+{
+    .officeCopy{
+        margin-top: 350px;
+    }
+}

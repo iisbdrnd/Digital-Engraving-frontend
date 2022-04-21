@@ -1,0 +1,4 @@
+.page-wrapper .page-body-wrapper .page-sidebar .sidebar-menu > li:hover > a, .page-wrapper .page-body-wrapper .page-sidebar .sidebar-menu > li.active > a, body.dark-only .page-wrapper .page-body-wrapper .page-sidebar .sidebar-menu > li:hover > a, body.dark-sidebar-body-mix .page-wrapper .page-body-wrapper .page-sidebar .sidebar-menu > li:hover > a{
+    font-weight: 900;
+    color: black;
+}
