@@ -150,6 +150,7 @@ export const JOB_WISE_ENGRAVE_CYLINDERS = 'api/user/getJobWiseEngraveCylinders';
 export const JOB_AGREEMENT_REPORT = 'api/user/jobAgreementReport';
 export const DESIGN_FILE_REPORT = 'api/user/designFileReport';
 export const DESIGN_FILE_TO_FACTORY_REPORT = 'api/user/designFileToFactoryReport';
+export const DAILY_DESIGN_FILE_TO_FACTORY_REPORT = 'api/user/dailyDesignFileToFactoryReport';
 export const DESIGN_TO_DESIGN_REPORT = 'api/user/designToDesignReport';
 export const BASE_CYLINDER_ORDER_REPORT = 'api/user/baseCylinderOrderReport';
 export const YEARLY_JOB_FLOW_REPORT = 'api/user/yearlyJobFlow';

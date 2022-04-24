@@ -58,17 +58,28 @@
     right: 45%;
     // right: 480px;
 }
-.upsPrintArea{
+.ups{
     position: absolute;
-    top: 55px;
-    left: 42%;
+    top: 43px;
+    left: 44%;
+}
+.upsValue{
+    position: absolute;
+    top: 43px;
+    right: 45%;
+}
+
+.printArea{
+    position: absolute;
+    top: 62px;
+    left: 44%;
     // width: 35px;
     // left: 480px;
 }
-.upsPrintAreaValue{
+.printAreaValue{
     position: absolute;
-    top: 55px;
-    right: 42%;
+    top: 62px;
+    right: 45%;
     // right: 480px;
 }
 .cirRpt{

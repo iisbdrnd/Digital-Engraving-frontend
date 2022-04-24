@@ -85,9 +85,9 @@ const Report = (props) => {
                                                                     <td width="14%" >{job.job_name}</td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td width="10%">Cir</td>
+                                                                    <td width="10%">Circumference</td>
                                                                     <td width="1%" align="center">:</td>
-                                                                    <td width="14%">{job.cir} mm</td>
+                                                                    <td width="14%">{job.circumference} mm</td>
 
                                                                     <td width="20%" align="center"></td>
 
@@ -123,10 +123,12 @@ const Report = (props) => {
                                                                             <img className="img-responsive cylImgTag" src={process.env.PUBLIC_URL+'/cylinder.bmp'} alt="Company Logo"/>
                                                                             <div className="fl">FL</div>
                                                                             <div className="flValue">{job.face_length} mm</div>
-                                                                            <div className="upsPrintArea">Ups Printing Area</div>
-                                                                            <div className="upsPrintAreaValue">{job.ups} mm</div>
+                                                                            <div className="ups">Ups</div>
+                                                                            <div className="upsValue">{job.ups} Nos</div>
+                                                                            <div className="printArea">Printing Area</div>
+                                                                            <div className="printAreaValue">{job.printing_width} mm</div>
                                                                             <div className="cirRpt">Cir <br /> RPT</div>
-                                                                            <div className="cirRptValue">{job.cir} mm <br /> {job.rpt} Nos</div>
+                                                                            <div className="cirRptValue">{job.circumference} mm <br /> {job.rpt} Nos</div>
 
                                                                             <div className="designHeight"> Design Height - <span style={{'padding': '2px', 'border': '1px solid black'}}>{job.printing_height}</span> mm </div>
                                                                             <div className="designWidth"> Design Width - <span style={{'padding': '2px', 'border': '1px solid black'}}>{job.printing_height}</span> mm </div>
@@ -140,7 +142,7 @@ const Report = (props) => {
                                                         <div className="col-md-4">
                                                             <h5><u>Remarks</u></h5>
                                                             <div className="copyRemark">
-                                                                <span className="copyRemarkSpan">Supplyer Copy</span>
+                                                                <span className="copyRemarkSpan">Supplier Copy</span>
                                                             </div>
                                                         </div>
                                                         <div className="col-md-4">
@@ -213,9 +215,9 @@ const Report = (props) => {
                                                                     <td width="14%" >{job.job_name}</td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td width="10%">Cir</td>
+                                                                    <td width="10%">Circumference</td>
                                                                     <td width="1%" align="center">:</td>
-                                                                    <td width="14%">{job.cir} mm</td>
+                                                                    <td width="14%">{job.circumference} mm</td>
 
                                                                     <td width="20%" align="center"></td>
 
@@ -251,10 +253,12 @@ const Report = (props) => {
                                                                             <img className="img-responsive cylImgTag" src={process.env.PUBLIC_URL+'/cylinder.bmp'} alt="Company Logo"/>
                                                                             <div className="fl">FL</div>
                                                                             <div className="flValue">{job.face_length} mm</div>
-                                                                            <div className="upsPrintArea">Ups Printing Area</div>
-                                                                            <div className="upsPrintAreaValue">{job.ups} mm</div>
+                                                                            <div className="ups">Ups</div>
+                                                                            <div className="upsValue">{job.ups} Nos</div>
+                                                                            <div className="printArea">Printing Area</div>
+                                                                            <div className="printAreaValue">{job.printing_width} mm</div>
                                                                             <div className="cirRpt">Cir <br /> RPT</div>
-                                                                            <div className="cirRptValue">{job.cir} mm <br /> {job.rpt} Nos</div>
+                                                                            <div className="cirRptValue">{job.circumference} mm <br /> {job.rpt} Nos</div>
 
                                                                             <div className="designHeight"> Design Height - <span style={{'padding': '2px', 'border': '1px solid black'}}>{job.printing_height}</span> mm </div>
                                                                             <div className="designWidth"> Design Width - <span style={{'padding': '2px', 'border': '1px solid black'}}>{job.printing_height}</span> mm </div>
@@ -345,9 +349,9 @@ const Report = (props) => {
                                                                     <td width="14%" >{job.job_name}</td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td width="10%">Cir</td>
+                                                                    <td width="10%">Circumference</td>
                                                                     <td width="1%" align="center">:</td>
-                                                                    <td width="14%">{job.cir} mm</td>
+                                                                    <td width="14%">{job.circumference} mm</td>
 
                                                                     <td width="20%" align="center"></td>
 
@@ -383,10 +387,12 @@ const Report = (props) => {
                                                                             <img className="img-responsive cylImgTag" src={process.env.PUBLIC_URL+'/cylinder.bmp'} alt="Company Logo"/>
                                                                             <div className="fl">FL</div>
                                                                             <div className="flValue">{job.face_length} mm</div>
-                                                                            <div className="upsPrintArea">Ups Printing Area</div>
-                                                                            <div className="upsPrintAreaValue">{job.ups} mm</div>
+                                                                            <div className="ups">Ups</div>
+                                                                            <div className="upsValue">{job.ups} Nos</div>
+                                                                            <div className="printArea">Printing Area</div>
+                                                                            <div className="printAreaValue">{job.printing_width} mm</div>
                                                                             <div className="cirRpt">Cir <br /> RPT</div>
-                                                                            <div className="cirRptValue">{job.cir} mm <br /> {job.rpt} Nos</div>
+                                                                            <div className="cirRptValue">{job.circumference} mm <br /> {job.rpt} Nos</div>
 
                                                                             <div className="designHeight"> Design Height - <span style={{'padding': '2px', 'border': '1px solid black'}}>{job.printing_height}</span> mm </div>
                                                                             <div className="designWidth"> Design Width - <span style={{'padding': '2px', 'border': '1px solid black'}}>{job.printing_height}</span> mm </div>
