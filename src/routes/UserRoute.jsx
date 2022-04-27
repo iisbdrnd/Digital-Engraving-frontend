@@ -74,10 +74,6 @@ import PrintersAdd from './../components/users/backOfficeSetup/printers/Add';
 import PrintersEdit from './../components/users/backOfficeSetup/printers/Edit';
 
 
-//Custom Menu
-import CustomMenu from './../components/users/backOfficeSetup/custom-menu/ListData';
-import CustomMenuAdd from './../components/users/backOfficeSetup/custom-menu/Add';
-import CustomMenuEdit from './../components/users/backOfficeSetup/custom-menu/Edit';
 
 //SUPPLIER INFORMATION
 import SupplierInformation from './../components/users/backOfficeSetup/supplierInformation/ListData';
@@ -103,6 +99,11 @@ import UserEmployeeEdit from './../components/users/employee/Edit';
 import JobOrder from './../components/users/jobOrder/ListData';
 import JobOrderAdd from './../components/users/jobOrder/Create';
 import JobOrderEdit from './../components/users/jobOrder/Edit';
+
+//Cancel Order
+import CancelOrderList from './../components/users/cancelOrder/ListData';
+import CancelOrderAdd from './../components/users/cancelOrder/Add';
+import CancelOrderEdit from './../components/users/cancelOrder/Edit';
 
 //JOB AGREEMENT
 import JobAgreement from './../components/users/jobAgreement/ListData';
@@ -152,6 +153,8 @@ import YearlyJobFlowForm from './../components/users/marketingReport/yearlyJobFl
 import YearlyJobFlowReport from './../components/users/marketingReport/yearlyJobFlow/Report';
 import MonthlyJobFlowForm from './../components/users/marketingReport/monthlyJobFlow/Form';
 import MonthlyJobFlowReport from './../components/users/marketingReport/monthlyJobFlow/Report';
+import MonthlyProductionForm from './../components/users/marketingReport/monthlyProduction/Form';
+import MonthlyProductionReport from './../components/users/marketingReport/monthlyProduction/Report';
 import DailyJobFlowDetailsForm from './../components/users/marketingReport/dailyJobFlowDetails/Form';
 import DailyJobFlowDetailsReport from './../components/users/marketingReport/dailyJobFlowDetails/Report';
 //END MARKETING REPORT
@@ -323,6 +326,7 @@ class UserRoute extends Component {
                 <UserAuthRoute path={`${process.env.PUBLIC_URL}/finishedCylinderStatus/:jobOrderId`} component={FinishedCylinderStatusReport} />
                 <UserAuthRoute path={`${process.env.PUBLIC_URL}/yearlyJobFlow/report/:report_type/:year/:cylinder_type`} component={YearlyJobFlowReport} />
                 <UserAuthRoute path={`${process.env.PUBLIC_URL}/monthlyJobFlow/report/:month/:year/:cylinder_type`} component={MonthlyJobFlowReport} />
+                <UserAuthRoute path={`${process.env.PUBLIC_URL}/monthlyProduction/report/:month/:year/:cylinder_type`} component={MonthlyProductionReport} />
                 <UserAuthRoute path={`${process.env.PUBLIC_URL}/dailyJobFlowDetails/report/:job_date/:report_type`} component={DailyJobFlowDetailsReport} />
 
                 <UserAuthRoute path={`${process.env.PUBLIC_URL}/print-previous-voucher-report`} component={PrintPreviousVoucherAction} />
@@ -381,11 +385,6 @@ class UserRoute extends Component {
                         <UserAuthRoute path={`${process.env.PUBLIC_URL}/printers/index`} component={Printers} /> 
                         <UserAuthRoute path={`${process.env.PUBLIC_URL}/printers/add`} component={PrintersAdd} /> 
                         <UserAuthRoute path={`${process.env.PUBLIC_URL}/printers/edit/:printersId`} component={PrintersEdit} /> 
-
-                        {/* CUSTOM MENU */}
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/custom-menu/index`} component={CustomMenu} />
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/custom-menu/add`} component={CustomMenuAdd} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/custom-menu/edit/:customMenuId`} component={CustomMenuEdit} />  
                         
                         {/* SUPPLIER INFORMATION */}
                         <UserAuthRoute path={`${process.env.PUBLIC_URL}/supplierInformation/index`} component={SupplierInformation} /> 
@@ -433,6 +432,11 @@ class UserRoute extends Component {
                         <UserAuthRoute path={`${process.env.PUBLIC_URL}/jobOrder/add`} component={JobOrderAdd} /> 
                         <UserAuthRoute path={`${process.env.PUBLIC_URL}/jobOrder/edit/:id`} component={JobOrderEdit} /> 
 
+                        {/* Cancel Order */}
+                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/CancelOrder/index`} component={CancelOrderList} /> 
+                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/CancelOrder/add`} component={CancelOrderAdd} /> 
+                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/CancelOrder/edit/:id`} component={CancelOrderEdit} />
+
                         {/* JOB AGREEMENT */}
                         <UserAuthRoute path={`${process.env.PUBLIC_URL}/jobAgreement/index`} component={JobAgreement} /> 
                         <UserAuthRoute path={`${process.env.PUBLIC_URL}/jobAgreement/add`} component={JobAgreementAdd} /> 
@@ -466,6 +470,7 @@ class UserRoute extends Component {
                         <UserAuthRoute path={`${process.env.PUBLIC_URL}/finishedCylinderStatus`} component={FinishedCylinderStatusForm} />
                         <UserAuthRoute path={`${process.env.PUBLIC_URL}/yearlyJobFlow`} component={YearlyJobFlowForm} />
                         <UserAuthRoute path={`${process.env.PUBLIC_URL}/monthlyJobFlow`} component={MonthlyJobFlowForm} />
+                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/monthlyProduction`} component={MonthlyProductionForm} />
                         <UserAuthRoute path={`${process.env.PUBLIC_URL}/dailyJobFlowDetails`} component={DailyJobFlowDetailsForm} />
 
                         {/* accounts  */}

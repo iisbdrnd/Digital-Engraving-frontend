@@ -1,13 +1,14 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
 import { toast } from 'react-toastify';
-import { customMenuAPI, userHasAccess } from '../../../../api/userUrl';
-import { userGetMethod, userDeleteMethod } from '../../../../api/userAction';
-import { AddButton, EditButton, DeleteButton } from '../../../common/GlobalButton';
+import { CANCEL_ORDER_RSURL, userHasAccess } from '../../../api/userUrl';
+import { userGetMethod, userDeleteMethod } from '../../../api/userAction';
+import { AddButton, EditButton, DeleteButton, PerPageBox, PanelRefreshIcons } from '../../common/GlobalButton';
 import Pagination from "react-js-pagination";
+import { Link } from 'react-router-dom';
 
 export default function ListData(props) {
-    const [customMenuData, setCustomMenuData] = useState([]);
+    const [cancelOrderData, setCancelOrderData] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [searchText, setSearchText] = useState('');
     const [hasAccess, setHasAccess] = useState({});
@@ -33,17 +34,17 @@ export default function ListData(props) {
             });
         
         // TABLE DATA READY
-        handlePageChange();
+        pageChange();
     },[]);
 
-    const handleSearchText = (e) =>{
+    const handleSearchText = (e) => {
         setSearchText(e);
     }
-    const searchHandler = (e) =>{
+    const searchHandler = (e) => {
         setIsLoading(true);
-        userGetMethod(customMenuAPI+'?searchText='+searchText)
+        userGetMethod(CANCEL_ORDER_RSURL+'?searchText='+searchText)
         .then(response => {
-            setCustomMenuData(response.data.custom_menus.data)
+            setCancelOrderData(response.data.cancelOrders.data)
             setIsLoading(false);
         })
         .catch(error => console.log(error)); 
@@ -54,8 +55,8 @@ export default function ListData(props) {
             .then(response => {
                 if (response.data.status == 1) {
                     setIsLoading(true);
-                    let newData = customMenuData.filter(data => data.id != itemId);
-                    setCustomMenuData(newData);
+                    let newData = cancelOrderData.filter(data => data.id != itemId);
+                    setCancelOrderData(newData);
                     setIsLoading(false);
                     toast.success(response.data.message);
                 } else {
@@ -65,31 +66,31 @@ export default function ListData(props) {
             .catch(error => toast.error(error));
     }
 
-    const handlePageChange = (pageNumber = 1) => {
+    const pageChange = (pageNumber = 1) => {
         setIsLoading(true);
         // TABLE DATA READY
-        userGetMethod(`${customMenuAPI}?page=${pageNumber}`)
+        userGetMethod(`${CANCEL_ORDER_RSURL}?page=${pageNumber}`)
             .then(response => {
-                console.log("current_page", response.data);
-                setCurrentPage(response.data.custom_menus.current_page)
-                setPerPage(response.data.custom_menus.per_page)
-                setTotalData(response.data.custom_menus.total)
-                setCustomMenuData(response.data.custom_menus.data)
+                setCurrentPage(response.data.cancelOrders.current_page)
+                setPerPage(response.data.cancelOrders.per_page)
+                setTotalData(response.data.cancelOrders.total)
+                setCancelOrderData(response.data.cancelOrders.data)
                 setIsLoading(false);
             })
             .catch(error => console.log(error))
     }
 
-    const perPageHandler = (e) => {
-        let perPage = e.target.value;
+    const perPageBoxChange = (e) => {
+        let paramValue = e.target.value;
+        let paramName = e.target.name;
         setIsLoading(true);
         // TABLE DATA READY
-        userGetMethod(`${customMenuAPI}?perPage=${perPage}`)
+        userGetMethod(`${CANCEL_ORDER_RSURL}?${paramName}=${paramValue}`)
             .then(response => {
-                setCurrentPage(response.data.custom_menus.current_page)
-                setPerPage(response.data.custom_menus.per_page)
-                setTotalData(response.data.custom_menus.total)
-                setCustomMenuData(response.data.custom_menus.data)
+                setCurrentPage(response.data.cancelOrders.current_page)
+                setPerPage(response.data.cancelOrders.per_page)
+                setTotalData(response.data.cancelOrders.total)
+                setCancelOrderData(response.data.cancelOrders.data)
                 setIsLoading(false)
             })
             .catch(error => console.log(error))
@@ -97,22 +98,21 @@ export default function ListData(props) {
 
     const sortHandler = (params) => {
         setAscDesc(!ascDesc);
-        console.log('sort', ascDesc);
         let ascUrl = '';
         if (ascDesc === true) {
-            ascUrl = `${customMenuAPI}?asc=${params}&desc=`;
+            ascUrl = `${CANCEL_ORDER_RSURL}?asc=${params}&desc=`;
         } else {
-            ascUrl = `${customMenuAPI}?asc=&desc=${params}`;
+            ascUrl = `${CANCEL_ORDER_RSURL}?asc=&desc=${params}`;
         }
         
         setIsLoading(true);
         // TABLE DATA READY
         userGetMethod(ascUrl)
             .then(response => {
-                setCurrentPage(response.data.custom_menus.current_page)
-                setPerPage(response.data.custom_menus.per_page)
-                setTotalData(response.data.custom_menus.total)
-                setCustomMenuData(response.data.custom_menus.data)
+                setCurrentPage(response.data.cancelOrders.current_page)
+                setPerPage(response.data.cancelOrders.per_page)
+                setTotalData(response.data.cancelOrders.total)
+                setCancelOrderData(response.data.cancelOrders.data)
                 setIsLoading(false)
             })
             .catch(error => console.log(error))
@@ -128,23 +128,19 @@ export default function ListData(props) {
                             <div className="card-header">
                                 <div className="row">
                                     <div className="col-md-6">
-                                        <h5>Custom Menu List</h5>
+                                        <h5>Cancel Order Lists</h5>
                                     </div>
                                     <div className="col-md-6">
-                                        <ul className="d-flex pull-right">
-                                            <li className="p-r-10"><i className="fa fa-rotate-right"></i></li>
-                                            <li className="p-r-10"><i className="fa fa-minus"></i></li>
-                                            <li className="p-r-10"><i className="icon-close"></i></li>
-                                        </ul>
+                                        <PanelRefreshIcons panelRefresh={pageChange} />
                                     </div>
                                 </div>
                             </div>
                             <div className="row">
-                                <div className="col-md-6 col-lg-6">
+                                <div className="col-md-3 col-lg-3">
                                     <div className="input-group text-box searchBox">
                                         <input
                                             type="text"
-                                            className="form-control input-txt-bx col-md-4"
+                                            className="form-control input-txt-bx"
                                             placeholder="Type to Search..."
                                             onChange={(e) => handleSearchText(e.target.value)}
                                         />
@@ -158,20 +154,22 @@ export default function ListData(props) {
                                         </div>
                                     </div>
                                 </div>
-
-                                <div className="col-md-6 col-lg-6">
-                                    <AddButton link="custom-menu/add" menuId={menuId} />
-                                    <div className="custom-table-pagination m-r-10 pull-right">
+                                {/* <div className="col-md-5 col-lg-5">
+                                    <div className="custom-table-pagination m-r-10">
                                         <label className="mt-3">
                                             <span>
-                                                <select className="form-control pagi-select" onChange={perPageHandler}>
-                                                    <option value="5">5</option>
-                                                    <option value="10">10</option>
-                                                    <option value="15">15</option>
+                                                <select className="form-control pagi-select" name="design_to_design_status" onChange={perPageBoxChange} >
+                                                    <option value="2">All</option>
+                                                    <option value="0" selected={true} >Pending</option>
+                                                    <option value="1">Done</option>
                                                 </select>
                                             </span>
                                         </label>
                                     </div>
+                                </div> */}
+                                <div className="col-md-4 col-lg-4">
+                                    <AddButton link="cancelOrder/add" menuId={menuId} />
+                                    <PerPageBox pageBoxChange={perPageBoxChange}/>
                                 </div>
                             </div>
                                 
@@ -182,36 +180,52 @@ export default function ListData(props) {
                                         <table className="table table-border-horizontal">
                                             <thead>
                                                 <tr>
-                                                    <th scope="col" width="8%" onClick={() => sortHandler(1)} ><i className="fa fa-sort"></i> SL.</th>
-                                                    <th scope="col" width="40%" onClick={() => sortHandler(2)} ><i className="fa fa-sort"></i> Custom Menu Code</th>
-                                                    <th scope="col" width="40%" onClick={() => sortHandler(3)} ><i className="fa fa-sort"></i> Custom Menu Name</th>
-                                                    <th scope="col" width="8%">Action</th>
+                                                    <th scope="col" width="5%" onClick={() => sortHandler(1)} ><i className="fa fa-sort"></i> SL.</th>
+                                                    <th scope="col" width="15%" onClick={() => sortHandler(2)} ><i className="fa fa-sort"></i> Job No.</th>
+                                                    <th scope="col" width="15%" onClick={() => sortHandler(3)} ><i className="fa fa-sort"></i> Job Name</th>
+                                                    <th scope="col" width="10%" onClick={() => sortHandler(4)} ><i className="fa fa-sort"></i> Cancel Quantity</th>                                                        
+                                                    {/* <th scope="col" width="15%" onClick={() => sortHandler(5)}><i className="fa fa-sort"></i> Client</th>
+                                                    <th scope="col" width="10%" ><i className="fa fa-sort"></i> Design Approve</th> */}
+                                                    {/* <th scope="col" width="7%">Action</th> */}
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 { 
-                                                    customMenuData.length > 0 ? 
+                                                    cancelOrderData.length > 0 ? 
                                                         <>
-                                                            {customMenuData.map((item, index) =>           
+                                                            {cancelOrderData.map((item, index) =>           
                                                                 (
                                                                     <tr key={index}>
                                                                         <td scope="row">{ ((index+1) + (currentPage == 1 ? 0 : (currentPage*perPage - perPage))) }</td>
-                                                                        <td>{item.custom_menu_code}</td>
-                                                                        <td>{item.custom_menu_name}</td>
-                                                                        
-                                                                        <td className="">
+                                                                        <td>{item.job_no}</td>
+                                                                        <td>{item.job_name}</td>
+                                                                        <td>{item.no_of_cyl}</td>
+                                                                        {/* <td>{item.client_name}</td>
+                                                                        <td>
+                                                                            {item.design_to_design_status == 0 ? 
+                                                                            <Link 
+                                                                                to={{
+                                                                                    pathname: `${process.env.PUBLIC_URL}/designToDesign/add`,
+                                                                                    state: { params: {menuId: menuId, job_order_id : item.id} }
+                                                                                }}
+                                                                                className="btn btn-secondary btn-xs">
+                                                                                    Design Approve
+                                                                            </Link>
+                                                                            : 'Done'}
+                                                                        </td> */}
+                                                                        {/* <td className="">
                                                                             {
                                                                                 accLoad === false ? <>
-                                                                                    {hasAccess.edit === true ? <EditButton link={`/custom-menu/edit/${item.id}`} menuId={ menuId } /> : ''} 
-                                                                                    {hasAccess.destroy === true ? <DeleteButton deleteLink={customMenuAPI} deleteHandler={ deleteHandler } menuId={ menuId } dataId={item.id} /> : ''} 
+                                                                                    {hasAccess.edit === true ? <EditButton link={`/baseReceive/edit/${item.id}`} menuId={ menuId } /> : ''} 
+                                                                                    {hasAccess.destroy === true ? <DeleteButton deleteLink={CANCEL_ORDER_RSURL} deleteHandler={ deleteHandler } menuId={ menuId } dataId={item.id} /> : ''} 
                                                                                 </> : ''
                                                                             }
-                                                                        </td>
+                                                                        </td> */}
                                                                     </tr>
                                                                 )                
                                                             )}
                                                         </> 
-                                                    : <tr><td colSpan="4" className="text-center">No data found</td></tr>
+                                                    : <tr><td colSpan="12" className="text-center">No data found</td></tr>
                                                 }
                                             </tbody>
                                         </table>
@@ -221,7 +235,7 @@ export default function ListData(props) {
                                     activePage={currentPage}
                                     itemsCountPerPage={perPage}
                                     totalItemsCount={totalData}
-                                    onChange={handlePageChange}
+                                    onChange={pageChange}
                                     itemClass="page-item"
                                     linkClass="page-link"
                                     firstPageText="First"

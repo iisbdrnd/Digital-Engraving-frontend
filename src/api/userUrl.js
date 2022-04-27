@@ -44,7 +44,10 @@ export const employeeInformation = 'api/user/employeeInformation';
 //JOB ORDER
 export const JOB_ORDER_RSURL = 'api/user/jobOrder';
 
-//JOB ORDER
+//CANCEL ORDER
+export const CANCEL_ORDER_RSURL = 'api/user/cancelOrder';
+
+//JOB AGREEMENT
 export const JOB_AGREEMENT_RSURL = 'api/user/jobAgreement';
 export const JOB_ORDER_DETAILS = 'api/user/jobOrderDetails';
 //BASE ORDER
@@ -155,6 +158,7 @@ export const DESIGN_TO_DESIGN_REPORT = 'api/user/designToDesignReport';
 export const BASE_CYLINDER_ORDER_REPORT = 'api/user/baseCylinderOrderReport';
 export const YEARLY_JOB_FLOW_REPORT = 'api/user/yearlyJobFlow';
 export const MONTHLY_JOB_FLOW_REPORT = 'api/user/monthlyJobFlow';
+export const MONTHLY_PRODUCTION_REPORT = 'api/user/monthlyProduction';
 export const DAILY_JOB_FLOW_DETAILS_REPORT = 'api/user/dailyJobFlowDetails';
 
 // END MARKETING REPORT
