@@ -6,6 +6,7 @@ const Form = (props) => {
     const { handleSubmit, register, errors } = useForm();
     const [isLoading, setIsLoading] = useState(true);
     const [cylTypeCheckbox, setCylTypeCheckbox] = useState(0);
+    const [reportTypeCheckbox, setReportTypeCheckbox] = useState(0);
 
     var menuId = 0;
     if (props.location.state === undefined) {
@@ -15,7 +16,7 @@ const Form = (props) => {
     }
 
     const submitHandler = (data, e) => {
-        var url = `${process.env.PUBLIC_URL}/dailyProduction/report/${data.date}/${data.cylinder_type ? data.cylinder_type : null}`;
+        var url = `${process.env.PUBLIC_URL}/dailyProduction/report/${data.date}/${data.cylinder_type ? data.cylinder_type : null}/${data.report_type ? data.report_type : null}`;
         console.log({url});
         window.open(url, '_blank', 'height=800,width=1200');
     }
@@ -82,6 +83,18 @@ const Form = (props) => {
                                                 </select>
                                             </div>
                                         ) : null}
+                                    </div>
+                                    <div className="form-group row">
+                                        <label className="col-sm-3 col-form-label">Employee Wise Report</label>
+                                        <div className="col-sm-1 mt-2">
+                                            <input 
+                                                onSelect={(e)=>setReportTypeCheckbox(e.target.value)}
+                                                ref={register({})}
+                                                name="report_type" 
+                                                type="checkbox"
+                                                value="employeeWise"
+                                            /> Yes
+                                        </div>
                                     </div>
                                     
                                     <SubmitButton link="#" offset="2" menuId={ menuId }/>
