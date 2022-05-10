@@ -159,6 +159,7 @@ export const BASE_CYLINDER_ORDER_REPORT = 'api/user/baseCylinderOrderReport';
 export const YEARLY_JOB_FLOW_REPORT = 'api/user/yearlyJobFlow';
 export const MONTHLY_JOB_FLOW_REPORT = 'api/user/monthlyJobFlow';
 export const MONTHLY_PRODUCTION_REPORT = 'api/user/monthlyProduction';
+export const DAILY_PRODUCTION_REPORT = 'api/user/dailyProduction';
 export const DAILY_JOB_FLOW_DETAILS_REPORT = 'api/user/dailyJobFlowDetails';
 
 // END MARKETING REPORT
