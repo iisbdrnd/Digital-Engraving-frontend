@@ -143,10 +143,14 @@ import DailyDesignFileToFactoryForm from './../components/users/marketingReport/
 import DailyDesignFileToFactoryReport from './../components/users/marketingReport/dailyDesignFileToFactory/Report';
 import DesignFileToFactoryForm from './../components/users/marketingReport/designFileToFactory/Form';
 import DesignFileToFactoryReport from './../components/users/marketingReport/designFileToFactory/Report';
+import ProductionReportDetailsForm from './../components/users/marketingReport/productionReportDetails/Form';
+import ProductionReportDetailsReport from './../components/users/marketingReport/productionReportDetails/Report';
 import DesignToDesignReportForm from './../components/users/marketingReport/designFileToDesignSection/Form';
 import DesignToDesignReport from './../components/users/marketingReport/designFileToDesignSection/Report';
 import BaseCylinderOrderForm from './../components/users/marketingReport/baseCylinderOrder/Form';
 import BaseCylinderOrderReport from './../components/users/marketingReport/baseCylinderOrder/Report';
+import PreviousBaseToStockForm from './../components/users/marketingReport/previousBaseToStock/Form';
+import PreviousBaseToStockReport from './../components/users/marketingReport/previousBaseToStock/Report';
 import FinishedCylinderStatusForm from './../components/users/marketingReport/finishedCylinderStatus/Form';
 import FinishedCylinderStatusReport from './../components/users/marketingReport/finishedCylinderStatus/Report';
 import YearlyJobFlowForm from './../components/users/marketingReport/yearlyJobFlow/Form';
@@ -321,10 +325,12 @@ class UserRoute extends Component {
                 <UserAuthRoute path={`${process.env.PUBLIC_URL}/jobAgreementReport/:jobOrderId`} component={JobAgreementFormReport} />
                 <UserAuthRoute path={`${process.env.PUBLIC_URL}/designFileReport/:jobOrderId`} component={DesignFileReport} />
                 <UserAuthRoute path={`${process.env.PUBLIC_URL}/designFileToFactoryReport/:fromDate/:toDate`} component={DesignFileToFactoryReport} />
+                <UserAuthRoute path={`${process.env.PUBLIC_URL}/productionReportDetailsReport/:fromDate/:toDate`} component={ProductionReportDetailsReport} />
                 <UserAuthRoute path={`${process.env.PUBLIC_URL}/designFileToFactoryReport/:fromDate`} component={DesignFileToFactoryReport} />
                 <UserAuthRoute path={`${process.env.PUBLIC_URL}/dailyDesignFileToFactoryReport/:date`} component={DailyDesignFileToFactoryReport} />
                 <UserAuthRoute path={`${process.env.PUBLIC_URL}/designToDesignReport/:fromDate`} component={DesignToDesignReport} />
                 <UserAuthRoute path={`${process.env.PUBLIC_URL}/baseCylinderOrder/:jobOrderId`} component={BaseCylinderOrderReport} />
+                <UserAuthRoute path={`${process.env.PUBLIC_URL}/previousBaseToStock/:jobOrderId`} component={PreviousBaseToStockReport} />
                 <UserAuthRoute path={`${process.env.PUBLIC_URL}/finishedCylinderStatus/:jobOrderId`} component={FinishedCylinderStatusReport} />
                 <UserAuthRoute path={`${process.env.PUBLIC_URL}/yearlyJobFlow/report/:report_type/:year/:cylinder_type`} component={YearlyJobFlowReport} />
                 <UserAuthRoute path={`${process.env.PUBLIC_URL}/monthlyJobFlow/report/:month/:year/:cylinder_type`} component={MonthlyJobFlowReport} />
@@ -469,7 +475,9 @@ class UserRoute extends Component {
                         <UserAuthRoute path={`${process.env.PUBLIC_URL}/designFileToFactoryForm/index`} component={DesignFileToFactoryForm} /> 
                         <UserAuthRoute path={`${process.env.PUBLIC_URL}/dailyDesignFileToFactoryForm/index`} component={DailyDesignFileToFactoryForm} /> 
                         <UserAuthRoute path={`${process.env.PUBLIC_URL}/designToDesignSection`} component={DesignToDesignReportForm} />
+                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/productionReportDetails`} component={ProductionReportDetailsForm} />
                         <UserAuthRoute path={`${process.env.PUBLIC_URL}/baseCylinderOrder`} component={BaseCylinderOrderForm} />
+                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/previousBaseToStock`} component={PreviousBaseToStockForm} />
                         <UserAuthRoute path={`${process.env.PUBLIC_URL}/finishedCylinderStatus`} component={FinishedCylinderStatusForm} />
                         <UserAuthRoute path={`${process.env.PUBLIC_URL}/yearlyJobFlow`} component={YearlyJobFlowForm} />
                         <UserAuthRoute path={`${process.env.PUBLIC_URL}/monthlyJobFlow`} component={MonthlyJobFlowForm} />
