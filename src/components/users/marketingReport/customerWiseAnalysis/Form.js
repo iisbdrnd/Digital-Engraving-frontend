@@ -1,14 +1,11 @@
 import React, { Fragment , useEffect, useState } from 'react';
 import useForm from "react-hook-form";
 import { SubmitButton } from '../../../common/GlobalButton'
-import {PROGRESS_REPORT_FORM} from '../../../../api/userUrl'
-import { userGetMethod} from '../../../../api/userAction';
 
 const Form = (props) => {
     const { handleSubmit, register, errors } = useForm();
     const [isLoading, setIsLoading] = useState(true);
     const [reportType, setReportType] = useState(null);
-    const [employees, setEmployees] = useState([]);
 
     var menuId = 0;
     if (props.location.state === undefined) {
@@ -16,22 +13,11 @@ const Form = (props) => {
     }else{
         menuId = props.location.state.params.menuId;
     }
-
-    useEffect(() => {
-        userGetMethod(`${PROGRESS_REPORT_FORM}`)
-        .then(response => {
-            console.log('response', response.data);
-            setEmployees(response.data.employees);
-            setIsLoading(false);
-        })
-        .catch(error => console.log(error))
-    }, []);
     
     const submitHandler = (data, e) => {
-        const employee_id = data.employee_id;
         const from_date = data.from_date;
         console.log('from_date ', data);
-        let url = `${process.env.PUBLIC_URL}/progressReport/${data.from_date}/${data.to_date}/${data.employee_id ? data.employee_id : null}`;
+        let url = `${process.env.PUBLIC_URL}/customerWiseAnalysisReport/${data.from_date}/${data.to_date}`;
         window.open(url, '_blank', 'height=800,width=1200');
     }
     return (
@@ -43,7 +29,7 @@ const Form = (props) => {
                             <div className="card-header">
                                 <div className="row">
                                     <div className="col-md-6">
-                                        <h5>Progress Report</h5>
+                                        <h5>Customer WiseAnalysis Report</h5>
                                     </div>
                                 </div>
                             </div>
@@ -83,25 +69,6 @@ const Form = (props) => {
                                                     </tr>
                                                 </tbody>
                                             </table>
-                                        </div>
-                                    </div>
-                                    <div className="form-group row">
-                                        <label className="col-sm-3 col-form-label" htmlFor="employee_id">Select Employee</label>
-                                        <div className="col-sm-3">
-                                            <select 
-                                                name="employee_id" 
-                                                id="employee_id" 
-                                                className="form-control" 
-                                                defaultValue=""
-                                                ref={register({})} 
-                                            >
-                                            <option value="">Select one</option>
-                                            {employees.map(employee => (
-                                                <option value={employee.id}>{employee.name}</option>
-                                            ))}
-                                            </select>
-                                            {errors.employee_id && <p className='text-danger'>{errors.employee_id.message}</p>}
-
                                         </div>
                                     </div>
                                     <SubmitButton link="#" offset="2" menuId={ menuId }/>

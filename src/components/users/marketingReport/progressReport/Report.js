@@ -13,8 +13,9 @@ const Report = (props) => {
     }
     const fromDate = props.match.params.fromDate;
     const toDate = props.match.params.toDate;
+    const employeeId = props.match.params.employeeId;
     useEffect(()=>{
-        userGetMethod(`${PROGRESS_REPORT}?fromDate=${fromDate}&&toDate=${toDate}`) 
+        userGetMethod(`${PROGRESS_REPORT}?fromDate=${fromDate}&&toDate=${toDate}&&employeeId=${employeeId}`) 
         .then(response => {
             console.log('response', response.data);
             setEmployees(response.data.employees);
