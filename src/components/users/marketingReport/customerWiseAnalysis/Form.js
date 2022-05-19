@@ -29,7 +29,7 @@ const Form = (props) => {
                             <div className="card-header">
                                 <div className="row">
                                     <div className="col-md-6">
-                                        <h5>Customer WiseAnalysis Report</h5>
+                                        <h5>Customer Wise Analysis Report</h5>
                                     </div>
                                 </div>
                             </div>

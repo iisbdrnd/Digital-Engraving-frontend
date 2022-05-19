@@ -155,6 +155,7 @@ export const DESIGN_FILE_REPORT = 'api/user/designFileReport';
 export const DESIGN_FILE_TO_FACTORY_REPORT = 'api/user/designFileToFactoryReport';
 export const PRODUCTION_REPORT_DETAILS_REPORT = 'api/user/productionReportDetailsReport';
 export const CUSTOMER_WISE_ANALYSIS_REPORT = 'api/user/customerWiseAnalysisReport';
+export const CLIENT_DETAILS = 'api/user/clientDetails';
 export const PROGRESS_REPORT = 'api/user/progressReport';
 export const PROGRESS_REPORT_FORM = 'api/user/progressReportForm';
 export const STATUS_REPORT = 'api/user/statusReport';

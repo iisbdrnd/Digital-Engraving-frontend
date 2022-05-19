@@ -5,10 +5,8 @@ import { userGetMethod } from '../../../../api/userAction';
 
 const Report = (props) => {
     const [isLoading, setIsLoading] = useState(true);
-    const [jobs, setJobs] = useState([]);
-    const [grandTotalCylinder, setGrandTotalCyl] = useState([]);
-    const [grandTotalSurfaceArea, setGrandTotalSurfaceArea] = useState([]);
-    const [calculateCyl, setCalculateCyl] = useState(0);
+    const [jobTypes, setJobTypes] = useState([]);
+    const [grandTotal, setGrandTotal] = useState([]);
 
     const tableStyle = {
         "margin" : "2% 1% 2% 0%"
@@ -18,9 +16,8 @@ const Report = (props) => {
         userGetMethod(`${DAILY_DESIGN_FILE_TO_FACTORY_REPORT}?date=${date}`)
         .then(response => {
             console.log('res', response.data);
-            setJobs(response.data.jobs);
-            setGrandTotalCyl(response.data.grandTotalCyl);
-            setGrandTotalSurfaceArea(response.data.grandTotalSurfaceArea);
+            setJobTypes(response.data.jobTypes);
+            setGrandTotal(response.data.grandTotal);
             setIsLoading(false);
         })
         .catch(error => console.log(error))
@@ -41,73 +38,61 @@ const Report = (props) => {
                                         <table className="particulars table table-bordered table-stripped" cellSpacing="5" cellPadding="5" width="100%"  style={tableStyle}>
                                             <thead className="groupFont">
                                                 <tr>
-                                                    <th width="10%" align="center">JobNo</th>
-                                                    <th width="15%" align="center">Agreement Date</th>
-                                                    <th width="20%" align="center">Job Name</th>
+                                                    <th width="8%" align="center">JobNo</th>
+                                                    <th width="8%" align="center">Agreement Date</th>
+                                                    <th width="12%" align="center">Job Name</th>
                                                     <th width="10%" align="center">Client Name</th>
                                                     <th width="10%" align="center">Printers Name</th>
                                                     <th width="10%" align="center">Size(mm X mm)</th>
-                                                    <th width="5%" align="center">No Cyl</th>
-                                                    <th width="5%" align="center">Base Date</th>
+                                                    <th width="8%" align="center">No Cyl</th>
+                                                    <th width="8%" align="center">Base Date</th>
                                                     <th width="10%" align="center">Surface Area</th>
                                                     <th width="10%" align="center">Remarks</th>
                                                 </tr>
                                             </thead>
-                                            <tbody className="reportBody">
-                                            {
-                                                jobs.length > 0 ? 
-                                                <>
-                                                    {jobs.map((job, index1) => 
-                                                        (
+                                            <tbody>
+                                                {jobTypes.length > 0 ? 
+                                                    jobTypes.map((jobType)=>(
+                                                        jobType.designToFactories.length > 0 ?
                                                             <>
-                                                                <tr key={index1}>
-                                                                    <td colSpan="10">{job.job_type}</td>
+                                                                <tr>
+                                                                    <td colspan="8">Job Type :{jobType.name}</td>
                                                                 </tr>
-                                                                { job.jobOrders.length > 0 ? 
-                                                                    job.jobOrders.map((jobOrder, index2) => (
-                                                                        <tr key={index2}>
-                                                                            <td>{jobOrder.job_no}</td>
-                                                                            <td>{jobOrder.agreement_date}</td>
-                                                                            <td>{jobOrder.job_name}</td>
-                                                                            <td>{jobOrder.client_name}</td>
-                                                                            <td>{jobOrder.printer_name}</td>
-                                                                            <td>{`${jobOrder.eye_mark_size_one} X ${jobOrder.eye_mark_size_two}`}</td>
-                                                                            <td className="text-center">{jobOrder.total_cylinder_qty}</td>
-                                                                            <td></td>
-                                                                            <td className="text-center">{jobOrder.surface_area}</td>
-                                                                            <td>{jobOrder.remarks}</td>
-                                                                        </tr>
-                                                                    ))
-                                                                    : <tr><td colSpan="10" className="text-center">No data found</td></tr>
-                                                                }
-                                                                <tr className="groupFont">
-                                                                    <td colSpan="5">
-                                                                        Total Number of Job: {job.jobOrders.length}
-                                                                    </td>
-                                                                    <td className="text-right">
-                                                                        Total
-                                                                    </td>
-                                                                    <td className="text-center">
-                                                                        {job.calculateTotalCyl}
-                                                                    </td>
-                                                                    <td></td>
-                                                                    <td className="text-center">
-                                                                        {job.calculateTotalSurfaceArea}
-                                                                    </td>
-                                                                    <td colSpan="2"></td>
-                                                                </tr>
+                                        
+                                                                {jobType.designToFactories.map((designToFactory)=>( 
+                                                                    <tr>
+                                                                        <td>{designToFactory.job_no}</td>
+                                                                        <td>{designToFactory.agreement_date}</td>
+                                                                        <td>{designToFactory.job_name}</td>
+                                                                        <td>{designToFactory.client_name}</td>
+                                                                        <td>{designToFactory.printer_name}</td>
+                                                                        <td>{designToFactory.eye_mark_size_one+'x'+designToFactory.eye_mark_size_two}</td>
+                                                                        <td>{designToFactory.total_cylinder_qty}</td>
+                                                                        <td>{designToFactory.base_receive_date}</td>
+                                                                        <td>{designToFactory.surface_area}</td> 
+                                                                        <td>{designToFactory.remarks}</td> 
+                                                                    </tr>
+                                                                ))}
+                                                                {jobType.total.map((data)=>(
+                                                                    <tr>
+                                                                        <th colspan="6">Total No of Job  :{data.total_job}</th>
+                                                                        <th>{data.total_cylinder_qty}</th>
+                                                                        <th></th>
+                                                                        <th>{data.surface_area}</th>
+                                                                        <th></th>
+                                                                    </tr>
+                                                                ))}
                                                             </>
-                                                        )
-                                                    )}
-                                                </>
-                                                : <tr><td colSpan="10" className="text-center">No data found</td></tr>
-                                            }
+                                                        : null
+                                                    ))
+                                                : null
+                                                }
                                             </tbody>
                                         </table>
                                         <table className="particulars table table-bordered table-stripped" cellSpacing="5" cellPadding="5" width="100%"  style={tableStyle}>
                                             <tr className="groupFont">
-                                                <td>Grand Total Cylinder: {grandTotalCylinder}</td>
-                                                <td>Grand Total Surface Area: {grandTotalSurfaceArea}</td>
+                                                <td>Total No of Job: {grandTotal.total_job}</td>
+                                                <td>Grand Total Cylinder: {grandTotal.total_cylinder_qty}</td>
                                             </tr>
                                         </table>
                                     </div>

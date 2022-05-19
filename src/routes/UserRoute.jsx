@@ -147,6 +147,7 @@ import ProductionReportDetailsForm from './../components/users/marketingReport/p
 import ProductionReportDetailsReport from './../components/users/marketingReport/productionReportDetails/Report';
 import CustomerWiseAnalysisForm from './../components/users/marketingReport/customerWiseAnalysis/Form';
 import CustomerWiseAnalysisReport from './../components/users/marketingReport/customerWiseAnalysis/Report';
+import ClientDetails from './../components/users/marketingReport/customerWiseAnalysis/ClientDetails';
 import ProgressReportForm from './../components/users/marketingReport/progressReport/Form';
 import ProgressReport from './../components/users/marketingReport/progressReport/Report';
 import StatusReportForm from './../components/users/marketingReport/statusReport/Form';
@@ -333,6 +334,7 @@ class UserRoute extends Component {
                 <UserAuthRoute path={`${process.env.PUBLIC_URL}/designFileToFactoryReport/:fromDate/:toDate`} component={DesignFileToFactoryReport} />
                 <UserAuthRoute path={`${process.env.PUBLIC_URL}/productionReportDetailsReport/:fromDate/:toDate`} component={ProductionReportDetailsReport} />
                 <UserAuthRoute path={`${process.env.PUBLIC_URL}/customerWiseAnalysisReport/:fromDate/:toDate`} component={CustomerWiseAnalysisReport} />
+                <UserAuthRoute path={`${process.env.PUBLIC_URL}/customerWiseAnalysis/clientDetails/:clientId`} component={ClientDetails} />
                 <UserAuthRoute path={`${process.env.PUBLIC_URL}/progressReport/:fromDate/:toDate/:employeeId`} component={ProgressReport} />
                 <UserAuthRoute path={`${process.env.PUBLIC_URL}/statusReport/:fromDate/:toDate/:status`} component={StatusReport} />
                 <UserAuthRoute path={`${process.env.PUBLIC_URL}/designFileToFactoryReport/:fromDate`} component={DesignFileToFactoryReport} />
