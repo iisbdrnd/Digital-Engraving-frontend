@@ -151,6 +151,7 @@ export const JOB_WISE_ENGRAVE_CYLINDERS = 'api/user/getJobWiseEngraveCylinders';
 
 // START MARKETING REPORT
 export const JOB_AGREEMENT_REPORT = 'api/user/jobAgreementReport';
+export const JOB_INFORMATION_REPORT = 'api/user/jobInformationReport';
 export const DESIGN_FILE_REPORT = 'api/user/designFileReport';
 export const DESIGN_FILE_TO_FACTORY_REPORT = 'api/user/designFileToFactoryReport';
 export const PRODUCTION_REPORT_DETAILS_REPORT = 'api/user/productionReportDetailsReport';

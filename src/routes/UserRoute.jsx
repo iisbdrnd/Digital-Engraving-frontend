@@ -137,40 +137,46 @@ import DesignToDesignAdd from './../components/users/designToDesign/Add';
 //START MARKETING REPORT
 import JobAgreementForm from './../components/users/marketingReport/jobAgreementForm/Form';
 import JobAgreementFormReport from './../components/users/marketingReport/jobAgreementForm/Report';
-import DesignFile from './../components/users/marketingReport/designFile/Form';
-import DesignFileReport from './../components/users/marketingReport/designFile/Report';
-import DailyDesignFileToFactoryForm from './../components/users/marketingReport/dailyDesignFileToFactory/Form';
-import DailyDesignFileToFactoryReport from './../components/users/marketingReport/dailyDesignFileToFactory/Report';
-import DesignFileToFactoryForm from './../components/users/marketingReport/designFileToFactory/Form';
-import DesignFileToFactoryReport from './../components/users/marketingReport/designFileToFactory/Report';
-import ProductionReportDetailsForm from './../components/users/marketingReport/productionReportDetails/Form';
-import ProductionReportDetailsReport from './../components/users/marketingReport/productionReportDetails/Report';
-import CustomerWiseAnalysisForm from './../components/users/marketingReport/customerWiseAnalysis/Form';
-import CustomerWiseAnalysisReport from './../components/users/marketingReport/customerWiseAnalysis/Report';
-import ClientDetails from './../components/users/marketingReport/customerWiseAnalysis/ClientDetails';
-import ProgressReportForm from './../components/users/marketingReport/progressReport/Form';
-import ProgressReport from './../components/users/marketingReport/progressReport/Report';
-import StatusReportForm from './../components/users/marketingReport/statusReport/Form';
-import StatusReport from './../components/users/marketingReport/statusReport/Report';
-import DesignToDesignReportForm from './../components/users/marketingReport/designFileToDesignSection/Form';
-import DesignToDesignReport from './../components/users/marketingReport/designFileToDesignSection/Report';
-import BaseCylinderOrderForm from './../components/users/marketingReport/baseCylinderOrder/Form';
-import BaseCylinderOrderReport from './../components/users/marketingReport/baseCylinderOrder/Report';
-import PreviousBaseToStockForm from './../components/users/marketingReport/previousBaseToStock/Form';
-import PreviousBaseToStockReport from './../components/users/marketingReport/previousBaseToStock/Report';
-import FinishedCylinderStatusForm from './../components/users/marketingReport/finishedCylinderStatus/Form';
-import FinishedCylinderStatusReport from './../components/users/marketingReport/finishedCylinderStatus/Report';
-import YearlyJobFlowForm from './../components/users/marketingReport/yearlyJobFlow/Form';
-import YearlyJobFlowReport from './../components/users/marketingReport/yearlyJobFlow/Report';
-import MonthlyJobFlowForm from './../components/users/marketingReport/monthlyJobFlow/Form';
-import MonthlyJobFlowReport from './../components/users/marketingReport/monthlyJobFlow/Report';
-import MonthlyProductionForm from './../components/users/marketingReport/monthlyProduction/Form';
-import MonthlyProductionReport from './../components/users/marketingReport/monthlyProduction/Report';
-import DailyProductionForm from './../components/users/marketingReport/dailyProduction/Form';
-import DailyProductionReport from './../components/users/marketingReport/dailyProduction/Report';
-import DailyJobFlowDetailsForm from './../components/users/marketingReport/dailyJobFlowDetails/Form';
-import DailyJobFlowDetailsReport from './../components/users/marketingReport/dailyJobFlowDetails/Report';
+import JobInformation from './../components/users/marketingReport/jobInformation/Form';
+import JobInformationReport from './../components/users/marketingReport/jobInformation/Report';
 //END MARKETING REPORT
+
+//START SUPPLY CHAIN REPORT
+
+import DesignFile from './../components/users/supplyChainReport/designFile/Form';
+import DesignFileReport from './../components/users/supplyChainReport/designFile/Report';
+import DailyDesignFileToFactoryForm from './../components/users/supplyChainReport/dailyDesignFileToFactory/Form';
+import DailyDesignFileToFactoryReport from './../components/users/supplyChainReport/dailyDesignFileToFactory/Report';
+import DesignFileToFactoryForm from './../components/users/supplyChainReport/designFileToFactory/Form';
+import DesignFileToFactoryReport from './../components/users/supplyChainReport/designFileToFactory/Report';
+import ProductionReportDetailsForm from './../components/users/supplyChainReport/productionReportDetails/Form';
+import ProductionReportDetailsReport from './../components/users/supplyChainReport/productionReportDetails/Report';
+import CustomerWiseAnalysisForm from './../components/users/supplyChainReport/customerWiseAnalysis/Form';
+import CustomerWiseAnalysisReport from './../components/users/supplyChainReport/customerWiseAnalysis/Report';
+import ClientDetails from './../components/users/supplyChainReport/customerWiseAnalysis/ClientDetails';
+import ProgressReportForm from './../components/users/supplyChainReport/progressReport/Form';
+import ProgressReport from './../components/users/supplyChainReport/progressReport/Report';
+import StatusReportForm from './../components/users/supplyChainReport/statusReport/Form';
+import StatusReport from './../components/users/supplyChainReport/statusReport/Report';
+import DesignToDesignReportForm from './../components/users/supplyChainReport/designFileToDesignSection/Form';
+import DesignToDesignReport from './../components/users/supplyChainReport/designFileToDesignSection/Report';
+import BaseCylinderOrderForm from './../components/users/supplyChainReport/baseCylinderOrder/Form';
+import BaseCylinderOrderReport from './../components/users/supplyChainReport/baseCylinderOrder/Report';
+import PreviousBaseToStockForm from './../components/users/supplyChainReport/previousBaseToStock/Form';
+import PreviousBaseToStockReport from './../components/users/supplyChainReport/previousBaseToStock/Report';
+import FinishedCylinderStatusForm from './../components/users/supplyChainReport/finishedCylinderStatus/Form';
+import FinishedCylinderStatusReport from './../components/users/supplyChainReport/finishedCylinderStatus/Report';
+import YearlyJobFlowForm from './../components/users/supplyChainReport/yearlyJobFlow/Form';
+import YearlyJobFlowReport from './../components/users/supplyChainReport/yearlyJobFlow/Report';
+import MonthlyJobFlowForm from './../components/users/supplyChainReport/monthlyJobFlow/Form';
+import MonthlyJobFlowReport from './../components/users/supplyChainReport/monthlyJobFlow/Report';
+import MonthlyProductionForm from './../components/users/supplyChainReport/monthlyProduction/Form';
+import MonthlyProductionReport from './../components/users/supplyChainReport/monthlyProduction/Report';
+import DailyProductionForm from './../components/users/supplyChainReport/dailyProduction/Form';
+import DailyProductionReport from './../components/users/supplyChainReport/dailyProduction/Report';
+import DailyJobFlowDetailsForm from './../components/users/supplyChainReport/dailyJobFlowDetails/Form';
+import DailyJobFlowDetailsReport from './../components/users/supplyChainReport/dailyJobFlowDetails/Report';
+//END SUPPLY CHAIN REPORT
 
 //Accounts Module
     //Chart of accounts
@@ -330,6 +336,7 @@ class UserRoute extends Component {
                 <UserGuestRoute path={`${process.env.PUBLIC_URL}/login`} component={UserLogin} />
                 <UserAuthRoute path={`${process.env.PUBLIC_URL}/dashboard/apps`} component={UserApps} />
                 <UserAuthRoute path={`${process.env.PUBLIC_URL}/jobAgreementReport/:jobOrderId`} component={JobAgreementFormReport} />
+                <UserAuthRoute path={`${process.env.PUBLIC_URL}/jobInformationReport/:jobOrderId`} component={JobInformationReport} />
                 <UserAuthRoute path={`${process.env.PUBLIC_URL}/designFileReport/:jobOrderId`} component={DesignFileReport} />
                 <UserAuthRoute path={`${process.env.PUBLIC_URL}/designFileToFactoryReport/:fromDate/:toDate`} component={DesignFileToFactoryReport} />
                 <UserAuthRoute path={`${process.env.PUBLIC_URL}/productionReportDetailsReport/:fromDate/:toDate`} component={ProductionReportDetailsReport} />
@@ -482,6 +489,9 @@ class UserRoute extends Component {
                         
                         {/* MARKETING REPORTS */}
                         <UserAuthRoute path={`${process.env.PUBLIC_URL}/jobAgreementForm/index`} component={JobAgreementForm} /> 
+                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/jobInformation`} component={JobInformation} /> 
+
+                        {/* SUPPLY CHAIN REPORTS */}
                         <UserAuthRoute path={`${process.env.PUBLIC_URL}/designFile/index`} component={DesignFile} /> 
                         <UserAuthRoute path={`${process.env.PUBLIC_URL}/designFileToFactoryForm/index`} component={DesignFileToFactoryForm} /> 
                         <UserAuthRoute path={`${process.env.PUBLIC_URL}/dailyDesignFileToFactoryForm/index`} component={DailyDesignFileToFactoryForm} /> 
@@ -498,6 +508,7 @@ class UserRoute extends Component {
                         <UserAuthRoute path={`${process.env.PUBLIC_URL}/monthlyProduction`} component={MonthlyProductionForm} />
                         <UserAuthRoute path={`${process.env.PUBLIC_URL}/dailyProduction`} component={DailyProductionForm} />
                         <UserAuthRoute path={`${process.env.PUBLIC_URL}/dailyJobFlowDetails`} component={DailyJobFlowDetailsForm} />
+                        
 
                         {/* accounts  */}
                         <UserAuthRoute path={`${process.env.PUBLIC_URL}/chartOfAccounts/index`} component={chartOfAccounts} />
