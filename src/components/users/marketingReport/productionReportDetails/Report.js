@@ -92,10 +92,10 @@ const Report = (props) => {
                                                                                 <td>{dailyProduction.circumference}</td>
                                                                                 <td>{dailyProduction.dia}</td>
                                                                                 <td>{dailyProduction.surface_area}</td> 
-                                                                                <td>04/12/2022</td>
-                                                                                <td>1479</td>
-                                                                                <td>04/15/2022</td>
-                                                                                <td>3</td>
+                                                                                <td>{dailyProduction.approved_date}</td> 
+                                                                                <td>{dailyProduction.challan_no}</td> 
+                                                                                <td>{dailyProduction.finished_date}</td>
+                                                                                <td></td>
                                                                             </tr>
                                                                         ))}
                                                                         {employee.total.map((data)=>(
