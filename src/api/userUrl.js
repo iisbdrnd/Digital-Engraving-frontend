@@ -152,6 +152,11 @@ export const JOB_WISE_ENGRAVE_CYLINDERS = 'api/user/getJobWiseEngraveCylinders';
 // START MARKETING REPORT
 export const JOB_AGREEMENT_REPORT = 'api/user/jobAgreementReport';
 export const JOB_INFORMATION_REPORT = 'api/user/jobInformationReport';
+export const JOB_FLOW_ANALYSIS_REPORT = 'api/user/jobFlowAnalysisReport';
+export const JOB_FLOW_ANALYSIS_FORM = 'api/user/jobFlowAnalysisForm';
+// END MARKETING REPORT
+
+// START SUPPLY CHAIN REPORT
 export const DESIGN_FILE_REPORT = 'api/user/designFileReport';
 export const DESIGN_FILE_TO_FACTORY_REPORT = 'api/user/designFileToFactoryReport';
 export const PRODUCTION_REPORT_DETAILS_REPORT = 'api/user/productionReportDetailsReport';
@@ -170,7 +175,7 @@ export const MONTHLY_PRODUCTION_REPORT = 'api/user/monthlyProduction';
 export const DAILY_PRODUCTION_REPORT = 'api/user/dailyProduction';
 export const DAILY_JOB_FLOW_DETAILS_REPORT = 'api/user/dailyJobFlowDetails';
 
-// END MARKETING REPORT
+//END SUPPLY CHAIN REPORT
 
 //POLISHING
 export const POLISHING_RS_URL = 'api/user/polishing';

@@ -15,6 +15,7 @@ const Report = (props) => {
     }
     const fromDate = props.match.params.fromDate;
     const toDate = props.match.params.toDate;
+    const oneDay = 24 * 60 * 60 * 1000;
     useEffect(()=>{
         userGetMethod(`${PRODUCTION_REPORT_DETAILS_REPORT}?fromDate=${fromDate}&&toDate=${toDate}`) 
         .then(response => {
@@ -95,6 +96,7 @@ const Report = (props) => {
                                                                                 <td>{dailyProduction.approved_date}</td> 
                                                                                 <td>{dailyProduction.challan_no}</td> 
                                                                                 <td>{dailyProduction.finished_date}</td>
+                                                                                <td>{dailyProduction.finished_date != null ? Math.round(Math.abs((new Date(dailyProduction.approved_date) - new Date(dailyProduction.finished_date)) / oneDay)):'N/A'}</td>
                                                                                 <td></td>
                                                                             </tr>
                                                                         ))}
