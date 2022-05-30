@@ -1,7 +1,7 @@
 import React, { Fragment , useEffect, useState } from 'react';
 import useForm from "react-hook-form";
 import { SubmitButton } from '../../../common/GlobalButton'
-import {JOB_FLOW_ANALYSIS_FORM} from '../../../../api/userUrl'
+import {ANALYTICAL_JOB_INFORMATION_CLIENT_WISE_FORM} from '../../../../api/userUrl'
 import { userGetMethod} from '../../../../api/userAction';
 
 const Form = (props) => {
@@ -18,7 +18,7 @@ const Form = (props) => {
     }
 
     useEffect(() => {
-        userGetMethod(`${JOB_FLOW_ANALYSIS_FORM}`)
+        userGetMethod(`${ANALYTICAL_JOB_INFORMATION_CLIENT_WISE_FORM}`)
         .then(response => {
             console.log('response', response.data);
             setClients(response.data.clients);
@@ -31,7 +31,7 @@ const Form = (props) => {
         const client_id = data.client_id;
         const from_date = data.from_date;
         console.log('from_date ', data);
-        let url = `${process.env.PUBLIC_URL}/jobFlowAnalysis/${data.from_date}/${data.to_date}/${data.client_id ? data.client_id : null}`;
+        let url = `${process.env.PUBLIC_URL}/analyticalJobInformationClientWise/${data.from_date}/${data.to_date}/${data.client_id ? data.client_id : null}`;
         window.open(url, '_blank', 'height=800,width=1200');
     }
     return (
@@ -43,7 +43,7 @@ const Form = (props) => {
                             <div className="card-header">
                                 <div className="row">
                                     <div className="col-md-6">
-                                        <h5>Job Flow Analysis</h5>
+                                        <h5>Analytical Job Information Client Wise</h5>
                                     </div>
                                 </div>
                             </div>

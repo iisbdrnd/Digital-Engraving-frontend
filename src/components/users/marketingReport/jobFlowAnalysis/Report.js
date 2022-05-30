@@ -6,19 +6,21 @@ import './style.scss';
 
 const Report = (props) => {
     const [isLoading, setIsLoading] = useState(true);
-    const [employees, setEmployees] = useState([]);
+    const [jobs, setJobs] = useState([]);
+    const [grandTotal, setGrandTotal] = useState([]);
     
     const tableStyle = {
         "margin" : "2% 1% 2% 0%"
     }
     const fromDate = props.match.params.fromDate;
     const toDate = props.match.params.toDate;
-    const employeeId = props.match.params.employeeId;
+    const clientId = props.match.params.clientId;
     useEffect(()=>{
-        userGetMethod(`${JOB_FLOW_ANALYSIS_REPORT}?fromDate=${fromDate}&&toDate=${toDate}&&employeeId=${employeeId}`) 
+        userGetMethod(`${JOB_FLOW_ANALYSIS_REPORT}?fromDate=${fromDate}&&toDate=${toDate}&&clientId=${clientId}`) 
         .then(response => {
             console.log('response', response.data);
-            setEmployees(response.data.employees);
+            setJobs(response.data.jobs);
+            setGrandTotal(response.data.grandTotal);
             setIsLoading(false);
         })
         .catch(error => console.log(error))
@@ -44,60 +46,37 @@ const Report = (props) => {
                                                 <table className="particulars table table-bordered table-stripped reportBody" cellSpacing="5" cellPadding="5" width="100%"  style={tableStyle}>
                                                     <thead>    
                                                         <tr>
-                                                            <th width="6%" align="center">Job No</th>
-                                                            <th width="6%" align="center">Date</th>
-                                                            <th width="8%" align="center">Job Name</th>
-                                                            <th width="8%" align="center">Client</th>
-                                                            <th width="6%" align="center">Printer</th>
-                                                            <th width="10%" align="center">Marketing</th>
-                                                            <th width="6%" align="center">Status</th>
-                                                            <th width="6%" align="center">Size</th>
-                                                            <th width="6%" align="center">Quantity</th>
-                                                            <th width="6%" align="center">Date Diff</th>
-                                                            <th width="6%" align="center">Base Order Date</th>
-                                                            <th width="6%" align="center">Base to Factory</th>
-                                                            <th width="6%" align="center">Designer</th>
-                                                            <th width="6%" align="center">Design Assign Date</th>
-                                                            <th width="6%" align="center">Design to Factory</th>
-                                                            <th width="8%" align="center">Proposed Delivery Date</th>
-                                                            <th width="10%" align="center">Actual Production Date</th>   
+    
+                                                            <th width="15%" align="center">Client Name</th>
+                                                            <th width="15%" align="center">Printer Name</th>
+                                                            <th width="15%" align="center">Marketing Person</th>
+                                                            <th width="10%" align="center">Cylinder</th>
+                                                            {/* <th width="10%" align="center">Times</th> */}
+                                                            <th width="10%" align="center">Surface Area</th>   
                                                         </tr>    
                                                     </thead>
                                                     <tbody>
-                                                        {employees.length > 0 ? 
-                                                            employees.map((employee)=>(
-                                                                employee.progresses.length > 0 ?
-                                                                    <>
-                                                                        <tr>
-                                                                            <th colSpan="17" >{employee.name}</th>
-                                                                        </tr>
-                                                
-                                                                        {employee.progresses.map((progress)=>( 
-                                                                            <tr>
-                                                                                <td>{progress.job_no}</td>
-                                                                                <td>{progress.agreement_date}</td>
-                                                                                <td>{progress.job_name}</td>
-                                                                                <td>{progress.client_name}</td>
-                                                                                <td>{progress.printer_name}</td>
-                                                                                <td>{progress.employee_name}</td>
-                                                                                <td>{progress.job_type}</td>
-                                                                                <td></td>
-                                                                                <td>{progress.total_cylinder_qty}</td>
-                                                                                <td></td>
-                                                                                <td>{progress.base_order_date}</td>
-                                                                                <td>{progress.base_send_factory_date}</td>
-                                                                                <td></td>
-                                                                                <td>{progress.assign_date}</td>
-                                                                                <td>{progress.design_to_factory_date}</td>
-                                                                                <td></td>
-                                                                                <td></td>
-                                                                            </tr>
-                                                                        ))}
-                                                                    </>
-                                                                : null
-                                                            ))
-                                                        : null
-                                                        }
+                                                        <>
+                                                            {jobs.length > 0 ? 
+                                                                jobs.map((job)=>(      
+                                                                    <tr>
+                                                                        <td>{job.client_name}</td>
+                                                                        <td>{job.printer_name}</td>
+                                                                        <td>{job.employee_name}</td>
+                                                                        <td>{job.total_cylinder_qty}</td>
+                                                                        {/* <td>{job.times}</td> */}
+                                                                        <td>{job.surface_area}</td>
+                                                                    </tr>
+                                                                ))
+                                                            : null
+                                                            }
+                                                        </>
+                                                        <>
+                                                               <tr>
+                                                                    <th colSpan="4" className="text-right">Total Surface Area</th>
+                                                                    <th>{grandTotal.total_surface_area}</th>
+                                                                </tr>
+                                                        </>
                                                     </tbody>
                                                 </table>
                                             </div>    

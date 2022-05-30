@@ -141,7 +141,20 @@ import JobInformation from './../components/users/marketingReport/jobInformation
 import JobInformationReport from './../components/users/marketingReport/jobInformation/Report';
 import JobFlowAnalysis from './../components/users/marketingReport/jobFlowAnalysis/Form';
 import JobFlowAnalysisReport from './../components/users/marketingReport/jobFlowAnalysis/Report';
+import JobFlowAnalysisMarketingPersonWise from './../components/users/marketingReport/jobFlowAnalysisMarketingPersonWise/Form';
+import JobFlowAnalysisMarketingPersonWiseReport from './../components/users/marketingReport/jobFlowAnalysisMarketingPersonWise/Report';
+import DealerWiseJobFlowForm from './../components/users/marketingReport/dealerWiseJobFlow/Form';
+import DealerWiseJobFlowReport from './../components/users/marketingReport/dealerWiseJobFlow/Report';
 //END MARKETING REPORT
+
+//START JOB INFORMATION REPORT
+import AnalyticalJobInformationClientWise from './../components/users/jobInformationReport/analyticalJobInformationClientWise/Form';
+import AnalyticalJobInformationClientWiseReport from './../components/users/jobInformationReport/analyticalJobInformationClientWise/Report';
+import AnalyticalJobInformationEmployeeWise from './../components/users/jobInformationReport/analyticalJobInformationEmployeeWise/Form';
+import AnalyticalJobInformationEmployeeWiseReport from './../components/users/jobInformationReport/analyticalJobInformationEmployeeWise/Report';
+import AnalyticalJobInformationPrinterWise from './../components/users/jobInformationReport/analyticalJobInformationPrinterWise/Form';
+import AnalyticalJobInformationPrinterWiseReport from './../components/users/jobInformationReport/analyticalJobInformationPrinterWise/Report';
+//END JOB INFORMATION REPORT
 
 //START SUPPLY CHAIN REPORT
 
@@ -342,10 +355,15 @@ class UserRoute extends Component {
                 <UserAuthRoute path={`${process.env.PUBLIC_URL}/designFileReport/:jobOrderId`} component={DesignFileReport} />
                 <UserAuthRoute path={`${process.env.PUBLIC_URL}/designFileToFactoryReport/:fromDate/:toDate`} component={DesignFileToFactoryReport} />
                 <UserAuthRoute path={`${process.env.PUBLIC_URL}/productionReportDetailsReport/:fromDate/:toDate`} component={ProductionReportDetailsReport} />
+                <UserAuthRoute path={`${process.env.PUBLIC_URL}/dealerWiseJobFlowReport/:fromDate/:toDate`} component={DealerWiseJobFlowReport} />
                 <UserAuthRoute path={`${process.env.PUBLIC_URL}/customerWiseAnalysisReport/:fromDate/:toDate`} component={CustomerWiseAnalysisReport} />
                 <UserAuthRoute path={`${process.env.PUBLIC_URL}/customerWiseAnalysis/clientDetails/:clientId`} component={ClientDetails} />
                 <UserAuthRoute path={`${process.env.PUBLIC_URL}/progressReport/:fromDate/:toDate/:employeeId`} component={ProgressReport} />
-                <UserAuthRoute path={`${process.env.PUBLIC_URL}/jobFlowAnalysis/:fromDate/:toDate/:employeeId`} component={JobFlowAnalysisReport} />
+                <UserAuthRoute path={`${process.env.PUBLIC_URL}/jobFlowAnalysis/:fromDate/:toDate/:clientId`} component={JobFlowAnalysisReport} />
+                <UserAuthRoute path={`${process.env.PUBLIC_URL}/jobFlowAnalysisMarketingPersonWise/:fromDate/:toDate/:employeeId`} component={JobFlowAnalysisMarketingPersonWiseReport} />
+                <UserAuthRoute path={`${process.env.PUBLIC_URL}/analyticalJobInformationClientWise/:fromDate/:toDate/:clientId`} component={AnalyticalJobInformationClientWiseReport} />
+                <UserAuthRoute path={`${process.env.PUBLIC_URL}/analyticalJobInformationEmployeeWise/:fromDate/:toDate/:employeeId`} component={AnalyticalJobInformationEmployeeWiseReport} />
+                <UserAuthRoute path={`${process.env.PUBLIC_URL}/analyticalJobInformationPrinterWise/:fromDate/:toDate/:printerId`} component={AnalyticalJobInformationPrinterWiseReport} />
                 <UserAuthRoute path={`${process.env.PUBLIC_URL}/statusReport/:fromDate/:toDate/:status`} component={StatusReport} />
                 <UserAuthRoute path={`${process.env.PUBLIC_URL}/designFileToFactoryReport/:fromDate`} component={DesignFileToFactoryReport} />
                 <UserAuthRoute path={`${process.env.PUBLIC_URL}/dailyDesignFileToFactoryReport/:date`} component={DailyDesignFileToFactoryReport} />
@@ -493,7 +511,14 @@ class UserRoute extends Component {
                         {/* MARKETING REPORTS */}
                         <UserAuthRoute path={`${process.env.PUBLIC_URL}/jobAgreementForm/index`} component={JobAgreementForm} /> 
                         <UserAuthRoute path={`${process.env.PUBLIC_URL}/jobInformation`} component={JobInformation} />
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/jobFlowAnalysis`} component={JobFlowAnalysis} /> 
+                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/jobFlowAnalysis`} component={JobFlowAnalysis} />
+                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/jobFlowAnalysisMarketingPersonWise`} component={JobFlowAnalysisMarketingPersonWise} />
+                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/dealerWiseJobFlow`} component={DealerWiseJobFlowForm} /> 
+
+                        {/* JOB INFORMATION REPORT */}
+                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/analyticalJobInformationClientWise`} component={AnalyticalJobInformationClientWise} />
+                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/analyticalJobInformationEmployeeWise`} component={AnalyticalJobInformationEmployeeWise} />
+                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/analyticalJobInformationPrinterWise`} component={AnalyticalJobInformationPrinterWise} />
 
                         {/* SUPPLY CHAIN REPORTS */}
                         <UserAuthRoute path={`${process.env.PUBLIC_URL}/designFile/index`} component={DesignFile} /> 

@@ -1,14 +1,11 @@
 import React, { Fragment , useEffect, useState } from 'react';
 import useForm from "react-hook-form";
 import { SubmitButton } from '../../../common/GlobalButton'
-import {JOB_FLOW_ANALYSIS_FORM} from '../../../../api/userUrl'
-import { userGetMethod} from '../../../../api/userAction';
 
 const Form = (props) => {
     const { handleSubmit, register, errors } = useForm();
     const [isLoading, setIsLoading] = useState(true);
     const [reportType, setReportType] = useState(null);
-    const [clients, setClients] = useState([]);
 
     var menuId = 0;
     if (props.location.state === undefined) {
@@ -16,22 +13,11 @@ const Form = (props) => {
     }else{
         menuId = props.location.state.params.menuId;
     }
-
-    useEffect(() => {
-        userGetMethod(`${JOB_FLOW_ANALYSIS_FORM}`)
-        .then(response => {
-            console.log('response', response.data);
-            setClients(response.data.clients);
-            setIsLoading(false);
-        })
-        .catch(error => console.log(error))
-    }, []);
     
     const submitHandler = (data, e) => {
-        const client_id = data.client_id;
         const from_date = data.from_date;
         console.log('from_date ', data);
-        let url = `${process.env.PUBLIC_URL}/jobFlowAnalysis/${data.from_date}/${data.to_date}/${data.client_id ? data.client_id : null}`;
+        let url = `${process.env.PUBLIC_URL}/dealerWiseJobFlowReport/${data.from_date}/${data.to_date}`;
         window.open(url, '_blank', 'height=800,width=1200');
     }
     return (
@@ -43,7 +29,7 @@ const Form = (props) => {
                             <div className="card-header">
                                 <div className="row">
                                     <div className="col-md-6">
-                                        <h5>Job Flow Analysis</h5>
+                                        <h5>Dealer Wise Job Flow</h5>
                                     </div>
                                 </div>
                             </div>
@@ -83,25 +69,6 @@ const Form = (props) => {
                                                     </tr>
                                                 </tbody>
                                             </table>
-                                        </div>
-                                    </div>
-                                    <div className="form-group row">
-                                        <label className="col-sm-3 col-form-label" htmlFor="client_id">Select Client</label>
-                                        <div className="col-sm-3">
-                                            <select 
-                                                name="client_id" 
-                                                id="client_id" 
-                                                className="form-control" 
-                                                defaultValue=""
-                                                ref={register({})} 
-                                            >
-                                            <option value="">Select one</option>
-                                            {clients.map(client => (
-                                                <option value={client.id}>{client.name}</option>
-                                            ))}
-                                            </select>
-                                            {errors.client_id && <p className='text-danger'>{errors.client_id.message}</p>}
-
                                         </div>
                                     </div>
                                     <SubmitButton link="#" offset="2" menuId={ menuId }/>

@@ -1,14 +1,14 @@
 import React, { Fragment , useEffect, useState } from 'react';
 import useForm from "react-hook-form";
 import { SubmitButton } from '../../../common/GlobalButton'
-import {JOB_FLOW_ANALYSIS_FORM} from '../../../../api/userUrl'
+import {ANALYTICAL_JOB_INFORMATION_EMPLOYEE_WISE_FORM} from '../../../../api/userUrl'
 import { userGetMethod} from '../../../../api/userAction';
 
 const Form = (props) => {
     const { handleSubmit, register, errors } = useForm();
     const [isLoading, setIsLoading] = useState(true);
     const [reportType, setReportType] = useState(null);
-    const [clients, setClients] = useState([]);
+    const [employees, setEmployees] = useState([]);
 
     var menuId = 0;
     if (props.location.state === undefined) {
@@ -18,20 +18,20 @@ const Form = (props) => {
     }
 
     useEffect(() => {
-        userGetMethod(`${JOB_FLOW_ANALYSIS_FORM}`)
+        userGetMethod(`${ANALYTICAL_JOB_INFORMATION_EMPLOYEE_WISE_FORM}`)
         .then(response => {
             console.log('response', response.data);
-            setClients(response.data.clients);
+            setEmployees(response.data.employees);
             setIsLoading(false);
         })
         .catch(error => console.log(error))
     }, []);
     
     const submitHandler = (data, e) => {
-        const client_id = data.client_id;
+        const employee_id = data.employee_id;
         const from_date = data.from_date;
         console.log('from_date ', data);
-        let url = `${process.env.PUBLIC_URL}/jobFlowAnalysis/${data.from_date}/${data.to_date}/${data.client_id ? data.client_id : null}`;
+        let url = `${process.env.PUBLIC_URL}/analyticalJobInformationEmployeeWise/${data.from_date}/${data.to_date}/${data.employee_id ? data.employee_id : null}`;
         window.open(url, '_blank', 'height=800,width=1200');
     }
     return (
@@ -43,7 +43,7 @@ const Form = (props) => {
                             <div className="card-header">
                                 <div className="row">
                                     <div className="col-md-6">
-                                        <h5>Job Flow Analysis</h5>
+                                        <h5>Analytical Job Information Employee Wise</h5>
                                     </div>
                                 </div>
                             </div>
@@ -86,21 +86,21 @@ const Form = (props) => {
                                         </div>
                                     </div>
                                     <div className="form-group row">
-                                        <label className="col-sm-3 col-form-label" htmlFor="client_id">Select Client</label>
+                                        <label className="col-sm-3 col-form-label" htmlFor="employee_id">Select Employee</label>
                                         <div className="col-sm-3">
                                             <select 
-                                                name="client_id" 
-                                                id="client_id" 
+                                                name="employee_id" 
+                                                id="employee_id" 
                                                 className="form-control" 
                                                 defaultValue=""
                                                 ref={register({})} 
                                             >
                                             <option value="">Select one</option>
-                                            {clients.map(client => (
-                                                <option value={client.id}>{client.name}</option>
+                                            {employees.map(employee => (
+                                                <option value={employee.id}>{employee.name}</option>
                                             ))}
                                             </select>
-                                            {errors.client_id && <p className='text-danger'>{errors.client_id.message}</p>}
+                                            {errors.employee_id && <p className='text-danger'>{errors.employee_id.message}</p>}
 
                                         </div>
                                     </div>

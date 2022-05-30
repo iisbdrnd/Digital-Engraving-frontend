@@ -154,8 +154,18 @@ export const JOB_AGREEMENT_REPORT = 'api/user/jobAgreementReport';
 export const JOB_INFORMATION_REPORT = 'api/user/jobInformationReport';
 export const JOB_FLOW_ANALYSIS_REPORT = 'api/user/jobFlowAnalysisReport';
 export const JOB_FLOW_ANALYSIS_FORM = 'api/user/jobFlowAnalysisForm';
+export const JOB_FLOW_ANALYSIS_MARKETING_PERSON_WISE_REPORT = 'api/user/jobFlowAnalysisMarketingPersonWiseReport';
+export const JOB_FLOW_ANALYSISS_MARKETING_PERSON_WISE_FORM = 'api/user/jobFlowAnalysisMarketingPersonWiseForm';
+export const DEALER_WISE_JOB_FLOW_REPORT = 'api/user/dealerWiseJobFlowReport';
 // END MARKETING REPORT
 
+//START JOB INFORMATION REPORT
+export const ANALYTICAL_JOB_INFORMATION_CLIENT_WISE_REPORT = 'api/user/analyticalJobInformationClientWiseReport';
+export const ANALYTICAL_JOB_INFORMATION_CLIENT_WISE_FORM = 'api/user/analyticalJobInformationClientWiseForm';
+export const ANALYTICAL_JOB_INFORMATION_EMPLOYEE_WISE_REPORT = 'api/user/analyticalJobInformationEmployeeWiseReport';
+export const ANALYTICAL_JOB_INFORMATION_EMPLOYEE_WISE_FORM = 'api/user/analyticalJobInformationEmployeeWiseForm';
+export const ANALYTICAL_JOB_INFORMATION_PRINTER_WISE_REPORT = 'api/user/analyticalJobInformationPrinterWiseReport';
+export const ANALYTICAL_JOB_INFORMATION_PRINTER_WISE_FORM = 'api/user/analyticalJobInformationPrinterWiseForm';
 // START SUPPLY CHAIN REPORT
 export const DESIGN_FILE_REPORT = 'api/user/designFileReport';
 export const DESIGN_FILE_TO_FACTORY_REPORT = 'api/user/designFileToFactoryReport';
