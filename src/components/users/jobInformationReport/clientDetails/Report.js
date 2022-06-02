@@ -1,25 +1,25 @@
 import React, { Fragment , useEffect, useReducer, useState } from 'react';
 import ReportHeader from './ReportHeader';
-import {ANALYTICAL_JOB_INFORMATION_PRINTER_WISE_REPORT} from '../../../../api/userUrl'
+import {CLIENT_DETAILS_REPORT} from '../../../../api/userUrl'
 import { userGetMethod } from '../../../../api/userAction';
 import './style.scss';
 
 const Report = (props) => {
     const [isLoading, setIsLoading] = useState(true);
-    const [printers, setprinters] = useState([]);
+    const [clients, setClients] = useState([]);
     
     const tableStyle = {
         "margin" : "2% 1% 2% 0%"
     }
     const fromDate = props.match.params.fromDate;
     const toDate = props.match.params.toDate;
-    const printerId = props.match.params.printerId;
+    const clientId = props.match.params.clientId;
     const oneDay = 24 * 60 * 60 * 1000;
     useEffect(()=>{
-        userGetMethod(`${ANALYTICAL_JOB_INFORMATION_PRINTER_WISE_REPORT}?fromDate=${fromDate}&&toDate=${toDate}&&printerId=${printerId}`) 
+        userGetMethod(`${CLIENT_DETAILS_REPORT}?fromDate=${fromDate}&&toDate=${toDate}&&clientId=${clientId}`) 
         .then(response => {
             console.log('response', response.data);
-            setprinters(response.data.printers);
+            setClients(response.data.clients);
             setIsLoading(false);
         })
         .catch(error => console.log(error))
@@ -38,7 +38,7 @@ const Report = (props) => {
                                 (
                                     <>
                                         <div className="text-center">
-                                            <h5>{'Analytical Job Information Printer Wise Report - '+fromDate+' to '+toDate}</h5>
+                                            <h5>{'Client Details Report - '+fromDate+' to '+toDate}</h5>
                                         </div>
                                         <Fragment>
                                             <div className="row">
@@ -48,50 +48,47 @@ const Report = (props) => {
                                                             <th width="6%" align="center">Aggrement Date</th>
                                                             <th width="6%" align="center">Job No</th>
                                                             <th width="8%" align="center">Job Name</th>
-                                                            <th width="8%" align="center">Req/PO No</th>
-                                                            <th width="6%" align="center">Printer</th>
-                                                            <th width="6%" align="center">Status</th>
+                                                            <th width="6%" align="center">Printer's Name</th>
                                                             <th width="6%" align="center">Size</th>
                                                             <th width="6%" align="center">Cyl</th>
-                                                            <th width="8%" align="center">Surface Area</th>
-                                                            <th width="6%" align="center">Design Received Date</th>
-                                                            <th width="10%" align="center">Job Position</th>
-                                                            <th width="6%" align="center">Duration</th>
+                                                            <th width="6%" align="center">Base to Factory</th>
+                                                            <th width="6%" align="center">Design to Factory</th>
+                                                            <th width="6%" align="center">Height</th>
+                                                            <th width="6%" align="center">Width</th>
+                                                            <th width="6%" align="center">Status</th>
                                                             <th width="6%" align="center">Delivered Date</th>
 
                                                         </tr>    
                                                     </thead>
                                                     <tbody>
-                                                        {printers.length > 0 ? 
-                                                            printers.map((printer)=>(
-                                                                printer.jobs.length > 0 ?
+                                                        {clients.length > 0 ? 
+                                                            clients.map((client)=>(
+                                                                client.jobs.length > 0 ?
                                                                     <>
                                                                         <tr>
-                                                                            <th colSpan="13" >{printer.printer_name}</th>
+                                                                            <th colSpan="12" >{client.name}</th>
                                                                         </tr>
                                                 
-                                                                        {printer.jobs.map((job)=>( 
+                                                                        {client.jobs.map((job)=>( 
                                                                             <tr>
                                                                                 <td>{job.agreement_date}</td>
                                                                                 <td>{job.job_no}</td>
                                                                                 <td>{job.job_name}</td>
-                                                                                <td></td>
                                                                                 <td>{job.printer_name}</td>
-                                                                                <td>{job.job_type}</td>
                                                                                 <td>{job.face_length}x{job.circumference}</td>
                                                                                 <td>{job.total_cylinder_qty}</td>
-                                                                                <td>{job.total_surface_area}</td>
-                                                                                <td>{job.design_rcv_date}</td>
-                                                                                <td>{job.bill_status==1?'Finished':'Pending'}</td>
-                                                                                <td>{job.bill_date != null ? Math.round(Math.abs((new Date(job.design_rcv_date) - new Date(job.bill_date)) / oneDay)):'N/A'}</td>
-                                                                                <td>{job.bill_date}</td>
+                                                                                <td>{job.base_to_factory !=null ?job.base_to_factory:'N/A'}</td>
+                                                                                <td>{job.design_to_factory !=null ?job.design_to_factory:'N/A'}</td>
+                                                                                <td>{job.height}</td>
+                                                                                <td>{job.width}</td>
+                                                                                <td>{job.status}</td>
+                                                                                <td>{job.delivery_date}</td>
                                                                             </tr>
                                                                         ))}
-                                                                        {printer.total.map((data)=>(
+                                                                        {client.total.map((data)=>(
                                                                             <tr> 
-                                                                                <th colspan="7">Total</th>                                                                               
-                                                                                <th>{data.total_cylinder_qty}</th>                                                                                 
-                                                                                <th>{data.total_surface_area}</th>  
+                                                                                <th colspan="5">Total</th>                                                                               
+                                                                                <th>{data.total_cylinder_qty}</th> 
                                                                             </tr>
                                                                         ))}
                                                                     </>

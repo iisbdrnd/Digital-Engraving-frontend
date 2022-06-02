@@ -154,6 +154,16 @@ import AnalyticalJobInformationEmployeeWise from './../components/users/jobInfor
 import AnalyticalJobInformationEmployeeWiseReport from './../components/users/jobInformationReport/analyticalJobInformationEmployeeWise/Report';
 import AnalyticalJobInformationPrinterWise from './../components/users/jobInformationReport/analyticalJobInformationPrinterWise/Form';
 import AnalyticalJobInformationPrinterWiseReport from './../components/users/jobInformationReport/analyticalJobInformationPrinterWise/Report';
+import PendingJobInformation from './../components/users/jobInformationReport/pendingJobInformation/Form';
+import PendingJobInformationReport from './../components/users/jobInformationReport/pendingJobInformation/Report';
+import PendingSupplyInformation from './../components/users/jobInformationReport/pendingSupplyInformation/Form';
+import PendingSupplyInformationReport from './../components/users/jobInformationReport/pendingSupplyInformation/Report';
+import ClientSummaryForm from './../components/users/jobInformationReport/clientSummary/Form';
+import ClientSummaryReport from './../components/users/jobInformationReport/clientSummary/Report';
+import ClientDetailsForm from './../components/users/jobInformationReport/clientDetails/Form';
+import ClientDetailsReport from './../components/users/jobInformationReport/clientDetails/Report';
+import PrinterWiseJobStatusDetails from './../components/users/jobInformationReport/printerWiseJobStatusDetails/Form';
+import PrinterWiseJobStatusDetailsReport from './../components/users/jobInformationReport/printerWiseJobStatusDetails/Report';
 //END JOB INFORMATION REPORT
 
 //START SUPPLY CHAIN REPORT
@@ -364,6 +374,11 @@ class UserRoute extends Component {
                 <UserAuthRoute path={`${process.env.PUBLIC_URL}/analyticalJobInformationClientWise/:fromDate/:toDate/:clientId`} component={AnalyticalJobInformationClientWiseReport} />
                 <UserAuthRoute path={`${process.env.PUBLIC_URL}/analyticalJobInformationEmployeeWise/:fromDate/:toDate/:employeeId`} component={AnalyticalJobInformationEmployeeWiseReport} />
                 <UserAuthRoute path={`${process.env.PUBLIC_URL}/analyticalJobInformationPrinterWise/:fromDate/:toDate/:printerId`} component={AnalyticalJobInformationPrinterWiseReport} />
+                <UserAuthRoute path={`${process.env.PUBLIC_URL}/pendingJobInformation/:fromDate/:toDate/:employeeId`} component={PendingJobInformationReport} />
+                <UserAuthRoute path={`${process.env.PUBLIC_URL}/pendingSupplyInformation/:fromDate/:toDate/:employeeId/:pendingCategory`} component={PendingSupplyInformationReport} />
+                <UserAuthRoute path={`${process.env.PUBLIC_URL}/clientSummary/:fromDate/:toDate`} component={ClientSummaryReport} />
+                <UserAuthRoute path={`${process.env.PUBLIC_URL}/clientDetails/:fromDate/:toDate/:clientId`} component={ClientDetailsReport} />
+                <UserAuthRoute path={`${process.env.PUBLIC_URL}/printerWiseJobStatusDetails/:fromDate/:toDate/:printerId`} component={PrinterWiseJobStatusDetailsReport} />
                 <UserAuthRoute path={`${process.env.PUBLIC_URL}/statusReport/:fromDate/:toDate/:status`} component={StatusReport} />
                 <UserAuthRoute path={`${process.env.PUBLIC_URL}/designFileToFactoryReport/:fromDate`} component={DesignFileToFactoryReport} />
                 <UserAuthRoute path={`${process.env.PUBLIC_URL}/dailyDesignFileToFactoryReport/:date`} component={DailyDesignFileToFactoryReport} />
@@ -519,6 +534,11 @@ class UserRoute extends Component {
                         <UserAuthRoute path={`${process.env.PUBLIC_URL}/analyticalJobInformationClientWise`} component={AnalyticalJobInformationClientWise} />
                         <UserAuthRoute path={`${process.env.PUBLIC_URL}/analyticalJobInformationEmployeeWise`} component={AnalyticalJobInformationEmployeeWise} />
                         <UserAuthRoute path={`${process.env.PUBLIC_URL}/analyticalJobInformationPrinterWise`} component={AnalyticalJobInformationPrinterWise} />
+                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/pendingJobInformation`} component={PendingJobInformation} />
+                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/pendingSupplyInformation`} component={PendingSupplyInformation} />
+                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/clientSummary`} component={ClientSummaryForm} />
+                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/clientDetails`} component={ClientDetailsForm} />
+                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/printerWiseJobStatusDetails`} component={PrinterWiseJobStatusDetails} />
 
                         {/* SUPPLY CHAIN REPORTS */}
                         <UserAuthRoute path={`${process.env.PUBLIC_URL}/designFile/index`} component={DesignFile} /> 

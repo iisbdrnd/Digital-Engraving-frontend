@@ -166,6 +166,15 @@ export const ANALYTICAL_JOB_INFORMATION_EMPLOYEE_WISE_REPORT = 'api/user/analyti
 export const ANALYTICAL_JOB_INFORMATION_EMPLOYEE_WISE_FORM = 'api/user/analyticalJobInformationEmployeeWiseForm';
 export const ANALYTICAL_JOB_INFORMATION_PRINTER_WISE_REPORT = 'api/user/analyticalJobInformationPrinterWiseReport';
 export const ANALYTICAL_JOB_INFORMATION_PRINTER_WISE_FORM = 'api/user/analyticalJobInformationPrinterWiseForm';
+export const PENDING_JOB_INFORMATION_REPORT = 'api/user/pendingJobInformationReport';
+export const PENDING_JOB_INFORMATION_FORM = 'api/user/pendingJobInformationForm';
+export const PENDING_SUPPLY_INFORMATION_REPORT = 'api/user/pendingSupplyInformationReport';
+export const PENDING_SUPPLY_INFORMATION_FORM = 'api/user/pendingSupplyInformationForm';
+export const CLIENT_SUMMARY_REPORT = 'api/user/clientSummaryReport';
+export const CLIENT_DETAILS_FORM = 'api/user/clientDetailsForm';
+export const CLIENT_DETAILS_REPORT = 'api/user/clientDetailsReport';
+export const PRINTER_WISE_JOB_STATUS_DETAILS_REPORT = 'api/user/printerWiseJobStatusDetailsReport';
+export const PRINTER_WISE_JOB_STATUS_DETAILS_FORM = 'api/user/printerWiseJobStatusDetailsForm';
 // START SUPPLY CHAIN REPORT
 export const DESIGN_FILE_REPORT = 'api/user/designFileReport';
 export const DESIGN_FILE_TO_FACTORY_REPORT = 'api/user/designFileToFactoryReport';

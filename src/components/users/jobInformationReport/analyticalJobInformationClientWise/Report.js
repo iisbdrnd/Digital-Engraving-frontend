@@ -64,27 +64,27 @@ const Report = (props) => {
                                                     <tbody>
                                                         {clients.length > 0 ? 
                                                             clients.map((client)=>(
-                                                                client.progresses.length > 0 ?
+                                                                client.jobs.length > 0 ?
                                                                     <>
                                                                         <tr>
                                                                             <th colSpan="13" >{client.name}</th>
                                                                         </tr>
                                                 
-                                                                        {client.progresses.map((progress)=>( 
+                                                                        {client.jobs.map((job)=>( 
                                                                             <tr>
-                                                                                <td>{progress.agreement_date}</td>
-                                                                                <td>{progress.job_no}</td>
-                                                                                <td>{progress.job_name}</td>
+                                                                                <td>{job.agreement_date}</td>
+                                                                                <td>{job.job_no}</td>
+                                                                                <td>{job.job_name}</td>
                                                                                 <td></td>
-                                                                                <td>{progress.printer_name}</td>
-                                                                                <td>{progress.job_type}</td>
-                                                                                <td>{progress.face_length}x{progress.circumference}</td>
-                                                                                <td>{progress.total_cylinder_qty}</td>
-                                                                                <td>{progress.total_surface_area}</td>
-                                                                                <td>{progress.design_rcv_date}</td>
-                                                                                <td>{progress.bill_status==1?'Finished':'Pending'}</td>
-                                                                                <td>{progress.bill_date != null ? Math.round(Math.abs((new Date(progress.design_rcv_date) - new Date(progress.bill_date)) / oneDay)):'N/A'}</td>
-                                                                                <td>{progress.bill_date}</td>
+                                                                                <td>{job.printer_name}</td>
+                                                                                <td>{job.job_type}</td>
+                                                                                <td>{job.face_length}x{job.circumference}</td>
+                                                                                <td>{job.total_cylinder_qty}</td>
+                                                                                <td>{job.total_surface_area}</td>
+                                                                                <td>{job.design_rcv_date}</td>
+                                                                                <td>{job.bill_status==1?'Finished':'Pending'}</td>
+                                                                                <td>{job.bill_date != null ? Math.round(Math.abs((new Date(job.design_rcv_date) - new Date(job.bill_date)) / oneDay)):'N/A'}</td>
+                                                                                <td>{job.bill_date}</td>
                                                                             </tr>
                                                                         ))}
                                                                         {client.total.map((data)=>(
