@@ -95,7 +95,7 @@ const Form = (props) => {
                                                 defaultValue=""
                                                 ref={register({})} 
                                             >
-                                            <option value="">Select one</option>
+                                            <option value="">Select One</option>
                                             {clients.map(client => (
                                                 <option value={client.id}>{client.name}</option>
                                             ))}

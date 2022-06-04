@@ -175,6 +175,8 @@ export const CLIENT_DETAILS_FORM = 'api/user/clientDetailsForm';
 export const CLIENT_DETAILS_REPORT = 'api/user/clientDetailsReport';
 export const PRINTER_WISE_JOB_STATUS_DETAILS_REPORT = 'api/user/printerWiseJobStatusDetailsReport';
 export const PRINTER_WISE_JOB_STATUS_DETAILS_FORM = 'api/user/printerWiseJobStatusDetailsForm';
+export const MARKETING_PERSON_WISE_JOB_STATUS_REPORT = 'api/user/marketingPersonWiseJobStatusReport';
+export const MARKETING_PERSON_WISE_JOB_STATUS_FORM = 'api/user/marketingPersonWiseJobStatusForm';
 // START SUPPLY CHAIN REPORT
 export const DESIGN_FILE_REPORT = 'api/user/designFileReport';
 export const DESIGN_FILE_TO_FACTORY_REPORT = 'api/user/designFileToFactoryReport';

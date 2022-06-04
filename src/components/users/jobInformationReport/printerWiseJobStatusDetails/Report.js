@@ -14,7 +14,6 @@ const Report = (props) => {
     const fromDate = props.match.params.fromDate;
     const toDate = props.match.params.toDate;
     const printerId = props.match.params.printerId;
-    const oneDay = 24 * 60 * 60 * 1000;
     useEffect(()=>{
         userGetMethod(`${PRINTER_WISE_JOB_STATUS_DETAILS_REPORT}?fromDate=${fromDate}&&toDate=${toDate}&&printerId=${printerId}`) 
         .then(response => {

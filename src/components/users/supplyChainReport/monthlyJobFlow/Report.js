@@ -9,19 +9,6 @@ const Report = (props) => {
     const [jobs, setJobs] = useState([]);
     const [grandTotals, setGrandTotals] = useState([]);
     const [monthlyTarget, setMonthlyTarget] = useState([]);
-    // const [totalData, setTotalData] = useReducer(
-    //     (state, newState) => ({...state, ...newState}),
-    //     {
-    //         new_qty                    : 0, 
-    //         remake_qty                 : 0, 
-    //         redu_qty                   : 0, 
-    //         total_cylinders            : 0, 
-    //         total_surface_area         : 0, 
-    //         billable_total_surface_area: 0, 
-    //         total_billable_cyl         : 0
-    //     }
-    // );
-
     const tableStyle = {
         // "border" : "1px solid #ccc",
         "margin" : "2% 1% 2% 0%"
@@ -42,13 +29,6 @@ const Report = (props) => {
         .catch(error => console.log(error))
     }, []);
     const handleTotalData = (new_qty, remake_qty, redu_qty, total_cylinders, total_surface_area, billable_total_surface_area, total_billable_cyl) => {
-        // new_qty = totalData.new_qty + new_qty, 
-        // remake_qty = totalData.remake_qty + remake_qty, 
-        // redu_qty = totalData.redu_qty + redu_qty, 
-        // total_cylinders = totalData.total_cylinders + total_cylinders, 
-        // total_surface_area = totalData.total_surface_area + total_surface_area, 
-        // billable_total_surface_area = totalData.billable_total_surface_area + billable_total_surface_area, 
-        // total_billable_cyl = totalData.total_billable_cyl + total_billable_cyl 
     }
     
     return (
