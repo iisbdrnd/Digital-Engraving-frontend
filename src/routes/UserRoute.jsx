@@ -100,6 +100,11 @@ import JobOrder from './../components/users/jobOrder/ListData';
 import JobOrderAdd from './../components/users/jobOrder/Create';
 import JobOrderEdit from './../components/users/jobOrder/Edit';
 
+//TEST
+import Test from './../components/users/test/ListData';
+import TestAdd from './../components/users/test/Add';
+import TestEdit from './../components/users/test/Edit';
+
 //Cancel Order
 import CancelOrderList from './../components/users/cancelOrder/ListData';
 import CancelOrderAdd from './../components/users/cancelOrder/Add';
@@ -204,6 +209,25 @@ import DailyProductionReport from './../components/users/supplyChainReport/daily
 import DailyJobFlowDetailsForm from './../components/users/supplyChainReport/dailyJobFlowDetails/Form';
 import DailyJobFlowDetailsReport from './../components/users/supplyChainReport/dailyJobFlowDetails/Report';
 //END SUPPLY CHAIN REPORT
+
+//START SCHEDULE REPORT
+import BaseSupplySchedule from './../components/users/scheduleReport/baseSupplySchedule/Form';
+import BaseSupplyScheduleReport from './../components/users/scheduleReport/baseSupplySchedule/Report';
+import PendingBase from './../components/users/scheduleReport/pendingBase/Form';
+import PendingBaseReport from './../components/users/scheduleReport/pendingBase/Report';
+import ReceivedBase from './../components/users/scheduleReport/receivedBase/Form';
+import ReceivedBaseReport from './../components/users/scheduleReport/receivedBase/Report';
+//END SCHEDULE REPORT
+
+
+//START MANAGEMENT REPORT
+import SalesAndCollectionsForm from './../components/users/managementReport/salesAndCollections/Form';
+import SalesAndCollectionsReport from './../components/users/managementReport/salesAndCollections/Report';
+import BranchWiseSalesCollectionForm from './../components/users/managementReport/branchWiseSalesCollection/Form';
+import BranchWiseSalesCollectionReport from './../components/users/managementReport/branchWiseSalesCollection/Report';
+import CollectionAndDiscountDetailsForm from './../components/users/managementReport/collectionAndDiscountDetails/Form';
+import CollectionAndDiscountDetailsReport from './../components/users/managementReport/collectionAndDiscountDetails/Report';
+//END MANAGEMENT REPORT
 
 //Accounts Module
     //Chart of accounts
@@ -379,10 +403,16 @@ class UserRoute extends Component {
                 <UserAuthRoute path={`${process.env.PUBLIC_URL}/pendingJobInformation/:fromDate/:toDate/:employeeId`} component={PendingJobInformationReport} />
                 <UserAuthRoute path={`${process.env.PUBLIC_URL}/pendingSupplyInformation/:fromDate/:toDate/:employeeId/:pendingCategory`} component={PendingSupplyInformationReport} />
                 <UserAuthRoute path={`${process.env.PUBLIC_URL}/clientSummary/:fromDate/:toDate`} component={ClientSummaryReport} />
+                <UserAuthRoute path={`${process.env.PUBLIC_URL}/salesAndCollections/:fromDate/:toDate`} component={SalesAndCollectionsReport} />
+                <UserAuthRoute path={`${process.env.PUBLIC_URL}/branchWiseSalesCollection/:fromDate/:toDate/:branchId`} component={BranchWiseSalesCollectionReport} />
                 <UserAuthRoute path={`${process.env.PUBLIC_URL}/clientDetails/:fromDate/:toDate/:clientId`} component={ClientDetailsReport} />
                 <UserAuthRoute path={`${process.env.PUBLIC_URL}/printerWiseJobStatusDetails/:fromDate/:toDate/:printerId`} component={PrinterWiseJobStatusDetailsReport} />
                 <UserAuthRoute path={`${process.env.PUBLIC_URL}/marketingPersonWiseJobStatus/:month/:year/:employeeId`} component={MarketingPersonWiseJobStatusReport} />
+                <UserAuthRoute path={`${process.env.PUBLIC_URL}/baseSupplySchedule/:fromDate/:toDate/:clientId`} component={BaseSupplyScheduleReport} />
+                <UserAuthRoute path={`${process.env.PUBLIC_URL}/pendingbase/:fromDate/:toDate/:clientId`} component={PendingBaseReport} />
+                <UserAuthRoute path={`${process.env.PUBLIC_URL}/receivedbase/:fromDate/:toDate/:clientId`} component={ReceivedBaseReport} />
                 <UserAuthRoute path={`${process.env.PUBLIC_URL}/statusReport/:fromDate/:toDate/:status`} component={StatusReport} />
+                <UserAuthRoute path={`${process.env.PUBLIC_URL}/collectionAndDiscountDetails/:fromDate/:toDate/:status`} component={CollectionAndDiscountDetailsReport} />
                 <UserAuthRoute path={`${process.env.PUBLIC_URL}/designFileToFactoryReport/:fromDate`} component={DesignFileToFactoryReport} />
                 <UserAuthRoute path={`${process.env.PUBLIC_URL}/dailyDesignFileToFactoryReport/:date`} component={DailyDesignFileToFactoryReport} />
                 <UserAuthRoute path={`${process.env.PUBLIC_URL}/designToDesignReport/:fromDate`} component={DesignToDesignReport} />
@@ -496,7 +526,13 @@ class UserRoute extends Component {
                         {/* JOB ORDER */}
                         <UserAuthRoute path={`${process.env.PUBLIC_URL}/jobOrder/index`} component={JobOrder} /> 
                         <UserAuthRoute path={`${process.env.PUBLIC_URL}/jobOrder/add`} component={JobOrderAdd} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/jobOrder/edit/:id`} component={JobOrderEdit} /> 
+                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/jobOrder/edit/:id`} component={JobOrderEdit} />
+
+
+                        {/* TEST */}
+                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/test/index`} component={TestAdd} /> 
+                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/test/add`} component={TestAdd} /> 
+                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/test/edit/:id`} component={TestEdit} /> 
 
                         {/* Cancel Order */}
                         <UserAuthRoute path={`${process.env.PUBLIC_URL}/CancelOrder/index`} component={CancelOrderList} /> 
@@ -561,6 +597,18 @@ class UserRoute extends Component {
                         <UserAuthRoute path={`${process.env.PUBLIC_URL}/monthlyProduction`} component={MonthlyProductionForm} />
                         <UserAuthRoute path={`${process.env.PUBLIC_URL}/dailyProduction`} component={DailyProductionForm} />
                         <UserAuthRoute path={`${process.env.PUBLIC_URL}/dailyJobFlowDetails`} component={DailyJobFlowDetailsForm} />
+
+                        {/* SCHEDULE REPORT */}
+                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/baseSupplySchedule`} component={BaseSupplySchedule} />
+                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/pendingbase`} component={PendingBase} />
+                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/receivedbase`} component={ReceivedBase} />
+
+
+                        {/* JOB MANAGEMENT REPORT */}
+                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/salesAndCollections`} component={SalesAndCollectionsForm} />
+                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/branchWiseSalesCollection`} component={BranchWiseSalesCollectionForm} />
+                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/collectionAndDiscountDetails`} component={CollectionAndDiscountDetailsForm} />
+
                         
 
                         {/* accounts  */}

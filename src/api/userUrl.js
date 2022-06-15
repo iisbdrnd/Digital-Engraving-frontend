@@ -44,6 +44,10 @@ export const employeeInformation = 'api/user/employeeInformation';
 //JOB ORDER
 export const JOB_ORDER_RSURL = 'api/user/jobOrder';
 
+
+//TEST
+export const TEST_RSURL = 'api/user/test';
+
 //CANCEL ORDER
 export const CANCEL_ORDER_RSURL = 'api/user/cancelOrder';
 
@@ -197,6 +201,24 @@ export const DAILY_PRODUCTION_REPORT = 'api/user/dailyProduction';
 export const DAILY_JOB_FLOW_DETAILS_REPORT = 'api/user/dailyJobFlowDetails';
 
 //END SUPPLY CHAIN REPORT
+
+//START SCHEDULE REPORT
+export const BASE_SUPPLY_SCHEDULE_REPORT = 'api/user/baseSupplyScheduleReport';
+export const BASE_SUPPLY_SCHEDULE_FORM = 'api/user/baseSupplyScheduleForm';
+export const PENDING_BASE_REPORT = 'api/user/pendingBaseReport';
+export const PENDING_BASE_FORM = 'api/user/pendingBaseForm';
+export const RECEIVED_BASE_REPORT = 'api/user/receivedBaseReport';
+export const RECEIVED_BASE_FORM = 'api/user/receivedBaseForm';
+
+//END SCHEDULE REPORT
+
+//START MANAGEMENT REPORT
+export const SALES_AND_COLLECTIONS_REPORT = 'api/user/salesAndCollectionsReport';
+export const BRANCH_WISE_SALES_COLLECTION_FORM = 'api/user/branchWiseSalesCollectionForm';
+export const BRANCH_WISE_SALES_COLLECTION_REPORT = 'api/user/branchWiseSalesCollectionReport';
+export const COLLECTION_AND_DISCOUNT_DETAILS_REPORT = 'api/user/collectionAndDiscountDetailsReport';
+
+//END MANAGEMENT REPORT
 
 //POLISHING
 export const POLISHING_RS_URL = 'api/user/polishing';
