@@ -181,6 +181,7 @@ export const PRINTER_WISE_JOB_STATUS_DETAILS_REPORT = 'api/user/printerWiseJobSt
 export const PRINTER_WISE_JOB_STATUS_DETAILS_FORM = 'api/user/printerWiseJobStatusDetailsForm';
 export const MARKETING_PERSON_WISE_JOB_STATUS_REPORT = 'api/user/marketingPersonWiseJobStatusReport';
 export const MARKETING_PERSON_WISE_JOB_STATUS_FORM = 'api/user/marketingPersonWiseJobStatusForm';
+
 // START SUPPLY CHAIN REPORT
 export const DESIGN_FILE_REPORT = 'api/user/designFileReport';
 export const DESIGN_FILE_TO_FACTORY_REPORT = 'api/user/designFileToFactoryReport';
@@ -209,7 +210,6 @@ export const PENDING_BASE_REPORT = 'api/user/pendingBaseReport';
 export const PENDING_BASE_FORM = 'api/user/pendingBaseForm';
 export const RECEIVED_BASE_REPORT = 'api/user/receivedBaseReport';
 export const RECEIVED_BASE_FORM = 'api/user/receivedBaseForm';
-
 //END SCHEDULE REPORT
 
 //START MANAGEMENT REPORT
@@ -217,8 +217,16 @@ export const SALES_AND_COLLECTIONS_REPORT = 'api/user/salesAndCollectionsReport'
 export const BRANCH_WISE_SALES_COLLECTION_FORM = 'api/user/branchWiseSalesCollectionForm';
 export const BRANCH_WISE_SALES_COLLECTION_REPORT = 'api/user/branchWiseSalesCollectionReport';
 export const COLLECTION_AND_DISCOUNT_DETAILS_REPORT = 'api/user/collectionAndDiscountDetailsReport';
-
 //END MANAGEMENT REPORT
+
+//START FACTORY REPORT
+export const FACTORY_PRODUCTION_REPORT = 'api/user/factoryproductionReport';
+export const GRINDING_SCHEDULE_REPORT = 'api/user/grindingScheduleReport';
+export const POLISHING_SCHEDULE_REPORT = 'api/user/polishingScheduleReport';
+export const PLATING_SCHEDULE_REPORT = 'api/user/platingScheduleReport';
+export const GRINDING_REMAINING_JOBS_REPORT = 'api/user/grindingRemainingJobsReport';
+export const PLATING_REMAINING_JOBS_REPORT = 'api/user/platingRemainingJobsReport';
+//END FACTORY REPORT
 
 //POLISHING
 export const POLISHING_RS_URL = 'api/user/polishing';

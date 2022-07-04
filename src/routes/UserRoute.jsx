@@ -291,6 +291,20 @@ import CollectionAndDiscountDetailsReport from './../components/users/management
 
 // ----- FACTORY START------//
 
+//START FACTORY REPORT
+import FactoryProductionForm from './../components/users/factoryReport/factoryProduction/Form';
+import FactoryProductionReport from './../components/users/factoryReport/factoryProduction/Report';
+import GrindingScheduleForm from './../components/users/factoryReport/grindingSchedule/Form';
+import GrindingScheduleReport from './../components/users/factoryReport/grindingSchedule/Report';
+import PolishingScheduleForm from './../components/users/factoryReport/polishingSchedule/Form';
+import PolishingScheduleReport from './../components/users/factoryReport/polishingSchedule/Report';
+import PlatingScheduleForm from './../components/users/factoryReport/platingSchedule/Form';
+import PlatingScheduleReport from './../components/users/factoryReport/platingSchedule/Report';
+import GrindingRemainingJobsForm from './../components/users/factoryReport/grindingRemainingJobs/Form';
+import GrindingRemainingJobsReport from './../components/users/factoryReport/grindingRemainingJobs/Report';
+import PlatingRemainingJobsForm from './../components/users/factoryReport/platingRemainingJobs/Form';
+import PlatingRemainingJobsReport from './../components/users/factoryReport/platingRemainingJobs/Report';
+//END FACTORY REPORT
 //GRINDING
 import GrindingList from './../components/users/factory/grinding/ListData';
 import GrindingAdd from './../components/users/factory/grinding/Add';
@@ -435,6 +449,13 @@ class UserRoute extends Component {
                 <UserAuthRoute path={`${process.env.PUBLIC_URL}/balance-sheet-report-action`} component={BalanceSheetReportAction} />
                 <UserAuthRoute path={`${process.env.PUBLIC_URL}/accounts-payable-report-action`} component={AccountsPayableReportAction} />
                 <UserAuthRoute path={`${process.env.PUBLIC_URL}/accounts-receivable-report-action`} component={AccountsReceivableReportAction} />
+
+                <UserAuthRoute path={`${process.env.PUBLIC_URL}/factoryProduction/:fromDate/:toDate`} component={FactoryProductionReport} />
+                <UserAuthRoute path={`${process.env.PUBLIC_URL}/grindingSchedule/:fromDate/:toDate`} component={GrindingScheduleReport} />
+                <UserAuthRoute path={`${process.env.PUBLIC_URL}/polishingSchedule/:fromDate/:toDate`} component={PolishingScheduleReport} />
+                <UserAuthRoute path={`${process.env.PUBLIC_URL}/platingSchedule/:fromDate/:toDate`} component={PlatingScheduleReport} />
+                <UserAuthRoute path={`${process.env.PUBLIC_URL}/grindingRemainingJobs/:fromDate/:toDate`} component={GrindingRemainingJobsReport} />
+                <UserAuthRoute path={`${process.env.PUBLIC_URL}/platingRemainingJobs/:fromDate/:toDate`} component={PlatingRemainingJobsReport} />
                 
                 <Fragment>
                     <UserApp>
@@ -609,7 +630,13 @@ class UserRoute extends Component {
                         <UserAuthRoute path={`${process.env.PUBLIC_URL}/branchWiseSalesCollection`} component={BranchWiseSalesCollectionForm} />
                         <UserAuthRoute path={`${process.env.PUBLIC_URL}/collectionAndDiscountDetails`} component={CollectionAndDiscountDetailsForm} />
 
-                        
+                        {/* FACTORY REPORT */}
+                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/factoryProduction`} component={FactoryProductionForm} />                
+                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/grindingSchedule`} component={GrindingScheduleForm} />                
+                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/polishingSchedule`} component={PolishingScheduleForm} />                
+                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/platingSchedule`} component={PlatingScheduleForm} />                
+                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/grindingRemainingJobs`} component={GrindingRemainingJobsForm} />                
+                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/platingRemainingJobs`} component={PlatingRemainingJobsForm} />                
 
                         {/* accounts  */}
                         <UserAuthRoute path={`${process.env.PUBLIC_URL}/chartOfAccounts/index`} component={chartOfAccounts} />
