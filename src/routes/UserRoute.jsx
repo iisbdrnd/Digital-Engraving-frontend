@@ -302,6 +302,8 @@ import PlatingScheduleForm from './../components/users/factoryReport/platingSche
 import PlatingScheduleReport from './../components/users/factoryReport/platingSchedule/Report';
 import EngravingScheduleForm from './../components/users/factoryReport/engravingSchedule/Form';
 import EngravingScheduleReport from './../components/users/factoryReport/engravingSchedule/Report';
+import ChromeScheduleForm from './../components/users/factoryReport/chromeSchedule/Form';
+import ChromeScheduleReport from './../components/users/factoryReport/chromeSchedule/Report';
 import EngravingRemainingJobsForm from './../components/users/factoryReport/engravingRemainingJobs/Form';
 import EngravingRemainingJobsReport from './../components/users/factoryReport/engravingRemainingJobs/Report';
 import GrindingRemainingJobsForm from './../components/users/factoryReport/grindingRemainingJobs/Form';
@@ -461,6 +463,7 @@ class UserRoute extends Component {
                 <UserAuthRoute path={`${process.env.PUBLIC_URL}/polishingSchedule/:fromDate/:toDate`} component={PolishingScheduleReport} />
                 <UserAuthRoute path={`${process.env.PUBLIC_URL}/platingSchedule/:fromDate/:toDate`} component={PlatingScheduleReport} />
                 <UserAuthRoute path={`${process.env.PUBLIC_URL}/engravingSchedule/:fromDate/:toDate`} component={EngravingScheduleReport} />
+                <UserAuthRoute path={`${process.env.PUBLIC_URL}/chromeSchedule/:fromDate/:toDate`} component={ChromeScheduleReport} />
                 <UserAuthRoute path={`${process.env.PUBLIC_URL}/engravingRemainingJobs/:fromDate/:toDate`} component={EngravingRemainingJobsReport} />
                 <UserAuthRoute path={`${process.env.PUBLIC_URL}/grindingRemainingJobs/:fromDate/:toDate`} component={GrindingRemainingJobsReport} />
                 <UserAuthRoute path={`${process.env.PUBLIC_URL}/polishingRemainingJobs/:fromDate/:toDate`} component={PolishingRemainingJobsReport} />
@@ -646,6 +649,7 @@ class UserRoute extends Component {
                         <UserAuthRoute path={`${process.env.PUBLIC_URL}/platingSchedule`} component={PlatingScheduleForm} />                
                         <UserAuthRoute path={`${process.env.PUBLIC_URL}/engravingSchedule`} component={EngravingScheduleForm} />                
                         <UserAuthRoute path={`${process.env.PUBLIC_URL}/engravingRemainingJobs`} component={EngravingRemainingJobsForm} />                
+                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/chromeSchedule`} component={ChromeScheduleForm} />                                
                         <UserAuthRoute path={`${process.env.PUBLIC_URL}/grindingRemainingJobs`} component={GrindingRemainingJobsForm} />                
                         <UserAuthRoute path={`${process.env.PUBLIC_URL}/polishingRemainingJobs`} component={PolishingRemainingJobsForm} />                
                         <UserAuthRoute path={`${process.env.PUBLIC_URL}/platingRemainingJobs`} component={PlatingRemainingJobsForm} />                

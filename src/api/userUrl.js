@@ -225,6 +225,7 @@ export const GRINDING_SCHEDULE_REPORT = 'api/user/grindingScheduleReport';
 export const POLISHING_SCHEDULE_REPORT = 'api/user/polishingScheduleReport';
 export const PLATING_SCHEDULE_REPORT = 'api/user/platingScheduleReport';
 export const ENGRAVING_SCHEDULE_REPORT = 'api/user/engravingScheduleReport';
+export const CHROME_SCHEDULE_REPORT = 'api/user/chromeScheduleReport';
 export const ENGRAVING_REMAINING_JOBS_REPORT = 'api/user/engravingRemainingJobsReport';
 export const GRINDING_REMAINING_JOBS_REPORT = 'api/user/grindingRemainingJobsReport';
 export const POLISHING_REMAINING_JOBS_REPORT = 'api/user/polishingRemainingJobsReport';
