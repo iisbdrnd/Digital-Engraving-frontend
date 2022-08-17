@@ -105,6 +105,11 @@ import Test from './../components/users/test/ListData';
 import TestAdd from './../components/users/test/Add';
 import TestEdit from './../components/users/test/Edit';
 
+//Client Stock
+import ClientStock from './../components/users/clientStock/ListData';
+import ClientStockAdd from './../components/users/clientStock/Add';
+import ClientStockEdit from './../components/users/clientStock/Edit';
+
 //Cancel Order
 import CancelOrderList from './../components/users/cancelOrder/ListData';
 import CancelOrderAdd from './../components/users/cancelOrder/Add';
@@ -563,9 +568,14 @@ class UserRoute extends Component {
 
 
                         {/* TEST */}
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/test/index`} component={TestAdd} /> 
+                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/test/index`} component={Test} />  
                         <UserAuthRoute path={`${process.env.PUBLIC_URL}/test/add`} component={TestAdd} /> 
                         <UserAuthRoute path={`${process.env.PUBLIC_URL}/test/edit/:id`} component={TestEdit} /> 
+                        
+                        {/* Client Stock */}
+                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/clientStock/index`} component={ClientStock} />  
+                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/clientStock/add`} component={ClientStockAdd} /> 
+                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/clientStock/edit/:id`} component={ClientStockEdit} /> 
 
                         {/* Cancel Order */}
                         <UserAuthRoute path={`${process.env.PUBLIC_URL}/CancelOrder/index`} component={CancelOrderList} /> 

@@ -1,14 +1,14 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
 import { toast } from 'react-toastify';
-import { TEST_RSURL, userHasAccess } from '../../../api/userUrl';
+import { CLIENT_STOCK_RSURL, userHasAccess } from '../../../api/userUrl';
 import { userGetMethod, userDeleteMethod } from '../../../api/userAction';
 import { AddButton, EditButton, DeleteButton, PerPageBox, PanelRefreshIcons } from '../../common/GlobalButton';
 import Pagination from "react-js-pagination";
 import { Link } from 'react-router-dom';
 
 export default function ListData(props) {
-    const [testData, setTestData] = useState([]);
+    const [clientStockData, setClientStockData] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [searchText, setSearchText] = useState('');
     const [hasAccess, setHasAccess] = useState({});
@@ -42,9 +42,9 @@ export default function ListData(props) {
     }
     const searchHandler = (e) => {
         setIsLoading(true);
-        userGetMethod(TEST_RSURL+'?searchText='+searchText)
+        userGetMethod(CLIENT_STOCK_RSURL+'?searchText='+searchText)
         .then(response => {
-            setTestData(response.data.tests.data)
+            setClientStockData(response.data.clientStocks.data)
             setIsLoading(false);
         })
         .catch(error => console.log(error)); 
@@ -55,8 +55,8 @@ export default function ListData(props) {
             .then(response => {
                 if (response.data.status == 1) {
                     setIsLoading(true);
-                    let newData = testData.filter(data => data.id != itemId);
-                    setTestData(newData);
+                    let newData = clientStockData.filter(data => data.id != itemId);
+                    setClientStockData(newData);
                     setIsLoading(false);
                     toast.success(response.data.message);
                 } else {
@@ -69,12 +69,13 @@ export default function ListData(props) {
     const pageChange = (pageNumber = 1) => {
         setIsLoading(true);
         // TABLE DATA READY
-        userGetMethod(`${TEST_RSURL}?page=${pageNumber}`)
+        userGetMethod(`${CLIENT_STOCK_RSURL}?page=${pageNumber}`)
             .then(response => {
-                setCurrentPage(response.data.tests.current_page)
-                setPerPage(response.data.tests.per_page)
-                setTotalData(response.data.tests.total)
-                setTestData(response.data.tests.data)
+                console.log(response.data.clientStocks);
+                setCurrentPage(response.data.clientStocks.current_page)
+                setPerPage(response.data.clientStocks.per_page)
+                setTotalData(response.data.clientStocks.total)
+                setClientStockData(response.data.clientStocks.data)
                 setIsLoading(false);
             })
             .catch(error => console.log(error))
@@ -85,12 +86,12 @@ export default function ListData(props) {
         let paramName = e.target.name;
         setIsLoading(true);
         // TABLE DATA READY
-        userGetMethod(`${TEST_RSURL}?${paramName}=${paramValue}`)
+        userGetMethod(`${CLIENT_STOCK_RSURL}?${paramName}=${paramValue}`)
             .then(response => {
-                setCurrentPage(response.data.tests.current_page)
-                setPerPage(response.data.tests.per_page)
-                setTotalData(response.data.tests.total)
-                setTestData(response.data.tests.data)
+                setCurrentPage(response.data.clientStocks.current_page)
+                setPerPage(response.data.clientStocks.per_page)
+                setTotalData(response.data.clientStocks.total)
+                setClientStockData(response.data.clientStocks.data)
                 setIsLoading(false)
             })
             .catch(error => console.log(error))
@@ -100,19 +101,19 @@ export default function ListData(props) {
         setAscDesc(!ascDesc);
         let ascUrl = '';
         if (ascDesc === true) {
-            ascUrl = `${TEST_RSURL}?asc=${params}&desc=`;
+            ascUrl = `${CLIENT_STOCK_RSURL}?asc=${params}&desc=`;
         } else {
-            ascUrl = `${TEST_RSURL}?asc=&desc=${params}`;
+            ascUrl = `${CLIENT_STOCK_RSURL}?asc=&desc=${params}`;
         }
         
         setIsLoading(true);
         // TABLE DATA READY
         userGetMethod(ascUrl)
             .then(response => {
-                setCurrentPage(response.data.tests.current_page)
-                setPerPage(response.data.tests.per_page)
-                setTotalData(response.data.tests.total)
-                setTestData(response.data.tests.data)
+                setCurrentPage(response.data.clientStocks.current_page)
+                setPerPage(response.data.clientStocks.per_page)
+                setTotalData(response.data.clientStocks.total)
+                setClientStockData(response.data.clientStocks.data)
                 setIsLoading(false)
             })
             .catch(error => console.log(error))
@@ -128,7 +129,7 @@ export default function ListData(props) {
                             <div className="card-header">
                                 <div className="row">
                                     <div className="col-md-6">
-                                        <h5>Test Lists</h5>
+                                        <h5>Client Stock Lists</h5>
                                     </div>
                                     <div className="col-md-6">
                                         <PanelRefreshIcons panelRefresh={pageChange} />
@@ -168,7 +169,7 @@ export default function ListData(props) {
                                     </div>
                                 </div> */}
                                 <div className="col-md-4 col-lg-4">
-                                    <AddButton link="test/add" menuId={menuId} />
+                                    <AddButton link="clientStock/add" menuId={menuId} />
                                     <PerPageBox pageBoxChange={perPageBoxChange}/>
                                 </div>
                             </div>
@@ -181,7 +182,7 @@ export default function ListData(props) {
                                             <thead>
                                                 <tr>
                                                     <th scope="col" width="5%" onClick={() => sortHandler(1)} ><i className="fa fa-sort"></i> SL.</th>
-                                                    <th scope="col" width="15%" onClick={() => sortHandler(2)} ><i className="fa fa-sort"></i> Name</th>
+                                                    <th scope="col" width="15%" onClick={() => sortHandler(2)} ><i className="fa fa-sort"></i> Job No</th>
                                                     {/* <th scope="col" width="15%" onClick={() => sortHandler(3)} ><i className="fa fa-sort"></i> Job Name</th> */}
                                                     {/* <th scope="col" width="10%" onClick={() => sortHandler(4)} ><i className="fa fa-sort"></i> Cancel Quantity</th>                                                         */}
                                                     {/* <th scope="col" width="15%" onClick={() => sortHandler(5)}><i className="fa fa-sort"></i> Client</th>
@@ -191,13 +192,13 @@ export default function ListData(props) {
                                             </thead>
                                             <tbody>
                                                 { 
-                                                    testData.length > 0 ? 
+                                                    clientStockData.length > 0 ? 
                                                         <>
-                                                            {testData.map((item, index) =>           
+                                                            {clientStockData.map((item, index) =>           
                                                                 (
                                                                     <tr key={index}>
                                                                         <td scope="row">{ ((index+1) + (currentPage == 1 ? 0 : (currentPage*perPage - perPage))) }</td>
-                                                                        <td>{item.name}</td>
+                                                                        <td>{item.job_id}</td>
                                                                         {/* <td>{item.job_name}</td>
                                                                         <td>{item.no_of_cyl}</td> */}
                                                                         {/* <td>{item.client_name}</td>
@@ -217,7 +218,7 @@ export default function ListData(props) {
                                                                             {
                                                                                 accLoad === false ? <>
                                                                                     {hasAccess.edit === true ? <EditButton link={`/baseReceive/edit/${item.id}`} menuId={ menuId } /> : ''} 
-                                                                                    {hasAccess.destroy === true ? <DeleteButton deleteLink={TEST_RSURL} deleteHandler={ deleteHandler } menuId={ menuId } dataId={item.id} /> : ''} 
+                                                                                    {hasAccess.destroy === true ? <DeleteButton deleteLink={CLIENT_STOCK_RSURL} deleteHandler={ deleteHandler } menuId={ menuId } dataId={item.id} /> : ''} 
                                                                                 </> : ''
                                                                             }
                                                                         </td> */}

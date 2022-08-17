@@ -49,8 +49,6 @@ export const STORE_USER_ACCESSING = 'api/admin/users/userAccessingStore';
 export const designationRsURL = 'api/admin/designations';
 // DEPARTMENTS URL
 export const DEPARTMENTS_RSURL = 'api/admin/departments';
-//user access url
-export const userAccessingStore = 'api/admin/users/userAccessingStore';
 
 
 // POST      | api/admin/users                              | admin.users.store     | App\Http\Controllers\Admin\UsersController@store         

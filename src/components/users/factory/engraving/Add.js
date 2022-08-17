@@ -149,7 +149,7 @@ const Add = (props) => {
                                                         {
                                                             stateData.engraves.length > 0 ? (
                                                                 stateData.engraves.map((engrave, key)=>(
-                                                                    engrave.running_status == 1 ? (
+                                                                    engrave.running_status == 0 ? (
                                                                         <option key={key} value={engrave.cylinder_id}>{engrave.cylinder_id}</option>
                                                                     ) : ''
                                                                 ))

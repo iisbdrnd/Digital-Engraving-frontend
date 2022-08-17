@@ -85,6 +85,11 @@ import DepartmentEdit from './../components/admin/department/Edit';
 //Admin APP
 
 import AdminApp from './../components/adminApp';
+import UserAccess from "../components/admin/users/access/List/UserAccess";
+import UserList from "../components/admin/users/access/List/UserList";
+// import UserAccess from "../components/admin/users/access/List/UserAccess";
+// import UserList from "../components/admin/List/UserList";
+// import UserAccess from "../components/admin/List/UserAccess";
 
 class AdminRoute extends Component {
     constructor(props) {
@@ -95,97 +100,252 @@ class AdminRoute extends Component {
     render() {
 
         return (
-            <Switch>
-                <AdminGuestRoute path={`${process.env.PUBLIC_URL}/login`} component={AdminSignin} />
-                <AdminAuthRoute exact path={`${process.env.PUBLIC_URL}/`} render={() => {
-                    return (<Redirect to={`${process.env.PUBLIC_URL}/login`} />)
-                }} />
-                <Fragment>
-                    
-                    <AdminApp>
-                        <AdminAuthRoute path={`/welcome`} component={Welcome} />
+          <Switch>
+            <AdminGuestRoute
+              path={`${process.env.PUBLIC_URL}/login`}
+              component={AdminSignin}
+            />
+            <AdminAuthRoute
+              exact
+              path={`${process.env.PUBLIC_URL}/`}
+              render={() => {
+                return <Redirect to={`${process.env.PUBLIC_URL}/login`} />;
+              }}
+            />
+            <Fragment>
+              <AdminApp>
+                <AdminAuthRoute path={`/welcome`} component={Welcome} />
 
-                        {/* //Project Register */}
-                        <AdminAuthRoute path={`${process.env.PUBLIC_URL}/ProjectRegister/list`} component={ProjectRegisterList} />
-                        <AdminAuthRoute path={`${process.env.PUBLIC_URL}/projectRegister/add`} component={ProjectAdd} />
-                        <AdminAuthRoute path={`${process.env.PUBLIC_URL}/projectRegister/edit/:projectId`} component={ProjectEdit} />
-                        <AdminAuthRoute path={`${process.env.PUBLIC_URL}/projectRegister/project-access-link/:projectId`} component={AccessLinkProject} />
-                        
-                        {/* SoftAdmin */}
-                        <AdminAuthRoute path={`${process.env.PUBLIC_URL}/softAdmin/list`} component={SoftAdminList} />
-                        <AdminAuthRoute path={`${process.env.PUBLIC_URL}/softAdmin/add`} component={CreateSoftAdmin} />
-                        <AdminAuthRoute path={`${process.env.PUBLIC_URL}/softAdmin/edit/:adminId`} component={EditSoftAdmin} />
-                        <AdminAuthRoute path={`${process.env.PUBLIC_URL}/softAdmin/admin-access-link/:adminId`} component={AccessLinkSoftAdmin} />
-                        
-                        {/* Software Users */}
-                        <AdminAuthRoute path={`${process.env.PUBLIC_URL}/users/list`} component={SoftwareUserList} />
-                        <AdminAuthRoute path={`${process.env.PUBLIC_URL}/users/add`} component={CreateSoftwareUser} />
-                        <AdminAuthRoute path={`${process.env.PUBLIC_URL}/users/edit/:userId`} component={EditSoftwareUser} />
-                        <AdminAuthRoute path={`${process.env.PUBLIC_URL}/user/user-access-link/:userId`} component={AccessLinkUser} />
-                        
-                        {/* Users Profile */}
-                        <AdminAuthRoute path={`${process.env.PUBLIC_URL}/users/userProfile`} component={UserProfile} />
-                        <AdminAuthRoute path={`${process.env.PUBLIC_URL}/users/userEdit`} component={UserEdit} />
-                        <AdminAuthRoute path={`${process.env.PUBLIC_URL}/users/userCards`} component={UserCards} />
-                        <AdminAuthRoute path={`${process.env.PUBLIC_URL}/users/adminUserEdit`} component={AdminUserEdit} />
-                        <AdminAuthRoute path={`${process.env.PUBLIC_URL}/users/changeImage`} component={ChangeImage} />
+                {/* //Project Register */}
+                <AdminAuthRoute
+                  path={`${process.env.PUBLIC_URL}/ProjectRegister/list`}
+                  component={ProjectRegisterList}
+                />
+                <AdminAuthRoute
+                  path={`${process.env.PUBLIC_URL}/projectRegister/add`}
+                  component={ProjectAdd}
+                />
+                <AdminAuthRoute
+                  path={`${process.env.PUBLIC_URL}/projectRegister/edit/:projectId`}
+                  component={ProjectEdit}
+                />
+                <AdminAuthRoute
+                  path={`${process.env.PUBLIC_URL}/projectRegister/project-access-link/:projectId`}
+                  component={AccessLinkProject}
+                />
 
-                        {/* Designation */}
-                        <AdminAuthRoute path={`${process.env.PUBLIC_URL}/designations/List`} component={DesignationList} />
-                        <AdminAuthRoute path={`${process.env.PUBLIC_URL}/designations/Add`} component={DesignationAdd} />
-                        <AdminAuthRoute path={`${process.env.PUBLIC_URL}/designations/Edit/:designationId`} component={DesignationEdit} />
+                {/* SoftAdmin */}
+                <AdminAuthRoute
+                  path={`${process.env.PUBLIC_URL}/softAdmin/list`}
+                  component={SoftAdminList}
+                />
+                <AdminAuthRoute
+                  path={`${process.env.PUBLIC_URL}/softAdmin/add`}
+                  component={CreateSoftAdmin}
+                />
+                <AdminAuthRoute
+                  path={`${process.env.PUBLIC_URL}/softAdmin/edit/:adminId`}
+                  component={EditSoftAdmin}
+                />
+                <AdminAuthRoute
+                  path={`${process.env.PUBLIC_URL}/softAdmin/admin-access-link/:adminId`}
+                  component={AccessLinkSoftAdmin}
+                />
 
-                        <AdminAuthRoute path={`${process.env.PUBLIC_URL}/polishing/Add`} component={PolishingAdd} />
-                        <AdminAuthRoute path={`${process.env.PUBLIC_URL}/jobagreement/Add`} component={JobAgreement} />
-                        <AdminAuthRoute path={`${process.env.PUBLIC_URL}/designtofactory/Add`} component={designToFactory} />
-                        
-                        {/* Menu */}
-                        <AdminAuthRoute path={`${process.env.PUBLIC_URL}/menu/List`} component={MenuList} />
-                        <AdminAuthRoute path={`${process.env.PUBLIC_URL}/menu/Add`} component={MenuAdd} />
-                        <AdminAuthRoute path={`${process.env.PUBLIC_URL}/menu/Edit/:menuId`} component={MenuEdit} />
+                {/* Software Users */}
+                <AdminAuthRoute
+                  path={`${process.env.PUBLIC_URL}/users/list`}
+                  component={SoftwareUserList}
+                />
+                <AdminAuthRoute
+                  path={`${process.env.PUBLIC_URL}/users/add`}
+                  component={CreateSoftwareUser}
+                />
+                <AdminAuthRoute
+                  path={`${process.env.PUBLIC_URL}/users/edit/:userId`}
+                  component={EditSoftwareUser}
+                />
+                <AdminAuthRoute
+                  path={`${process.env.PUBLIC_URL}/user/user-access-link/:userId`}
+                  component={UserAccess}
+                />
 
-                        {/* Software Module */}
-                        <AdminAuthRoute path={`${process.env.PUBLIC_URL}/softwareModule/list`} component={SoftwareModuleList} />
-                        <AdminAuthRoute path={`${process.env.PUBLIC_URL}/softwareModule/Add`} component={SoftwareModuleAdd} />
-                        <AdminAuthRoute path={`${process.env.PUBLIC_URL}/softwareModule/Edit/:moduleId`} component={SoftwareModuleEdit} />
-                        
-                        {/* Software Menu */}
-                        <AdminAuthRoute path={`${process.env.PUBLIC_URL}/softMenu/list`} component={SoftMenuList} />
-                        <AdminAuthRoute path={`${process.env.PUBLIC_URL}/softMenu/Add`} component={SoftMenuAdd} />
-                        <AdminAuthRoute path={`${process.env.PUBLIC_URL}/softMenu/Edit/:softMenuId`} component={SoftMenuEdit} />
-                        
-                        {/* INTERNAL LINK ADMIN*/}
-                        <AdminAuthRoute path={`${process.env.PUBLIC_URL}/internalLink/List`} component={InternalLinkList} />
-                        <AdminAuthRoute path={`${process.env.PUBLIC_URL}/internalLink/Add`} component={InternalLinkAdd} />
-                        <AdminAuthRoute path={`${process.env.PUBLIC_URL}/internalLink/Edit/:internalLinkID`} component={InternalLinkEdit} />
+                {/* Users Profile */}
+                <AdminAuthRoute
+                  path={`${process.env.PUBLIC_URL}/users/userProfile`}
+                  component={UserProfile}
+                />
+                <AdminAuthRoute
+                  path={`${process.env.PUBLIC_URL}/users/userEdit`}
+                  component={UserEdit}
+                />
+                <AdminAuthRoute
+                  path={`${process.env.PUBLIC_URL}/users/userCards`}
+                  component={UserCards}
+                />
+                <AdminAuthRoute
+                  path={`${process.env.PUBLIC_URL}/users/adminUserEdit`}
+                  component={AdminUserEdit}
+                />
+                <AdminAuthRoute
+                  path={`${process.env.PUBLIC_URL}/users/changeImage`}
+                  component={ChangeImage}
+                />
 
-                        {/* MENU SHORTING ADMIN */}
-                        <AdminAuthRoute path={`${process.env.PUBLIC_URL}/menu-shorting/list`} component={MenuShortingAdmin} />
+                {/* Designation */}
+                <AdminAuthRoute
+                  path={`${process.env.PUBLIC_URL}/designations/List`}
+                  component={DesignationList}
+                />
+                <AdminAuthRoute
+                  path={`${process.env.PUBLIC_URL}/designations/Add`}
+                  component={DesignationAdd}
+                />
+                <AdminAuthRoute
+                  path={`${process.env.PUBLIC_URL}/designations/Edit/:designationId`}
+                  component={DesignationEdit}
+                />
 
-                        {/* Software Internal Link */}
-                        <AdminAuthRoute path={`${process.env.PUBLIC_URL}/softInternalLink/list`} component={SoftInternalLinkList} />
-                        <AdminAuthRoute path={`${process.env.PUBLIC_URL}/softInternalLink/Add`} component={SoftInternalLinkAdd} />
-                        <AdminAuthRoute path={`${process.env.PUBLIC_URL}/softInternalLink/Edit/:softLinkId`} component={SoftInternalLinkEdit} />
-                        
-                        {/* Software Menu Sorting */}
-                        <AdminAuthRoute path={`${process.env.PUBLIC_URL}/softMenu/sorting`} component={SoftMenuSorting} />
-                    
-                        {/* GRINDING */}
-                        <AdminAuthRoute path="/grinding/List" component={GrindingList} />
-                        <AdminAuthRoute path="/grinding/Add" component={GrindingAdd} />
+                <AdminAuthRoute
+                  path={`${process.env.PUBLIC_URL}/polishing/Add`}
+                  component={PolishingAdd}
+                />
+                <AdminAuthRoute
+                  path={`${process.env.PUBLIC_URL}/jobagreement/Add`}
+                  component={JobAgreement}
+                />
+                <AdminAuthRoute
+                  path={`${process.env.PUBLIC_URL}/designtofactory/Add`}
+                  component={designToFactory}
+                />
 
-                        {/* DESIGN TO DESIGN */}
-                        <AdminAuthRoute path="/designToDesign/List" component={DesignToDesignList} />
-                        <AdminAuthRoute path="/designToDesign/Add" component={DesignToDesignAdd} />
+                {/* Menu */}
+                <AdminAuthRoute
+                  path={`${process.env.PUBLIC_URL}/menu/List`}
+                  component={MenuList}
+                />
+                <AdminAuthRoute
+                  path={`${process.env.PUBLIC_URL}/menu/Add`}
+                  component={MenuAdd}
+                />
+                <AdminAuthRoute
+                  path={`${process.env.PUBLIC_URL}/menu/Edit/:menuId`}
+                  component={MenuEdit}
+                />
 
-                        {/* DEPARTMENT */}  
-                        <AdminAuthRoute path={`${process.env.PUBLIC_URL}/department/List`} component={DepartmentList} />
-                        <AdminAuthRoute path={`${process.env.PUBLIC_URL}/department/Add`} component={DepartmentAdd} />
-                        <AdminAuthRoute path={`${process.env.PUBLIC_URL}/department/Edit/:deptId`} component={DepartmentEdit} />
+                {/* Software Module */}
+                <AdminAuthRoute
+                  path={`${process.env.PUBLIC_URL}/softwareModule/list`}
+                  component={SoftwareModuleList}
+                />
+                <AdminAuthRoute
+                  path={`${process.env.PUBLIC_URL}/softwareModule/Add`}
+                  component={SoftwareModuleAdd}
+                />
+                <AdminAuthRoute
+                  path={`${process.env.PUBLIC_URL}/softwareModule/Edit/:moduleId`}
+                  component={SoftwareModuleEdit}
+                />
 
-                    </AdminApp>
-                </Fragment>
-            </Switch>
+                {/* Software Menu */}
+                <AdminAuthRoute
+                  path={`${process.env.PUBLIC_URL}/softMenu/list`}
+                  component={SoftMenuList}
+                />
+                <AdminAuthRoute
+                  path={`${process.env.PUBLIC_URL}/softMenu/Add`}
+                  component={SoftMenuAdd}
+                />
+                <AdminAuthRoute
+                  path={`${process.env.PUBLIC_URL}/softMenu/Edit/:softMenuId`}
+                  component={SoftMenuEdit}
+                />
+
+                {/* INTERNAL LINK ADMIN*/}
+                <AdminAuthRoute
+                  path={`${process.env.PUBLIC_URL}/internalLink/List`}
+                  component={InternalLinkList}
+                />
+                <AdminAuthRoute
+                  path={`${process.env.PUBLIC_URL}/internalLink/Add`}
+                  component={InternalLinkAdd}
+                />
+                <AdminAuthRoute
+                  path={`${process.env.PUBLIC_URL}/internalLink/Edit/:internalLinkID`}
+                  component={InternalLinkEdit}
+                />
+
+                {/* MENU SHORTING ADMIN */}
+                <AdminAuthRoute
+                  path={`${process.env.PUBLIC_URL}/menu-shorting/list`}
+                  component={MenuShortingAdmin}
+                />
+
+                {/* Software Internal Link */}
+                <AdminAuthRoute
+                  path={`${process.env.PUBLIC_URL}/softInternalLink/list`}
+                  component={SoftInternalLinkList}
+                />
+                <AdminAuthRoute
+                  path={`${process.env.PUBLIC_URL}/softInternalLink/Add`}
+                  component={SoftInternalLinkAdd}
+                />
+                <AdminAuthRoute
+                  path={`${process.env.PUBLIC_URL}/softInternalLink/Edit/:softLinkId`}
+                  component={SoftInternalLinkEdit}
+                />
+
+                {/* Software Menu Sorting */}
+                <AdminAuthRoute
+                  path={`${process.env.PUBLIC_URL}/softMenu/sorting`}
+                  component={SoftMenuSorting}
+                />
+
+                {/* GRINDING */}
+                <AdminAuthRoute
+                  path="/grinding/List"
+                  component={GrindingList}
+                />
+                <AdminAuthRoute path="/grinding/Add" component={GrindingAdd} />
+
+                {/* DESIGN TO DESIGN */}
+                <AdminAuthRoute
+                  path="/designToDesign/List"
+                  component={DesignToDesignList}
+                />
+                <AdminAuthRoute
+                  path="/designToDesign/Add"
+                  component={DesignToDesignAdd}
+                />
+
+                {/* DEPARTMENT */}
+                <AdminAuthRoute
+                  path={`${process.env.PUBLIC_URL}/department/List`}
+                  component={DepartmentList}
+                />
+                <AdminAuthRoute
+                  path={`${process.env.PUBLIC_URL}/department/Add`}
+                  component={DepartmentAdd}
+                />
+                <AdminAuthRoute
+                  path={`${process.env.PUBLIC_URL}/department/Edit/:deptId`}
+                  component={DepartmentEdit}
+                />
+
+                {/* react table example  */}
+                <AdminAuthRoute
+                  exact
+                  path={`${process.env.PUBLIC_URL}/react/table`}
+                  component={UserList}
+                />
+                <AdminAuthRoute
+                  exact
+                  path={`${process.env.PUBLIC_URL}/react/table/:id`}
+                  component={UserAccess}
+                />
+              </AdminApp>
+            </Fragment>
+          </Switch>
         );
     }
 }

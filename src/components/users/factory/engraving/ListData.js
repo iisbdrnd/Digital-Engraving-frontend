@@ -183,7 +183,7 @@ export default function ListData(props) {
                                                     <th scope="col" width="10%"> Plating Order</th>
                                                     <th scope="col" width="10%"> FL</th>
                                                     <th scope="col" width="15%"> Client</th>   
-                                                    <th scope="col" width="10%"> Polishing</th>
+                                                    <th scope="col" width="10%"> Engraving</th>
                                                     {/* <th scope="col" width="15%" onClick={() => sortHandler(6)} > Printer</th>
                                                     <th scope="col" width="10%" > Per Sqr Amount</th> */}
                                                     <th scope="col" width="7%">Action</th>

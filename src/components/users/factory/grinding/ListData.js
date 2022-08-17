@@ -112,7 +112,7 @@ export default function ListData(props) {
                             <div className="card-header">
                                 <div className="row">
                                     <div className="col-md-6">
-                                        <h5>Pending Grinding List</h5>
+                                        <h5>Completed Grinding List</h5>
                                     </div>
                                     <div className="col-md-6">
                                         <PanelRefreshIcons panelRefresh={pageChange} />
@@ -175,7 +175,7 @@ export default function ListData(props) {
                                                     {/* <th scope="col" width="7%">Grinding</th>
                                                     <th scope="col" width="7%">Plating</th>
                                                     <th scope="col" width="7%">Polishing</th> */}
-                                                    <th scope="col" width="7%">Engrave</th>
+                                                    <th scope="col" width="7%">Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>

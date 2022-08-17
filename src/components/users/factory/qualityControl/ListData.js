@@ -161,9 +161,9 @@ export default function ListData(props) {
                                         <label className="mt-3">
                                             <span>
                                                 <select className="form-control pagi-select" name="qc_status" onChange={perPageBoxChange} >
-                                                    <option value="2">All Engrave</option>
-                                                    <option value="1" selected={true} >Running Engrave</option>
-                                                    <option value="0">Close Engrave</option>
+                                                    <option value="2">All Quality Control</option>
+                                                    <option value="1" selected={true} >Running Quality Control</option>
+                                                    <option value="0">Close Quality Control</option>
                                                 </select>
                                             </span>
                                         </label>

@@ -4,7 +4,7 @@ import useForm from 'react-hook-form'
 import Breadcrumb from '../common/breadcrumb';
 import { PanelRefreshIcons, SubmitButton } from '../../common/GlobalButton';
 import { userGetMethod, userPostMethod } from '../../../api/userAction';
-import { BASE_RECEIVE_RSURL, JOB_ORDER_DETAILS } from '../../../api/userUrl';
+import { CLIENT_STOCK_RSURL, JOB_ORDER_DETAILS } from '../../../api/userUrl';
 import { Typeahead } from 'react-bootstrap-typeahead';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -15,7 +15,7 @@ const CylinderInfo = (props) => {
     const [dropdownData, setDropdownData] = useState({});
     const [typeheadOptions, setTypeheadOptions] = useState({});
 
-    let [baseReceiveInput, setBaseReceiveInput] = useReducer(
+    let [clientStockInput, setClientStockInput] = useReducer(
         (state, newState) => ({...state, ...newState}),
         {
             job_name          : '',
@@ -41,7 +41,7 @@ const CylinderInfo = (props) => {
 
     const pageRefreshHandler = (job_order_id = null) => {
         setIsLoading(true);
-        userGetMethod(`${BASE_RECEIVE_RSURL}/create?job_order_id=${job_order_id}`)
+        userGetMethod(`${CLIENT_STOCK_RSURL}/create?job_order_id=${job_order_id}`)
             .then(response => {
                 console.log('response', response.data);
                 // FOR JOB ORDER
@@ -54,7 +54,7 @@ const CylinderInfo = (props) => {
                     jobOrderOptions.push(jobOrderObj);
 
                     if (response.data.jobOrder != null) { 
-                        setBaseReceiveInput({
+                        setClientStockInput({
                             'job_order_id': [jobOrderObj]
                         })
                     }
@@ -94,7 +94,7 @@ const CylinderInfo = (props) => {
             userGetMethod(`${JOB_ORDER_DETAILS}?jobOrderId=${selectedValue}`)
                 .then(response => {
                     let { job_name, printer_name, client_email, bill_config_type, printer_mark, marketing_p_name, cyl_rate_status, limit_square_cm, vat_status, client_name, total_cylinder_qty} = response.data.jobOrderDetails;
-                    setBaseReceiveInput({
+                    setClientStockInput({
                         'job_name'          : job_name,
                         'printer_name'      : printer_name,
                         'client_email'      : client_email,
@@ -113,7 +113,7 @@ const CylinderInfo = (props) => {
 
     const submitHandler = (data, e) => {
         data.job_order_id = dropdownData.job_order_id;
-        userPostMethod(BASE_RECEIVE_RSURL, data)
+        userPostMethod(CLIENT_STOCK_RSURL, data)
             .then(response => {
                 if (response.data.status == 1) {
                     toast.success(response.data.message)
@@ -141,7 +141,7 @@ const CylinderInfo = (props) => {
                             <div className="card-header">
                                 <div className="row">
                                     <div className="col-md-6">
-                                        <h5>Base Receive Form</h5>
+                                        <h5>Client Stock Form</h5>
                                     </div>
                                     <div className="col-md-6">
                                         <PanelRefreshIcons panelRefresh={pageRefreshHandler} />
@@ -164,7 +164,7 @@ const CylinderInfo = (props) => {
                                                         options={typeheadOptions['job_orders']}
                                                         placeholder="Select Job No..."
                                                         onChange={(e) => dropDownChange(e, 'job_order_id')}
-                                                        selected={baseReceiveInput.job_order_id}
+                                                        selected={clientStockInput.job_order_id}
                                                         disabled={job_order_id != null ? 'disabled' : ''}
                                                         ref={register({
                                                             required: 'Job No Field Required'
@@ -175,44 +175,28 @@ const CylinderInfo = (props) => {
                                             </div>
                                         
                                             <div className="form-group row">
-                                                <label className="col-sm-3 col-form-label required" htmlFor="challan_no">Challan No</label>
+                                                <label className="col-sm-3 col-form-label required" htmlFor="order_date">Order Date</label>
                                                 <div className="col-sm-9">
-                                                    <input className="form-control" name="challan_no" id="challan_no" type="text" placeholder="Challan No" ref={register({ required: true })} />
-                                                    <span>{errors.challan_no && 'Challan No is required'}</span>
+                                                    <input className="form-control" name="order_date" id="order_date" type="date" ref={register({ required: true })} />
+                                                    <span>{errors.order_date && 'Order Date is required'}</span>
                                                     <div className="valid-feedback">Looks good!</div>
                                                 </div>
                                             </div>
                                         
                                             <div className="form-group row">
-                                                <label className="col-sm-3 col-form-label required" htmlFor="material">Material</label>
+                                                <label className="col-sm-3 col-form-label required" htmlFor="agreement_date">Agreement Date</label>
                                                 <div className="col-sm-9">
-                                                    <select className="form-control" required id="material" name="material"
-                                                    ref={register({
-                                                        required: 'Material Field Required'
-                                                    })} >
-                                                        <option value=""> Select One </option>
-                                                        <option value="1"> Sheet </option>
-                                                        <option value="2"> Pipe </option>
-                                                        <option value="3"> Ex-Stock </option>
-                                                    </select>
-                                                    {errors.material && <p className='text-danger'>{errors.material.message}</p>}
-                                                </div>
-                                            </div>
-                                        
-                                            <div className="form-group row">
-                                                <label className="col-sm-3 col-form-label required" htmlFor="initial_weight">Initial Weight</label>
-                                                <div className="col-sm-9">
-                                                    <input className="form-control" name="initial_weight" id="initial_weight" type="text" placeholder="Initial Weight" ref={register({ required: true })} />
-                                                    <span>{errors.initial_weight && 'Initial Weight is required'}</span>
+                                                    <input className="form-control" id="agreement_date" name="agreement_date" type="date" ref={register({ required: true })} />
+                                                    <span>{errors.agreement_date && 'Agreement Date is required'}</span>
                                                     <div className="valid-feedback">Looks good!</div>
                                                 </div>
                                             </div>
                                         
                                             <div className="form-group row">
-                                                <label className="col-sm-3 col-form-label required" htmlFor="final_weight">Final Weight</label>
+                                                <label className="col-sm-3 col-form-label required" htmlFor="cylinder_qty">Cylinder Quantity</label>
                                                 <div className="col-sm-9">
-                                                    <input className="form-control" name="final_weight" id="final_weight" type="text" placeholder="Final Weight" ref={register({ required: true })} />
-                                                    <span>{errors.final_weight && 'Final Weight is required'}</span>
+                                                    <input className="form-control" name="cylinder_qty" id="cylinder_qty" type="number" placeholder="Cylinder Quantity" ref={register({ required: true })} />
+                                                    <span>{errors.cylinder_qty && 'Cylinder Quantity is required'}</span>
                                                     <div className="valid-feedback">Looks good!</div>
                                                 </div>
                                             </div>
@@ -234,22 +218,22 @@ const CylinderInfo = (props) => {
                                                             <tr>
                                                                 <td width="25%" align="right">Job Name</td>
                                                                 <td width="5%">:</td>
-                                                                <td width="70%">{baseReceiveInput.job_name}</td>
+                                                                <td width="70%">{clientStockInput.job_name}</td>
                                                             </tr>
                                                             <tr>
                                                                 <td align="right">Client Name</td>
                                                                 <td>:</td>
-                                                                <td>{baseReceiveInput.client_name}</td>
+                                                                <td>{clientStockInput.client_name}</td>
                                                             </tr>
                                                             <tr>
                                                                 <td align="right">Printer Name</td>
                                                                 <td>:</td>
-                                                                <td>{baseReceiveInput.printer_name}</td>
+                                                                <td>{clientStockInput.printer_name}</td>
                                                             </tr>
                                                             <tr>
                                                                 <td align="right">No of Cylinder</td>
                                                                 <td>:</td>
-                                                                <td>{baseReceiveInput.total_cylinder_qty}</td>
+                                                                <td>{clientStockInput.total_cylinder_qty}</td>
                                                             </tr>
 
                                                         </tbody>
@@ -259,7 +243,7 @@ const CylinderInfo = (props) => {
                                         </div>
                                     </div>
 
-                                    <SubmitButton link="baseReceive/index" menuId={menuId} />
+                                    <SubmitButton link="clientStock/index" menuId={menuId} />
                             
                                 </form>
                                 )

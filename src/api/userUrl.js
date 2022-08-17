@@ -48,6 +48,9 @@ export const JOB_ORDER_RSURL = 'api/user/jobOrder';
 //TEST
 export const TEST_RSURL = 'api/user/test';
 
+//Client Stock
+export const CLIENT_STOCK_RSURL = 'api/user/clientStock';
+
 //CANCEL ORDER
 export const CANCEL_ORDER_RSURL = 'api/user/cancelOrder';
 
