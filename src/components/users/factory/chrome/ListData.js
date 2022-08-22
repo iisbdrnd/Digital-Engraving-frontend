@@ -127,7 +127,7 @@ export default function ListData(props) {
                 setStateData({currentTankSchedule: response.data.currentTankSchedules});
                 if (response.data.currentTankSchedules && response.data.currentTankSchedules.length > 0) {
                     response.data.currentTankSchedules.map(scheduleMaster => {
-                        if (scheduleMaster.est_end_time != null  && scheduleMaster.running_status == 1) {
+                        if (scheduleMaster.est_end_time != null  && scheduleMaster.running_status == 0) {
                             startTimer(scheduleMaster.start_time, scheduleMaster.est_end_time, scheduleMaster.id);
                         }
                     })
@@ -157,6 +157,7 @@ export default function ListData(props) {
             setCycleModal(!cycleModal);
         }
     }
+    console.log('stateData', stateData);
     
     return (
         <Fragment>
@@ -246,14 +247,14 @@ export default function ListData(props) {
                                                                     </>
                                                                 : ''} */}
                                                                 {
-                                                                    schedule.running_status == 1 && schedule.complete_status == 0 ? (
+                                                                    schedule.running_status == 0 ? (
                                                                         <span className="btn btn-primary btn-sm m-r-5" onClick={()=>toggleModal('cycleStart', schedule.id, schedule.cycle_id)}>Start Cycle</span>
                                                                     ) : (
                                                                         <span className="btn bg-warning">Completed</span>
                                                                     )
                                                                 }
                                                                 {/* {schedule.running_status == 1 && schedule.complete_status == 0 ?  */}
-                                                                {schedule.running_status == 1 && schedule.est_end_time != null ?
+                                                                {schedule.running_status == 0 && schedule.est_end_time != null ?
                                                                     <>
                                                                         <span className="btn btn-success btn-sm m-r-10">
                                                                             {clockData['clock_'+schedule.id] ? clockData['clock_'+schedule.id] : '00:00:00'}

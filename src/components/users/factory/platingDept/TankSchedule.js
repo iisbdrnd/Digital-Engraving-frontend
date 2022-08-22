@@ -82,6 +82,7 @@ export default function TankSchedule(props) {
             userGetMethod(`${JOB_DATA_FROM_PLATING_DEPT}?jobId=${selectedValueId}`)
                 .then(response => {
                     console.log(response.data.job_cylinder_ids);
+                    console.log("jahid");
                     let {fl, cir, dia} = response.data.jobData;
                     setCylScheduleFormData({
                         'job_cylinder_ids': response.data.job_cylinder_ids,

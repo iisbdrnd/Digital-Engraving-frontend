@@ -201,13 +201,13 @@ const CylinderInfo = (props) => {
                                                 </div>
                                             </div>
                                         
-                                            <div className="form-group row">
+                                            {/* <div className="form-group row">
                                                 <label className="col-sm-3 col-form-label" htmlFor="remarks">Remarks</label>
                                                 <div className="col-sm-9">
                                                     <input className="form-control" name="remarks" id="remarks" type="text" placeholder="Remarks" ref={register({})} />
                                                     <div className="valid-feedback">Looks good!</div>
                                                 </div>
-                                            </div>
+                                            </div> */}
                                         </div>
                                         
                                         <div className="col-md-6">
@@ -231,7 +231,7 @@ const CylinderInfo = (props) => {
                                                                 <td>{clientStockInput.printer_name}</td>
                                                             </tr>
                                                             <tr>
-                                                                <td align="right">No of Cylinder</td>
+                                                                <td align="right">Total Cylinder</td>
                                                                 <td>:</td>
                                                                 <td>{clientStockInput.total_cylinder_qty}</td>
                                                             </tr>
@@ -241,6 +241,65 @@ const CylinderInfo = (props) => {
                                                 </div>
                                             </pre>
                                         </div>
+                                    </div>
+
+
+
+                                    <div className="row m-t-10 m-l-10">
+                                        <fieldset className="border" style={{width: '98%'}}> 
+                                            <legend className="w-auto text-left">Added Client Stock</legend>
+                                            <div className="col-md-12">
+                                                <table className="table table-bordered" style={{width: '100%'}}>
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="col" width="15%">Received Date</th>
+                                                            <th scope="col" width="20%">Received Cyl</th>
+                                                            <th scope="col" width="10%">Remarks</th>
+                                                            <th scope="col" width="10%">Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {
+                                                            //baseOrderDetails.length > 0 ?
+                                                            <>
+                                                                {/* {baseOrderDetails.map((item, index)=> 
+                                                                    ( */}
+                                                                    {/* <tr key={index}> */}
+                                                                    <tr>
+                                                                        {/* <th scope="row">{item.supplier_id_name}</th>
+                                                                        <td>{item.job_ref_id}</td>
+                                                                        <td>{item.qty}</td>
+                                                                        <td>{item.delivery_date}</td>
+                                                                        <td>{item.remarks}</td>
+                                                                        <td align="center"> */}
+                                                                        <th scope="row"></th>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                        <td align="center">
+                                                                            {/* <span onClick={()=>removeBaseOrderHandler(item.supplier_id, item.qty)}> */}
+                                                                            <span>
+                                                                                <i className="icon-close" style={{ width: 25, fontSize: 16, padding: 0, color: '#e4566e', cursor: 'pointer' }}
+                                                                                ></i>
+                                                                            </span>
+                                                                        </td>
+                                                                    </tr>
+                                                                    {/* )
+                                                                )} */}
+                                                            </>
+                                                            //: <tr><td colSpan="6" className="text-center">No data Added</td></tr>
+                                                        }
+                                                    </tbody>
+                                                    <tfoot>
+                                                        <tr>
+                                                            <td colSpan="1" align="right">Qty = </td>
+                                                            {/* <td>{jobOrderData.orderQty}</td> */}
+                                                            <td></td>
+                                                            <td colSpan="3"></td>
+                                                        </tr>
+                                                    </tfoot>
+                                                </table>
+                                            </div>
+                                        </fieldset>
                                     </div>
 
                                     <SubmitButton link="clientStock/index" menuId={menuId} />
