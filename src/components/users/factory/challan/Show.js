@@ -39,7 +39,7 @@ const Edit = (props) => {
 
 
     useEffect(() => {
-        userGetMethod(`${ShowJobOrderChallanAPI}/8`)
+        userGetMethod(`${ShowJobOrderChallanAPI}/${job_order_id}`)
             .then(response => {
 
                 console.log('response', response);
