@@ -214,7 +214,7 @@ const Edit = (props) => {
                 })
                 .catch(error => toast.error(error))
         }else{
-            toast.error("Net Total Amount greather than zero");
+            toast.error("Net Total Amount can't be less than zero");
         }
 
     }
@@ -687,7 +687,7 @@ const Edit = (props) => {
                                             </fieldset>
                                         </div>
                                   
-                                        <SubmitButton link="challan/index" menuId={ menuId } />
+                                        <SubmitButton link="bill/index" menuId={ menuId } />
                                     </form>
                                 
                                 )}
