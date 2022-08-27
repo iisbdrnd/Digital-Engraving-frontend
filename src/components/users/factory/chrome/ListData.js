@@ -237,15 +237,6 @@ export default function ListData(props) {
                                                             </div>
                                                             <div className="col-md-6">
                                                                 <span className="btn btn-info btn-sm mr-1" onClick={()=>toggleModal('editTankSchedule', schedule.id)}><i className='fa fa-pencil'></i>Edit</span>
-                                                                
-                                                                {/* <span className="btn btn-primary btn-sm m-r-10" onClick={()=>toggleModal('cycleStart', schedule.id, schedule.cycle_id)}>Start Cycle</span> */}
-                                                                {/* {schedule.running_status == 1 && schedule.est_end_time != null ? 
-                                                                    <>
-                                                                        <span className="btn btn-success btn-sm m-r-10">
-                                                                            {clockData['clock_'+schedule.id] ? clockData['clock_'+schedule.id] : '00:00:00'}
-                                                                            </span> 
-                                                                    </>
-                                                                : ''} */}
                                                                 {
                                                                     schedule.running_status == 0 ? (
                                                                         <span className="btn btn-primary btn-sm m-r-5" onClick={()=>toggleModal('cycleStart', schedule.id, schedule.cycle_id)}>Start Cycle</span>
