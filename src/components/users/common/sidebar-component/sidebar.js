@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { useLocation } from "react-router";
 import {
     Home,
+    ArrowRightCircle,
     Box,
     DollarSign,
     UserPlus,
@@ -97,7 +98,7 @@ const Sidebar = (props) => {
                                         (menu3.parent_id == menu2.id) ?
                                         {
                                             title: menu3.menu_name,
-                                            icon : Home,
+                                            icon : ArrowRightCircle,
                                             type : 'link',
                                             path : '/'+menu3.route.replace(".", "/"),
                                             menuId: menu3.id,
@@ -123,7 +124,7 @@ const Sidebar = (props) => {
                 : (menu.route != "#" && menu.parent_id == 0) ? (
                     menuObject.push({
                         title: menu.menu_name,
-                        icon : Home,
+                        icon : ArrowRightCircle,
                         type : 'link',
                         path : '/'+menu.route.replace(".", "/"),
                         menuId: menu.id,

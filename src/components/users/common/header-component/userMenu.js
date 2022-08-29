@@ -41,7 +41,7 @@ const UserMenu = (props) => {
                         ?
                         <img className="img-50 rounded-circle lazyloaded blur-up"  height="50px"  src={`${process.env.REACT_APP_BASEURL}/public/uploads/demo.jpg`}/>
                         :
-                        <img className="img-50 rounded-circle lazyloaded blur-up"  height="50px" src={`${process.env.REACT_APP_BASEURL}/public/uploads/user/${UserImage.UserImage}`} /> 
+                        <img className="img-50 rounded-circle lazyloaded blur-up"  height="50px" src={`${process.env.REACT_APP_BASEURL}/uploads/user/${UserImage.UserImage}`} /> 
                     }
                     <div className="dotted-animation">
                         <span className="animate-circle"></span>

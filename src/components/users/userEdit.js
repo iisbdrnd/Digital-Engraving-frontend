@@ -128,7 +128,7 @@ class UserEdit extends Component {
                                                             ?
                                                             <img className="image imageHover"  height="250px" width="250px" src={`${process.env.REACT_APP_BASEURL}/public/uploads/demo.jpg`} />
                                                             :
-                                                            <img className="image imageHover"  height="250px" width="250px" src={`${process.env.REACT_APP_BASEURL}/public/uploads/user/${this.state.adminUserImage}`}/> 
+                                                            <img className="image imageHover"  height="250px" width="250px" src={`${process.env.REACT_APP_BASEURL}/uploads/user/${this.state.adminUserImage}`}/> 
                                                         }
                                                         
                                                     <div className="middle">

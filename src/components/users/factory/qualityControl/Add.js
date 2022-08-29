@@ -246,7 +246,7 @@ const Add = (props) => {
                                                 <table className="table table-striped col-md-12">
                                                     <thead>
                                                         <tr>
-                                                            <th width="45%">Cylinder ID</th>
+                                                            <th width="45%">Cylinders ID</th>
                                                             {stateData.completeStatus == 0 && stateData.completeStatus != '' ? (
                                                                 <>
                                                                     <th width="10%">Rework</th>

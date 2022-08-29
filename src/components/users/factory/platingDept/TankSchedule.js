@@ -82,7 +82,7 @@ export default function TankSchedule(props) {
             userGetMethod(`${JOB_DATA_FROM_PLATING_DEPT}?jobId=${selectedValueId}`)
                 .then(response => {
                     console.log(response.data.job_cylinder_ids);
-                    console.log("jahid");
+                    // console.log("jahid");
                     let {fl, cir, dia} = response.data.jobData;
                     setCylScheduleFormData({
                         'job_cylinder_ids': response.data.job_cylinder_ids,
@@ -184,7 +184,7 @@ export default function TankSchedule(props) {
 
     return (
         <Modal isOpen={ props.modal && isOpenModalPrev } toggle={props.toggle} size="xlg">
-            <ModalHeader toggle={props.toggle}>Manual Cycle Plan Form #{props.modalTitle} Tank</ModalHeader>
+            <ModalHeader toggle={props.toggle}>Manual Cycle Plan Form {props.modalTitle} Tank</ModalHeader>
             <ModalBody>
             <div className="container-fluid">
                 <div className="row">

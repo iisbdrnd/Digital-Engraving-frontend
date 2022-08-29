@@ -443,7 +443,7 @@ const Add = (props) => {
                                                                     <option value="">Select Done By</option>
                                                                     {
                                                                         jobOrderData.employeeInfos.map((employee, key)=>(
-                                                                            <option key={key} value={employee.id} key={key}>{employee.name}</option>
+                                                                            <option key={key} value={employee.id}>{employee.name}</option>
                                                                         ))
                                                                     }
                                                                 </select>
@@ -553,7 +553,7 @@ const Add = (props) => {
                                                             <div className="row">
                                                                 <label className="col-sm-5 col-form-label" htmlFor="final_cir">Final Cir</label>
                                                                 <div className="col-sm-7">
-                                                                    <input disabled value={20} className="form-control" name="final_cir" id="final_cir" type="number" placeholder="Final Cir" ref={register({ required: true })} />
+                                                                    <input disabled value={100} className="form-control" name="final_cir" id="final_cir" type="number" placeholder="Final Cir" ref={register({ required: true })} />
                                                                     <span>{errors.final_cir && 'Final Cir is required'}</span>
                                                                     <div className="valid-feedback">Looks good!</div>
                                                                 </div>

@@ -153,7 +153,7 @@ export default function ListData(props) {
         }
     }
 
-    console.log('platingDeptData', platingDeptData.cycleStatus);
+    console.log('platingDeptData', platingDeptData.tanks);
 
     return (
         <Fragment>
