@@ -200,7 +200,7 @@ const Add = (props) => {
                                                 <div className="form-group row">
                                                     <label className="col-sm-4 col-form-label required" htmlFor="cyl_rate_status">Cyl Rate Status</label>
                                                     <div className="col-sm-8">
-                                                        <select className="form-control" required ref={register}  id="cyl_rate_status" name="cyl_rate_status"
+                                                        <select className="form-control" required id="cyl_rate_status" name="cyl_rate_status"
                                                             ref={register({
                                                                 required: 'Cyl Rate Status Field Required'
                                                             })} >
@@ -292,7 +292,7 @@ const Add = (props) => {
                                                 <div className="form-group row">
                                                     <label className="col-sm-4 col-form-label required" htmlFor="printer_mark">Printer Mark</label>
                                                     <div className="col-sm-8">
-                                                        <select className="form-control" required ref={register}  id="printer_mark" name="printer_mark"
+                                                        <select className="form-control" required id="printer_mark" name="printer_mark"
                                                             ref={register({
                                                                 required: 'Printer Mark Field Required'
                                                             })} >
@@ -332,11 +332,11 @@ const Add = (props) => {
                                                                 <td>:</td>
                                                                 <td>{jobAgreementInput.marketing_p_name}</td>
                                                             </tr>
-                                                            <tr>
+                                                            {/* <tr>
                                                                 <td align="right">Reply</td>
                                                                 <td>:</td>
                                                                 <td></td>
-                                                            </tr>
+                                                            </tr> */}
 
                                                         </tbody>
                                                     </table>

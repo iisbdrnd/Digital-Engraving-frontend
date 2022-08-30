@@ -346,8 +346,9 @@ const Add = (props) => {
                                                                 required: 'Eye Mark Color Type Field Required'
                                                             })} >
                                                             <option>Select One</option>
-                                                            <option value="Combo1">Combo1</option>
-                                                            <option value="Combo2">Combo2</option>
+                                                            <option value="White">White</option>
+                                                            <option value="Black">Black</option>
+                                                            <option value="Red">Red</option>
                                                         </select>
                                                         {errors.eye_mark_color && <p className='text-danger'>{errors.eye_mark_color.message}</p>}
                                                     </div> 
@@ -397,7 +398,7 @@ const Add = (props) => {
 
                                                     <div className="col-sm-6">
                                                         <div className="form-group row">
-                                                            <label className="col-sm-8 col-form-label required" htmlFor="design_width">Job Width</label>
+                                                            <label className="col-sm-8 col-form-label required" htmlFor="design_width">Job Width (mm)</label>
                                                             <div className="col-sm-4">
                                                                 <input 
                                                                     className="form-control" 
@@ -435,7 +436,7 @@ const Add = (props) => {
                                                         </div>
 
                                                         <div className="form-group row">
-                                                            <label className="col-sm-8 col-form-label required" htmlFor="printing_width">Printing Width</label>
+                                                            <label className="col-sm-8 col-form-label required" htmlFor="printing_width">Printing Width (mm)</label>
                                                             <div className="col-sm-4">
                                                                 <input 
                                                                     className="form-control" 
@@ -454,14 +455,14 @@ const Add = (props) => {
                                                         </div>
 
                                                         <div className="form-group row">
-                                                            <label className="col-sm-8 col-form-label required" htmlFor="face_length">Face Length</label>
+                                                            <label className="col-sm-8 col-form-label required" htmlFor="face_length">Face Length (mm)</label>
                                                             <div className="col-sm-4">
                                                                 <input 
                                                                     className="form-control" 
                                                                     id="face_length" 
                                                                     name="face_length" 
                                                                     type="text" 
-                                                                    placeholder="Face Length" 
+                                                                    placeholder="FL" 
                                                                     onChange={e=>calculateFormValue(e)}
                                                                     // value={jobOrderData.face_length}
                                                                     ref={register({
@@ -473,7 +474,7 @@ const Add = (props) => {
                                                         </div>
 
                                                         <div className="form-group row">
-                                                            <label className="col-sm-8 col-form-label required" htmlFor="extra_face_length">Extra Face Length</label>
+                                                            <label className="col-sm-8 col-form-label required" htmlFor="extra_face_length">Extra Face Length (mm)</label>
                                                             <div className="col-sm-4">
                                                                 <input 
                                                                     className="form-control" 
@@ -495,7 +496,7 @@ const Add = (props) => {
                                                     <div className="col-sm-6">
 
                                                         <div className="form-group row">
-                                                            <label className="col-sm-8 col-form-label required" htmlFor="design_height">Job Height</label>
+                                                            <label className="col-sm-8 col-form-label required" htmlFor="design_height">Job Height (mm)</label>
                                                             <div className="col-sm-4">
                                                                 <input 
                                                                     className="form-control" 
@@ -531,7 +532,7 @@ const Add = (props) => {
                                                         </div>
 
                                                         <div className="form-group row">
-                                                            <label className="col-sm-8 col-form-label required" htmlFor="circumference">Circumference</label>
+                                                            <label className="col-sm-8 col-form-label required" htmlFor="circumference">Circumference (mm)</label>
                                                             <div className="col-sm-4">
                                                                 <input 
                                                                     className="form-control" 
@@ -550,7 +551,7 @@ const Add = (props) => {
                                                         </div>
 
                                                         <div className="form-group row">
-                                                            <label className="col-sm-8 col-form-label required" htmlFor="printing_height">Printing Height</label>
+                                                            <label className="col-sm-8 col-form-label required" htmlFor="printing_height">Printing Height (mm)</label>
                                                             <div className="col-sm-4">
                                                                 <input 
                                                                     className="form-control" 
@@ -626,7 +627,7 @@ const Add = (props) => {
                                                 </div>
                                                 
                                                 <div className="form-group row">
-                                                    <label className="col-sm-4 col-form-label required" htmlFor="surface_area">Surface Area</label>
+                                                    <label className="col-sm-4 col-form-label required" htmlFor="surface_area">Surface Area (cm²)</label>
                                                     <div className="col-sm-8">
                                                         <input 
                                                             className="form-control" 
@@ -645,7 +646,7 @@ const Add = (props) => {
                                                 </div>
 
                                                 <div className="form-group row">
-                                                    <label className="col-sm-4 col-form-label required" htmlFor="total_surface_area">Total Surface Area</label>
+                                                    <label className="col-sm-4 col-form-label required" htmlFor="total_surface_area">Total Surface Area (cm²)</label>
                                                     <div className="col-sm-8">
                                                         <input 
                                                             className="form-control" 
@@ -665,7 +666,7 @@ const Add = (props) => {
                                                 <div className="form-group row">
                                                     <div className="col-md-4">
                                                         <div className="row">
-                                                            <label className="col-sm-5 col-form-label" htmlFor="fl">FL</label>
+                                                            <label className="col-sm-5 col-form-label" htmlFor="fl">FL (mm)</label>
                                                             <div className="col-sm-7">
                                                                 <input 
                                                                     className="form-control" 
@@ -682,7 +683,7 @@ const Add = (props) => {
                                                     </div>
                                                     <div className="col-md-4">
                                                         <div className="row">
-                                                            <label className="col-sm-5 col-form-label" htmlFor="cir">Cir</label>
+                                                            <label className="col-sm-5 col-form-label" htmlFor="cir">Cir (mm)</label>
                                                             <div className="col-sm-7">
                                                                 <input 
                                                                     className="form-control" 
@@ -699,8 +700,8 @@ const Add = (props) => {
                                                     </div>
                                                     <div className="col-md-4">
                                                         <div className="row">
-                                                            <label className="col-sm-4 col-form-label" htmlFor="dia">Dia</label>
-                                                            <div className="col-sm-8">
+                                                            <label className="col-sm-5 col-form-label" htmlFor="dia">Dia (mm)</label>
+                                                            <div className="col-sm-7">
                                                                 <input 
                                                                     className="form-control" 
                                                                     id="dia" 
@@ -708,7 +709,7 @@ const Add = (props) => {
                                                                     type="text" 
                                                                     placeholder="Dia" 
                                                                     disabled='disabled'
-                                                                    value={(calculationValue.face_length * (calculationValue.design_height * calculationValue.rpt)) / 100 }
+                                                                    value={Math.round((calculationValue.design_height * calculationValue.rpt) / Math.PI)}
                                                                     // value={jobOrderData.dia}
                                                                     // calculationValue.design_height * calculationValue.rpt
                                                                     // calculationValue.face_length
