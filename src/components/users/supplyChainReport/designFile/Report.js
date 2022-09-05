@@ -152,6 +152,23 @@ const Report = (props) => {
                                                     <td width="5%" align="center">:</td>
                                                     <td width="30%">{jobOrdersInfo.angle}</td>
                                                 </tr>
+                                                <tr>
+                                                    <td colSpan="7">
+                                                        <div className="cylImgDiv">
+                                                            <img className="img-responsive cylImgTag" src={process.env.PUBLIC_URL+'/cylinder.bmp'} alt="Company Logo"/>
+                                                            <div className="fl">FL</div>
+                                                            <div className="flValue">{jobOrdersInfo.face_length} mm</div>
+                                                            <div className="ups">Ups</div>
+                                                            <div className="upsValue">{jobOrdersInfo.ups} Nos</div>
+                                                            <div className="printArea">Printing Area</div>
+                                                            <div className="printAreaValue">{jobOrdersInfo.printing_width} mm</div>
+                                                            <div className="cirRpt">Cir <br /> RPT</div>
+                                                            <div className="cirRptValue">{jobOrdersInfo.circumference} mm <br /> {jobOrdersInfo.rpt} Nos</div>
+                                                            <div className="designHeight"> Design Height - <span style={{'padding': '2px', 'border': '1px solid black'}}>{jobOrdersInfo.printing_height}</span> mm </div>
+                                                            <div className="designWidth"> Design Width - <span style={{'padding': '2px', 'border': '1px solid black'}}>{jobOrdersInfo.printing_height}</span> mm </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
                                             </table>
 
                                             <table className="particulars table-stripped groupFont" width="100%"  style={tableStyle}>

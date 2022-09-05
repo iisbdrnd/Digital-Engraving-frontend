@@ -129,7 +129,7 @@ const Edit = (props) => {
                 <div className="col-sm-12">
                     <div className="card">
                         <div className="card-header">
-                            <h5>Polishing Form</h5>
+                            <h5>Engraving Form</h5>
                         </div>
                         <div className="card-body">
                             {isLoading ? (<img src={process.env.PUBLIC_URL+'/preloader.gif'} alt="Data Loading"/>):

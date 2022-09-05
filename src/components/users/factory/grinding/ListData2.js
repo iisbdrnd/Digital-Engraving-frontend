@@ -8,7 +8,7 @@ import Pagination from "react-js-pagination";
 import { Link } from 'react-router-dom';
 
 export default function ListData(props) {
-    const [grindingData, setGrindingData] = useState([]);
+    const [baseReceiveData, setBaseReceiveData] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [searchText, setSearchText] = useState('');
     const [hasAccess, setHasAccess] = useState({});
@@ -44,26 +44,10 @@ export default function ListData(props) {
         setIsLoading(true);
         userGetMethod(GRINDING_RSURL+'?searchText='+searchText)
         .then(response => {
-            setGrindingData(response.data.pendingGrindings.data)
+            setBaseReceiveData(response.data.pendingDesignToFactories)
             setIsLoading(false);
         })
         .catch(error => console.log(error)); 
-    }
-
-    const deleteHandler = (itemId, deleteLink) => {
-        userDeleteMethod(deleteLink, itemId)
-            .then(response => {
-                if (response.data.status == 1) {
-                    setIsLoading(true);
-                    let newData = grindingData.filter(data => data.id != itemId);
-                    setGrindingData(newData);
-                    setIsLoading(false);
-                    toast.success(response.data.message);
-                } else {
-                    toast.error(response.data.message);
-                }
-            })
-            .catch(error => toast.error(error));
     }
 
     const pageChange = (pageNumber = 1) => {
@@ -71,11 +55,10 @@ export default function ListData(props) {
         // TABLE DATA READY
         userGetMethod(`${GRINDING_RSURL}?page=${pageNumber}`)
             .then(response => {
-                console.log("res", response.data);
-                setCurrentPage(response.data.pendingGrindings.current_page)
-                setPerPage(response.data.pendingGrindings.per_page)
-                setTotalData(response.data.pendingGrindings.total)
-                setGrindingData(response.data.pendingGrindings.data)
+                setCurrentPage(response.data.pendingDesignToFactories.current_page)
+                setPerPage(response.data.pendingDesignToFactories.per_page)
+                setTotalData(response.data.pendingDesignToFactories.total)
+                setBaseReceiveData(response.data.pendingDesignToFactories.data)
                 setIsLoading(false);
             })
             .catch(error => console.log(error))
@@ -88,10 +71,10 @@ export default function ListData(props) {
         // TABLE DATA READY
         userGetMethod(`${GRINDING_RSURL}?${paramName}=${paramValue}`)
             .then(response => {
-                setCurrentPage(response.data.pendingGrindings.current_page)
-                setPerPage(response.data.pendingGrindings.per_page)
-                setTotalData(response.data.pendingGrindings.total)
-                setGrindingData(response.data.pendingGrindings.data)
+                setCurrentPage(response.data.pendingDesignToFactories.current_page)
+                setPerPage(response.data.pendingDesignToFactories.per_page)
+                setTotalData(response.data.pendingDesignToFactories.total)
+                setBaseReceiveData(response.data.pendingDesignToFactories.data)
                 setIsLoading(false)
             })
             .catch(error => console.log(error))
@@ -110,10 +93,10 @@ export default function ListData(props) {
         // TABLE DATA READY
         userGetMethod(ascUrl)
             .then(response => {
-                setCurrentPage(response.data.pendingGrindings.current_page)
-                setPerPage(response.data.pendingGrindings.per_page)
-                setTotalData(response.data.pendingGrindings.total)
-                setGrindingData(response.data.pendingGrindings.data)
+                setCurrentPage(response.data.pendingDesignToFactories.current_page)
+                setPerPage(response.data.pendingDesignToFactories.per_page)
+                setTotalData(response.data.pendingDesignToFactories.total)
+                setBaseReceiveData(response.data.pendingDesignToFactories.data)
                 setIsLoading(false)
             })
             .catch(error => console.log(error))
@@ -129,7 +112,7 @@ export default function ListData(props) {
                             <div className="card-header">
                                 <div className="row">
                                     <div className="col-md-6">
-                                        <h5>Pending Grinding List</h5>
+                                        <h5>Completed Grinding List</h5>
                                     </div>
                                     <div className="col-md-6">
                                         <PanelRefreshIcons panelRefresh={pageChange} />
@@ -156,17 +139,17 @@ export default function ListData(props) {
                                     </div>
                                 </div>
                                 <div className="col-md-5 col-lg-5">
-                                    <div className="custom-table-pagination m-r-10">
+                                    {/* <div className="custom-table-pagination m-r-10">
                                         <label className="mt-3">
                                             <span>
-                                                <select className="form-control pagi-select" name="grinding_status" onChange={perPageBoxChange} >
-                                                    <option value="2">All Grinding</option>
-                                                    <option value="0" selected={true} >Pending Grinding</option>
-                                                    <option value="1">Done Grinding</option>
+                                                <select className="form-control pagi-select" name="design_to_factory_status" onChange={perPageBoxChange} >
+                                                    <option value="2">All Receive</option>
+                                                    <option value="0" selected={true} >Pending Receive</option>
+                                                    <option value="1">Done Receive</option>
                                                 </select>
                                             </span>
                                         </label>
-                                    </div>
+                                    </div> */}
                                 </div>
                                 <div className="col-md-4 col-lg-4">
                                     <AddButton link="grinding/add" menuId={menuId} />
@@ -182,51 +165,46 @@ export default function ListData(props) {
                                             <thead>
                                                 <tr>
                                                     <th scope="col" width="5%" onClick={() => sortHandler(1)} ><i className="fa fa-sort"></i> SL.</th>
-                                                    <th scope="col" width="15%" onClick={() => sortHandler(2)} ><i className="fa fa-sort"></i> Job No.</th>
-                                                    <th scope="col" width="15%" onClick={() => sortHandler(3)} ><i className="fa fa-sort"></i> Job Name</th>
-                                                    <th scope="col" width="10%" onClick={() => sortHandler(4)} ><i className="fa fa-sort"></i> Type</th>                                                        
-                                                    <th scope="col" width="15%" onClick={() => sortHandler(5)}><i className="fa fa-sort"></i> Client</th>
-                                                    <th scope="col" width="10%" ><i className="fa fa-sort"></i> Approve</th>
-                                                    {/* <th scope="col" width="7%">Action</th> */}
+                                                    <th scope="col" width="7%" onClick={() => sortHandler(2)} ><i className="fa fa-sort"></i> Job No.</th>
+                                                    <th scope="col" width="10%" onClick={() => sortHandler(3)} ><i className="fa fa-sort"></i> Job Name</th>
+                                                    <th scope="col" width="7%" onClick={() => sortHandler(4)} ><i className="fa fa-sort"></i> Printer Name</th>                                                        
+                                                    <th scope="col" width="5%">FL</th>                                                        
+                                                    <th scope="col" width="5%">Cir</th>                                                        
+                                                    <th scope="col" width="7%">F.Dia</th>                                                        
+                                                    <th scope="col" width="7%">Surface Area</th>
+                                                    {/* <th scope="col" width="7%">Grinding</th>
+                                                    <th scope="col" width="7%">Plating</th>
+                                                    <th scope="col" width="7%">Polishing</th> */}
+                                                    <th scope="col" width="7%">Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 { 
-                                                    grindingData.length > 0 ? 
+                                                    baseReceiveData.length > 0 ? 
                                                         <>
-                                                            {grindingData.map((item, index) =>           
+                                                            {baseReceiveData.map((item, index) =>           
                                                                 (
                                                                     <tr key={index}>
                                                                         <td scope="row">{ ((index+1) + (currentPage == 1 ? 0 : (currentPage*perPage - perPage))) }</td>
                                                                         <td>{item.job_no}</td>
                                                                         <td>{item.job_name}</td>
-                                                                        <td>{item.job_type}</td>
-                                                                        <td>{item.client_name}</td>
-                                                                        {/* <td>{item.printer_name}</td>
-                                                                        <td>{item.total_cylinder_qty}</td>
-                                                                        <td>{item.per_square_amount}</td> */}
-                                                                        <td>
-                                                                            {item.grinding_status == 0 ? 
-                                                                            <Link 
-                                                                                to={{
-                                                                                    pathname: `${process.env.PUBLIC_URL}/grinding/add`,
-                                                                                    state: { params: {menuId: menuId, job_order_id : item.id} }
-                                                                                }}
-                                                                                className="btn btn-secondary btn-xs">
-                                                                                    Grinding
-                                                                            </Link>
-                                                                            : 'Done'}
-                                                                        </td>
-                                                                        {/* <td className="">
+                                                                        <td>{item.printer_name}</td>
+                                                                        <td>{item.face_length}</td>
+                                                                        <td>{item.circumference}</td>
+                                                                        <td>{item.dia}</td>
+                                                                        <td>{item.surface_area}</td>
+                                                                        {/* <td></td>
+                                                                        <td></td>
+                                                                        <td></td> */}
+                                                                        <td className="">
                                                                             {
                                                                                 accLoad === false ? <>
-                                                                                    {hasAccess.edit === true ? <EditButton link={`/baseReceive/edit/${item.id}`} menuId={ menuId } /> : ''} 
-                                                                                    {hasAccess.destroy === true ? <DeleteButton deleteLink={GRINDING_RSURL} deleteHandler={ deleteHandler } menuId={ menuId } dataId={item.id} /> : ''} 
+                                                                                    {hasAccess.edit === true ? <EditButton link={`/grinding/edit/${item.job_no}`} menuId={ menuId } /> : ''} 
                                                                                 </> : ''
                                                                             }
-                                                                        </td> */}
+                                                                        </td>
                                                                     </tr>
-                                                                )                
+                                                                )
                                                             )}
                                                         </> 
                                                     : <tr><td colSpan="12" className="text-center">No data found</td></tr>
