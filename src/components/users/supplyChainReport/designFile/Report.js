@@ -176,10 +176,7 @@ const Report = (props) => {
                                                     <td width="15%">Name of Color</td>
                                                     <td width="5%" align="center">:</td>
                                                     <td width="80%" colSpan="4">
-                                                        {colorInfo.map(name => (  
-                                                            name.color_name  
-                                                        ))}
-                                                    </td>
+                                                    {colorInfo.map((name,index) => (index ? ', ' : '')+(name.color_name))}</td>
                                                 </tr>
                                                 <tr>
                                                     <td width="15%">Type of Printing</td>

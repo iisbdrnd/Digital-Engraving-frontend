@@ -7,6 +7,7 @@ import './style.scss';
 const Report = (props) => {
     const [isLoading, setIsLoading] = useState(true);
     const [jobAgreementInfo, setJobAgreementInfo] = useState({});
+    const [colorInfo, setColorInfo] = useState({});
 
     const tableStyle = {
         // "border" : "1px solid #ccc",
@@ -16,7 +17,9 @@ const Report = (props) => {
         const jobOrderId = props.match.params.jobOrderId;
         userGetMethod(`${JOB_AGREEMENT_REPORT}?jobOrderId=${jobOrderId}`) 
         .then(response => {
+            console.log(response.data);
             setJobAgreementInfo(response.data.jobOrderInfo);
+            setColorInfo(response.data.colors);
             setIsLoading(false);
         })
         .catch(error => console.log(error))
@@ -132,7 +135,7 @@ const Report = (props) => {
                                                 <tr>
                                                     <td width="15%">Name of Color</td>
                                                     <td width="5%" align="center">:</td>
-                                                    <td width="80%" colSpan="4">{jobAgreementInfo.approver_name}</td>
+                                                    <td width="80%" colSpan="4">{colorInfo.map((name,index) => (index ? ', ' : '')+(name.color_name))}</td>
                                                 </tr>
                                                 <tr>
                                                     <td width="15%">Type of Printing</td>
