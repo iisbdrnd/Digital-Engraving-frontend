@@ -2,13 +2,12 @@ import React, { Fragment , useEffect, useState } from 'react';
 import ReportHeader from './ReportHeader';
 import {DESIGN_TO_DESIGN_REPORT} from '../../../../api/userUrl'
 import { userGetMethod } from '../../../../api/userAction';
-import './style.scss';
 
 const Report = (props) => {
     const [isLoading, setIsLoading] = useState(true);
-    const [designToDesignJobOrders, setDesignToDesignJobOrders] = useState([]);
-    const [grandTotalCylinder, setGrandTotalCylinder] = useState([]);
-    const [grandTotalJob, setGrandTotalJob] = useState([]);
+    const [orderTypes, setJorderTypes] = useState([]);
+    const [grandTotalCylinder, setGrandTotalCyl] = useState([]);
+    const [grandTotalSurfaceArea, setGrandTotalSurfaceArea] = useState([]);
     const [calculateCyl, setCalculateCyl] = useState(0);
 
     const tableStyle = {
@@ -17,169 +16,106 @@ const Report = (props) => {
     }
     useEffect(()=>{
         const fromDate = props.match.params.fromDate;
+        const toDate = props.match.params.toDate;
 
-        userGetMethod(`${DESIGN_TO_DESIGN_REPORT}?fromDate=${fromDate}`)
+        userGetMethod(`${DESIGN_TO_DESIGN_REPORT}?fromDate=${fromDate}&&toDate=${toDate}`)
         .then(response => {
-            setDesignToDesignJobOrders(response.data.designToDesignJobOrders);
-            setGrandTotalCylinder(response.data.grandTotalCyl);
-            setGrandTotalJob(response.data.grandTotalJob);
+            console.log('res', response.data);
+            setJorderTypes(response.data.orderTypes);
+            setGrandTotalCyl(response.data.grandTotalCyl);
+            setGrandTotalSurfaceArea(response.data.grandTotalSurfaceArea);
             setIsLoading(false);
         })
         .catch(error => console.log(error))
     }, []);
-    console.log('hello',designToDesignJobOrders);
+
     return (
         <Fragment>
             <div className="container-fluid">
                 <div className="row">
                     <div className="col-sm-12">
                         <div className=""> 
-                            <ReportHeader reportTitle="Design File to Design Section" />
+                            <ReportHeader reportTitle="Design File to Design" />
 
                             <div className="mainDiv" style={{"padding": "1% 5%"}}>
-                                <div className="row">
-                                    <table className="particulars table table-bordered table-stripped" cellSpacing="5" cellPadding="5" width="100%"  style={tableStyle}>
-                                        <thead>
-                                            <tr>
-                                                <th width="10%" align="center">JobNo</th>
-                                                <th width="5%" align="center">Agreement Date</th>
-                                                <th width="22%" align="center">Job Name</th>
-                                                <th width="10%" align="center">Client Name</th>
-                                                <th width="10%" align="center">Printers Name</th>
-                                                <th width="8%" align="center">Size (mm X mm)</th>
-                                                <th width="5%" align="center">No of Cyl</th>
-                                                <th width="15%" align="center">Remarks</th>
+                            {isLoading ? (<img src={process.env.PUBLIC_URL+'/preloader.gif'} alt="Data Loading"/>):
+                                (
+                                    <div className="row">
+                                        <table className="particulars table table-bordered table-stripped" cellSpacing="5" cellPadding="5" width="100%"  style={tableStyle}>
+                                            <thead className="groupFont">
+                                                <tr>
+                                                    <th width="10%" align="center">JobNo</th>
+                                                    <th width="15%" align="center">Agreement Date</th>
+                                                    <th width="20%" align="center">Job Name</th>
+                                                    <th width="10%" align="center">Client Name</th>
+                                                    <th width="10%" align="center">Printers Name</th>
+                                                    <th width="10%" align="center">Size(mm X mm)</th>
+                                                    <th width="5%" align="center">No Cyl</th>
+                                                    <th width="5%" align="center">Base Date</th>
+                                                    <th width="10%" align="center">Surface Area</th>
+                                                    <th width="10%" align="center">Remarks</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody className="reportBody">
+                                            {
+                                                orderTypes.length > 0 ? 
+                                                <>
+                                                    {orderTypes.map((orderType, index1) => 
+                                                        (
+                                                            <>
+                                                                <tr key={index1}>
+                                                                    <td colSpan="10">{orderType.job_type}</td>
+                                                                </tr>
+                                                                { orderType.jobOrders.length > 0 ? 
+                                                                    orderType.jobOrders.map((jobOrder, index2) => (
+                                                                        <tr key={index2}>
+                                                                            <td>{jobOrder.job_no}</td>
+                                                                            <td>{jobOrder.agreement_date}</td>
+                                                                            <td>{jobOrder.job_name}</td>
+                                                                            <td>{jobOrder.client_name}</td>
+                                                                            <td>{jobOrder.printer_name}</td>
+                                                                            <td>{`${jobOrder.eye_mark_size_one} X ${jobOrder.eye_mark_size_one}`}</td>
+                                                                            <td className="text-center">{jobOrder.total_cylinder_qty}</td>
+                                                                            <td></td>
+                                                                            <td className="text-center">{jobOrder.surface_area}</td>
+                                                                            <td>{jobOrder.remarks}</td>
+                                                                        </tr>
+                                                                    ))
+                                                                    : <tr><td colSpan="10" className="text-center">No data found</td></tr>
+                                                                }
+                                                                <tr className="groupFont">
+                                                                    <td colSpan="5">
+                                                                        Total Number of Job: {orderType.jobOrders.length}
+                                                                    </td>
+                                                                    <td className="text-right">
+                                                                        Total
+                                                                    </td>
+                                                                    <td className="text-center">
+                                                                        {orderType.calculateTotalCyl}
+                                                                    </td>
+                                                                    <td></td>
+                                                                    <td className="text-center">
+                                                                        {orderType.calculateTotalSurfaceArea}
+                                                                    </td>
+                                                                    <td colSpan="2"></td>
+                                                                </tr>
+                                                            </>
+                                                        )
+                                                    )}
+                                                </>
+                                                : <tr><td colSpan="10" className="text-center">No data found</td></tr>
+                                            }
+                                            </tbody>
+                                        </table>
+                                        <table className="particulars table table-bordered table-stripped" cellSpacing="5" cellPadding="5" width="100%"  style={tableStyle}>
+                                            <tr className="groupFont">
+                                                <td>Grand Total Cylinder: {grandTotalCylinder}</td>
+                                                <td>Grand Total Surface Area: {grandTotalSurfaceArea}</td>
                                             </tr>
-                                        </thead>
-                                        <tbody className="reportBody">
-                                        {isLoading ? (<img src={process.env.PUBLIC_URL+'/preloader.gif'} alt="Data Loading"/>):
-                                        (
-                                            designToDesignJobOrders?.length > 0 ? designToDesignJobOrders?.map((designToDesignJobOrder, key)=>(
-                                                <Fragment key={key}>
-                                                    {designToDesignJobOrder.New.length > 0 || designToDesignJobOrder.Remake.length > 0 || designToDesignJobOrder.Redo > 0 ? 
-                                                        <tr>
-                                                            <td colSpan="8">
-                                                                <div className=" groupFont">
-                                                                    <span className=""><b>{designToDesignJobOrder.machine_name} - {designToDesignJobOrder.employee_name}</b></span>
-                                                                    {/* <span className="h4">[ New ]</span> */}
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                        :null
-                                                    }
-                                            
-                                                    {designToDesignJobOrder.New.length > 0 ? 
-                                                        <Fragment key={key}>
-                                                            <tr>
-                                                                <td><b>New</b></td>
-                                                            </tr>
-                                                            {designToDesignJobOrder.New.map((newData,key)=>(
-                                                                <tr key={key}>
-                                                                    <td>{newData.job_no}</td>
-                                                                    <td>{newData.agreement_date}</td>
-                                                                    <td>{newData.job_name}</td>
-                                                                    <td>{newData.client_name}</td>
-                                                                    <td>{newData.printer_name}</td>
-                                                                    <td>{`${newData.eye_mark_size_one} X ${newData.eye_mark_size_one}`}</td>
-                                                                    <td align="center">{newData.total_cylinder_qty}</td>
-                                                                    <td>{newData.remarks}</td>
-                                                                </tr>
-                                                            ))}
-                                                            <tr className="groupFont">
-                                                                <td colSpan="5">
-                                                                    Total Number of Job: {designToDesignJobOrder.totalNew}
-                                                                </td>
-                                                                <td>
-                                                                    Total
-                                                                </td>
-                                                                <td className="text-center">
-                                                                    {designToDesignJobOrder.calculateTotalCylNew}
-                                                                </td>
-                                                                <td colSpan="2"></td>
-                                                            </tr>
-                                                        </Fragment>
-                                                    :null
-                                                    } 
-                                                    {designToDesignJobOrder.Remake.length > 0 ? 
-                                                        <>
-                                                            <tr>
-                                                                <td><b>Remake</b></td>
-                                                            </tr>
-                                                            {designToDesignJobOrder.Remake.map((remakeData, key)=> (
-                                                                <tr key={key}>
-                                                                    <td>{remakeData.job_no}</td>
-                                                                    <td>{remakeData.agreement_date}</td>
-                                                                    <td>{remakeData.job_name}</td>
-                                                                    <td>{remakeData.client_name}</td>
-                                                                    <td>{remakeData.printer_name}</td>
-                                                                    <td>{`${remakeData.eye_mark_size_one} X ${remakeData.eye_mark_size_one}`}</td>
-                                                                    <td align="center">{remakeData.total_cylinder_qty}</td>
-                                                                    <td>{remakeData.remarks}</td>
-                                                                </tr>
-                                                            ))}
-                                                            <tr className="groupFont">
-                                                                <td colSpan="5">
-                                                                    <b> </b> Total Number of Job: {designToDesignJobOrder.totalRemake} <b></b> 
-                                                                </td>
-                                                                <td>
-                                                                    Total
-                                                                </td>
-                                                                <td className="text-center">
-                                                                    {designToDesignJobOrder.calculateTotalCylRemake}
-                                                                </td>
-                                                                <td colSpan="2"></td>
-                                                            </tr>
-                                                        </>
-                                                    :null}
-                                                    {designToDesignJobOrder.Redo.length > 0 ?  
-                                                        <>
-                                                            <tr>
-                                                                <td><b>Redo</b></td>
-                                                            </tr>
-                                                            {designToDesignJobOrder.Redo.map((redoData, key)=> (
-                                                                <tr key={key}>
-                                                                    <td>{redoData.job_no}</td>
-                                                                    <td>{redoData.agreement_date}</td>
-                                                                    <td>{redoData.job_name}</td>
-                                                                    <td>{redoData.client_name}</td>
-                                                                    <td>{redoData.printer_name}</td>
-                                                                    <td>{`${redoData.eye_mark_size_one} X ${redoData.eye_mark_size_one}`}</td>
-                                                                    <td align="center">{redoData.total_cylinder_qty}</td>
-                                                                    <td>{redoData.remarks}</td>
-                                                                </tr>
-                                                            ))}
-                                                            <tr className="groupFont">
-                                                                <td colSpan="5">
-                                                                    Total Number of Job: {designToDesignJobOrder.totalRedo}
-                                                                </td>
-                                                                <td>
-                                                                    Total
-                                                                </td>
-                                                                <td className="text-center">
-                                                                    {designToDesignJobOrder.calculateTotalCylRedo}
-                                                                </td>
-                                                                <td colSpan="2"></td>
-                                                            </tr>
-                                                        </>
-                                                    :null}
-                                                    
-                                                </Fragment>  
-                                            ))
-                                            : null
-                                        )}
-                                        {/* : <tr><td colSpan="10" className="text-center">No data found</td></tr> */}
-                                                
-                                        </tbody>
-                                    </table>
-                                    <table className="particulars table table-bordered table-stripped" cellSpacing="5" cellPadding="5" width="100%"  style={tableStyle}>
-                                        <tr className="groupFont">
-                                            <td>Grand Total Number of Job:{grandTotalJob}</td>
-                                            <td>Grand Total Number of Cylinder:{grandTotalCylinder}</td>
-                                        </tr>
-
-                                    </table>
-                                </div>
-                                 
+                                        </table>
+                                    </div>
+                                )
+                            } 
                             </div>  
                         </div>
                         

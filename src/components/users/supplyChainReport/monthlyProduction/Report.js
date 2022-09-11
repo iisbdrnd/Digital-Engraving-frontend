@@ -55,8 +55,7 @@ const Report = (props) => {
                                                         <thead>
                                                     
                                                             <tr>
-                                                                <th width="5%" align="center">Date</th>
-                                                                <th width="5%" align="center">Day</th>
+                                                                <th width="5%" align="center">Month</th>
                                                                 <th width="5%" align="center">New</th>
                                                                 <th width="5%" align="center">Remake</th>
                                                                 <th width="5%" align="center">Redo</th>
@@ -79,8 +78,7 @@ const Report = (props) => {
                                                                 jobs.length > 0 ? 
                                                                     jobs.map((job, key)=>(    
                                                                         <tr key={key++}>
-                                                                            <td>{job.agreement_date}</td>
-                                                                            <td>{job.agreement_day}</td>
+                                                                            <td>{job.finished_month}</td>
                                                                             <td>{job.new_qty}</td>
                                                                             <td>{job.remake_qty}</td>
                                                                             <td>{job.redo_qty}</td>

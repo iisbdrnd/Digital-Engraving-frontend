@@ -417,6 +417,7 @@ class UserRoute extends Component {
                 <UserAuthRoute path={`${process.env.PUBLIC_URL}/jobInformationReport/:jobOrderId`} component={JobInformationReport} />
                 <UserAuthRoute path={`${process.env.PUBLIC_URL}/designFileReport/:jobOrderId`} component={DesignFileReport} />
                 <UserAuthRoute path={`${process.env.PUBLIC_URL}/designFileToFactoryReport/:fromDate/:toDate`} component={DesignFileToFactoryReport} />
+                <UserAuthRoute path={`${process.env.PUBLIC_URL}/designToDesignReport/:fromDate/:toDate`} component={DesignToDesignReport} />
                 <UserAuthRoute path={`${process.env.PUBLIC_URL}/productionReportDetailsReport/:fromDate/:toDate`} component={ProductionReportDetailsReport} />
                 <UserAuthRoute path={`${process.env.PUBLIC_URL}/dealerWiseJobFlowReport/:fromDate/:toDate`} component={DealerWiseJobFlowReport} />
                 <UserAuthRoute path={`${process.env.PUBLIC_URL}/customerWiseAnalysisReport/:fromDate/:toDate`} component={CustomerWiseAnalysisReport} />

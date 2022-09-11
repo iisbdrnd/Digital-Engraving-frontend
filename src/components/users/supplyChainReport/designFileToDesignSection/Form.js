@@ -14,15 +14,9 @@ const Form = (props) => {
         menuId = props.location.state.params.menuId;
     }
     
-    // const submitHandler = (data, e) => {
-    //     const from_date = data.from_date;
-    //     console.log('from_date ', data);
-    //     var url = `${process.env.PUBLIC_URL}/designFileToFactoryReport/${from_date}`;
-    //     window.open(url, '_blank', 'height=800,width=1200');
-    // }
     const submitHandler = (data, e) => {
         const from_date = data.from_date;
-        let url =  `${process.env.PUBLIC_URL}/designToDesignReport/${from_date}`;
+        let url = data.type == 'upto_date' ? `${process.env.PUBLIC_URL}/designToDesignReport/${from_date}` : `${process.env.PUBLIC_URL}/designToDesignReport/${data.from_date}/${data.to_date}`;
         window.open(url, '_blank', 'height=800,width=1200');
     }
     return (
@@ -34,7 +28,7 @@ const Form = (props) => {
                             <div className="card-header">
                                 <div className="row">
                                     <div className="col-md-6">
-                                        <h5>Design to Design Report Form</h5>
+                                        <h5>Design File to Design Report</h5>
                                     </div>
                                     <div className="col-md-6">
                                         {/* <PanelRefreshIcons panelRefresh={pageRefreshHandler} /> */}
@@ -44,20 +38,72 @@ const Form = (props) => {
                             <div className="card-body">
                                 <form onSubmit={handleSubmit(submitHandler)} className="needs-validation theme-form">
                                     <div className="form-group row">
-                                        <label className="col-sm-3 col-form-label" htmlFor="from_date">From</label>
+                                        <label className="col-sm-3 col-form-label" htmlFor="from_date">Report Type</label>
                                         <div className="col-sm-4">
-                                            <input 
-                                                className="form-control"
-                                                id="from_date" 
-                                                name="from_date" 
-                                                type="date"
-                                                ref={register({
-                                                    required: 'From Date Field Required'
-                                                })}
-                                            />
-                                            {errors.from_date && <p className='text-danger'>{errors.from_date.message}</p>}
+                                            <select className="form-control" onChange={(e)=>setReportType(e.target.value)} name="type" ref={register({ required: true })}>
+                                                <option value=""> Select One </option>
+                                                <option value="upto_date"> Upto Date </option>
+                                                <option value="date_range"> Date Range </option>
+                                            </select>
+                                            {errors.type && <p className='text-danger'>{errors.type.message}</p>}
                                         </div>
                                     </div>
+                                    {
+                                        reportType == 'upto_date' ? (
+                                            <div className="form-group row">
+                                                <label className="col-sm-3 col-form-label" htmlFor="from_date">From</label>
+                                                <div className="col-sm-4">
+                                                    <input 
+                                                        className="form-control"
+                                                        id="from_date" 
+                                                        name="from_date" 
+                                                        type="date"
+                                                        ref={register({
+                                                            required: 'From Date Field Required'
+                                                        })}
+                                                    />
+                                                    {errors.from_date && <p className='text-danger'>{errors.from_date.message}</p>}
+                                                </div>
+                                            </div>
+                                        ): reportType == 'date_range' ? (
+                                            <div className="form-group row">
+                                                <label className="col-sm-3 col-form-label" htmlFor="from_date">Date Range</label>
+                                                <div className="col-sm-4">
+                                                    <table>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>
+                                                                    <input 
+                                                                        className="form-control"
+                                                                        id="from_date" 
+                                                                        name="from_date" 
+                                                                        type="date"
+                                                                        ref={register({
+                                                                            required: 'From Date Field Required'
+                                                                        })}
+                                                                    />
+                                                                    {errors.from_date && <p className='text-danger'>{errors.from_date.message}</p>}
+                                                                </td>
+                                                                <td> <span style={{'padding': '5px'}}> - </span> </td>
+                                                                <td>
+                                                                    <input 
+                                                                        className="form-control"
+                                                                        id="to_date" 
+                                                                        name="to_date" 
+                                                                        type="date"
+                                                                        ref={register({
+                                                                            required: 'To Date Field Required'
+                                                                        })}
+                                                                    />
+                                                                    {errors.to_date && <p className='text-danger'>{errors.to_date.message}</p>}
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        ) : null
+                                    }
                                     
                                     <SubmitButton link="#" offset="2" menuId={ menuId }/>
                                 </form>
