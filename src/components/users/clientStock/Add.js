@@ -20,6 +20,10 @@ const CylinderInfo = (props) => {
         {
             job_name          : '',
             printer_name      : '',
+            job_type          : '',
+            fl                : '',
+            cir               : '',
+            total_surface_area: '',
             client_email      : '',
             bill_config_type  : '',
             printer_mark      : '',
@@ -29,6 +33,8 @@ const CylinderInfo = (props) => {
             vat_status        : '',
             job_order_id      : '', 
             client_name       : '',
+            entry_date       : '',
+            agreement_date       : '',
             total_cylinder_qty: ''
         }
     );
@@ -80,6 +86,7 @@ const CylinderInfo = (props) => {
                 setIsLoading(false);
             });
     }
+    
 
     const dropDownChange = (event, stateName) => {
         if(event.length > 0){
@@ -93,10 +100,14 @@ const CylinderInfo = (props) => {
 
             userGetMethod(`${JOB_ORDER_DETAILS}?jobOrderId=${selectedValue}`)
                 .then(response => {
-                    let { job_name, printer_name, client_email, bill_config_type, printer_mark, marketing_p_name, cyl_rate_status, limit_square_cm, vat_status, client_name, total_cylinder_qty} = response.data.jobOrderDetails;
+                    let { job_name, printer_name, job_type, fl, cir, total_surface_area, client_email, bill_config_type, printer_mark, marketing_p_name, cyl_rate_status, limit_square_cm, vat_status, client_name, total_cylinder_qty, entry_date, agreement_date} = response.data.jobOrderDetails;
                     setClientStockInput({
                         'job_name'          : job_name,
                         'printer_name'      : printer_name,
+                        'job_type'          : job_type,
+                        'fl'                : fl,
+                        'cir'               : cir,
+                        'total_surface_area': total_surface_area,
                         'client_email'      : client_email,
                         'bill_config_type'  : bill_config_type,
                         'printer_mark'      : printer_mark,
@@ -105,6 +116,8 @@ const CylinderInfo = (props) => {
                         'limit_square_cm'   : limit_square_cm,
                         'vat_status'        : vat_status,
                         'client_name'       : client_name,
+                        'entry_date'        : entry_date,
+                        'agreement_date'    : agreement_date,
                         'total_cylinder_qty': total_cylinder_qty
                     });
                 });
@@ -152,7 +165,7 @@ const CylinderInfo = (props) => {
                             {isLoading ? (<img src={process.env.PUBLIC_URL+'/preloader.gif'} alt="Data Loading"/>):
                                 (
                                 <form className="needs-validation theme-form" onSubmit={handleSubmit(submitHandler)} noValidate>
-                                    <div className="row">
+                                    <div className="">
                                         <div className="col-md-6">
                                             <div className="form-group row">
                                                 <label className="col-sm-3 col-form-label required" htmlFor="job_order_id">Job No</label>
@@ -174,32 +187,32 @@ const CylinderInfo = (props) => {
                                                 </div>
                                             </div>
                                         
-                                            <div className="form-group row">
+                                            {/* <div className="form-group row">
                                                 <label className="col-sm-3 col-form-label required" htmlFor="order_date">Order Date</label>
-                                                <div className="col-sm-9">
+                                                <div className="col-sm-7">
                                                     <input className="form-control" name="order_date" id="order_date" type="date" ref={register({ required: true })} />
                                                     <span>{errors.order_date && 'Order Date is required'}</span>
                                                     <div className="valid-feedback">Looks good!</div>
                                                 </div>
-                                            </div>
+                                            </div> */}
                                         
-                                            <div className="form-group row">
+                                            {/* <div className="form-group row">
                                                 <label className="col-sm-3 col-form-label required" htmlFor="agreement_date">Agreement Date</label>
-                                                <div className="col-sm-9">
+                                                <div className="col-sm-7">
                                                     <input className="form-control" id="agreement_date" name="agreement_date" type="date" ref={register({ required: true })} />
                                                     <span>{errors.agreement_date && 'Agreement Date is required'}</span>
                                                     <div className="valid-feedback">Looks good!</div>
                                                 </div>
-                                            </div>
+                                            </div> */}
                                         
-                                            <div className="form-group row">
+                                            {/* <div className="form-group row">
                                                 <label className="col-sm-3 col-form-label required" htmlFor="cylinder_qty">Cylinder Quantity</label>
-                                                <div className="col-sm-9">
+                                                <div className="col-sm-7">
                                                     <input className="form-control" name="cylinder_qty" id="cylinder_qty" type="number" placeholder="Cylinder Quantity" ref={register({ required: true })} />
                                                     <span>{errors.cylinder_qty && 'Cylinder Quantity is required'}</span>
                                                     <div className="valid-feedback">Looks good!</div>
                                                 </div>
-                                            </div>
+                                            </div> */}
                                         
                                             {/* <div className="form-group row">
                                                 <label className="col-sm-3 col-form-label" htmlFor="remarks">Remarks</label>
@@ -210,36 +223,124 @@ const CylinderInfo = (props) => {
                                             </div> */}
                                         </div>
                                         
-                                        <div className="col-md-6">
+                                        <div className="col-md-10">
                                             <pre className="helper-classes m-t-10">
-                                                <div className="table-responsive display-div">
+                                                <div className="display-div">
                                                     <table className="table table-bordernone">
                                                         <tbody>
-                                                            <tr>
-                                                                <td width="25%" align="right">Job Name</td>
-                                                                <td width="5%">:</td>
-                                                                <td width="70%">{clientStockInput.job_name}</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td align="right">Client Name</td>
-                                                                <td>:</td>
-                                                                <td>{clientStockInput.client_name}</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td align="right">Printer Name</td>
-                                                                <td>:</td>
-                                                                <td>{clientStockInput.printer_name}</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td align="right">Total Cylinder</td>
-                                                                <td>:</td>
-                                                                <td>{clientStockInput.total_cylinder_qty}</td>
-                                                            </tr>
-
+                                                            <div class="row">
+                                                                <div className="col-md-6">
+                                                                    <tr>
+                                                                        <td  align="right">Order Date</td>
+                                                                        <td>:</td>
+                                                                        <td>{clientStockInput.entry_date}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td  align="right">Job Name</td>
+                                                                        <td>:</td>
+                                                                        <td>{clientStockInput.job_name}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td align="right">Client Name</td>
+                                                                        <td>:</td>
+                                                                        <td>{clientStockInput.client_name}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td align="right">Printer Name</td>
+                                                                        <td>:</td>
+                                                                        <td>{clientStockInput.printer_name}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td align="right">Job Type</td>
+                                                                        <td>:</td>
+                                                                        <td>{clientStockInput.job_type}</td>
+                                                                    </tr>
+                                                                </div>
+                                                            
+                                                                <div className="col-md-4">
+                                                                    
+                                                                    <tr>
+                                                                        <td align="right">Agreement Date</td>
+                                                                        <td>:</td>
+                                                                        <td>{clientStockInput.agreement_date}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td align="right">Face Length</td>
+                                                                        <td>:</td>
+                                                                        <td>{clientStockInput.fl}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td align="right">Circumference</td>
+                                                                        <td>:</td>
+                                                                        <td>{clientStockInput.cir}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td align="right">Total SA</td>
+                                                                        <td>:</td>
+                                                                        <td>{clientStockInput.total_surface_area}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td align="right">Total Cyl</td>
+                                                                        <td>:</td>
+                                                                        <td>{clientStockInput.total_cylinder_qty}</td>
+                                                                    </tr>
+                                                                </div>
+                                                            </div>
                                                         </tbody>
                                                     </table>
                                                 </div>
                                             </pre>
+                                        </div>
+                                        <div className="row m-t-10 m-l-10">
+                                            <fieldset className="border" style={{width: '98%'}}> 
+                                                <legend className="w-auto text-left">Stock Receive</legend>
+                                                <div className="col-md-12">
+                                                    <div className="form-row">
+                                                        <div className="col-md-3 mb-4">
+                                                            <label for="receive_date">Receive Date</label>
+                                                            <input 
+                                                                className="form-control" 
+                                                                id="receive_date" 
+                                                                name="receive_date" 
+                                                                type="date"  
+                                                                // onChange={orderDetailsInputHander}
+                                                                // value={jobOrderData.qty}
+                                                            />
+                                                        </div> 
+                                                        <div className="col-md-3 mb-4">
+                                                            <label for="qty">Qty</label>
+                                                            <input 
+                                                                className="form-control" 
+                                                                id="qty" 
+                                                                name="qty" 
+                                                                type="number" 
+                                                                placeholder="Cylinder Quantity" 
+                                                                // onChange={orderDetailsInputHander}
+                                                                // value={jobOrderData.job_ref_id}
+                                                            />
+                                                        </div>
+
+                                                        <div className="col-md-3 mb-4">
+                                                            <label for="rermarks">Rermarks</label>
+                                                            <input 
+                                                                className="form-control" 
+                                                                id="rermarks" 
+                                                                name="rermarks" 
+                                                                type="text" 
+                                                                placeholder="Remarks" 
+                                                                // onChange={orderDetailsInputHander}
+                                                                // value={jobOrderData.qty}
+                                                            />
+                                                        </div>
+
+                                                        <div className="col-md-1 mb-4 m-t-5">
+                                                            {/* <span className="btn btn-primary btn-sm mr-1 m-t-20" type="add" onClick={addOrderDetailsHandler}>Add</span> */}
+                                                            <span className="btn btn-primary btn-sm mr-1 m-t-20" type="add">Add</span>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </fieldset>
                                         </div>
                                     </div>
 

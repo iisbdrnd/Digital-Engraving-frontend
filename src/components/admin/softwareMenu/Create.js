@@ -13,6 +13,7 @@ const Create = () => {
     const { handleSubmit, register, errors } = useForm();
     const [resource, setResource] = useState(false)
     const [status, setStatus] = useState(true)
+    const [is_report, setIs_report] = useState(true)
     const [folders, setFolder] = useState([]);
     const [modules, setModules] = useState([]);
     const [moduleValue, setModuleValue] = useState(0);
@@ -190,6 +191,14 @@ const Create = () => {
                                             onChange={() => setStatus( !status )}
                                             />
                                             <label htmlFor="inline-sqr-3">{status ? 'Yes' : 'No'}</label>
+                                        </div>
+                                    </div>
+                                    <div className="form-group row offset-md-1">
+                                        <label className="col-sm-2 col-form-label" htmlFor="inline-sqr-4">Report Menu?</label>
+                                        <div className="col-md-7 checkbox checkbox-dark m-squar">
+                                            <input id="inline-sqr-4" name='is_report' type="checkbox" ref={register} 
+                                            onChange={() => setIs_report( !is_report )}/>
+                                            <label htmlFor="inline-sqr-4">{is_report ? 'No' : 'Yes'}</label>
                                         </div>
                                     </div>
                                     <SubmitButton link="softMenu/list" />
