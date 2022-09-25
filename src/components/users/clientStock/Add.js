@@ -28,6 +28,7 @@ const Add = (props) => {
             total_surface_area : '',
             job_order_id       : '', 
             client_name        : '',
+            id                 : '',
             entry_date         : '',
             agreement_date     : '',
             total_cylinder_qty : '',
@@ -101,7 +102,7 @@ const Add = (props) => {
             if (stateName === 'job_order_id') {
                 userGetMethod(`${JOB_ORDER_DETAILS}?jobOrderId=${selectedValue}`)
                     .then(response => {
-                        let { job_name, job_no, printer_name, job_type, fl, cir, total_surface_area, client_email, bill_config_type, printer_mark, marketing_p_name, cyl_rate_status, limit_square_cm, vat_status, client_name, total_cylinder_qty, entry_date, agreement_date } = response.data.jobOrderDetails;
+                        let { id, job_name, job_no, printer_name, job_type, fl, cir, total_surface_area, client_name, total_cylinder_qty, entry_date, agreement_date } = response.data.jobOrderDetails;
                         setJobOrderData({
                             'job_order_qty_limit': total_cylinder_qty,
                             'job_name'          : job_name,
@@ -111,14 +112,8 @@ const Add = (props) => {
                             'fl'                : fl,
                             'cir'               : cir,
                             'total_surface_area': total_surface_area,
-                            'client_email'      : client_email,
-                            'bill_config_type'  : bill_config_type,
-                            'printer_mark'      : printer_mark,
-                            'marketing_p_name'  : marketing_p_name,
-                            'cyl_rate_status'   : cyl_rate_status,
-                            'limit_square_cm'   : limit_square_cm,
-                            'vat_status'        : vat_status,
                             'client_name'       : client_name,
+                            'id'                : id,
                             'entry_date'        : entry_date,
                             'agreement_date'    : agreement_date,
                             'total_cylinder_qty': total_cylinder_qty
@@ -137,7 +132,7 @@ const Add = (props) => {
     // FOR CLIENT STOCKS ARRAY READY
     const addOrderDetailsHandler = (event) => {
         
-        let {job_no, receive_date, qty, remarks} = jobOrderData;
+        let {job_no, receive_date, qty, remarks,client_name, id} = jobOrderData;
         
         if (jobOrderData.job_order_qty_limit > 0) {
             // OBJECT CREATE & PUSH IN AN ARRAY
@@ -147,6 +142,8 @@ const Add = (props) => {
             clientStockDetails_obj.receive_date = receive_date;
             clientStockDetails_obj.qty = qty;
             clientStockDetails_obj.remarks = remarks;
+            clientStockDetails_obj.client_name = client_name;
+            clientStockDetails_obj.id = id;
 
             if ((parseInt(jobOrderData.orderQty) + parseInt(clientStockDetails_obj.qty)) <= parseInt(jobOrderData.job_order_qty_limit)) {
                 clientStockDetails_arr.push(clientStockDetails_obj);
@@ -179,8 +176,6 @@ const Add = (props) => {
                 }
                 // EMPTY CLIENT STOCKS ALL FIELDS
                 setJobOrderData({
-                    //supplier_id  : '',    
-                    //job_no          : '',
                     receive_date    : '',
                     qty             : '',
                     remarks         : '',
@@ -206,12 +201,13 @@ const Add = (props) => {
     }
     // FINALLY SUBMIT FOR SAVE TO SERVER
     const submitHandler = (data, e) => {
-        data.job_order_id = dropdownData.job_order_id[0].id;
-        data.order_date = jobOrderData.order_date;
+        //data.job_order_id = dropdownData.job_order_id[0].id;
+        //data.job_order_id = jobOrderData.job_id;
+        //data.receive_date = jobOrderData.receive_date;
         data.totalOrderQty = jobOrderData.orderQty;
-        data.base_order_details = clientStockDetails;
+        data.client_stock_details = clientStockDetails;
 
-        if (jobOrderData.orderQty == jobOrderData.job_order_qty_limit) {
+        if (jobOrderData.orderQty <= jobOrderData.job_order_qty_limit) {
             userPostMethod(CLIENT_STOCK_RSURL, data)
                 .then(response => {
                     console.log(response);
@@ -244,7 +240,7 @@ const Add = (props) => {
                             <div className="card-header">
                                 <div className="row">
                                     <div className="col-md-6">
-                                        <h5>Base Order Form</h5>
+                                        <h5>Client Stock Form</h5>
                                     </div>
                                     <div className="col-md-6">
                                         <PanelRefreshIcons panelRefresh={pageRefreshHandler} />
@@ -407,6 +403,23 @@ const Add = (props) => {
                                                                 value={jobOrderData.remarks}
                                                             />
                                                         </div>
+                                                        <input 
+                                                            className="form-control" 
+                                                            id="client_name" 
+                                                            name="client_name" 
+                                                            type="hidden"  
+                                                            onChange={clientStocksInputHander}
+                                                            value={jobOrderData.client_name}
+                                                        />
+                                                        <input 
+                                                            className="form-control" 
+                                                            id="id" 
+                                                            name="id" 
+                                                            type="hidden"  
+                                                            onChange={clientStocksInputHander}
+                                                            value={jobOrderData.id}
+                                                        />
+
 
                                                         <div className="col-md-1 mb-4 m-t-5">
                                                             <span className="btn btn-primary btn-sm mr-1 m-t-20" type="add" onClick={addOrderDetailsHandler}>Add</span>
@@ -440,7 +453,6 @@ const Add = (props) => {
                                                                     {clientStockDetails.map((item, index)=> 
                                                                         (
                                                                         <tr key={index}>
-                                                                            {/* <th scope="row">{item.supplier_id_name}</th> */}
                                                                             <td>{item.job_no}</td>
                                                                             <td>{item.receive_date}</td>
                                                                             <td>{item.qty}</td>

@@ -183,10 +183,10 @@ export default function ListData(props) {
                                                 <tr>
                                                     <th scope="col" width="5%" onClick={() => sortHandler(1)} ><i className="fa fa-sort"></i> SL.</th>
                                                     <th scope="col" width="15%" onClick={() => sortHandler(2)} ><i className="fa fa-sort"></i> Job No</th>
-                                                    {/* <th scope="col" width="15%" onClick={() => sortHandler(3)} ><i className="fa fa-sort"></i> Job Name</th> */}
-                                                    {/* <th scope="col" width="10%" onClick={() => sortHandler(4)} ><i className="fa fa-sort"></i> Cancel Quantity</th>                                                         */}
-                                                    {/* <th scope="col" width="15%" onClick={() => sortHandler(5)}><i className="fa fa-sort"></i> Client</th>
-                                                    <th scope="col" width="10%" ><i className="fa fa-sort"></i> Design Approve</th> */}
+                                                    <th scope="col" width="15%" onClick={() => sortHandler(3)} ><i className="fa fa-sort"></i> Job Name</th>
+                                                    <th scope="col" width="10%" onClick={() => sortHandler(4)} ><i className="fa fa-sort"></i> Quantity</th>                                                        
+                                                    <th scope="col" width="15%" onClick={() => sortHandler(5)}><i className="fa fa-sort"></i> Client</th>
+                                                    {/* <th scope="col" width="10%" ><i className="fa fa-sort"></i> Design Approve</th> */}
                                                     {/* <th scope="col" width="7%">Action</th> */}
                                                 </tr>
                                             </thead>
@@ -198,11 +198,11 @@ export default function ListData(props) {
                                                                 (
                                                                     <tr key={index}>
                                                                         <td scope="row">{ ((index+1) + (currentPage == 1 ? 0 : (currentPage*perPage - perPage))) }</td>
-                                                                        <td>{item.job_id}</td>
-                                                                        {/* <td>{item.job_name}</td>
-                                                                        <td>{item.no_of_cyl}</td> */}
-                                                                        {/* <td>{item.client_name}</td>
-                                                                        <td>
+                                                                        <td>{item.job_no}</td>
+                                                                        <td>{item.job_name}</td>
+                                                                        <td>{item.total_cylinder}</td>
+                                                                        <td>{item.client_name}</td>
+                                                                        {/* <td>
                                                                             {item.design_to_design_status == 0 ? 
                                                                             <Link 
                                                                                 to={{
