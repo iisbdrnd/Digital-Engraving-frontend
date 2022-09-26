@@ -7,6 +7,7 @@ import Notification from './notification';
 import SearchHeader from './searchHeader';
 import { Link } from 'react-router-dom';
 import { AlignLeft, Maximize, Bell, MoreHorizontal } from 'react-feather';
+import Report from './Report';
 
 const Header = () => {
   const [sidebar, setSidebar] = useState(false);
@@ -83,7 +84,7 @@ const Header = () => {
 				          <Link to={`${process.env.PUBLIC_URL}/dashboard/apps`}>Homes</Link>
               </li>
               <li>
-				          <Link to={`${process.env.PUBLIC_URL}/dashboard/apps`}>Report</Link>
+				          <Report />
               </li>
               {/* add dropdown to this  */}
               {/* report api https://del.uddoktahub.com/api/user/software-menus/3 */}
