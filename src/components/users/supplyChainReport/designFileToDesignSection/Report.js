@@ -1,22 +1,22 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { Fragment , useEffect, useState } from 'react';
 import ReportHeader from './ReportHeader';
 import {DESIGN_TO_DESIGN_REPORT} from '../../../../api/userUrl'
 import { userGetMethod } from '../../../../api/userAction';
+import styles from "./report.module.css";
 
-const Report = (props) => {
+const Report = ({fromDate, toDate}) => {
     const [isLoading, setIsLoading] = useState(true);
     const [orderTypes, setJorderTypes] = useState([]);
     const [grandTotalCylinder, setGrandTotalCyl] = useState([]);
     const [grandTotalSurfaceArea, setGrandTotalSurfaceArea] = useState([]);
-    const [calculateCyl, setCalculateCyl] = useState(0);
+    // const [calculateCyl, setCalculateCyl] = useState(0);
 
     const tableStyle = {
         // "border" : "1px solid #ccc",
         "margin" : "2% 1% 2% 0%"
     }
     useEffect(()=>{
-        const fromDate = props.match.params.fromDate;
-        const toDate = props.match.params.toDate;
 
         userGetMethod(`${DESIGN_TO_DESIGN_REPORT}?fromDate=${fromDate}&&toDate=${toDate}`)
         .then(response => {
@@ -27,14 +27,14 @@ const Report = (props) => {
             setIsLoading(false);
         })
         .catch(error => console.log(error))
-    }, []);
+    }, [fromDate]);
 
     return (
         <Fragment>
             <div className="container-fluid">
                 <div className="row">
                     <div className="col-sm-12">
-                        <div className=""> 
+                        <div className={styles.reportWrapper}> 
                             <ReportHeader reportTitle="Design File to Design" />
 
                             <div className="mainDiv" style={{"padding": "1% 5%"}}>
@@ -58,7 +58,7 @@ const Report = (props) => {
                                             </thead>
                                             <tbody className="reportBody">
                                             {
-                                                orderTypes.length > 0 ? 
+                                                orderTypes?.length > 0 ? 
                                                 <>
                                                     {orderTypes.map((orderType, index1) => 
                                                         (

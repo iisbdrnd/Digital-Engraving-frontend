@@ -4,9 +4,11 @@ import './style.scss';
 
 
 const ReportHeader = props => {
+
     const printDocument = () => {
         window.print();
     }
+    
     return (
         <div className="report-header">
             <div className="print_button">

@@ -79,8 +79,10 @@ const Header = () => {
           <div className="nav-right col p-0">
             <ul className={`nav-menus ${headerbar ? '' : 'open'}`}>
               <li>
-				<Link to={`${process.env.PUBLIC_URL}/dashboard/apps`}>Home</Link>
+				<Link to={`${process.env.PUBLIC_URL}/dashboard/apps`}>Homes</Link>
               </li>
+              {/* add dropdown to this  */}
+              {/* report api https://del.uddoktahub.com/api/user/software-menus/3 */}
               <li>
                 <SearchHeader />
               </li>

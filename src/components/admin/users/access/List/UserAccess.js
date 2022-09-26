@@ -108,7 +108,7 @@ const UserAccess = () => {
             //software menu internal links
             let findSoftware_menus_internal_links;
             //if software menu have internal linkes then update internal links and set isCheck true
-            if(findSoftware_menus?.internal_links.length > 0){
+            if(findSoftware_menus?.internal_links?.length > 0){
                 findSoftware_menus_internal_links = findSoftware_menus?.internal_links?.map( internal_links => {
                     return {...internal_links , isChecked : checked}
                 })

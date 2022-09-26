@@ -1,11 +1,16 @@
 import React, { Fragment , useEffect, useState } from 'react';
 import useForm from "react-hook-form";
 import { SubmitButton } from '../../../common/GlobalButton'
+import Report from './Report';
 
 const Form = (props) => {
+    
     const { handleSubmit, register, errors } = useForm();
     const [isLoading, setIsLoading] = useState(true);
     const [reportType, setReportType] = useState(null);
+    const [fromDate, setFromDate] = useState('');
+    const [toDate, setToDate] = useState('');
+    const [showPdf, setShowPdf] = useState(false);
 
     var menuId = 0;
     if (props.location.state === undefined) {
@@ -13,14 +18,28 @@ const Form = (props) => {
     }else{
         menuId = props.location.state.params.menuId;
     }
+
+    // when submit form from date and to date update and get data with api with searech params  in report component
     
     const submitHandler = (data, e) => {
+
         const from_date = data.from_date;
-        let url = data.type == 'upto_date' ? `${process.env.PUBLIC_URL}/designToDesignReport/${from_date}` : `${process.env.PUBLIC_URL}/designToDesignReport/${data.from_date}/${data.to_date}`;
-        window.open(url, '_blank', 'height=800,width=1200');
+        const to_date = data.to_date;
+        setFromDate(from_date);
+        setToDate(to_date);
+        setShowPdf(true);
+
+        console.log('date',from_date , to_date);
+
+        // let url = data.type === 'upto_date' ? `${process.env.PUBLIC_URL}/designToDesignReport/${from_date}` : `${process.env.PUBLIC_URL}/designToDesignReport/${data.from_date}/${data.to_date}`;
+        // console.log('data form',url, data.from_date, `${process.env.PUBLIC_URL}/designToDesignReport/${from_date}` );
+        // window.open(url, '_blank', 'height=800,width=1200');
     }
+
     return (
         <Fragment>
+
+            {/* report pdf genarate form  */}
             <div className="container-fluid">
                 <div className="row">
                     <div className="col-sm-12">
@@ -113,6 +132,13 @@ const Form = (props) => {
                     </div>
                 </div>
             </div>
+            
+             {/* report pdf  */}
+             {
+                showPdf && <Report fromDate={fromDate} toDate={toDate} />
+             }
+            
+
         </Fragment>
     );
 };
