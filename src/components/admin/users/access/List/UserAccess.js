@@ -20,7 +20,7 @@ const UserAccess = () => {
     let dummyData = data.slice(0,5);
 
     //get all user access module by using user id
-    const userModuleURl = `api/admin/projects/getModule/${userId}`
+    const userModuleURl = `api/admin/projects/getModule/1`  //previous was ${userId}. Here 1 is folder id
     useEffect( () => {
         setLoading(true);
         let res = adminGetMethod(userModuleURl)
@@ -33,7 +33,7 @@ const UserAccess = () => {
     
     
     //get all user access single module by using user id and module menu id
-    const userMenuForModuleURl = `api/admin/users/getMenusForModule/${userId}/${menusForModuleId}`
+    const userMenuForModuleURl = `api/admin/users/getMenusForModule/1/${menusForModuleId}`  //previous was ${userId}. Here 1 is project id
     useEffect( () => {
         setModulesLoading(true);
         let res = adminGetMethod(userMenuForModuleURl)
