@@ -66,7 +66,7 @@ const UserAccess = () => {
         if( name === 'allSelect'){
             const tempSoftware_menus = modulesData?.software_menus?.map( (data) => {
 
-                if(data?.internal_links.length < 1){
+                if(data?.internal_links?.length < 1){
                     //if module don't have internal links
                     return({ ...data , isChecked: checked});
                 } else {
@@ -201,7 +201,7 @@ const UserAccess = () => {
         //find whice intenal links check and set new object to true
         let links = [];        
         for(const menu of modulesData?.software_menus){
-            if(menu.internal_links.length > 0){
+            if(menu?.internal_links?.length > 0){
                 for(const internal_link of menu.internal_links){
                     if(internal_link.isChecked === true){
                         const obj = {id: internal_link.id}

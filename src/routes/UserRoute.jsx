@@ -73,6 +73,8 @@ import Printers from './../components/users/backOfficeSetup/printers/ListData';
 import PrintersAdd from './../components/users/backOfficeSetup/printers/Add';
 import PrintersEdit from './../components/users/backOfficeSetup/printers/Edit';
 
+// USERS
+import SoftwareUserList from './../components/admin/users/listData';
 
 
 //SUPPLIER INFORMATION
@@ -179,6 +181,7 @@ import MarketingPersonWiseJobStatusReport from './../components/users/jobInforma
 //END JOB INFORMATION REPORT
 
 //START SUPPLY CHAIN REPORT
+// SoftwareUserList
 
 import DesignFile from './../components/users/supplyChainReport/designFile/Form';
 import DesignFileReport from './../components/users/supplyChainReport/designFile/Report';
@@ -404,368 +407,1063 @@ class UserRoute extends Component {
 
     render() {
         return (
-            <Switch>
-                <AuthRoute exact path={`${process.env.PUBLIC_URL}/`} render={() => {
-                    return (<Redirect to={`${process.env.PUBLIC_URL}/login`} />)
-                }} />
-                {/* <AuthRoute exact path={`${process.env.PUBLIC_URL}/`} render={() => {
+          <Switch>
+            <AuthRoute
+              exact
+              path={`${process.env.PUBLIC_URL}/`}
+              render={() => {
+                return <Redirect to={`${process.env.PUBLIC_URL}/login`} />;
+              }}
+            />
+            {/* <AuthRoute exact path={`${process.env.PUBLIC_URL}/`} render={() => {
                     return (<Redirect to={`${process.env.PUBLIC_URL}/login`} />)
                 }} /> */}
-                <UserGuestRoute path={`${process.env.PUBLIC_URL}/login`} component={UserLogin} />
-                <UserAuthRoute path={`${process.env.PUBLIC_URL}/dashboard/apps`} component={UserApps} />
-                <UserAuthRoute path={`${process.env.PUBLIC_URL}/jobAgreementReport/:jobOrderId`} component={JobAgreementFormReport} />
-                <UserAuthRoute path={`${process.env.PUBLIC_URL}/jobInformationReport/:jobOrderId`} component={JobInformationReport} />
-                <UserAuthRoute path={`${process.env.PUBLIC_URL}/designFileReport/:jobOrderId`} component={DesignFileReport} />
-                <UserAuthRoute path={`${process.env.PUBLIC_URL}/designFileToFactoryReport/:fromDate/:toDate`} component={DesignFileToFactoryReport} />
-                <UserAuthRoute path={`${process.env.PUBLIC_URL}/designToDesignReport/:fromDate/:toDate`} component={DesignToDesignReport} />
-                <UserAuthRoute path={`${process.env.PUBLIC_URL}/productionReportDetailsReport/:fromDate/:toDate`} component={ProductionReportDetailsReport} />
-                <UserAuthRoute path={`${process.env.PUBLIC_URL}/dealerWiseJobFlowReport/:fromDate/:toDate`} component={DealerWiseJobFlowReport} />
-                <UserAuthRoute path={`${process.env.PUBLIC_URL}/customerWiseAnalysisReport/:fromDate/:toDate`} component={CustomerWiseAnalysisReport} />
-                <UserAuthRoute path={`${process.env.PUBLIC_URL}/customerWiseAnalysis/clientDetails/:clientId`} component={ClientDetails} />
-                <UserAuthRoute path={`${process.env.PUBLIC_URL}/progressReport/:fromDate/:toDate/:employeeId`} component={ProgressReport} />
-                <UserAuthRoute path={`${process.env.PUBLIC_URL}/jobFlowAnalysis/:fromDate/:toDate/:clientId`} component={JobFlowAnalysisReport} />
-                <UserAuthRoute path={`${process.env.PUBLIC_URL}/jobFlowAnalysisMarketingPersonWise/:fromDate/:toDate/:employeeId`} component={JobFlowAnalysisMarketingPersonWiseReport} />
-                <UserAuthRoute path={`${process.env.PUBLIC_URL}/analyticalJobInformationClientWise/:fromDate/:toDate/:clientId`} component={AnalyticalJobInformationClientWiseReport} />
-                <UserAuthRoute path={`${process.env.PUBLIC_URL}/analyticalJobInformationEmployeeWise/:fromDate/:toDate/:employeeId`} component={AnalyticalJobInformationEmployeeWiseReport} />
-                <UserAuthRoute path={`${process.env.PUBLIC_URL}/analyticalJobInformationPrinterWise/:fromDate/:toDate/:printerId`} component={AnalyticalJobInformationPrinterWiseReport} />
-                <UserAuthRoute path={`${process.env.PUBLIC_URL}/pendingJobInformation/:fromDate/:toDate/:employeeId`} component={PendingJobInformationReport} />
-                <UserAuthRoute path={`${process.env.PUBLIC_URL}/pendingSupplyInformation/:fromDate/:toDate/:employeeId/:pendingCategory`} component={PendingSupplyInformationReport} />
-                <UserAuthRoute path={`${process.env.PUBLIC_URL}/clientSummary/:fromDate/:toDate`} component={ClientSummaryReport} />
-                <UserAuthRoute path={`${process.env.PUBLIC_URL}/salesAndCollections/:fromDate/:toDate`} component={SalesAndCollectionsReport} />
-                <UserAuthRoute path={`${process.env.PUBLIC_URL}/branchWiseSalesCollection/:fromDate/:toDate/:branchId`} component={BranchWiseSalesCollectionReport} />
-                <UserAuthRoute path={`${process.env.PUBLIC_URL}/clientDetails/:fromDate/:toDate/:clientId`} component={ClientDetailsReport} />
-                <UserAuthRoute path={`${process.env.PUBLIC_URL}/printerWiseJobStatusDetails/:fromDate/:toDate/:printerId`} component={PrinterWiseJobStatusDetailsReport} />
-                <UserAuthRoute path={`${process.env.PUBLIC_URL}/marketingPersonWiseJobStatus/:month/:year/:employeeId`} component={MarketingPersonWiseJobStatusReport} />
-                <UserAuthRoute path={`${process.env.PUBLIC_URL}/baseSupplySchedule/:fromDate/:toDate/:clientId`} component={BaseSupplyScheduleReport} />
-                <UserAuthRoute path={`${process.env.PUBLIC_URL}/pendingbase/:fromDate/:toDate/:clientId`} component={PendingBaseReport} />
-                <UserAuthRoute path={`${process.env.PUBLIC_URL}/receivedbase/:fromDate/:toDate/:clientId`} component={ReceivedBaseReport} />
-                <UserAuthRoute path={`${process.env.PUBLIC_URL}/statusReport/:fromDate/:toDate/:status`} component={StatusReport} />
-                <UserAuthRoute path={`${process.env.PUBLIC_URL}/collectionAndDiscountDetails/:fromDate/:toDate/:status`} component={CollectionAndDiscountDetailsReport} />
-                <UserAuthRoute path={`${process.env.PUBLIC_URL}/designFileToFactoryReport/:fromDate`} component={DesignFileToFactoryReport} />
-                <UserAuthRoute path={`${process.env.PUBLIC_URL}/dailyDesignFileToFactoryReport/:date`} component={DailyDesignFileToFactoryReport} />
-                <UserAuthRoute path={`${process.env.PUBLIC_URL}/designToDesignReport/:fromDate`} component={DesignToDesignReport} />
-                <UserAuthRoute path={`${process.env.PUBLIC_URL}/baseCylinderOrder/:jobOrderId`} component={BaseCylinderOrderReport} />
-                <UserAuthRoute path={`${process.env.PUBLIC_URL}/previousBaseToStock/:jobOrderId`} component={PreviousBaseToStockReport} />
-                <UserAuthRoute path={`${process.env.PUBLIC_URL}/finishedCylinderStatus/:jobOrderId`} component={FinishedCylinderStatusReport} />
-                <UserAuthRoute path={`${process.env.PUBLIC_URL}/yearlyJobFlow/report/:report_type/:year/:cylinder_type`} component={YearlyJobFlowReport} />
-                <UserAuthRoute path={`${process.env.PUBLIC_URL}/monthlyJobFlow/report/:month/:year/:cylinder_type`} component={MonthlyJobFlowReport} />
-                <UserAuthRoute path={`${process.env.PUBLIC_URL}/monthlyProduction/report/:month/:year/:cylinder_type`} component={MonthlyProductionReport} />
-                <UserAuthRoute path={`${process.env.PUBLIC_URL}/dailyProduction/report/:date/:cylinder_type/:report_type`} component={DailyProductionReport} />
-                <UserAuthRoute path={`${process.env.PUBLIC_URL}/dailyJobFlowDetails/report/:job_date/:report_type`} component={DailyJobFlowDetailsReport} />
+            <UserGuestRoute
+              path={`${process.env.PUBLIC_URL}/login`}
+              component={UserLogin}
+            />
+            <UserAuthRoute
+              path={`${process.env.PUBLIC_URL}/dashboard/apps`}
+              component={UserApps}
+            />
+            <UserAuthRoute
+              path={`${process.env.PUBLIC_URL}/jobAgreementReport/:jobOrderId`}
+              component={JobAgreementFormReport}
+            />
+            <UserAuthRoute
+              path={`${process.env.PUBLIC_URL}/jobInformationReport/:jobOrderId`}
+              component={JobInformationReport}
+            />
+            <UserAuthRoute
+              path={`${process.env.PUBLIC_URL}/designFileReport/:jobOrderId`}
+              component={DesignFileReport}
+            />
+            <UserAuthRoute
+              path={`${process.env.PUBLIC_URL}/designFileToFactoryReport/:fromDate/:toDate`}
+              component={DesignFileToFactoryReport}
+            />
+            <UserAuthRoute
+              path={`${process.env.PUBLIC_URL}/designToDesignReport/:fromDate/:toDate`}
+              component={DesignToDesignReport}
+            />
+            <UserAuthRoute
+              path={`${process.env.PUBLIC_URL}/productionReportDetailsReport/:fromDate/:toDate`}
+              component={ProductionReportDetailsReport}
+            />
+            <UserAuthRoute
+              path={`${process.env.PUBLIC_URL}/dealerWiseJobFlowReport/:fromDate/:toDate`}
+              component={DealerWiseJobFlowReport}
+            />
+            <UserAuthRoute
+              path={`${process.env.PUBLIC_URL}/customerWiseAnalysisReport/:fromDate/:toDate`}
+              component={CustomerWiseAnalysisReport}
+            />
+            <UserAuthRoute
+              path={`${process.env.PUBLIC_URL}/customerWiseAnalysis/clientDetails/:clientId`}
+              component={ClientDetails}
+            />
+            <UserAuthRoute
+              path={`${process.env.PUBLIC_URL}/progressReport/:fromDate/:toDate/:employeeId`}
+              component={ProgressReport}
+            />
+            <UserAuthRoute
+              path={`${process.env.PUBLIC_URL}/jobFlowAnalysis/:fromDate/:toDate/:clientId`}
+              component={JobFlowAnalysisReport}
+            />
+            <UserAuthRoute
+              path={`${process.env.PUBLIC_URL}/jobFlowAnalysisMarketingPersonWise/:fromDate/:toDate/:employeeId`}
+              component={JobFlowAnalysisMarketingPersonWiseReport}
+            />
+            <UserAuthRoute
+              path={`${process.env.PUBLIC_URL}/analyticalJobInformationClientWise/:fromDate/:toDate/:clientId`}
+              component={AnalyticalJobInformationClientWiseReport}
+            />
+            <UserAuthRoute
+              path={`${process.env.PUBLIC_URL}/analyticalJobInformationEmployeeWise/:fromDate/:toDate/:employeeId`}
+              component={AnalyticalJobInformationEmployeeWiseReport}
+            />
+            <UserAuthRoute
+              path={`${process.env.PUBLIC_URL}/analyticalJobInformationPrinterWise/:fromDate/:toDate/:printerId`}
+              component={AnalyticalJobInformationPrinterWiseReport}
+            />
+            <UserAuthRoute
+              path={`${process.env.PUBLIC_URL}/pendingJobInformation/:fromDate/:toDate/:employeeId`}
+              component={PendingJobInformationReport}
+            />
+            <UserAuthRoute
+              path={`${process.env.PUBLIC_URL}/pendingSupplyInformation/:fromDate/:toDate/:employeeId/:pendingCategory`}
+              component={PendingSupplyInformationReport}
+            />
+            <UserAuthRoute
+              path={`${process.env.PUBLIC_URL}/clientSummary/:fromDate/:toDate`}
+              component={ClientSummaryReport}
+            />
+            <UserAuthRoute
+              path={`${process.env.PUBLIC_URL}/salesAndCollections/:fromDate/:toDate`}
+              component={SalesAndCollectionsReport}
+            />
+            <UserAuthRoute
+              path={`${process.env.PUBLIC_URL}/branchWiseSalesCollection/:fromDate/:toDate/:branchId`}
+              component={BranchWiseSalesCollectionReport}
+            />
+            <UserAuthRoute
+              path={`${process.env.PUBLIC_URL}/clientDetails/:fromDate/:toDate/:clientId`}
+              component={ClientDetailsReport}
+            />
+            <UserAuthRoute
+              path={`${process.env.PUBLIC_URL}/printerWiseJobStatusDetails/:fromDate/:toDate/:printerId`}
+              component={PrinterWiseJobStatusDetailsReport}
+            />
+            <UserAuthRoute
+              path={`${process.env.PUBLIC_URL}/marketingPersonWiseJobStatus/:month/:year/:employeeId`}
+              component={MarketingPersonWiseJobStatusReport}
+            />
+            <UserAuthRoute
+              path={`${process.env.PUBLIC_URL}/baseSupplySchedule/:fromDate/:toDate/:clientId`}
+              component={BaseSupplyScheduleReport}
+            />
+            <UserAuthRoute
+              path={`${process.env.PUBLIC_URL}/pendingbase/:fromDate/:toDate/:clientId`}
+              component={PendingBaseReport}
+            />
+            <UserAuthRoute
+              path={`${process.env.PUBLIC_URL}/receivedbase/:fromDate/:toDate/:clientId`}
+              component={ReceivedBaseReport}
+            />
+            <UserAuthRoute
+              path={`${process.env.PUBLIC_URL}/statusReport/:fromDate/:toDate/:status`}
+              component={StatusReport}
+            />
+            <UserAuthRoute
+              path={`${process.env.PUBLIC_URL}/collectionAndDiscountDetails/:fromDate/:toDate/:status`}
+              component={CollectionAndDiscountDetailsReport}
+            />
+            <UserAuthRoute
+              path={`${process.env.PUBLIC_URL}/designFileToFactoryReport/:fromDate`}
+              component={DesignFileToFactoryReport}
+            />
+            <UserAuthRoute
+              path={`${process.env.PUBLIC_URL}/dailyDesignFileToFactoryReport/:date`}
+              component={DailyDesignFileToFactoryReport}
+            />
+            <UserAuthRoute
+              path={`${process.env.PUBLIC_URL}/designToDesignReport/:fromDate`}
+              component={DesignToDesignReport}
+            />
+            <UserAuthRoute
+              path={`${process.env.PUBLIC_URL}/baseCylinderOrder/:jobOrderId`}
+              component={BaseCylinderOrderReport}
+            />
+            <UserAuthRoute
+              path={`${process.env.PUBLIC_URL}/previousBaseToStock/:jobOrderId`}
+              component={PreviousBaseToStockReport}
+            />
+            <UserAuthRoute
+              path={`${process.env.PUBLIC_URL}/finishedCylinderStatus/:jobOrderId`}
+              component={FinishedCylinderStatusReport}
+            />
+            <UserAuthRoute
+              path={`${process.env.PUBLIC_URL}/yearlyJobFlow/report/:report_type/:year/:cylinder_type`}
+              component={YearlyJobFlowReport}
+            />
+            <UserAuthRoute
+              path={`${process.env.PUBLIC_URL}/monthlyJobFlow/report/:month/:year/:cylinder_type`}
+              component={MonthlyJobFlowReport}
+            />
+            <UserAuthRoute
+              path={`${process.env.PUBLIC_URL}/monthlyProduction/report/:month/:year/:cylinder_type`}
+              component={MonthlyProductionReport}
+            />
+            <UserAuthRoute
+              path={`${process.env.PUBLIC_URL}/dailyProduction/report/:date/:cylinder_type/:report_type`}
+              component={DailyProductionReport}
+            />
+            <UserAuthRoute
+              path={`${process.env.PUBLIC_URL}/dailyJobFlowDetails/report/:job_date/:report_type`}
+              component={DailyJobFlowDetailsReport}
+            />
 
-                <UserAuthRoute path={`${process.env.PUBLIC_URL}/print-previous-voucher-report`} component={PrintPreviousVoucherAction} />
-                <UserAuthRoute path={`${process.env.PUBLIC_URL}/transaction-posting-report-action`} component={TransactionPostingReportAction} />
-                <UserAuthRoute path={`${process.env.PUBLIC_URL}/trial-balance-report-action`} component={TrialBalanceReportAction} />
-                <UserAuthRoute path={`${process.env.PUBLIC_URL}/receipt-payment-report-action`} component={ReceiptPaymentsReportAction} />
-                <UserAuthRoute path={`${process.env.PUBLIC_URL}/cash-book-report-action`} component={CashBookReportAction} />
-                <UserAuthRoute path={`${process.env.PUBLIC_URL}/bank-book-report-action`} component={BankBookReportAction} />
-                <UserAuthRoute path={`${process.env.PUBLIC_URL}/ledger-query-report-action`} component={LedgerQueryReportAction} />
-                <UserAuthRoute path={`${process.env.PUBLIC_URL}/balance-sheet-report-action`} component={BalanceSheetReportAction} />
-                <UserAuthRoute path={`${process.env.PUBLIC_URL}/accounts-payable-report-action`} component={AccountsPayableReportAction} />
-                <UserAuthRoute path={`${process.env.PUBLIC_URL}/accounts-receivable-report-action`} component={AccountsReceivableReportAction} />
+            <UserAuthRoute
+              path={`${process.env.PUBLIC_URL}/print-previous-voucher-report`}
+              component={PrintPreviousVoucherAction}
+            />
+            <UserAuthRoute
+              path={`${process.env.PUBLIC_URL}/transaction-posting-report-action`}
+              component={TransactionPostingReportAction}
+            />
+            <UserAuthRoute
+              path={`${process.env.PUBLIC_URL}/trial-balance-report-action`}
+              component={TrialBalanceReportAction}
+            />
+            <UserAuthRoute
+              path={`${process.env.PUBLIC_URL}/receipt-payment-report-action`}
+              component={ReceiptPaymentsReportAction}
+            />
+            <UserAuthRoute
+              path={`${process.env.PUBLIC_URL}/cash-book-report-action`}
+              component={CashBookReportAction}
+            />
+            <UserAuthRoute
+              path={`${process.env.PUBLIC_URL}/bank-book-report-action`}
+              component={BankBookReportAction}
+            />
+            <UserAuthRoute
+              path={`${process.env.PUBLIC_URL}/ledger-query-report-action`}
+              component={LedgerQueryReportAction}
+            />
+            <UserAuthRoute
+              path={`${process.env.PUBLIC_URL}/balance-sheet-report-action`}
+              component={BalanceSheetReportAction}
+            />
+            <UserAuthRoute
+              path={`${process.env.PUBLIC_URL}/accounts-payable-report-action`}
+              component={AccountsPayableReportAction}
+            />
+            <UserAuthRoute
+              path={`${process.env.PUBLIC_URL}/accounts-receivable-report-action`}
+              component={AccountsReceivableReportAction}
+            />
 
-                <UserAuthRoute path={`${process.env.PUBLIC_URL}/factoryProduction/:fromDate/:toDate`} component={FactoryProductionReport} />
-                <UserAuthRoute path={`${process.env.PUBLIC_URL}/grindingSchedule/:fromDate/:toDate`} component={GrindingScheduleReport} />
-                <UserAuthRoute path={`${process.env.PUBLIC_URL}/polishingSchedule/:fromDate/:toDate`} component={PolishingScheduleReport} />
-                <UserAuthRoute path={`${process.env.PUBLIC_URL}/platingSchedule/:fromDate/:toDate`} component={PlatingScheduleReport} />
-                <UserAuthRoute path={`${process.env.PUBLIC_URL}/engravingSchedule/:fromDate/:toDate`} component={EngravingScheduleReport} />
-                <UserAuthRoute path={`${process.env.PUBLIC_URL}/chromeSchedule/:fromDate/:toDate`} component={ChromeScheduleReport} />
-                <UserAuthRoute path={`${process.env.PUBLIC_URL}/engravingRemainingJobs/:fromDate/:toDate`} component={EngravingRemainingJobsReport} />
-                <UserAuthRoute path={`${process.env.PUBLIC_URL}/grindingRemainingJobs/:fromDate/:toDate`} component={GrindingRemainingJobsReport} />
-                <UserAuthRoute path={`${process.env.PUBLIC_URL}/polishingRemainingJobs/:fromDate/:toDate`} component={PolishingRemainingJobsReport} />
-                <UserAuthRoute path={`${process.env.PUBLIC_URL}/platingRemainingJobs/:fromDate/:toDate`} component={PlatingRemainingJobsReport} />
-                
-                <Fragment>
-                    <UserApp>
-                        {/* <UserAuthRoute path={`${process.env.PUBLIC_URL}/dashboard/welcome`} component={UserDashboard} /> */}
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/master/:prefix`} component={Master} />
+            <UserAuthRoute
+              path={`${process.env.PUBLIC_URL}/factoryProduction/:fromDate/:toDate`}
+              component={FactoryProductionReport}
+            />
+            <UserAuthRoute
+              path={`${process.env.PUBLIC_URL}/grindingSchedule/:fromDate/:toDate`}
+              component={GrindingScheduleReport}
+            />
+            <UserAuthRoute
+              path={`${process.env.PUBLIC_URL}/polishingSchedule/:fromDate/:toDate`}
+              component={PolishingScheduleReport}
+            />
+            <UserAuthRoute
+              path={`${process.env.PUBLIC_URL}/platingSchedule/:fromDate/:toDate`}
+              component={PlatingScheduleReport}
+            />
+            <UserAuthRoute
+              path={`${process.env.PUBLIC_URL}/engravingSchedule/:fromDate/:toDate`}
+              component={EngravingScheduleReport}
+            />
+            <UserAuthRoute
+              path={`${process.env.PUBLIC_URL}/chromeSchedule/:fromDate/:toDate`}
+              component={ChromeScheduleReport}
+            />
+            <UserAuthRoute
+              path={`${process.env.PUBLIC_URL}/engravingRemainingJobs/:fromDate/:toDate`}
+              component={EngravingRemainingJobsReport}
+            />
+            <UserAuthRoute
+              path={`${process.env.PUBLIC_URL}/grindingRemainingJobs/:fromDate/:toDate`}
+              component={GrindingRemainingJobsReport}
+            />
+            <UserAuthRoute
+              path={`${process.env.PUBLIC_URL}/polishingRemainingJobs/:fromDate/:toDate`}
+              component={PolishingRemainingJobsReport}
+            />
+            <UserAuthRoute
+              path={`${process.env.PUBLIC_URL}/platingRemainingJobs/:fromDate/:toDate`}
+              component={PlatingRemainingJobsReport}
+            />
 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/userProfile`} component={UserProfile} />
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/userCards`} component={UserCards} />
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/company-profile`} component={CompanyProfile} /> {/* company means project */}
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/company-edit`} component={CompanyProfileEdit} /> {/* company means project */}
-                        {/* USER PROFILE */}
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/userEdit`} component={UserEdit} />
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/userChangeImage`} component={UserChangeImage} />
-                        {/* USER DESIGNATION */}
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/designation/index`} component={UserDesignation} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/user-designation/add`} component={UserDesignationAdd} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/user-designation/edit/:designationId`} component={UserDesignationEdit} /> 
-                        
-                        {/* User Employee */}
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/user-employee/list`} component={UserEmployee} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/user-employee/add`} component={UserEmployeeAdd} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/user-employee/edit/:employeeId`} component={UserEmployeeEdit} />
-
-                        {/* USER LAYOUTS */}
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/layouts/list`} component={LayoutsList} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/layouts/add`} component={LayoutsAdd} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/layouts/edit/:layoutsId`} component={LayoutsEdit} />
-
-                        {/* USER DEPARTMENT */}
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/department/index`} component={UserDepartment} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/user-department/add`} component={UserDepartmentAdd} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/user-department/edit/:departmentId`} component={UserDepartmentEdit} /> 
-                        {/* SERVICE CATEGORY */}
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/service-category/list`} component={ServiceCategory} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/service-category/add`} component={ServiceCategoryAdd} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/service-category/edit/:serviceCategoryId`} component={ServiceCategoryEdit} /> 
-
-                        {/* CLIENT INFORMATION */}
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/clientInformation/index`} component={ClientInformation} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/clientInformation/add`} component={ClientInformationAdd} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/clientInformation/edit/:clientInfoId`} component={ClientInformationEdit} /> 
-                        
-                        {/* PRINTERS */}
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/printers/index`} component={Printers} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/printers/add`} component={PrintersAdd} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/printers/edit/:printersId`} component={PrintersEdit} /> 
-                        
-                        {/* SUPPLIER INFORMATION */}
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/supplierInformation/index`} component={SupplierInformation} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/supplierInformation/add`} component={SupplierInformationAdd} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/supplierInformation/edit/:supplierInfoId`} component={SupplierInformationEdit} /> 
-
-                        {/* EMPLOYEE INFORMATION */}
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/employeeInformation/index`} component={EmployeeInformation} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/employeeInformation/add`} component={EmployeeInformationAdd} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/employeeInformation/edit/:employeeInformationId`} component={EmployeeInformationEdit} /> 
-
-                        {/* BRANCHES */}
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/branches/index`} component={Branches} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/branches/add`} component={BranchesAdd} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/branches/edit/:id`} component={BranchesEdit} /> 
-
-                        {/* JOB CLASS */}
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/jobClass/index`} component={JobClass} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/jobClass/add`} component={JobClassAdd} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/jobClass/edit/:jobClassId`} component={JobClassEdit} /> 
-
-                        {/* JOB SUB CLASS */}
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/jobSubClass/index`} component={JobSubClass} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/jobSubClass/add`} component={JobSubClassAdd} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/jobSubClass/edit/:jobSubClassId`} component={JobSubClassEdit} /> 
-
-                        {/* COLOR */}
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/color/index`} component={Color} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/color/add`} component={ColorAdd} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/color/edit/:colorId`} component={ColorEdit} /> 
-
-                        {/* Design Machine Location */}
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/designMachineLocation/index`} component={DesignMachineLocation} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/designMachineLocation/add`} component={DesignMachineLocationAdd} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/designMachineLocation/edit/:designMachineLocationId`} component={DesignMachineLocationEdit} /> 
-
-                        {/* TANK CONFIG */}
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/tankConfig/index`} component={TankConfig} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/tankConfig/add`} component={TankConfigAdd} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/tankConfig/edit/:tankId`} component={TankConfigEdit} /> 
-                        
-                        {/* SUPPLY CHAIN START */}
-                        {/* JOB ORDER */}
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/jobOrder/index`} component={JobOrder} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/jobOrder/add`} component={JobOrderAdd} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/jobOrder/edit/:id`} component={JobOrderEdit} />
-
-
-                        {/* TEST */}
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/test/index`} component={Test} />  
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/test/add`} component={TestAdd} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/test/edit/:id`} component={TestEdit} /> 
-                        
-                        {/* Client Stock */}
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/clientStock/index`} component={ClientStock} />  
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/clientStock/add`} component={ClientStockAdd} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/clientStock/edit/:id`} component={ClientStockEdit} /> 
-
-                        {/* Cancel Order */}
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/CancelOrder/index`} component={CancelOrderList} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/CancelOrder/add`} component={CancelOrderAdd} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/CancelOrder/edit/:id`} component={CancelOrderEdit} />
-
-                        {/* JOB AGREEMENT */}
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/jobAgreement/index`} component={JobAgreement} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/jobAgreement/add`} component={JobAgreementAdd} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/jobAgreement/edit/:id`} component={JobAgreementEdit} /> 
-
-                        {/* BASE ORDER */}
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/baseOrder/index`} component={BaseOrderList} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/baseOrder/add`} component={BaseOrderAdd} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/baseOrder/edit/:baseOrderId`} component={BaseOrderEdit} />
-                        
-                        {/* BASE RECEIVE */}
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/baseReceive/index`} component={BaseReceiveList} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/baseReceive/add`} component={BaseReceiveAdd} /> 
-                        
-                        {/* DESIGN TO DESIGN */}
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/designToDesign/index`} component={DesignToDesignList} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/designToDesign/add`} component={DesignToDesignAdd} /> 
-                        
-                        {/* DESIGN TO FACTORY */}
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/designToFactory/index`} component={DesignToFactoryList} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/designToFactory/add`} component={DesignToFactoryAdd} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/designToFactory/edit/:designId`} component={DesignToFactoryEdit} />
-                        
-                        {/* MARKETING REPORTS */}
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/jobAgreementForm/index`} component={JobAgreementForm} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/jobInformation`} component={JobInformation} />
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/jobFlowAnalysis`} component={JobFlowAnalysis} />
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/jobFlowAnalysisMarketingPersonWise`} component={JobFlowAnalysisMarketingPersonWise} />
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/dealerWiseJobFlow`} component={DealerWiseJobFlowForm} /> 
-
-                        {/* JOB INFORMATION REPORT */}
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/analyticalJobInformationClientWise`} component={AnalyticalJobInformationClientWise} />
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/analyticalJobInformationEmployeeWise`} component={AnalyticalJobInformationEmployeeWise} />
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/analyticalJobInformationPrinterWise`} component={AnalyticalJobInformationPrinterWise} />
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/pendingJobInformation`} component={PendingJobInformation} />
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/pendingSupplyInformation`} component={PendingSupplyInformation} />
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/clientSummary`} component={ClientSummaryForm} />
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/clientDetails`} component={ClientDetailsForm} />
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/printerWiseJobStatusDetails`} component={PrinterWiseJobStatusDetails} />
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/marketingPersonWiseJobStatus`} component={MarketingPersonWiseJobStatus} />
-
-                        {/* SUPPLY CHAIN REPORTS */}
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/designFile/index`} component={DesignFile} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/designFileToFactoryForm/index`} component={DesignFileToFactoryForm} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/dailyDesignFileToFactoryForm/index`} component={DailyDesignFileToFactoryForm} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/designToDesignSection`} component={DesignToDesignReportForm} />
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/productionReportDetails`} component={ProductionReportDetailsForm} />
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/customerWiseAnalysis`} component={CustomerWiseAnalysisForm} />
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/progressReport`} component={ProgressReportForm} />
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/statusReport`} component={StatusReportForm} />
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/baseCylinderOrder`} component={BaseCylinderOrderForm} />
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/previousBaseToStock`} component={PreviousBaseToStockForm} />
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/finishedCylinderStatus`} component={FinishedCylinderStatusForm} />
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/yearlyJobFlow`} component={YearlyJobFlowForm} />
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/monthlyJobFlow`} component={MonthlyJobFlowForm} />
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/monthlyProduction`} component={MonthlyProductionForm} />
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/dailyProduction`} component={DailyProductionForm} />
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/dailyJobFlowDetails`} component={DailyJobFlowDetailsForm} />
-
-                        {/* SCHEDULE REPORT */}
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/baseSupplySchedule`} component={BaseSupplySchedule} />
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/pendingbase`} component={PendingBase} />
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/receivedbase`} component={ReceivedBase} />
-
-
-                        {/* JOB MANAGEMENT REPORT */}
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/salesAndCollections`} component={SalesAndCollectionsForm} />
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/branchWiseSalesCollection`} component={BranchWiseSalesCollectionForm} />
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/collectionAndDiscountDetails`} component={CollectionAndDiscountDetailsForm} />
-
-                        {/* FACTORY REPORT */}
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/factoryProduction`} component={FactoryProductionForm} />                
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/grindingSchedule`} component={GrindingScheduleForm} />                
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/polishingSchedule`} component={PolishingScheduleForm} />                
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/platingSchedule`} component={PlatingScheduleForm} />                
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/engravingSchedule`} component={EngravingScheduleForm} />                
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/engravingRemainingJobs`} component={EngravingRemainingJobsForm} />                
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/chromeSchedule`} component={ChromeScheduleForm} />                                
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/grindingRemainingJobs`} component={GrindingRemainingJobsForm} />                
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/polishingRemainingJobs`} component={PolishingRemainingJobsForm} />                
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/platingRemainingJobs`} component={PlatingRemainingJobsForm} />                
-
-                        {/* accounts  */}
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/chartOfAccounts/index`} component={chartOfAccounts} />
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/chartOfAccounts/add`} component={chartOfAccountsAdd} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/chartOfAccounts/edit/:chartOfAccountsId`} component={chartOfAccountsEdit} /> 
-
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/accConfiguration/index`} component={accConfiguration} />
-
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/batch/index`} component={batch} />
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/payment-voucher/index`} component={paymentVoucher} />
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/received-voucher/index`} component={receivedVoucher} />
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/bank-payment/index`} component={bankPaymentdVoucher} />
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/bank-receive/index`} component={bankReceiveddVoucher} />
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/journal-voucher/index`} component={journalVoucher} />
-
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/payment-voucher/edit/:id`} component={BatchPaymentVoucherEdit} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/received-voucher/edit/:id`} component={BatchReceiveVoucherEdit} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/bank-payment/edit/:id`} component={BatchBankPaymentEdit} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/bank-receive/edit/:id`} component={BatchBankReceiveEdit} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/journal-voucher/edit/:id`} component={JournalVoucherEdit} /> 
-
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/print-previous-voucher/index`} component={PrintPreviousVoucher} />
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/transaction-posting-report`} component={TransactionPosting} />
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/trial-balance`} component={TrialBalance}  />
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/receipts-payments`} component={ReceiptPayments}  />
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/cash-book`} component={CashBook}  />
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/bank-book`} component={BankBook}  />
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/ledger-query`} component={LedgerQuery}  />
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/balance-sheet`} component={BalanceSheet}  />
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/accounts-payable`} component={AccountsPayable}  />
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/accounts-receivable`} component={AccountsReceivable}  />
-
-
-                        
-
-                        {/* ------- SCHEDULE START ------- */}
-                        
-                        {/* GRINDING */}
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/grinding/index`} component={GrindingList} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/grinding/add`} component={GrindingAdd} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/grinding/edit/:jobOrderJobNo`} component={GrindingEdit} />
-                        
-                        {/* BACK OFFICE SETUP START  */}
-                        {/* GRINDING MACHINE */}
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/machine/index`} component={MachineList} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/machine/add`} component={MachineAdd} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/machine/edit/:machineId`} component={MachineEdit} />
-                        {/* POLISHING MACHINE */}
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/polishMachine/index`} component={PolishingMachineList} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/polishMachine/add`} component={PolishingMachineAdd} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/polishMachine/edit/:polishMachineId`} component={PolishingMachineEdit} />
-                        
-                        {/* PLATING SHIFTING */}
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/shiftControl/index`} component={DigShiftEdit} /> 
-
-                        {/* PLATING DEPARTMENT */}
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/platingDept/index`} component={PlatingDeptList} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/platingDept/add`} component={PlatingDeptAdd} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/platingDept/edit`} component={PlatingDeptEdit} /> 
-
-                        {/* POLISHING */}
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/polishing/index`} component={PolishingList} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/polishing/add`} component={PolishingAdd} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/polishing/edit/:dig_polishing_cylinder_id`} component={PolishingEdit} /> 
-
-                        {/* ENGRAVING */}
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/engraving/index`} component={EngravingList} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/engraving/add`} component={EngravingAdd} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/engraving/edit/:dig_engravings_cylinder_id`} component={EngravingEdit} /> 
-
-                        {/* CHROME */}
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/chrome/index`} component={ChromeList} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/chrome/add`} component={ChromeAdd} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/chrome/edit`} component={ChromeEdit} /> 
-
-                        {/* QUALITY CONTROL */}
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/qualityControl/index`} component={QualityControlList} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/qualityControl/add`} component={QualityControlAdd} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/qualityControl/edit/:job_order_pk_id`} component={QualityControlEdit} /> 
-
-                        {/* DE-CHROME */}
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/de-chrome/index`} component={DeChromeList} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/de-chrome/add`} component={DeChromeAdd} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/de-chrome/edit`} component={DeChromeEdit} /> 
-
-                        {/* Challan */}
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/challan/index`} component={Challan} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/challan/add`} component={ChallanAdd} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/challan/edit/:challanId`} component={ChallanEdit} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/challan/show/:challanId`} component={ChallaShow} /> 
-
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/bill/index`} component={Bill} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/bill/add`} component={BillAdd} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/bill/edit/:challanId`} component={BillEdit} /> 
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/bill/show/:challanId`} component={BillShow} /> 
-
-
-                        <UserAuthRoute path={`${process.env.PUBLIC_URL}/bill_collection`} component={BillCollection} /> 
-
-                    </UserApp>
-                </Fragment>
-            </Switch>
+            <Fragment>
+              <UserApp>
+                {/* <UserAuthRoute path={`${process.env.PUBLIC_URL}/dashboard/welcome`} component={UserDashboard} /> */}
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/master/:prefix`}
+                  component={Master}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/userProfile`}
+                  component={UserProfile}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/userCards`}
+                  component={UserCards}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/company-profile`}
+                  component={CompanyProfile}
+                />{" "}
+                {/* company means project */}
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/company-edit`}
+                  component={CompanyProfileEdit}
+                />{" "}
+                {/* company means project */}
+                {/* USER PROFILE */}
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/userEdit`}
+                  component={UserEdit}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/userChangeImage`}
+                  component={UserChangeImage}
+                />
+                {/* USER DESIGNATION */}
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/designation/index`}
+                  component={UserDesignation}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/user-designation/add`}
+                  component={UserDesignationAdd}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/user-designation/edit/:designationId`}
+                  component={UserDesignationEdit}
+                />
+                {/* User Employee */}
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/user-employee/list`}
+                  component={UserEmployee}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/user-employee/add`}
+                  component={UserEmployeeAdd}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/user-employee/edit/:employeeId`}
+                  component={UserEmployeeEdit}
+                />
+                {/* USER LAYOUTS */}
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/layouts/list`}
+                  component={LayoutsList}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/layouts/add`}
+                  component={LayoutsAdd}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/layouts/edit/:layoutsId`}
+                  component={LayoutsEdit}
+                />
+                {/* users list  */}
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/users/index`}
+                  component={SoftwareUserList}
+                />
+                {/* USER DEPARTMENT */}
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/department/index`}
+                  component={UserDepartment}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/user-department/add`}
+                  component={UserDepartmentAdd}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/user-department/edit/:departmentId`}
+                  component={UserDepartmentEdit}
+                />
+                {/* SERVICE CATEGORY */}
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/service-category/list`}
+                  component={ServiceCategory}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/service-category/add`}
+                  component={ServiceCategoryAdd}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/service-category/edit/:serviceCategoryId`}
+                  component={ServiceCategoryEdit}
+                />
+                {/* CLIENT INFORMATION */}
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/clientInformation/index`}
+                  component={ClientInformation}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/clientInformation/add`}
+                  component={ClientInformationAdd}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/clientInformation/edit/:clientInfoId`}
+                  component={ClientInformationEdit}
+                />
+                {/* PRINTERS */}
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/printers/index`}
+                  component={Printers}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/printers/add`}
+                  component={PrintersAdd}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/printers/edit/:printersId`}
+                  component={PrintersEdit}
+                />
+                {/* SUPPLIER INFORMATION */}
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/supplierInformation/index`}
+                  component={SupplierInformation}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/supplierInformation/add`}
+                  component={SupplierInformationAdd}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/supplierInformation/edit/:supplierInfoId`}
+                  component={SupplierInformationEdit}
+                />
+                {/* EMPLOYEE INFORMATION */}
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/employeeInformation/index`}
+                  component={EmployeeInformation}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/employeeInformation/add`}
+                  component={EmployeeInformationAdd}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/employeeInformation/edit/:employeeInformationId`}
+                  component={EmployeeInformationEdit}
+                />
+                {/* BRANCHES */}
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/branches/index`}
+                  component={Branches}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/branches/add`}
+                  component={BranchesAdd}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/branches/edit/:id`}
+                  component={BranchesEdit}
+                />
+                {/* JOB CLASS */}
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/jobClass/index`}
+                  component={JobClass}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/jobClass/add`}
+                  component={JobClassAdd}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/jobClass/edit/:jobClassId`}
+                  component={JobClassEdit}
+                />
+                {/* JOB SUB CLASS */}
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/jobSubClass/index`}
+                  component={JobSubClass}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/jobSubClass/add`}
+                  component={JobSubClassAdd}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/jobSubClass/edit/:jobSubClassId`}
+                  component={JobSubClassEdit}
+                />
+                {/* COLOR */}
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/color/index`}
+                  component={Color}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/color/add`}
+                  component={ColorAdd}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/color/edit/:colorId`}
+                  component={ColorEdit}
+                />
+                {/* Design Machine Location */}
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/designMachineLocation/index`}
+                  component={DesignMachineLocation}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/designMachineLocation/add`}
+                  component={DesignMachineLocationAdd}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/designMachineLocation/edit/:designMachineLocationId`}
+                  component={DesignMachineLocationEdit}
+                />
+                {/* TANK CONFIG */}
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/tankConfig/index`}
+                  component={TankConfig}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/tankConfig/add`}
+                  component={TankConfigAdd}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/tankConfig/edit/:tankId`}
+                  component={TankConfigEdit}
+                />
+                {/* SUPPLY CHAIN START */}
+                {/* JOB ORDER */}
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/jobOrder/index`}
+                  component={JobOrder}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/jobOrder/add`}
+                  component={JobOrderAdd}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/jobOrder/edit/:id`}
+                  component={JobOrderEdit}
+                />
+                {/* TEST */}
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/test/index`}
+                  component={Test}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/test/add`}
+                  component={TestAdd}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/test/edit/:id`}
+                  component={TestEdit}
+                />
+                {/* Client Stock */}
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/clientStock/index`}
+                  component={ClientStock}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/clientStock/add`}
+                  component={ClientStockAdd}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/clientStock/edit/:id`}
+                  component={ClientStockEdit}
+                />
+                {/* Cancel Order */}
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/CancelOrder/index`}
+                  component={CancelOrderList}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/CancelOrder/add`}
+                  component={CancelOrderAdd}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/CancelOrder/edit/:id`}
+                  component={CancelOrderEdit}
+                />
+                {/* JOB AGREEMENT */}
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/jobAgreement/index`}
+                  component={JobAgreement}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/jobAgreement/add`}
+                  component={JobAgreementAdd}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/jobAgreement/edit/:id`}
+                  component={JobAgreementEdit}
+                />
+                {/* BASE ORDER */}
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/baseOrder/index`}
+                  component={BaseOrderList}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/baseOrder/add`}
+                  component={BaseOrderAdd}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/baseOrder/edit/:baseOrderId`}
+                  component={BaseOrderEdit}
+                />
+                {/* BASE RECEIVE */}
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/baseReceive/index`}
+                  component={BaseReceiveList}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/baseReceive/add`}
+                  component={BaseReceiveAdd}
+                />
+                {/* DESIGN TO DESIGN */}
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/designToDesign/index`}
+                  component={DesignToDesignList}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/designToDesign/add`}
+                  component={DesignToDesignAdd}
+                />
+                {/* DESIGN TO FACTORY */}
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/designToFactory/index`}
+                  component={DesignToFactoryList}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/designToFactory/add`}
+                  component={DesignToFactoryAdd}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/designToFactory/edit/:designId`}
+                  component={DesignToFactoryEdit}
+                />
+                {/* MARKETING REPORTS */}
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/jobAgreementForm/index`}
+                  component={JobAgreementForm}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/jobInformation`}
+                  component={JobInformation}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/jobFlowAnalysis`}
+                  component={JobFlowAnalysis}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/jobFlowAnalysisMarketingPersonWise`}
+                  component={JobFlowAnalysisMarketingPersonWise}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/dealerWiseJobFlow`}
+                  component={DealerWiseJobFlowForm}
+                />
+                {/* JOB INFORMATION REPORT */}
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/analyticalJobInformationClientWise`}
+                  component={AnalyticalJobInformationClientWise}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/analyticalJobInformationEmployeeWise`}
+                  component={AnalyticalJobInformationEmployeeWise}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/analyticalJobInformationPrinterWise`}
+                  component={AnalyticalJobInformationPrinterWise}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/pendingJobInformation`}
+                  component={PendingJobInformation}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/pendingSupplyInformation`}
+                  component={PendingSupplyInformation}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/clientSummary`}
+                  component={ClientSummaryForm}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/clientDetails`}
+                  component={ClientDetailsForm}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/printerWiseJobStatusDetails`}
+                  component={PrinterWiseJobStatusDetails}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/marketingPersonWiseJobStatus`}
+                  component={MarketingPersonWiseJobStatus}
+                />
+                {/* SUPPLY CHAIN REPORTS */}
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/designFile/index`}
+                  component={DesignFile}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/designFileToFactoryForm/index`}
+                  component={DesignFileToFactoryForm}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/dailyDesignFileToFactoryForm/index`}
+                  component={DailyDesignFileToFactoryForm}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/designToDesignSection`}
+                  component={DesignToDesignReportForm}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/productionReportDetails`}
+                  component={ProductionReportDetailsForm}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/customerWiseAnalysis`}
+                  component={CustomerWiseAnalysisForm}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/progressReport`}
+                  component={ProgressReportForm}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/statusReport`}
+                  component={StatusReportForm}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/baseCylinderOrder`}
+                  component={BaseCylinderOrderForm}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/previousBaseToStock`}
+                  component={PreviousBaseToStockForm}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/finishedCylinderStatus`}
+                  component={FinishedCylinderStatusForm}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/yearlyJobFlow`}
+                  component={YearlyJobFlowForm}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/monthlyJobFlow`}
+                  component={MonthlyJobFlowForm}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/monthlyProduction`}
+                  component={MonthlyProductionForm}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/dailyProduction`}
+                  component={DailyProductionForm}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/dailyJobFlowDetails`}
+                  component={DailyJobFlowDetailsForm}
+                />
+                {/* SCHEDULE REPORT */}
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/baseSupplySchedule`}
+                  component={BaseSupplySchedule}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/pendingbase`}
+                  component={PendingBase}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/receivedbase`}
+                  component={ReceivedBase}
+                />
+                {/* JOB MANAGEMENT REPORT */}
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/salesAndCollections`}
+                  component={SalesAndCollectionsForm}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/branchWiseSalesCollection`}
+                  component={BranchWiseSalesCollectionForm}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/collectionAndDiscountDetails`}
+                  component={CollectionAndDiscountDetailsForm}
+                />
+                {/* FACTORY REPORT */}
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/factoryProduction`}
+                  component={FactoryProductionForm}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/grindingSchedule`}
+                  component={GrindingScheduleForm}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/polishingSchedule`}
+                  component={PolishingScheduleForm}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/platingSchedule`}
+                  component={PlatingScheduleForm}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/engravingSchedule`}
+                  component={EngravingScheduleForm}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/engravingRemainingJobs`}
+                  component={EngravingRemainingJobsForm}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/chromeSchedule`}
+                  component={ChromeScheduleForm}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/grindingRemainingJobs`}
+                  component={GrindingRemainingJobsForm}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/polishingRemainingJobs`}
+                  component={PolishingRemainingJobsForm}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/platingRemainingJobs`}
+                  component={PlatingRemainingJobsForm}
+                />
+                {/* accounts  */}
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/chartOfAccounts/index`}
+                  component={chartOfAccounts}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/chartOfAccounts/add`}
+                  component={chartOfAccountsAdd}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/chartOfAccounts/edit/:chartOfAccountsId`}
+                  component={chartOfAccountsEdit}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/accConfiguration/index`}
+                  component={accConfiguration}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/batch/index`}
+                  component={batch}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/payment-voucher/index`}
+                  component={paymentVoucher}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/received-voucher/index`}
+                  component={receivedVoucher}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/bank-payment/index`}
+                  component={bankPaymentdVoucher}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/bank-receive/index`}
+                  component={bankReceiveddVoucher}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/journal-voucher/index`}
+                  component={journalVoucher}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/payment-voucher/edit/:id`}
+                  component={BatchPaymentVoucherEdit}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/received-voucher/edit/:id`}
+                  component={BatchReceiveVoucherEdit}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/bank-payment/edit/:id`}
+                  component={BatchBankPaymentEdit}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/bank-receive/edit/:id`}
+                  component={BatchBankReceiveEdit}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/journal-voucher/edit/:id`}
+                  component={JournalVoucherEdit}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/print-previous-voucher/index`}
+                  component={PrintPreviousVoucher}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/transaction-posting-report`}
+                  component={TransactionPosting}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/trial-balance`}
+                  component={TrialBalance}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/receipts-payments`}
+                  component={ReceiptPayments}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/cash-book`}
+                  component={CashBook}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/bank-book`}
+                  component={BankBook}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/ledger-query`}
+                  component={LedgerQuery}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/balance-sheet`}
+                  component={BalanceSheet}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/accounts-payable`}
+                  component={AccountsPayable}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/accounts-receivable`}
+                  component={AccountsReceivable}
+                />
+                {/* ------- SCHEDULE START ------- */}
+                {/* GRINDING */}
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/grinding/index`}
+                  component={GrindingList}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/grinding/add`}
+                  component={GrindingAdd}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/grinding/edit/:jobOrderJobNo`}
+                  component={GrindingEdit}
+                />
+                {/* BACK OFFICE SETUP START  */}
+                {/* GRINDING MACHINE */}
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/machine/index`}
+                  component={MachineList}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/machine/add`}
+                  component={MachineAdd}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/machine/edit/:machineId`}
+                  component={MachineEdit}
+                />
+                {/* POLISHING MACHINE */}
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/polishMachine/index`}
+                  component={PolishingMachineList}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/polishMachine/add`}
+                  component={PolishingMachineAdd}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/polishMachine/edit/:polishMachineId`}
+                  component={PolishingMachineEdit}
+                />
+                {/* PLATING SHIFTING */}
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/shiftControl/index`}
+                  component={DigShiftEdit}
+                />
+                {/* PLATING DEPARTMENT */}
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/platingDept/index`}
+                  component={PlatingDeptList}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/platingDept/add`}
+                  component={PlatingDeptAdd}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/platingDept/edit`}
+                  component={PlatingDeptEdit}
+                />
+                {/* POLISHING */}
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/polishing/index`}
+                  component={PolishingList}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/polishing/add`}
+                  component={PolishingAdd}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/polishing/edit/:dig_polishing_cylinder_id`}
+                  component={PolishingEdit}
+                />
+                {/* ENGRAVING */}
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/engraving/index`}
+                  component={EngravingList}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/engraving/add`}
+                  component={EngravingAdd}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/engraving/edit/:dig_engravings_cylinder_id`}
+                  component={EngravingEdit}
+                />
+                {/* CHROME */}
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/chrome/index`}
+                  component={ChromeList}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/chrome/add`}
+                  component={ChromeAdd}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/chrome/edit`}
+                  component={ChromeEdit}
+                />
+                {/* QUALITY CONTROL */}
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/qualityControl/index`}
+                  component={QualityControlList}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/qualityControl/add`}
+                  component={QualityControlAdd}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/qualityControl/edit/:job_order_pk_id`}
+                  component={QualityControlEdit}
+                />
+                {/* DE-CHROME */}
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/de-chrome/index`}
+                  component={DeChromeList}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/de-chrome/add`}
+                  component={DeChromeAdd}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/de-chrome/edit`}
+                  component={DeChromeEdit}
+                />
+                {/* Challan */}
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/challan/index`}
+                  component={Challan}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/challan/add`}
+                  component={ChallanAdd}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/challan/edit/:challanId`}
+                  component={ChallanEdit}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/challan/show/:challanId`}
+                  component={ChallaShow}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/bill/index`}
+                  component={Bill}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/bill/add`}
+                  component={BillAdd}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/bill/edit/:challanId`}
+                  component={BillEdit}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/bill/show/:challanId`}
+                  component={BillShow}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/bill_collection`}
+                  component={BillCollection}
+                />
+              </UserApp>
+            </Fragment>
+          </Switch>
         );
     }
 }

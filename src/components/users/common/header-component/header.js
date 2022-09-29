@@ -81,7 +81,7 @@ const Header = () => {
           <div className="nav-right col p-0">
             <ul className={`nav-menus ${headerbar ? '' : 'open'}`}>
               <li>
-				          <Link to={`${process.env.PUBLIC_URL}/dashboard/apps`}>Homes</Link>
+				          <Link to={`${process.env.PUBLIC_URL}/dashboard/apps`}>Home</Link>
               </li>
               <li>
 				          <Report />

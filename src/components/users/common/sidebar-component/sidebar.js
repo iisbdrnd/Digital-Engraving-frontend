@@ -256,6 +256,8 @@ const Sidebar = (props) => {
         }
     }
 
+    console.log('menu', menuObject , MENUITEMS);
+
     return (
         <Fragment>
             <div className="page-sidebar">
