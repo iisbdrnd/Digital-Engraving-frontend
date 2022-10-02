@@ -256,7 +256,7 @@ const Sidebar = (props) => {
         }
     }
 
-    console.log('menu', menuObject , MENUITEMS);
+    // console.log('usermenu', menuObject , MENUITEMS);
 
     return (
         <Fragment>

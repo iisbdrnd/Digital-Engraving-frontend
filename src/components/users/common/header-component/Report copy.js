@@ -5,8 +5,7 @@ import { softWareMenus } from '../../../../api/userUrl';
 import "./reportDropdown.css";
 import {
     Home,
-    ArrowRightCircle,
-    ArrowRight
+    ArrowRightCircle
 } from 'react-feather';
 
 const Report = () => {
@@ -83,55 +82,20 @@ const Report = () => {
         });
 
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [menuObject]);
 
     console.log('usermenu',mainmenu, MENUITEMS);
 
     return (
         <>
-            <ul class="dropdown">
-                <li><a href="#">Report</a>
-                    <ul>
-                        {
-                            MENUITEMS?.map( (menu) => (
-                                <li key={menu.title}><a className='d-flex align-items-center' href="">{menu.title} {menu.type === 'sub' && <div className="ml-1"><ArrowRight  color="black" size={15}/></div> }  </a>
-                                    {
-                                        menu.type === 'sub' && (
-                                            <ul>
-                                                {
-                                                    menu?.children?.map( (subMenu) => (
-                                                        subMenu.title && (
-                                                                <li key={subMenu?.title}><a href="">{subMenu?.title}</a></li>
-                                                            )
-                                                    ))
-                                                }
-                                            </ul>
-                                        )
-                                    }
-                                </li>
-                            ))
-                        }
-                        {/* <li><a href="">Nice Dropdown Menu</a></li>
-                        <li><a href="">Submenu - 1</a></li>
-                        <li><a href="#">Dropdown</a>
-                            <ul>
-                                <li><a href="">Submenu - 1</a></li>
-                                <li><a href="">Submenu - 2</a></li>
-                                <li><a href="#">Dropdown</a>
-                                    <ul>
-                                        <li><a href="">Submenu - 1</a></li>
-                                        <li><a href="">Submenu - 2</a></li>
-                                        <li><a href="">Submenu - 3</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="">Submenu - 3</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="">Submenu - 2</a></li> */}
-                    </ul>
-                </li>
-            </ul>
+            <div class="dropdown">
+                <button class="dropbtn">Report</button>
+                <div class="dropdown-content">
+                    <a href="#">Link 1</a>
+                    <a href="#">Link 2</a>
+                    <a href="#">Link 3</a>
+                </div>
+            </div>
         </>
     );
 };
