@@ -92,7 +92,7 @@ const Report = () => {
     return (
         <>
             <ul class="dropdown">
-                <li><a href="#">Report</a>
+                <li><a href="#">Reports</a>
                     <ul>
                         {
                             MENUITEMS?.map( (menu) => (
@@ -111,16 +111,25 @@ const Report = () => {
                                         ) : (
                                             <>
                                                 <a href="#"
-                                                    className='d-flex align-items-center' 
-                                                >{menu.title} <div className="ml-1"><ArrowRight  color="black" size={15}/></div> </a>
+                                                    // className='d-flex align-items-center' 
+                                                > 
+
+                                                <div className="d-flex align-items-center">
+                                                    <span className="menutitle">{menu.title}</span> <ArrowRight  color="black" size={10}/>
+                                                </div>
+                                                </a>
                                                 <ul>
                                                     {
                                                         menu?.children?.map( (subMenu) => (
                                                             subMenu.type === 'sub' ? (
                                                                     <li key={subMenu?.title}>
                                                                         <a href="#"
-                                                                            className='d-flex align-items-center' 
-                                                                        >{subMenu?.title} <div className="ml-1"><ArrowRight  color="black" size={15}/></div> </a>
+                                                                            // className='d-flex align-items-center' 
+                                                                        > 
+                                                                        <div className="d-flex align-items-center">
+                                                                            <span className="menutitle">{subMenu.title}</span> <ArrowRight  color="black" size={10}/>
+                                                                        </div> 
+                                                                        </a>
                                                                         <ul>
                                                                             {
                                                                                 subMenu?.children?.map( (submultiMenu) => (

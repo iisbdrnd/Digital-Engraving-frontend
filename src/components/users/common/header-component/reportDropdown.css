@@ -1,11 +1,14 @@
-
+.menutitle{
+  /* margin-top: -5px; */
+  margin-right: 5px;
+}
 .dropdown {
     margin: 0;
     padding: 0;
     background: white;
     border: none;
     cursor: pointer;
-    text-align: center !important;
+    text-align: left !important;
 }
 
 .dropdown li {
@@ -14,10 +17,10 @@
 
 .dropdown li a {
     color: #4466f2;
-    text-align: center;
+    /* text-align: center; */
     text-decoration: none;
     display: block;
-    padding: 10px;
+    padding: 5px 10px;
     cursor: pointer;
 }
 
@@ -25,19 +28,22 @@
     position: absolute;
     top: 100%;
     margin: 0;
-    /* padding: 0; */
-    padding: 0px 20px;
+    padding: 10px 20px;
     list-style: none;
     display: none;
     line-height: normal;
     background-color: #ffffff;
 }
 
+.dropdown li ul li {
+    width: 100%;
+}
+
 .dropdown li ul li a {
-    text-align: center;
+    /* text-align: center; */
     color: #000000;
     font-size: 14px;
-    padding: 10px;
+    padding: 5px 10px;
     display: block;
     white-space: nowrap;
 }
