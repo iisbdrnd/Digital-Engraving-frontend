@@ -301,7 +301,6 @@ const Sidebar = (props) => {
                                                 state: { params: {menuId: menuItem.menuId} },
                                                 menuId: menuItem.menuId
                                             }}
-                                            // to={`${process.env.PUBLIC_URL}${menuItem.path}/${menuItem.menuId}`}
                                             params={ menuItem.menuId }
                                             className={`sidebar-header ${menuItem.active ? 'active' : ''}`}
                                             onClick={() => toggletNavActive(menuItem)}

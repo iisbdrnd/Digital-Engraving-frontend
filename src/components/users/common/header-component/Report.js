@@ -8,6 +8,7 @@ import {
     ArrowRightCircle,
     ArrowRight
 } from 'react-feather';
+import { Link } from 'react-router-dom';
 
 const Report = () => {
 
@@ -95,20 +96,77 @@ const Report = () => {
                     <ul>
                         {
                             MENUITEMS?.map( (menu) => (
-                                <li key={menu.title}><a className='d-flex align-items-center' href="">{menu.title} {menu.type === 'sub' && <div className="ml-1"><ArrowRight  color="black" size={15}/></div> }  </a>
+                                <li key={menu.title}>
                                     {
-                                        menu.type === 'sub' && (
-                                            <ul>
-                                                {
-                                                    menu?.children?.map( (subMenu) => (
-                                                        subMenu.title && (
-                                                                <li key={subMenu?.title}><a href="">{subMenu?.title}</a></li>
-                                                            )
-                                                    ))
-                                                }
-                                            </ul>
+                                        menu.type === 'link' ? (
+                                            <Link 
+                                                className='d-flex align-items-center' 
+                                                to={{
+                                                        pathname: process.env.PUBLIC_URL+menu.path,
+                                                        state: { params: {menuId: menu.menuId} },
+                                                        menuId: menu.menuId
+                                                    }}
+                                                params={ menu.menuId }
+                                            >{menu.title}</Link>
+                                        ) : (
+                                            <>
+                                                <a href="#"
+                                                    className='d-flex align-items-center' 
+                                                >{menu.title} <div className="ml-1"><ArrowRight  color="black" size={15}/></div> </a>
+                                                <ul>
+                                                    {
+                                                        menu?.children?.map( (subMenu) => (
+                                                            subMenu.type === 'sub' ? (
+                                                                    <li key={subMenu?.title}>
+                                                                        <a href="#"
+                                                                            className='d-flex align-items-center' 
+                                                                        >{subMenu?.title} <div className="ml-1"><ArrowRight  color="black" size={15}/></div> </a>
+                                                                        <ul>
+                                                                            {
+                                                                                subMenu?.children?.map( (submultiMenu) => (
+                                                                                    <li key={submultiMenu.title}>
+                                                                                        {
+                                                                                            submultiMenu.title && (
+                                                                                                <Link 
+                                                                                                    className='d-flex align-items-center' 
+                                                                                                    to={{
+                                                                                                            pathname: process.env.PUBLIC_URL+submultiMenu.path,
+                                                                                                            state: { params: {menuId: submultiMenu.menuId} },
+                                                                                                            menuId: submultiMenu.menuId
+                                                                                                        }}
+                                                                                                    params={ submultiMenu.menuId }
+                                                                                                >{submultiMenu.title}</Link>
+                                                                                            )
+                                                                                        }
+                                                                                    </li>
+                                                                                ))
+                                                                            }
+                                                                        </ul>
+                                                                        
+                                                                        {/* if another dropdown here then ul > li > a */}
+                                                                    </li>
+                                                                ) : (
+                                                                    subMenu.title && (
+                                                                        <li key={subMenu.title}>
+                                                                            <Link 
+                                                                                className='d-flex align-items-center' 
+                                                                                to={{
+                                                                                        pathname: process.env.PUBLIC_URL+subMenu.path,
+                                                                                        state: { params: {menuId: subMenu.menuId} },
+                                                                                        menuId: subMenu.menuId
+                                                                                    }}
+                                                                                params={ subMenu.menuId }
+                                                                            >{subMenu.title}</Link>
+                                                                        </li>
+                                                                    ) 
+                                                                )
+                                                        ))
+                                                    }
+                                                </ul>
+                                            </>
                                         )
                                     }
+                                    
                                 </li>
                             ))
                         }
