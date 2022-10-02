@@ -1,11 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { Fragment , useEffect, useState } from 'react';
+import React, { Fragment , useEffect, useState, useRef } from 'react';
 import ReportHeader from './ReportHeader';
 import {DESIGN_TO_DESIGN_REPORT} from '../../../../api/userUrl'
 import { userGetMethod } from '../../../../api/userAction';
 import styles from "./report.module.css";
+import './style.scss';
+import ReactToPrint from 'react-to-print';
 
 const Report = ({fromDate, toDate}) => {
+    const componentRef = useRef();
     const [isLoading, setIsLoading] = useState(true);
     const [orderTypes, setJorderTypes] = useState([]);
     const [grandTotalCylinder, setGrandTotalCyl] = useState([]);
@@ -35,12 +38,46 @@ const Report = ({fromDate, toDate}) => {
                 <div className="row">
                     <div className="col-sm-12">
                         <div className={styles.reportWrapper}> 
-                            <ReportHeader reportTitle="Design File to Design" />
+                            <div className="report-header">
+                                <div className="print_button">
+                                    <ReactToPrint
+                                        trigger={() => {
+                                            return <button className="btn btn-default"><i className="fa fa-print" aria-hidden="true"></i> Print</button>;
+                                        }}
+                                        content={() => componentRef.current}
+                                        />
+                                    {/* <button className="btn btn-default"><i className="fa fa-print" aria-hidden="true"></i> Print</button>&nbsp;
+                                    <button className="btn btn-default"><i className="fa fa-file-pdf-o" aria-hidden="true"></i>Pdf</button> */}
+                                </div>
+                                {/* <div className="company-info">
+                                    <img className="img-responsive" src={process.env.PUBLIC_URL+'/digitalLogo.png'} alt="Company Logo"/>
+                                    <div className="company-name text-left">
+                                        <h1>Digital Engravers Ltd</h1>
+                                        <span className="company-moto">53 Purana Paltan (6th Floor)</span>
+                                    </div>
+                                </div>
+                                <div className="report-for">
+                                    <h2>Design File to Design</h2>
+                                </div> */}
+                            </div>
+                            {/* <ReportHeader reportTitle="Design File to Design" /> */}
 
                             <div className="mainDiv" style={{"padding": "1% 5%"}}>
                             {isLoading ? (<img src={process.env.PUBLIC_URL+'/preloader.gif'} alt="Data Loading"/>):
                                 (
-                                    <div className="row">
+                                    <div ref={componentRef} className="row">
+                                        <div className="col-sm-12">
+                                            <div className="company-info d-flex  justify-content-center align-items-center  my-4">
+                                                <img className="img-responsive" src={process.env.PUBLIC_URL+'/digitalLogo.png'} alt="Company Logo"/>
+                                                <div className="company-name text-left">
+                                                    <h1>Digital Engravers Ltd</h1>
+                                                    <span className="company-moto">53 Purana Paltan (6th Floor)</span>
+                                                </div>
+                                            </div>
+                                            <div className="report-for mt-3 d-flex justify-content-center">
+                                                <button className="btn btn-secondary">Design File to Design</button>
+                                            </div>
+                                        </div>
                                         <table className="particulars table table-bordered table-stripped" cellSpacing="5" cellPadding="5" width="100%"  style={tableStyle}>
                                             <thead className="groupFont">
                                                 <tr>
