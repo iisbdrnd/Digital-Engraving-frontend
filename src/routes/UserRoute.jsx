@@ -74,7 +74,7 @@ import PrintersAdd from './../components/users/backOfficeSetup/printers/Add';
 import PrintersEdit from './../components/users/backOfficeSetup/printers/Edit';
 
 // USERS
-import SoftwareUserList from './../components/admin/users/listData';
+import SoftwareUserList from './../components/users/users/listData';
 
 
 //SUPPLIER INFORMATION
@@ -391,6 +391,7 @@ import BillCollection from './../components/users/factory/bill/Collection';
 
 //User App
 import UserApp from "./../components/UserApp";
+import UserAccess from "../components/users/users/access/List/UserAccess";
 
 class UserRoute extends Component {
     constructor(props) {
@@ -742,6 +743,11 @@ class UserRoute extends Component {
                 <UserAuthRoute
                   path={`${process.env.PUBLIC_URL}/users/index`}
                   component={SoftwareUserList}
+                />
+                {/* users access link  */}
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/user-access-link/:userId`}
+                  component={UserAccess}
                 />
                 {/* USER DEPARTMENT */}
                 <UserAuthRoute
