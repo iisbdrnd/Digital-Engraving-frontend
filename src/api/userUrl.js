@@ -22,7 +22,7 @@ export const Chain = 'api/user/chain';
 
 export const userMenuList = 'api/user/userMenuList';
 
-export const softWareMenus = 'api/user/software-menus';
+export const softWareMenus = 'api/user/software-menus-without-report';
 
 export const userHasAccess = 'api/user/userHasAccess';
 
