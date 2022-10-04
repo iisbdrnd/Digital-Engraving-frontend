@@ -220,10 +220,11 @@ const UserAccess = () => {
             module_id : menusForModuleId,
             menus: menu,
             internal_links:links            
-        }
+        } 
+        console.log(data);
     
         // post api call with data
-        userPostMethod('api/user/projectAccessingStore',data)
+        userPostMethod('api/user/userAccessingStore',data)
         .then( res => {
             // if data save successfull
             if(res.data.message){

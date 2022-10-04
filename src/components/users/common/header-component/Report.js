@@ -19,7 +19,8 @@ const Report = () => {
     useEffect(() => {
         let moduleId = localStorage.getItem('moduleId');
         // Start Dynamic Menu Processing
-        userGetMethod(`${softWareMenus}/${moduleId}`)
+         const softWareMenusWithoutReport = 'api/user/software-menus-without-report' ;
+        userGetMethod(`${softWareMenusWithoutReport}/${moduleId}`)
         .then(response => {
             
             response.data.software_menus.map((menu, i) => (
