@@ -1,6 +1,7 @@
 import React, { Fragment , useEffect, useState } from 'react';
 import useForm from "react-hook-form";
 import { SubmitButton } from '../../../common/GlobalButton'
+import { PDFViewer } from '@react-pdf/renderer';
 import Report from './Report';
 
 const Form = (props) => {
@@ -137,6 +138,10 @@ const Form = (props) => {
              {
                 showPdf && <Report fromDate={fromDate} toDate={toDate} />
              }
+
+             {/* <PDFViewer showToolbar={true} height="1000px" width="100%">
+                <Report />
+             </PDFViewer> */}
             
 
         </Fragment>
