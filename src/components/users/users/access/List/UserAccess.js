@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-expressions */
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
@@ -28,7 +29,7 @@ const UserAccess = () => {
         userGetMethod(userModuleURl)
         .then( res => {
             setUserAccessData(res.data);
-            console.log('data',res.data)
+            // console.log('data',res.data)
             setLoading(false)
         })
     }, [userModuleURl])
@@ -41,7 +42,7 @@ const UserAccess = () => {
         userGetMethod(userMenuForModuleURl)
         .then( res => {
             setModulesData(res.data);
-            console.log('data',res.data)
+            // console.log('data',res.data)
             setModulesLoading(false)
         })
     }, [userMenuForModuleURl])
@@ -61,7 +62,65 @@ const UserAccess = () => {
         setRoleId(getRoleId)
     }
 
-        console.log('value', roleId );
+    const userRoleMenuURL = `api/user/getModuleMenusForRole/${roleId}/${menusForModuleId}`
+    useEffect(  () => {
+        userGetMethod(userRoleMenuURL)
+        .then(  ( res) => {
+            // console.log('userRoleMenu',res.data);
+            const roleModulesData = res.data;
+            //copy module data
+            let tempData= {
+                software_module : roleModulesData?.software_module,
+                checkAll: false
+            }
+           
+            if(roleModulesData?.software_menus?.length > 0){
+
+                // get data whice check true
+                let modulesRoleCheckTrueData = [];
+                for (const menu of modulesData?.software_menus) {
+                    for (const roleMenu of roleModulesData.software_menus ){
+                        
+                        if( menu.id === roleMenu.id){
+
+                            const roleMenuData = {...menu , isChecked : true}
+                            modulesRoleCheckTrueData.push(roleMenuData);
+
+                        }  
+
+                    }
+                }
+
+                const menusWithOutCheck = modulesData?.software_menus?.filter(function(menu){
+                    return !modulesRoleCheckTrueData.some(function(checkmenu){   
+                        return menu.id === checkmenu.id;          
+                    });
+                });
+
+
+                const newSoftwareMenus = [
+                    ...modulesRoleCheckTrueData,
+                    ...menusWithOutCheck
+                ]
+
+                //update module data
+                tempData = {
+                    ...tempData,
+                    software_menus : newSoftwareMenus
+                }
+                //set module data to update data
+                setModulesData(tempData);
+
+                console.log('menu', modulesRoleCheckTrueData , menusWithOutCheck);
+                
+
+            }
+        })
+    }, [ roleId , menusForModuleId ])
+
+   
+
+        // console.log('value', roleId );
 
     // module id 
     // console.log('menusForModuleId', menusForModuleId);
@@ -233,7 +292,7 @@ const UserAccess = () => {
             menus: menu,
             internal_links:links            
         } 
-        console.log(data);
+        // console.log(data);
     
         // post api call with data
         userPostMethod('api/user/userAccessingStore',data)
