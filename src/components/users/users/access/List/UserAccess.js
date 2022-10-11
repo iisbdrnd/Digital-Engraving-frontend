@@ -17,14 +17,15 @@ const UserAccess = () => {
     const [loading,setLoading] = useState(false);
     const [modulesloading,setModulesLoading] = useState(false);
     const [ tab, setTab] = useState(0);
+    const [ roleId, setRoleId] = useState(null);
     const {userId} = useParams();
-    let dummyData = data.slice(0,5);
+    // let dummyData = data.slice(0,5);
 
     //get all user access module by using user id
     const userModuleURl = `api/user/software-modules`  //previous was ${userId}. Here 1 is folder id
     useEffect( () => {
         setLoading(true);
-        let res = userGetMethod(userModuleURl)
+        userGetMethod(userModuleURl)
         .then( res => {
             setUserAccessData(res.data);
             console.log('data',res.data)
@@ -37,7 +38,7 @@ const UserAccess = () => {
     const userMenuForModuleURl = `api/user/getMenusForModule/1/${menusForModuleId}`  //previous was ${userId}. Here 1 is project id
     useEffect( () => {
         setModulesLoading(true);
-        let res = userGetMethod(userMenuForModuleURl)
+        userGetMethod(userMenuForModuleURl)
         .then( res => {
             setModulesData(res.data);
             console.log('data',res.data)
@@ -53,6 +54,17 @@ const UserAccess = () => {
         setMenusForModuleId(id);
         setTab(1);
     }
+
+    const handleRoleChange = (event) => {
+        const roleIdStr = event.target.value;
+        const getRoleId = parseInt(roleIdStr);
+        setRoleId(getRoleId)
+    }
+
+        console.log('value', roleId );
+
+    // module id 
+    // console.log('menusForModuleId', menusForModuleId);
 
     //checkbox handle 
     const handleCheckChange = (e) => {
@@ -266,7 +278,7 @@ const UserAccess = () => {
                 </div>
             </div>
 
-            {
+            {/* {
                 tab === 0 && (
                     <div className="container-fluid">
                         <div className="row">
@@ -337,10 +349,10 @@ const UserAccess = () => {
                         </div>
                     </div>
                 )
-            }
+            } */}
             {
                 tab === 1 && (
-                <UserAccessModules modulesData={modulesData} loading={modulesloading} handleCheckChange={handleCheckChange} singleSelect={singleSelect} saveData={saveData}/>
+                <UserAccessModules modulesData={modulesData} loading={modulesloading} handleCheckChange={handleCheckChange} singleSelect={singleSelect} saveData={saveData} handleRoleChange={handleRoleChange} />
                 )
             }
             
