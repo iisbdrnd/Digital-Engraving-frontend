@@ -1,4 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
+
 /* eslint-disable no-unused-expressions */
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
@@ -13,6 +13,7 @@ import { getMethod, userGetMethod, userPostMethod } from '../../../../../api/use
 const UserAccess = () => {
 
     const [userAccessData , setUserAccessData] = useState();
+    const [ userSoftwareMenu , setUserSoftwareMenu] = useState([]);
     const [modulesData , setModulesData] = useState();
     const [menusForModuleId , setMenusForModuleId] = useState(null);
     const [loading,setLoading] = useState(false);
@@ -22,7 +23,7 @@ const UserAccess = () => {
     const {userId} = useParams();
     // let dummyData = data.slice(0,5);
 
-    //get all user access module by using user id
+    //get all user access module by using user id  .software_menus
     const userModuleURl = `api/user/software-modules`  //previous was ${userId}. Here 1 is folder id
     useEffect( () => {
         setLoading(true);
@@ -42,6 +43,7 @@ const UserAccess = () => {
         userGetMethod(userMenuForModuleURl)
         .then( res => {
             setModulesData(res.data);
+            setUserSoftwareMenu(res.data.software_menus);
             // console.log('data',res.data)
             setModulesLoading(false)
         })
@@ -62,11 +64,14 @@ const UserAccess = () => {
         setRoleId(getRoleId)
     }
 
-    const userRoleMenuURL = `api/user/getModuleMenusForRole/${roleId}/${menusForModuleId}`
+    /* Fetching data from the server and setting it to the state by using role */
     useEffect(  () => {
+        
+        const userRoleMenuURL = `api/user/getModuleMenusForRole/${roleId}/${menusForModuleId}`
+
         userGetMethod(userRoleMenuURL)
         .then(  ( res) => {
-            // console.log('userRoleMenu',res.data);
+
             const roleModulesData = res.data;
             //copy module data
             let tempData= {
@@ -76,6 +81,7 @@ const UserAccess = () => {
            
             if(roleModulesData?.software_menus?.length > 0){
 
+                console.log('hello');
                 // get data whice check true
                 let modulesRoleCheckTrueData = [];
                 for (const menu of modulesData?.software_menus) {
@@ -91,6 +97,8 @@ const UserAccess = () => {
                     }
                 }
 
+                /* Filtering the menusWithOutCheck array and returning the menus that are not in the
+                modulesRoleCheckTrueData array. */
                 const menusWithOutCheck = modulesData?.software_menus?.filter(function(menu){
                     return !modulesRoleCheckTrueData.some(function(checkmenu){   
                         return menu.id === checkmenu.id;          
@@ -98,6 +106,7 @@ const UserAccess = () => {
                 });
 
 
+                /* Creating a new array from the two arrays. */
                 const newSoftwareMenus = [
                     ...modulesRoleCheckTrueData,
                     ...menusWithOutCheck
@@ -111,19 +120,27 @@ const UserAccess = () => {
                 //set module data to update data
                 setModulesData(tempData);
 
-                console.log('menu', modulesRoleCheckTrueData , menusWithOutCheck);
-                
+            } else {
+                /* Making an API call to get the menus for the module. */
+                const userMenuForModuleURl = `api/user/getMenusForModule/1/${menusForModuleId}`
+                userGetMethod(userMenuForModuleURl)
+                .then( res => {
 
+                    tempData = {
+                        ...tempData,
+                        software_menus : res.data.software_menus
+                    }
+
+                    setModulesData(tempData);
+
+                })
+                
             }
         })
-    }, [ roleId , menusForModuleId ])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [roleId, menusForModuleId, userMenuForModuleURl ])
 
-   
 
-        // console.log('value', roleId );
-
-    // module id 
-    // console.log('menusForModuleId', menusForModuleId);
 
     //checkbox handle 
     const handleCheckChange = (e) => {
