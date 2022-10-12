@@ -48,9 +48,31 @@ const Report = ({fromDate, toDate}) => {
   
 //  console.log('dta', isLoading,  indexOfFirstReport,  indexOfLastReport , currentReports );
 
+
+  // genarate page number
+  const pageNumbers = [];
+
+  for (let i = 1; i <= Math.ceil( orderTypes[0]?.jobOrders?.length / reportsPerPage); i++) {
+    pageNumbers.push(i);
+  }
+
   // Change page
   const paginate = pageNumber => {
     setCurrentPage(pageNumber)
+  };
+
+
+  const nextPage = () => {
+    if(pageNumbers.length > currentPage){
+        setCurrentPage(prevCount => prevCount + 1);
+    }
+  };
+
+
+  const previousPage = () => {
+    if(currentPage > 1){
+        setCurrentPage(prevCount => prevCount - 1);
+    }
   };
 
  
@@ -75,8 +97,10 @@ const Report = ({fromDate, toDate}) => {
                                         </div>
                                         <div className="pagination">
                                             <Pagination 
-                                                reportsPerPage={reportsPerPage}
-                                                totalReports={orderTypes[0]?.jobOrders?.length}
+                                                pageNumbers={pageNumbers}
+                                                currentPage={currentPage}
+                                                nextPage={nextPage}
+                                                previousPage={previousPage}
                                                 paginate={paginate} />
                                         </div>
                                     </div>
