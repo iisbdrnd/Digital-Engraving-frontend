@@ -105,6 +105,11 @@ const UserAccess = () => {
                         return menu.id === checkmenu.id;          
                     });
                 });
+                
+                // if the array of object have isChecked True then remove
+                menusWithOutCheck.forEach(object => {
+                    delete object['isChecked'];
+                });
 
 
                 /* Creating a new array from the two arrays. */

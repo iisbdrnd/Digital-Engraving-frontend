@@ -97,10 +97,15 @@ const UserAccess = () => {
 
                 /* Filtering the menusWithOutCheck array and returning the menus that are not in the
                 modulesRoleCheckTrueData array. */
-                const menusWithOutCheck = modulesData?.software_menus?.filter(function(menu){
+                let menusWithOutCheck = modulesData?.software_menus?.filter(function(menu){
                     return !modulesRoleCheckTrueData.some(function(checkmenu){   
                         return menu.id === checkmenu.id;          
                     });
+                });
+
+                // if the array of object have isChecked True then remove
+                menusWithOutCheck.forEach(object => {
+                    delete object['isChecked'];
                 });
 
 
