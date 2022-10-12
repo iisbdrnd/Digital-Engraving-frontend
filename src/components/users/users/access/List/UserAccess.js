@@ -4,16 +4,12 @@ import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useParams } from 'react-router';
-import { adminGetMethod, adminPostMethod } from '../../../../../api/action';
-import { userAccessingStore } from '../../../../../api/adminUrl';
-import data from '../../../../../helper/Table/MOCK_DATA.json';
 import UserAccessModules from './UserAccessModules';
-import { getMethod, userGetMethod, userPostMethod } from '../../../../../api/userAction';
+import {  userGetMethod, userPostMethod } from '../../../../../api/userAction';
 
 const UserAccess = () => {
 
     const [userAccessData , setUserAccessData] = useState();
-    const [ userSoftwareMenu , setUserSoftwareMenu] = useState([]);
     const [modulesData , setModulesData] = useState();
     const [menusForModuleId , setMenusForModuleId] = useState(null);
     const [loading,setLoading] = useState(false);
@@ -43,8 +39,6 @@ const UserAccess = () => {
         userGetMethod(userMenuForModuleURl)
         .then( res => {
             setModulesData(res.data);
-            setUserSoftwareMenu(res.data.software_menus);
-            // console.log('data',res.data)
             setModulesLoading(false)
         })
     }, [userMenuForModuleURl])
@@ -58,6 +52,10 @@ const UserAccess = () => {
         setTab(1);
     }
 
+    /**
+     * When the user changes the role, set the roleId to the value of the role selected.
+     * @param event - The event object
+     */
     const handleRoleChange = (event) => {
         const roleIdStr = event.target.value;
         const getRoleId = parseInt(roleIdStr);

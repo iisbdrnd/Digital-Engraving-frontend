@@ -16,6 +16,7 @@ const UserAccess = () => {
     const [loading,setLoading] = useState(false);
     const [modulesloading,setModulesLoading] = useState(false);
     const [ tab, setTab] = useState(0);
+    const [ roleId, setRoleId] = useState(null);
     const {userId} = useParams();
     let dummyData = data.slice(0,5);
 
@@ -23,7 +24,7 @@ const UserAccess = () => {
     const userModuleURl = `api/admin/projects/getModule/1`  //previous was ${userId}. Here 1 is folder id
     useEffect( () => {
         setLoading(true);
-        let res = adminGetMethod(userModuleURl)
+        adminGetMethod(userModuleURl)
         .then( res => {
             setUserAccessData(res.data);
             console.log('data',res.data)
@@ -36,7 +37,7 @@ const UserAccess = () => {
     const userMenuForModuleURl = `api/admin/users/getMenusForModule/1/${menusForModuleId}`  //previous was ${userId}. Here 1 is project id
     useEffect( () => {
         setModulesLoading(true);
-        let res = adminGetMethod(userMenuForModuleURl)
+        adminGetMethod(userMenuForModuleURl)
         .then( res => {
             setModulesData(res.data);
             console.log('data',res.data)
@@ -52,6 +53,93 @@ const UserAccess = () => {
         setMenusForModuleId(id);
         setTab(1);
     }
+
+    /**
+     * When the user changes the role, set the roleId to the value of the role selected.
+     * @param event - The event object
+     */
+    const handleRoleChange = (event) => {
+        const roleIdStr = event.target.value;
+        const getRoleId = parseInt(roleIdStr);
+        console.log(getRoleId);
+        setRoleId(getRoleId)
+    }
+
+    /* Fetching data from the server and setting it to the state by using role */
+    useEffect(  () => {
+        
+        const userRoleMenuURL = `api/admin/getModuleMenusForRole/${roleId}/${menusForModuleId}`
+
+        adminGetMethod(userRoleMenuURL)
+        .then(  ( res) => {
+
+            const roleModulesData = res.data;
+            //copy module data
+            let tempData= {
+                software_module : roleModulesData?.software_module,
+                checkAll: false
+            }
+           
+            if(roleModulesData?.software_menus?.length > 0){
+
+                console.log('hello');
+                // get data whice check true
+                let modulesRoleCheckTrueData = [];
+                for (const menu of modulesData?.software_menus) {
+                    for (const roleMenu of roleModulesData.software_menus ){
+                        
+                        if( menu.id === roleMenu.id){
+
+                            const roleMenuData = {...menu , isChecked : true}
+                            modulesRoleCheckTrueData.push(roleMenuData);
+
+                        }  
+
+                    }
+                }
+
+                /* Filtering the menusWithOutCheck array and returning the menus that are not in the
+                modulesRoleCheckTrueData array. */
+                const menusWithOutCheck = modulesData?.software_menus?.filter(function(menu){
+                    return !modulesRoleCheckTrueData.some(function(checkmenu){   
+                        return menu.id === checkmenu.id;          
+                    });
+                });
+
+
+                /* Creating a new array from the two arrays. */
+                const newSoftwareMenus = [
+                    ...modulesRoleCheckTrueData,
+                    ...menusWithOutCheck
+                ]
+
+                //update module data
+                tempData = {
+                    ...tempData,
+                    software_menus : newSoftwareMenus
+                }
+                //set module data to update data
+                setModulesData(tempData);
+
+            } else {
+                /* Making an API call to get the menus for the module. */
+                const userMenuForModuleURl = `api/admin/users/getMenusForModule/1/${menusForModuleId}`
+                adminGetMethod(userMenuForModuleURl)
+                .then( res => {
+
+                    tempData = {
+                        ...tempData,
+                        software_menus : res.data.software_menus
+                    }
+
+                    setModulesData(tempData);
+
+                })
+                
+            }
+        })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [roleId, menusForModuleId, userMenuForModuleURl ])
 
     //checkbox handle 
     const handleCheckChange = (e) => {
@@ -264,7 +352,7 @@ const UserAccess = () => {
                 </div>
             </div>
 
-            {
+            {/* {
                 tab === 0 && (
                     <div className="container-fluid">
                         <div className="row">
@@ -335,10 +423,11 @@ const UserAccess = () => {
                         </div>
                     </div>
                 )
-            }
+            } */}
+
             {
                 tab === 1 && (
-                <UserAccessModules modulesData={modulesData} loading={modulesloading} handleCheckChange={handleCheckChange} singleSelect={singleSelect} saveData={saveData}/>
+                <UserAccessModules modulesData={modulesData} loading={modulesloading} handleCheckChange={handleCheckChange} singleSelect={singleSelect} saveData={saveData} handleRoleChange={handleRoleChange} />
                 )
             }
             
