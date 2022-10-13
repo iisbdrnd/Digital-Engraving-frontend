@@ -34,7 +34,7 @@ const UserMenu = (props) => {
         
         <Fragment>
             <li className="onhover-dropdown">
-                <div className="media align-items-center">
+                <div className="media align-items-center justify-content-end">
                     {/* <img className="align-self-center pull-right img-50 rounded-circle blur-up lazyloaded" src={profile} alt="header-user" /> */}
                     {
                         UserImage.UserImage == '' || UserImage.UserImage == null

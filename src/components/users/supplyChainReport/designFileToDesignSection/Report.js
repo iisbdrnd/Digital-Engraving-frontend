@@ -14,7 +14,7 @@ const Report = ({fromDate, toDate}) => {
     const [grandTotalSurfaceArea, setGrandTotalSurfaceArea] = useState([]);
     
   const [currentPage, setCurrentPage] = useState(1);
-  const [reportsPerPage] = useState(15);
+  const [reportsPerPage] = useState(3);
     // const [calculateCyl, setCalculateCyl] = useState(0);
 
     const tableStyle = {
@@ -42,8 +42,10 @@ const Report = ({fromDate, toDate}) => {
   let currentReports;
    
   if(!isLoading){
-    currentReports = orderTypes[0]?.jobOrders?.slice(indexOfFirstReport, indexOfLastReport);
+    currentReports = orderTypes?.slice(indexOfFirstReport, indexOfLastReport);
   }
+
+  console.log('orderTypes',orderTypes);
 
   
 //  console.log('dta', isLoading,  indexOfFirstReport,  indexOfLastReport , currentReports );
@@ -52,7 +54,7 @@ const Report = ({fromDate, toDate}) => {
   // genarate page number
   const pageNumbers = [];
 
-  for (let i = 1; i <= Math.ceil( orderTypes[0]?.jobOrders?.length / reportsPerPage); i++) {
+  for (let i = 1; i <= Math.ceil( orderTypes?.length / reportsPerPage); i++) {
     pageNumbers.push(i);
   }
 
@@ -136,16 +138,16 @@ const Report = ({fromDate, toDate}) => {
                                                     </thead>
                                                     <tbody className="reportBody">
                                                     {
-                                                        orderTypes?.length > 0 ? 
+                                                        currentReports?.length > 0 ? 
                                                         <>
-                                                            {orderTypes.map((orderType, index1) => 
+                                                            {currentReports.map((orderType, index1) => 
                                                                 (
                                                                     <>
                                                                         <tr key={index1}>
                                                                             <td colSpan="10">{orderType.job_type}</td>
                                                                         </tr>
-                                                                        { currentReports ? 
-                                                                            currentReports.map((jobOrder, index2) => (
+                                                                        { orderType.jobOrders ? 
+                                                                            orderType.jobOrders.map((jobOrder, index2) => (
                                                                                 <tr key={index2}>
                                                                                     <td>{jobOrder.job_no}</td>
                                                                                     <td>{jobOrder.agreement_date}</td>
