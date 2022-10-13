@@ -27,7 +27,7 @@ const UserAccess = () => {
         adminGetMethod(userModuleURl)
         .then( res => {
             setUserAccessData(res.data);
-            console.log('data',res.data)
+            // console.log('data',res.data)
             setLoading(false)
         })
     }, [userModuleURl])
@@ -40,7 +40,7 @@ const UserAccess = () => {
         adminGetMethod(userMenuForModuleURl)
         .then( res => {
             setModulesData(res.data);
-            console.log('data',res.data)
+            // console.log('data',res.data)
             setModulesLoading(false)
         })
     }, [userMenuForModuleURl])
@@ -61,7 +61,7 @@ const UserAccess = () => {
     const handleRoleChange = (event) => {
         const roleIdStr = event.target.value;
         const getRoleId = parseInt(roleIdStr);
-        console.log(getRoleId);
+        // console.log(getRoleId);
         setRoleId(getRoleId)
     }
 
@@ -82,7 +82,7 @@ const UserAccess = () => {
            
             if(roleModulesData?.software_menus?.length > 0){
 
-                console.log('hello');
+                // console.log('hello');
                 // get data whice check true
                 let modulesRoleCheckTrueData = [];
                 for (const menu of modulesData?.software_menus) {
@@ -90,7 +90,20 @@ const UserAccess = () => {
                         
                         if( menu.id === roleMenu.id){
 
-                            const roleMenuData = {...menu , isChecked : true}
+                            let roleMenuData = {...menu , isChecked : true}
+                            
+                            //change internal links object and give isChecked to true
+                            const roleMenuInternalLinks =  roleMenuData?.internal_links?.map( internal_link => {
+                                return {
+                                    ...internal_link,
+                                    isChecked: true
+                                }
+                            })
+                            roleMenuData = {
+                                ...roleMenuData,
+                                internal_links : roleMenuInternalLinks
+                            }
+
                             modulesRoleCheckTrueData.push(roleMenuData);
 
                         }  

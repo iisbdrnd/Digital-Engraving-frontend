@@ -87,8 +87,21 @@ const UserAccess = () => {
                         
                         if( menu.id === roleMenu.id){
 
-                            const roleMenuData = {...menu , isChecked : true}
+                            let roleMenuData = {...menu , isChecked : true}
+
+                            //change internal links object and give isChecked to true
+                            const roleMenuInternalLinks =  roleMenuData?.internal_links?.map( internal_link => {
+                                return {
+                                    ...internal_link,
+                                    isChecked: true
+                                }
+                            })
+                            roleMenuData = {
+                                ...roleMenuData,
+                                internal_links : roleMenuInternalLinks
+                            }
                             modulesRoleCheckTrueData.push(roleMenuData);
+                            // console.log('data', menu , roleMenu);
 
                         }  
 
