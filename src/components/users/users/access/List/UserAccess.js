@@ -50,6 +50,7 @@ const UserAccess = () => {
     const openPopup = (id) => {
         setMenusForModuleId(id);
         setTab(1);
+        setRoleId(null);
     }
 
     /**
