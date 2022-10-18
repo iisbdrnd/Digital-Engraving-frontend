@@ -118,15 +118,33 @@ const UserAccess = () => {
                 });
 
                 // if the array of object have isChecked True then remove
-                menusWithOutCheck.forEach(object => {
-                    delete object['isChecked'];
-                });
+                const menusWithOutCheckAllFalse =  menusWithOutCheck.map( (menu) => {
+                    let newMenu = {
+                        ...menu,
+                        isChecked : false
+                    }
+
+                    if(menu.internal_links.length > 0){
+                        const newMenuInternallinks = menu.internal_links.map( (links) => {
+                            return { ...links , isChecked : false }
+                        } )
+                        newMenu = {
+                            ...newMenu, 
+                            internal_links : newMenuInternallinks
+                        }
+                        return newMenu;
+                    } else{
+                       return newMenu; 
+                    }
+                })
+
+                // console.log('checked', menusWithOutCheckAllFalse);
 
 
                 /* Creating a new array from the two arrays. */
                 const newSoftwareMenus = [
                     ...modulesRoleCheckTrueData,
-                    ...menusWithOutCheck
+                    ...menusWithOutCheckAllFalse
                 ]
 
                 //update module data
