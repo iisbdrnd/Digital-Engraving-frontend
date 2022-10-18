@@ -30,7 +30,7 @@ const Module = ({modulesData,loading,handleCheckChange, singleSelect,saveData, h
                               type="checkbox" name="allSelect" onChange={handleCheckChange} className="form-check-input" id="all-select" />
                               <label className="form-check-label" htmlFor="all-select">{modulesData?.software_module?.module_name}</label>
                           </div>
-                          <SelectRoleForModule handleRoleChange={handleRoleChange}/>
+                          {/* <SelectRoleForModule handleRoleChange={handleRoleChange}/> */}
                         </div>
                         <button onClick={saveData} className="btn btn-sm btn-secondary">Save</button>
                     </div>

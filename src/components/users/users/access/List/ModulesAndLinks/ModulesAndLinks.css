@@ -15,3 +15,14 @@
 .moduleInternalLinks{
   margin-left: 25px;;
 }
+
+/* .accordion_item.active .button {
+  background-color: #105057;
+} */
+.accordionX {
+  height: 0;
+  overflow: hidden;
+}
+.accordionX.open {
+  height: auto;
+}
