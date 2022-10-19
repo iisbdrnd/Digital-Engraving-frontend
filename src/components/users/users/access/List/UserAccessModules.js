@@ -3,10 +3,10 @@ import Module from './ModulesAndLinks/Module';
 
 
 
-const UserAccessModules = ({modulesData,loading, handleCheckChange, singleSelect,saveData, handleRoleChange}) => {
+const UserAccessModules = ({modulesData,loading }) => {
     return (
         <>
-            <Module modulesData={modulesData} loading={loading} handleCheckChange={handleCheckChange} singleSelect={singleSelect} saveData={saveData} handleRoleChange={handleRoleChange}/>
+            <Module modulesData={modulesData} loading={loading} />
         </>
     );
 };

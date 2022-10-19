@@ -9,6 +9,8 @@
 }
 .answer_wrapper.open {
   height: auto;
+  padding: 20px 0px;
+  border: 1px solid gray;
   /* height: 100px; */
 }
 

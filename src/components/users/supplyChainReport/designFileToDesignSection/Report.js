@@ -25,7 +25,7 @@ const Report = ({fromDate, toDate}) => {
         setIsLoading(true);
         userGetMethod(`${DESIGN_TO_DESIGN_REPORT}?fromDate=${fromDate}&&toDate=${toDate}`)
         .then(response => {
-            console.log('res', response.data);
+            // console.log('res', response.data);
             setJorderTypes(response.data.orderTypes);
             setGrandTotalCyl(response.data.grandTotalCyl);
             setGrandTotalSurfaceArea(response.data.grandTotalSurfaceArea);
@@ -45,7 +45,7 @@ const Report = ({fromDate, toDate}) => {
     currentReports = orderTypes?.slice(indexOfFirstReport, indexOfLastReport);
   }
 
-  console.log('orderTypes',orderTypes);
+//   console.log('orderTypes',orderTypes);
 
   
 //  console.log('dta', isLoading,  indexOfFirstReport,  indexOfLastReport , currentReports );

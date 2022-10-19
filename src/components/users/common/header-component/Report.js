@@ -88,7 +88,7 @@ const Report = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    console.log('usermenu',mainmenu, MENUITEMS);
+    // console.log('usermenu',mainmenu, MENUITEMS);
 
     return (
         <>

@@ -6,6 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useParams } from 'react-router';
 import UserAccessModules from './UserAccessModules';
 import {  userGetMethod, userPostMethod } from '../../../../../api/userAction';
+import { softwareMenuRearrange } from './ModulesAndLinks/utils';
 
 const UserAccess = () => {
 
@@ -38,72 +39,17 @@ const UserAccess = () => {
         setModulesLoading(true);
         userGetMethod(userMenuForModuleURl)
         .then( res => {
-            
-            const menuObject = [];
-            res.data?.software_menus?.map((menu, i) => (
-                (menu.parent_id == 0 && menu.route == "#") ? (
-                    menuObject.push({
-                        ...menu,
-                        title: menu.menu_name,
-                        type : 'sub',
-                        path : '/',
-                        active: false,
-                        children: 
-                        res.data?.software_menus?.map((menu2, i) => (
-                            (menu2.parent_id > 0) ? (
-                                (menu2.parent_id == menu.id && menu2.route == "#") ? 
-                                {   ...menu2,
-                                    title: menu2.menu_name,
-                                    type : 'sub',
-                                    active: false,
-                                    children: res?.data?.software_menus?.map((menu3, i) => (
-                                        (menu3.parent_id == menu2.id) ?
-                                        {   
-                                            ...menu2,
-                                            title: menu3.menu_name,
-                                            type : 'link',
-                                            path : '/'+menu3.route.replace(".", "/"),
-                                            menuId: menu3.id,
-                                            active: false,
-                                        } : {}  
-                                    ))
-                                }
-                                : 
-                                (menu2.parent_id == menu.id) ?
-                                (
-                                    {   ...menu2,
-                                        title: menu2.menu_name,
-                                        type : 'link',
-                                        path : '/'+menu2.route.replace(".", "/"),
-                                        menuId: menu2.id
-                                    }
-                                ) : {}
-                            ) 
-                            : {}
-                        ))
-                    })
-                )
-                : (menu.route != "#" && menu.parent_id == 0) ? (
-                    menuObject.push({
-                        ...menu,
-                        title: menu.menu_name,
-                        type : 'link',
-                        path : '/'+menu.route.replace(".", "/"),
-                        menuId: menu.id,
-                        active: false,
-                    })
 
-                ): {}
-            
-            ));
-            // console.log('menuObject',menuObject);
-            // console.log('menuObject',res.data);
+            let menus;
 
+            if (res?.data?.software_menus?.length > 0) {
+                menus = softwareMenuRearrange(res.data.software_menus)
+            }     
+            
             const moduleData = {
                 ...res.data,
-                software_menus : menuObject
+                software_menus : menus
             }
-            console.log('moduleData', moduleData);
             
             setModulesData(moduleData);
             setModulesLoading(false)
@@ -129,6 +75,7 @@ const UserAccess = () => {
         const getRoleId = parseInt(roleIdStr);
         setRoleId(getRoleId)
     }
+
 
     /* Fetching data from the server and setting it to the state by using role */
     // useEffect(  () => {
@@ -248,7 +195,7 @@ const UserAccess = () => {
     const handleCheckChange = (e) => {
         const {name , checked} = e.target;
 
-        console.log(name , checked);
+        // console.log(name , checked);
 
         //copy module data
         let tempData= {
@@ -461,21 +408,11 @@ const UserAccess = () => {
         
             {
                 tab === 1 && (
-                <UserAccessModules modulesData={modulesData} loading={modulesloading} handleCheckChange={handleCheckChange} singleSelect={singleSelect} saveData={saveData} handleRoleChange={handleRoleChange} />
+                <UserAccessModules modulesData={modulesData} loading={modulesloading} />
                 )
             }
             
-            {/* {
-                tab === 2 && (
-                    <h2>Accordian</h2>
-                )
-            }
-            
-            {
-                tab === 3 && (
-                    <h4>Tab 3</h4>
-                )
-            } */}
+
         </>
     );
 };
