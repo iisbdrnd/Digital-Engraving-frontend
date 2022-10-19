@@ -3,13 +3,14 @@ import ChildrenInternalLinks from "./ChildrenInternalLinks";
 
 const ModuleMenuChildrenItem = ({ insideMenu, onToggle, active }) => {
     // console.log('moduleMenu', moduleMenu);
+    const { isTrue } = insideMenu;
  return (
   <>
     <li className={`list-group-item mx-3  my-1 ${active ? "on" : ""}`}>
         <div className="d-flex justify-content-between align-items-center">
             <div className="form-check">
                 <input 
-                    // checked={''}
+                    checked={isTrue || false}
                  type="checkbox" className="form-check-input" name={''} id={''} />
                 <label className="form-check-label" htmlFor={''}>{insideMenu.menu_name}</label>
             </div>

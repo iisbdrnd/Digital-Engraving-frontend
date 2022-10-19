@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import ModuleMenu from './ModuleMenu';
 // import SelectRoleForModule from './SelectRoleForModule';
 
-const Module = ({ modulesData, loading }) => {
+const Module = ({ modulesData, loading, allMenuAndResourceChecked }) => {
 
     
   const [clicked, setClicked] = useState("0");
@@ -30,6 +30,7 @@ const Module = ({ modulesData, loading }) => {
                           <div className="form-check">
                               <input
                               // checked={''}
+                              onChange={allMenuAndResourceChecked}
                               type="checkbox" name="allMenuSelect" className="form-check-input" id="all-select" />
                               <label className="form-check-label" htmlFor="all-select">{modulesData?.software_module?.module_name}</label>
                           </div>

@@ -6,7 +6,7 @@ const ModuleMenu = ({ software_menu, onToggle, active }) => {
 
 
 
-  const { id, menu_name , isChecked } = software_menu;
+  const { id, menu_name , isTrue } = software_menu;
 //   checked={isChecked || false}
 
   return (
@@ -14,7 +14,7 @@ const ModuleMenu = ({ software_menu, onToggle, active }) => {
         <li className={`list-group-item my-1 ${active ? "active" : ""}`}>
             <div className="d-flex justify-content-between align-items-center">
                 <div className="form-check">
-                    <input  type="checkbox" className="form-check-input" name={id} />
+                    <input checked={isTrue || false }  type="checkbox" className="form-check-input" name={id} />
                     <label className="form-check-label" htmlFor={id}>{menu_name}</label>
                 </div>
                 {

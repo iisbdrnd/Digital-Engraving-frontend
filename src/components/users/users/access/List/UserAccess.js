@@ -41,7 +41,6 @@ const UserAccess = () => {
         .then( res => {
 
             let menus;
-
             if (res?.data?.software_menus?.length > 0) {
                 menus = softwareMenuRearrange(res.data.software_menus)
             }     
@@ -74,6 +73,84 @@ const UserAccess = () => {
         const roleIdStr = event.target.value;
         const getRoleId = parseInt(roleIdStr);
         setRoleId(getRoleId)
+    }
+
+    const menus = [
+        { 
+            id : 1 ,
+            parent_id: 0 ,
+            menu_name : "Back Office Setup", 
+            children : [
+                { id : 2 , parent_id: 1 , menu_name : "Department"},
+                { 
+                    id : 3 , parent_id: 1 , menu_name : "Company profile",
+                    internal_links : [ { name : 'add'}, {name : 'delete'}]
+            
+                },
+            ]
+        },
+        { 
+            id : 4 ,
+            parent_id: 0 ,
+            menu_name : "Configaration",
+            children : [
+                { id : 5 , parent_id: 4 , menu_name : "Role"},
+            ]
+        },
+        { id : 6 , parent_id: 0 , menu_name : "Home"}
+    ]
+
+    const allMenuAndResourceChecked = ( event ) => {
+        const {checked} = event.target;
+
+        //copy module data
+        let moduleData= {
+            software_module : modulesData?.software_module,
+            checkAll: false
+        }
+
+        const allCheckedData = modulesData?.software_menus?.map( (menu) => {
+
+            if (menu.children?.length < 1) {
+                return {...menu , isTrue : checked}
+            } else {
+                // copy menu 
+                const copyMenuObject = {
+                    ...menu,
+                    isTrue: checked
+                }
+
+                const checkedChildren = menu?.children?.map( (childrenMenu) => {
+
+                    if(childrenMenu?.internal_links?.length < 1){
+                        return { ...childrenMenu, isTrue: checked }
+                    } else {
+                        const childrenMenuWithInternalLinks = {
+                             ...childrenMenu, 
+                             isTrue: checked 
+                        }
+                       const internal_links =  childrenMenu?.internal_links?.map( (internalLink) => {
+                                return { ...internalLink , isTrue: checked}
+                        })
+                        return { ...childrenMenuWithInternalLinks , internal_links: internal_links }
+                    }
+                    
+                })
+
+                return { ...copyMenuObject , children : checkedChildren }
+
+            }
+        })
+
+        //update module data
+        moduleData = {
+            ...moduleData,
+            software_menus : allCheckedData
+        }
+        //set module data to update data
+        setModulesData(moduleData);
+
+        console.log('event',moduleData);
     }
 
 
@@ -274,104 +351,104 @@ const UserAccess = () => {
     }
 
 
-    //if cleck add , edit , delete  or update
-    const singleSelect = (e) => {
-        //get internal links id , software menu id
-        const {name , id, checked} = e.target;
-        //copy module data
-        let tempData= {
-            software_module : modulesData?.software_module,
-            checkAll: false
-        }
-        //find and copy object software menu by using software menu id
-        const findSoftware_menus = modulesData?.software_menus?.find( data => data.id == id );
-        let softwareMenusObj = {
-            ...findSoftware_menus
-        }
+    // //if cleck add , edit , delete  or update
+    // const singleSelect = (e) => {
+    //     //get internal links id , software menu id
+    //     const {name , id, checked} = e.target;
+    //     //copy module data
+    //     let tempData= {
+    //         software_module : modulesData?.software_module,
+    //         checkAll: false
+    //     }
+    //     //find and copy object software menu by using software menu id
+    //     const findSoftware_menus = modulesData?.software_menus?.find( data => data.id == id );
+    //     let softwareMenusObj = {
+    //         ...findSoftware_menus
+    //     }
         
-        //find whice internal link click or check
-        const internal_Link_update = findSoftware_menus.internal_links?.find( data => data.id == name );
-        //copy internal link object and check true or false
-        let updateObject = {
-            ...internal_Link_update,
-            isChecked: checked
-        }
+    //     //find whice internal link click or check
+    //     const internal_Link_update = findSoftware_menus.internal_links?.find( data => data.id == name );
+    //     //copy internal link object and check true or false
+    //     let updateObject = {
+    //         ...internal_Link_update,
+    //         isChecked: checked
+    //     }
 
-        //set object to whice intenal links want to update and get all internal links array
-        const final_internal_Link_update  = findSoftware_menus.internal_links?.map( data => data.id == name ? updateObject : data );
+    //     //set object to whice intenal links want to update and get all internal links array
+    //     const final_internal_Link_update  = findSoftware_menus.internal_links?.map( data => data.id == name ? updateObject : data );
 
-        //if all internal links click then return true
-        const isAllInternalLinksTrue = final_internal_Link_update.every( internalLink => internalLink.isChecked === true );
+    //     //if all internal links click then return true
+    //     const isAllInternalLinksTrue = final_internal_Link_update.every( internalLink => internalLink.isChecked === true );
 
-        //update single software menu object
-        softwareMenusObj = {
-            ...softwareMenusObj,
-            isChecked: isAllInternalLinksTrue,
-            internal_links: final_internal_Link_update
-        }
+    //     //update single software menu object
+    //     softwareMenusObj = {
+    //         ...softwareMenusObj,
+    //         isChecked: isAllInternalLinksTrue,
+    //         internal_links: final_internal_Link_update
+    //     }
 
-        //set object to whice menu want to update and get all software menus array
-        const final  = modulesData?.software_menus?.map( data => data.id == id ? softwareMenusObj : data );
+    //     //set object to whice menu want to update and get all software menus array
+    //     const final  = modulesData?.software_menus?.map( data => data.id == id ? softwareMenusObj : data );
 
-        //update all menu final object
-        tempData = {
-            ...tempData,
-            software_menus : final
-        }
-        //set all menus module data
-        setModulesData(tempData);
+    //     //update all menu final object
+    //     tempData = {
+    //         ...tempData,
+    //         software_menus : final
+    //     }
+    //     //set all menus module data
+    //     setModulesData(tempData);
 
-    }
+    // }
 
-    // if click save data button
-    const saveData = () => {
+    // // if click save data button
+    // const saveData = () => {
         
-        //find whice software menu have check
-        const menusFilter = modulesData?.software_menus?.filter( module => module.isChecked === true);
+    //     //find whice software menu have check
+    //     const menusFilter = modulesData?.software_menus?.filter( module => module.isChecked === true);
         
-        //modify software menu object
-        let menu = [];
-        for (const menuFilter of menusFilter) {
-            const obj = {
-                id : menuFilter.id
-            }
-            menu.push(obj)
-        }
+    //     //modify software menu object
+    //     let menu = [];
+    //     for (const menuFilter of menusFilter) {
+    //         const obj = {
+    //             id : menuFilter.id
+    //         }
+    //         menu.push(obj)
+    //     }
 
-        //find whice intenal links check and set new object to true
-        let links = [];        
-        for(const menu of modulesData?.software_menus){
-            if(menu?.internal_links?.length > 0){
-                for(const internal_link of menu.internal_links){
-                    if(internal_link.isChecked === true){
-                        const obj = {id: internal_link.id}
-                        links.push(obj)
-                    }
-                }
-            }
-        }
+    //     //find whice intenal links check and set new object to true
+    //     let links = [];        
+    //     for(const menu of modulesData?.software_menus){
+    //         if(menu?.internal_links?.length > 0){
+    //             for(const internal_link of menu.internal_links){
+    //                 if(internal_link.isChecked === true){
+    //                     const obj = {id: internal_link.id}
+    //                     links.push(obj)
+    //                 }
+    //             }
+    //         }
+    //     }
         
 
-        //create final post data
-        const user_id = parseInt(userId);
-        let data = {
-            user_id,
-            module_id : menusForModuleId,
-            menus: menu,
-            internal_links:links            
-        } 
-        // console.log(data);
+    //     //create final post data
+    //     const user_id = parseInt(userId);
+    //     let data = {
+    //         user_id,
+    //         module_id : menusForModuleId,
+    //         menus: menu,
+    //         internal_links:links            
+    //     } 
+    //     // console.log(data);
     
-        // post api call with data
-        userPostMethod('api/user/userAccessingStore',data)
-        .then( res => {
-            // if data save successfull
-            if(res.data.message){
-                toast.success('User access added successfully');
-            }
-        })
+    //     // post api call with data
+    //     userPostMethod('api/user/userAccessingStore',data)
+    //     .then( res => {
+    //         // if data save successfull
+    //         if(res.data.message){
+    //             toast.success('User access added successfully');
+    //         }
+    //     })
 
-    }
+    // }
     
     return (
         <>
@@ -408,7 +485,7 @@ const UserAccess = () => {
         
             {
                 tab === 1 && (
-                <UserAccessModules modulesData={modulesData} loading={modulesloading} />
+                <UserAccessModules allMenuAndResourceChecked={allMenuAndResourceChecked} modulesData={modulesData} loading={modulesloading} />
                 )
             }
             

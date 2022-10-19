@@ -8,7 +8,7 @@ const ChildrenInternalLinks = ({ internal_links,active }) => {
         <li className={` my-1 ${active ? "on" : ""}`}>
             <div className="d-flex justify-content-between align-items-center">
                 <div className="form-check">
-                    <input  type="checkbox" className="form-check-input" />
+                    <input checked={internal_links.isTrue || false}  type="checkbox" className="form-check-input" />
                     <label className="form-check-label" >{internal_links.link_name}</label>
                 </div>
             </div>

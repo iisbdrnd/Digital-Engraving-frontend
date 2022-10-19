@@ -1,11 +1,11 @@
 
 // const menus = [
-//     { id : 1 , parentId: 0 , menu_name : "Back Office Setup"},
-//     { id : 2 , parentId: 1 , menu_name : "Department"},
-//     { id : 3 , parentId: 1 , menu_name : "Company profile"},
-//     { id : 4 , parentId: 0 , menu_name : "Configaration"},
-//     { id : 5 , parentId: 4 , menu_name : "Role"},
-//     { id : 6 , parentId: 0 , menu_name : "Home"}
+//     { id : 1 , parent_id: 0 , menu_name : "Back Office Setup"},
+//     { id : 2 , parent_id: 1 , menu_name : "Department"},
+//     { id : 3 , parent_id: 1 , menu_name : "Company profile"},
+//     { id : 4 , parent_id: 0 , menu_name : "Configaration"},
+//     { id : 5 , parent_id: 4 , menu_name : "Role"},
+//     { id : 6 , parent_id: 0 , menu_name : "Home"}
 // ]
  export const softwareMenuRearrange = (menus) => {
     const rearrangeMenu = [];
