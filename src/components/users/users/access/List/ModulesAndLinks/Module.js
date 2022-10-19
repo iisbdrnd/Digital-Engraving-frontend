@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import ModuleMenu from './ModuleMenu';
 // import SelectRoleForModule from './SelectRoleForModule';
 
-const Module = ({ modulesData, loading, allMenuAndResourceChecked }) => {
+const Module = ({ modulesData, loading, allMenuAndResourceChecked, handleSelectMenu }) => {
 
     
   const [clicked, setClicked] = useState("0");
@@ -43,6 +43,7 @@ const Module = ({ modulesData, loading, allMenuAndResourceChecked }) => {
                       <ul className="list-group m-2">
                               {modulesData?.software_menus?.map((software_menu, index) => (
                                   <ModuleMenu
+                                  handleSelectMenu={handleSelectMenu}
                                   onToggle={() => handleToggle(index)}
                                   active={clicked === index}
                                   key={index} software_menu={software_menu} />

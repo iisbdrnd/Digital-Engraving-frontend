@@ -2,7 +2,7 @@ import React from 'react';
 import ModuleMenuChildren from './ModuleMenuChildren';
 import './ModulesAndLinks.css';
 
-const ModuleMenu = ({ software_menu, onToggle, active }) => {
+const ModuleMenu = ({ software_menu, onToggle, active, handleSelectMenu }) => {
 
 
 
@@ -14,7 +14,7 @@ const ModuleMenu = ({ software_menu, onToggle, active }) => {
         <li className={`list-group-item my-1 ${active ? "active" : ""}`}>
             <div className="d-flex justify-content-between align-items-center">
                 <div className="form-check">
-                    <input checked={isTrue || false }  type="checkbox" className="form-check-input" name={id} />
+                    <input checked={isTrue || false } onChange={ (event) => handleSelectMenu(event , id)}  type="checkbox" className="form-check-input" id={id} />
                     <label className="form-check-label" htmlFor={id}>{menu_name}</label>
                 </div>
                 {

@@ -100,6 +100,7 @@ const UserAccess = () => {
         { id : 6 , parent_id: 0 , menu_name : "Home"}
     ]
 
+    // when select all
     const allMenuAndResourceChecked = ( event ) => {
         const {checked} = event.target;
 
@@ -150,7 +151,60 @@ const UserAccess = () => {
         //set module data to update data
         setModulesData(moduleData);
 
-        console.log('event',moduleData);
+    }
+
+    // when select menu
+    const handleSelectMenu = (event , id ) => {
+
+        const { checked } = event.target ;
+        //copy module data
+        let moduleData= {
+            software_module : modulesData?.software_module,
+            checkAll: false
+        }
+
+        const findMenus = modulesData?.software_menus?.find( menu => menu.id === id );
+
+        let copyFindSelectedMenu = {
+            ...findMenus , 
+            isTrue : checked
+        }
+
+        const checkedChildren = findMenus?.children?.map( (childrenMenu) => {
+
+            if(childrenMenu?.internal_links?.length < 1){
+                return { ...childrenMenu, isTrue: checked }
+            } else {
+                const childrenMenuWithInternalLinks = {
+                        ...childrenMenu, 
+                        isTrue: checked 
+                }
+                const internal_links =  childrenMenu?.internal_links?.map( (internalLink) => {
+                        return { ...internalLink , isTrue: checked}
+                })
+                return { ...childrenMenuWithInternalLinks , internal_links: internal_links }
+            }
+            
+        })
+
+        copyFindSelectedMenu = {
+            ...copyFindSelectedMenu,
+            children : checkedChildren
+        }
+
+        //set object to whice menu want to update and get all software menus array
+        const finalSoftWareMenus  = modulesData?.software_menus?.map( menu => menu.id === id ? copyFindSelectedMenu : menu );
+
+        //change module data object
+        moduleData = {
+            ...moduleData,
+            software_menus : finalSoftWareMenus
+        }
+        //set module data object
+        setModulesData(moduleData);
+
+
+        console.log(moduleData);
     }
 
 
@@ -485,7 +539,7 @@ const UserAccess = () => {
         
             {
                 tab === 1 && (
-                <UserAccessModules allMenuAndResourceChecked={allMenuAndResourceChecked} modulesData={modulesData} loading={modulesloading} />
+                <UserAccessModules allMenuAndResourceChecked={allMenuAndResourceChecked} handleSelectMenu={handleSelectMenu} modulesData={modulesData} loading={modulesloading} />
                 )
             }
             
