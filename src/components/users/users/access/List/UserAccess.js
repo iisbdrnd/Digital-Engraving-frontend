@@ -1,9 +1,9 @@
 
 /* eslint-disable no-unused-expressions */
 import React, { useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
+// import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useParams } from 'react-router';
+// import { useParams } from 'react-router';
 import UserAccessModules from './UserAccessModules';
 import {  userGetMethod, userPostMethod } from '../../../../../api/userAction';
 import { softwareMenuRearrange } from './ModulesAndLinks/utils';
@@ -17,7 +17,7 @@ const UserAccess = () => {
     const [modulesloading,setModulesLoading] = useState(false);
     const [ tab, setTab] = useState(0);
     const [ roleId, setRoleId] = useState(null);
-    const {userId} = useParams();
+    // const {userId} = useParams();
     // let dummyData = data.slice(0,5);
 
     //get all user access module by using user id  .software_menus

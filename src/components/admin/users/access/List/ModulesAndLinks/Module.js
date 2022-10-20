@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import ModuleItem from './ModuleItem';
 import SelectRoleForModule from './SelectRoleForModule';
+import ModuleMenu from './ModuleMenu';
+// import SelectRoleForModule from './SelectRoleForModule';
 
-const Module = ({modulesData,loading,handleCheckChange, singleSelect,saveData, handleRoleChange}) => {
+const Module = ({ modulesData, loading, allMenuAndResourceChecked, handleSelectMenu, handleSelectChildMenu, handleSelectInternalLinks, handleRoleChange }) => {
 
     
   const [clicked, setClicked] = useState("0");
@@ -13,6 +14,11 @@ const Module = ({modulesData,loading,handleCheckChange, singleSelect,saveData, h
   }
   setClicked(index);
  };
+
+//  check all menu true or false 
+//  modulesData?.software_menus?.filter( software_menu => software_menu?.isChecked !== true).length < 1
+
+ const isAllSelect = modulesData?.software_menus?.filter( software_menu => software_menu?.isTrue !== true).length < 1
 
     return (
         <>
@@ -26,22 +32,24 @@ const Module = ({modulesData,loading,handleCheckChange, singleSelect,saveData, h
                         <div className="moduleAndRole  d-flex justify-content-start align-items-center">
                           <div className="form-check">
                               <input
-                              checked={ modulesData?.software_menus?.filter( software_menu => software_menu?.isChecked !== true).length < 1}
-                              type="checkbox" name="allSelect" onChange={handleCheckChange} className="form-check-input" id="all-select" />
+                              checked={isAllSelect}
+                              onChange={allMenuAndResourceChecked}
+                              type="checkbox" name="allMenuSelect" className="form-check-input" id="all-select" />
                               <label className="form-check-label" htmlFor="all-select">{modulesData?.software_module?.module_name}</label>
                           </div>
                           <SelectRoleForModule handleRoleChange={handleRoleChange}/>
                         </div>
-                        <button onClick={saveData} className="btn btn-sm btn-secondary">Save</button>
+                        <button className="btn btn-sm btn-secondary">Save</button>
                     </div>
                     
                     <div className="card-body">
                       <ul className="list-group m-2">
                               {modulesData?.software_menus?.map((software_menu, index) => (
-                                  <ModuleItem
+                                  <ModuleMenu
+                                  handleSelectMenu={handleSelectMenu}
+                                  handleSelectChildMenu={handleSelectChildMenu}
+                                  handleSelectInternalLinks={handleSelectInternalLinks}
                                   onToggle={() => handleToggle(index)}
-                                  handleCheckChange={handleCheckChange}
-                                  singleSelect={singleSelect}
                                   active={clicked === index}
                                   key={index} software_menu={software_menu} />
                               ))}
