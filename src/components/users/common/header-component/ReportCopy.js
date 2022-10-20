@@ -1,9 +1,8 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useEffect, useState } from 'react';
+import './report.css'
 import { userGetMethod } from '../../../../api/userAction';
 import { softWareMenus } from '../../../../api/userUrl';
-// import "./reportDropdown.css";
-import './report.css';
 import {
     Home,
     ArrowRightCircle,
@@ -89,42 +88,54 @@ const Report = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    console.log('usermenu',mainmenu, MENUITEMS);
+    // console.log('usermenu',mainmenu, MENUITEMS);
 
     return (
         <>
-            <div class="dropdown">
-                <button class="dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Dropdown button
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <div className="dropdown-container">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                data-mdb-toggle="dropdown" aria-expanded="false">
+                Dropdown link
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <li>
+                    <a class="dropdown-item" href="#">Action</a>
+                </li>
+                <li>
+                    <a class="dropdown-item" href="#">Another action</a>
+                </li>
+                <li>
+                    <a class="dropdown-item" href="#">
+                    Submenu &raquo;
+                    </a>
+                    <ul class="dropdown-menu dropdown-submenu">
+                    <li>
+                        <a class="dropdown-item" href="#">Submenu item 1</a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="#">Submenu item 2</a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="#">Submenu item 3 &raquo; </a>
+                        <ul class="dropdown-menu dropdown-submenu">
                         <li>
-                            <a class="dropdown-item" href="#">Submenu item 1</a>
+                            <a class="dropdown-item" href="#">Multi level 1</a>
                         </li>
                         <li>
-                            <a class="dropdown-item" href="#">Submenu item 2</a>
+                            <a class="dropdown-item" href="#">Multi level 2</a>
                         </li>
-                        <li>
-                            <a class="dropdown-item" href="#">Submenu item 3 &raquo; </a>
-                            <ul class="dropdown-menu dropdown-submenu">
-                            <li>
-                                <a class="dropdown-item" href="#">Multi level 1</a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="#">Multi level 2</a>
-                            </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="#">Submenu item 4</a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="#">Submenu item 5</a>
-                        </li>
-                    </div>
-                </div>
-            </div>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="#">Submenu item 4</a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="#">Submenu item 5</a>
+                    </li>
+                    </ul>
+                </li>
+                </ul>
+            </li>
         </>
     );
 };
