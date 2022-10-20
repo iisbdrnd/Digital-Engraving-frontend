@@ -195,9 +195,13 @@ const UserAccess = () => {
         //set object to whice menu want to update and get all software menus array
         const finalSoftWareMenus  = modulesData?.software_menus?.map( menu => menu.id === id ? copyFindSelectedMenu : menu );
 
+        
+        const isParentMenuTrue = finalSoftWareMenus.every( parentMenu => parentMenu.isTrue === true );
+
         //change module data object
         moduleData = {
             ...moduleData,
+            isTrue : isParentMenuTrue,
             software_menus : finalSoftWareMenus
         }
         //set module data object
@@ -207,6 +211,7 @@ const UserAccess = () => {
         console.log(moduleData);
     }
 
+    // when click childMenu
     const handleSelectChildMenu = ( event , parentId, menuChildId ) => {
 
         const { checked } = event.target;
@@ -231,21 +236,27 @@ const UserAccess = () => {
 
         let childInternalLinks;
 
-        if(findChildMenu?.internal_links.length > 0){
+        if(findChildMenu?.internal_links?.length > 0){
             childInternalLinks = findChildMenu?.internal_links?.map( ( internalLink) => {
                 return { ...internalLink , isTrue: checked}
             } )
         }
+        const isAllInternalLinksTrue = childInternalLinks.every( internalLink => internalLink.isTrue === true );
 
         childMenu = {
             ...childMenu, 
+            isTrue : isAllInternalLinksTrue,
             internal_links: childInternalLinks
         }
 
         const updateChildMenu = findParentMenu.children?.map( currentChildMenu => currentChildMenu.id === menuChildId ? childMenu : currentChildMenu )
 
+        
+        const isChildMenuTrue = updateChildMenu.every( childMenu => childMenu.isTrue === true );
+
         parentMenu  ={
             ...parentMenu,
+            isTrue : isChildMenuTrue,
             children : updateChildMenu
         }
 
@@ -260,6 +271,72 @@ const UserAccess = () => {
 
 
         console.log(updateSoftwareMenu);
+    }
+    
+    // when click internalLink
+    const handleSelectInternalLinks = ( event , parentId, menuChildId, internalLinksId ) => {
+
+        const { checked } = event.target;
+        // copy softare module
+        let moduleData= {
+            software_module : modulesData?.software_module,
+            checkAll: false
+        }
+
+        const findParentMenu = modulesData?.software_menus?.find( parentMenu => parentMenu.id === parentId );
+
+        let parentMenu = {
+            ...findParentMenu
+        }
+
+        const findChildMenu = findParentMenu.children?.find( childrenMenu => childrenMenu.id === menuChildId );
+
+        let childMenu = {
+            ...findChildMenu,
+        }
+
+        const findInteranlLink = findChildMenu.internal_links.find( internalLink => internalLink.id === internalLinksId );
+
+
+        const updateInternalLink = {
+            ...findInteranlLink,
+            isTrue : checked
+        }
+
+        const updatedNewInternalLinks = findChildMenu.internal_links.map( (internalLink) => {
+           return  internalLink.id === internalLinksId ? updateInternalLink : internalLink
+        })
+
+        const isAllInternalLinksTrue = updatedNewInternalLinks.every( internalLink => internalLink.isTrue === true );
+
+        childMenu = {
+            ...childMenu, 
+            isTrue : isAllInternalLinksTrue,
+            internal_links: updatedNewInternalLinks
+        }
+
+        const updateChildMenu = findParentMenu.children?.map( currentChildMenu => currentChildMenu.id === menuChildId ? childMenu : currentChildMenu );
+        
+
+        const isChildMenuTrue = updateChildMenu.every( childMenu => childMenu.isTrue === true );
+
+        parentMenu  ={
+            ...parentMenu,
+            isTrue: isChildMenuTrue,
+            children : updateChildMenu
+        }
+
+        const updateSoftwareMenu = modulesData?.software_menus?.map( currentParentMenu => currentParentMenu.id === parentId ? parentMenu : currentParentMenu );
+
+        moduleData = {
+            ...moduleData,
+            software_menus : updateSoftwareMenu
+        }
+        //set all menus module data
+        setModulesData(moduleData);
+
+
+        // console.log(updateSoftwareMenu);
     }
 
 
@@ -594,7 +671,7 @@ const UserAccess = () => {
         
             {
                 tab === 1 && (
-                <UserAccessModules allMenuAndResourceChecked={allMenuAndResourceChecked} handleSelectMenu={handleSelectMenu} handleSelectChildMenu={handleSelectChildMenu} modulesData={modulesData} loading={modulesloading} />
+                <UserAccessModules allMenuAndResourceChecked={allMenuAndResourceChecked} handleSelectMenu={handleSelectMenu} handleSelectChildMenu={handleSelectChildMenu} handleSelectInternalLinks={handleSelectInternalLinks} modulesData={modulesData} loading={modulesloading} />
                 )
             }
             

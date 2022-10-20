@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import ModuleMenu from './ModuleMenu';
 // import SelectRoleForModule from './SelectRoleForModule';
 
-const Module = ({ modulesData, loading, allMenuAndResourceChecked, handleSelectMenu, handleSelectChildMenu }) => {
+const Module = ({ modulesData, loading, allMenuAndResourceChecked, handleSelectMenu, handleSelectChildMenu, handleSelectInternalLinks }) => {
 
     
   const [clicked, setClicked] = useState("0");
@@ -17,6 +17,8 @@ const Module = ({ modulesData, loading, allMenuAndResourceChecked, handleSelectM
 //  check all menu true or false 
 //  modulesData?.software_menus?.filter( software_menu => software_menu?.isChecked !== true).length < 1
 
+ const isAllSelect = modulesData?.software_menus?.filter( software_menu => software_menu?.isTrue !== true).length < 1
+
     return (
         <>
             <div className="card">
@@ -29,7 +31,7 @@ const Module = ({ modulesData, loading, allMenuAndResourceChecked, handleSelectM
                         <div className="moduleAndRole  d-flex justify-content-start align-items-center">
                           <div className="form-check">
                               <input
-                              // checked={''}
+                              checked={isAllSelect}
                               onChange={allMenuAndResourceChecked}
                               type="checkbox" name="allMenuSelect" className="form-check-input" id="all-select" />
                               <label className="form-check-label" htmlFor="all-select">{modulesData?.software_module?.module_name}</label>
@@ -45,6 +47,7 @@ const Module = ({ modulesData, loading, allMenuAndResourceChecked, handleSelectM
                                   <ModuleMenu
                                   handleSelectMenu={handleSelectMenu}
                                   handleSelectChildMenu={handleSelectChildMenu}
+                                  handleSelectInternalLinks={handleSelectInternalLinks}
                                   onToggle={() => handleToggle(index)}
                                   active={clicked === index}
                                   key={index} software_menu={software_menu} />

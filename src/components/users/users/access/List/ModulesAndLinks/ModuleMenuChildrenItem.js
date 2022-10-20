@@ -1,16 +1,18 @@
 import React from "react";
 import ChildrenInternalLinks from "./ChildrenInternalLinks";
 
-const ModuleMenuChildrenItem = ({ insideMenu, parentId, onToggle, active, handleSelectChildMenu }) => {
-    // console.log('moduleMenu', moduleMenu);
-    const { id ,  isTrue } = insideMenu;
+const ModuleMenuChildrenItem = ({ insideMenu, parentId, onToggle, active, handleSelectChildMenu , handleSelectInternalLinks }) => {
+
+    const { id  } = insideMenu;
+    const checkAllInternalLinksSelect = insideMenu?.internal_links?.filter( internalLink => internalLink?.isTrue !== true).length < 1 ;
+
  return (
   <>
     <li className={`list-group-item mx-3  my-1 ${active ? "on" : ""}`}>
         <div className="d-flex justify-content-between align-items-center">
             <div className="form-check">
                 <input 
-                    checked={isTrue || false}
+                    checked={checkAllInternalLinksSelect}
                     onChange={ (event) => handleSelectChildMenu(event , parentId , id )}
                  type="checkbox" className="form-check-input" name={''} id={id} />
                 <label className="form-check-label" htmlFor={id}>{insideMenu.menu_name}</label>
@@ -24,7 +26,11 @@ const ModuleMenuChildrenItem = ({ insideMenu, parentId, onToggle, active, handle
             <ul className="p-2 d-flex flex-row justify-content-between align-items-center moduleInternalLinks">
                 {insideMenu?.internal_links?.map((internal_links, index) => (
                     <ChildrenInternalLinks
-                    key={index} internal_links={internal_links} />
+                        parentId={parentId}
+                        menuChildId={id}
+                        handleSelectInternalLinks={handleSelectInternalLinks}
+                        key={index} internal_links={internal_links} 
+                    />
                 ))}
             </ul>
 
