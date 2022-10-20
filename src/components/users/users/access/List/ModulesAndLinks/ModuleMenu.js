@@ -2,12 +2,11 @@ import React from 'react';
 import ModuleMenuChildren from './ModuleMenuChildren';
 import './ModulesAndLinks.css';
 
-const ModuleMenu = ({ software_menu, onToggle, active, handleSelectMenu }) => {
+const ModuleMenu = ({ software_menu, onToggle, active, handleSelectMenu, handleSelectChildMenu }) => {
 
 
 
   const { id, menu_name , isTrue } = software_menu;
-//   checked={isChecked || false}
 
   return (
       <>
@@ -35,7 +34,7 @@ const ModuleMenu = ({ software_menu, onToggle, active, handleSelectMenu }) => {
         <div className={`answer_wrapper ${active ? "open" : ""}`}>
 
             { software_menu?.children?.length > 0 &&   
-                <ModuleMenuChildren  menuChildren={software_menu.children} /> 
+                <ModuleMenuChildren handleSelectChildMenu={handleSelectChildMenu}  menuChildren={software_menu.children} parentId={id} /> 
             }
 
         </div>

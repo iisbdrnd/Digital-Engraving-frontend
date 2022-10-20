@@ -207,6 +207,61 @@ const UserAccess = () => {
         console.log(moduleData);
     }
 
+    const handleSelectChildMenu = ( event , parentId, menuChildId ) => {
+
+        const { checked } = event.target;
+        // copy softare module
+        let moduleData= {
+            software_module : modulesData?.software_module,
+            checkAll: false
+        }
+
+        const findParentMenu = modulesData?.software_menus?.find( parentMenu => parentMenu.id === parentId );
+
+        let parentMenu = {
+            ...findParentMenu
+        }
+
+        const findChildMenu = findParentMenu.children?.find( childrenMenu => childrenMenu.id === menuChildId );
+
+        let childMenu = {
+            ...findChildMenu,
+            isTrue : checked
+        }
+
+        let childInternalLinks;
+
+        if(findChildMenu?.internal_links.length > 0){
+            childInternalLinks = findChildMenu?.internal_links?.map( ( internalLink) => {
+                return { ...internalLink , isTrue: checked}
+            } )
+        }
+
+        childMenu = {
+            ...childMenu, 
+            internal_links: childInternalLinks
+        }
+
+        const updateChildMenu = findParentMenu.children?.map( currentChildMenu => currentChildMenu.id === menuChildId ? childMenu : currentChildMenu )
+
+        parentMenu  ={
+            ...parentMenu,
+            children : updateChildMenu
+        }
+
+        const updateSoftwareMenu = modulesData?.software_menus?.map( currentParentMenu => currentParentMenu.id === parentId ? parentMenu : currentParentMenu );
+
+        moduleData = {
+            ...moduleData,
+            software_menus : updateSoftwareMenu
+        }
+        //set all menus module data
+        setModulesData(moduleData);
+
+
+        console.log(updateSoftwareMenu);
+    }
+
 
     /* Fetching data from the server and setting it to the state by using role */
     // useEffect(  () => {
@@ -323,136 +378,136 @@ const UserAccess = () => {
 
 
     //checkbox handle 
-    const handleCheckChange = (e) => {
-        const {name , checked} = e.target;
+    // const handleCheckChange = (e) => {
+    //     const {name , checked} = e.target;
 
-        // console.log(name , checked);
+    //     // console.log(name , checked);
 
-        //copy module data
-        let tempData= {
-            software_module : modulesData?.software_module,
-            checkAll: false
-        }
-        //If you want to give access of all modules
-        if( name === 'allSelect'){
-            const tempSoftware_menus = modulesData?.software_menus?.map( (data) => {
-
-                if(data?.internal_links?.length < 1){
-                    //if module don't have internal links
-                    return({ ...data , isChecked: checked});
-                } else {
-                    //if module have internal links
-                    let obj = {
-                         ...data , isChecked: checked
-                    }
-                    //change internal links object and give isChecked to true
-                    const internal_links =  data?.internal_links?.map( internal_link => {
-                        return {
-                            ...internal_link,
-                            isChecked: checked
-                        }
-                    })
-                    //update module access
-                    obj = {
-                        ...obj,
-                        internal_links
-                    }
-                    return obj
-                }
-            });
-            //update module data
-            tempData = {
-                ...tempData,
-                software_menus : tempSoftware_menus
-            }
-            //set module data to update data
-            setModulesData(tempData);
-            
-        } else {
-            //find whice menus wants to access
-            const findSoftware_menus = modulesData?.software_menus?.find( data => data.id == name );
-            //copy the specific menu that you want to aceess 
-            let obj = {
-                ...findSoftware_menus,
-                isChecked : checked
-            }
-            //software menu internal links
-            let findSoftware_menus_internal_links;
-            //if software menu have internal linkes then update internal links and set isCheck true
-            if(findSoftware_menus?.internal_links?.length > 0){
-                findSoftware_menus_internal_links = findSoftware_menus?.internal_links?.map( internal_links => {
-                    return {...internal_links , isChecked : checked}
-                })
-            }
-            //update the object and internal links arrary set true
-            obj ={
-                ...obj,
-                internal_links : findSoftware_menus_internal_links
-            }
-            
-            //set object to whice menu want to update and get all software menus array
-            const final  = modulesData?.software_menus?.map( data => data.id == name ? obj : data );
-
-            //change module data object
-            tempData = {
-                ...tempData,
-                software_menus : final
-            }
-            //set module data object
-            setModulesData(tempData);
-        }
-        
-    }
-
-
-    // //if cleck add , edit , delete  or update
-    // const singleSelect = (e) => {
-    //     //get internal links id , software menu id
-    //     const {name , id, checked} = e.target;
     //     //copy module data
     //     let tempData= {
     //         software_module : modulesData?.software_module,
     //         checkAll: false
     //     }
-    //     //find and copy object software menu by using software menu id
-    //     const findSoftware_menus = modulesData?.software_menus?.find( data => data.id == id );
-    //     let softwareMenusObj = {
-    //         ...findSoftware_menus
+    //     //If you want to give access of all modules
+    //     if( name === 'allSelect'){
+    //         const tempSoftware_menus = modulesData?.software_menus?.map( (data) => {
+
+    //             if(data?.internal_links?.length < 1){
+    //                 //if module don't have internal links
+    //                 return({ ...data , isChecked: checked});
+    //             } else {
+    //                 //if module have internal links
+    //                 let obj = {
+    //                      ...data , isChecked: checked
+    //                 }
+    //                 //change internal links object and give isChecked to true
+    //                 const internal_links =  data?.internal_links?.map( internal_link => {
+    //                     return {
+    //                         ...internal_link,
+    //                         isChecked: checked
+    //                     }
+    //                 })
+    //                 //update module access
+    //                 obj = {
+    //                     ...obj,
+    //                     internal_links
+    //                 }
+    //                 return obj
+    //             }
+    //         });
+    //         //update module data
+    //         tempData = {
+    //             ...tempData,
+    //             software_menus : tempSoftware_menus
+    //         }
+    //         //set module data to update data
+    //         setModulesData(tempData);
+            
+    //     } else {
+    //         //find whice menus wants to access
+    //         const findSoftware_menus = modulesData?.software_menus?.find( data => data.id == name );
+    //         //copy the specific menu that you want to aceess 
+    //         let obj = {
+    //             ...findSoftware_menus,
+    //             isChecked : checked
+    //         }
+    //         //software menu internal links
+    //         let findSoftware_menus_internal_links;
+    //         //if software menu have internal linkes then update internal links and set isCheck true
+    //         if(findSoftware_menus?.internal_links?.length > 0){
+    //             findSoftware_menus_internal_links = findSoftware_menus?.internal_links?.map( internal_links => {
+    //                 return {...internal_links , isChecked : checked}
+    //             })
+    //         }
+    //         //update the object and internal links arrary set true
+    //         obj ={
+    //             ...obj,
+    //             internal_links : findSoftware_menus_internal_links
+    //         }
+            
+    //         //set object to whice menu want to update and get all software menus array
+    //         const final  = modulesData?.software_menus?.map( data => data.id == name ? obj : data );
+
+    //         //change module data object
+    //         tempData = {
+    //             ...tempData,
+    //             software_menus : final
+    //         }
+    //         //set module data object
+    //         setModulesData(tempData);
     //     }
         
-    //     //find whice internal link click or check
-    //     const internal_Link_update = findSoftware_menus.internal_links?.find( data => data.id == name );
-    //     //copy internal link object and check true or false
-    //     let updateObject = {
-    //         ...internal_Link_update,
-    //         isChecked: checked
-    //     }
-
-    //     //set object to whice intenal links want to update and get all internal links array
-    //     const final_internal_Link_update  = findSoftware_menus.internal_links?.map( data => data.id == name ? updateObject : data );
-
-    //     //if all internal links click then return true
-    //     const isAllInternalLinksTrue = final_internal_Link_update.every( internalLink => internalLink.isChecked === true );
-
-    //     //update single software menu object
-    //     softwareMenusObj = {
-    //         ...softwareMenusObj,
-    //         isChecked: isAllInternalLinksTrue,
-    //         internal_links: final_internal_Link_update
-    //     }
-
-    //     //set object to whice menu want to update and get all software menus array
-    //     const final  = modulesData?.software_menus?.map( data => data.id == id ? softwareMenusObj : data );
-
-    //     //update all menu final object
-    //     tempData = {
-    //         ...tempData,
-    //         software_menus : final
-    //     }
-    //     //set all menus module data
-    //     setModulesData(tempData);
-
     // }
+
+
+    // //if cleck add , edit , delete  or update
+    const singleSelect = (e) => {
+        //get internal links id , software menu id
+        const {name , id, checked} = e.target;
+        //copy module data
+        let tempData= {
+            software_module : modulesData?.software_module,
+            checkAll: false
+        }
+        //find and copy object software menu by using software menu id
+        const findSoftware_menus = modulesData?.software_menus?.find( data => data.id == id );
+        let softwareMenusObj = {
+            ...findSoftware_menus
+        }
+        
+        //find whice internal link click or check
+        const internal_Link_update = findSoftware_menus.internal_links?.find( data => data.id == name );
+        //copy internal link object and check true or false
+        let updateObject = {
+            ...internal_Link_update,
+            isChecked: checked
+        }
+
+        //set object to whice intenal links want to update and get all internal links array
+        const final_internal_Link_update  = findSoftware_menus.internal_links?.map( data => data.id == name ? updateObject : data );
+
+        //if all internal links click then return true
+        const isAllInternalLinksTrue = final_internal_Link_update.every( internalLink => internalLink.isChecked === true );
+
+        //update single software menu object
+        softwareMenusObj = {
+            ...softwareMenusObj,
+            isChecked: isAllInternalLinksTrue,
+            internal_links: final_internal_Link_update
+        }
+
+        //set object to whice menu want to update and get all software menus array
+        const final  = modulesData?.software_menus?.map( data => data.id == id ? softwareMenusObj : data );
+
+        //update all menu final object
+        tempData = {
+            ...tempData,
+            software_menus : final
+        }
+        //set all menus module data
+        setModulesData(tempData);
+
+    }
 
     // // if click save data button
     // const saveData = () => {
@@ -539,7 +594,7 @@ const UserAccess = () => {
         
             {
                 tab === 1 && (
-                <UserAccessModules allMenuAndResourceChecked={allMenuAndResourceChecked} handleSelectMenu={handleSelectMenu} modulesData={modulesData} loading={modulesloading} />
+                <UserAccessModules allMenuAndResourceChecked={allMenuAndResourceChecked} handleSelectMenu={handleSelectMenu} handleSelectChildMenu={handleSelectChildMenu} modulesData={modulesData} loading={modulesloading} />
                 )
             }
             

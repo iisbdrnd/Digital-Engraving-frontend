@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import ModuleMenuChildrenItem from "./ModuleMenuChildrenItem";
 
 
-const ModuleMenuChildren = ({ menuChildren}) => {
+const ModuleMenuChildren = ({ menuChildren ,parentId ,  handleSelectChildMenu}) => {
 
     const [clicked, setClicked] = useState("0");
 
@@ -17,7 +17,7 @@ const ModuleMenuChildren = ({ menuChildren}) => {
   return (
     <ul className="list-group">
       {menuChildren.map((insideMenu, index) => (
-        <ModuleMenuChildrenItem onToggle={() => handleToggle(index)} active={clicked === index} key={index} insideMenu={insideMenu} />
+        <ModuleMenuChildrenItem handleSelectChildMenu={handleSelectChildMenu} onToggle={() => handleToggle(index)} active={clicked === index} key={index} insideMenu={insideMenu} parentId={parentId} />
       ))}
     </ul>
   );

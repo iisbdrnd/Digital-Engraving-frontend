@@ -1,9 +1,9 @@
 import React from "react";
 import ChildrenInternalLinks from "./ChildrenInternalLinks";
 
-const ModuleMenuChildrenItem = ({ insideMenu, onToggle, active }) => {
+const ModuleMenuChildrenItem = ({ insideMenu, parentId, onToggle, active, handleSelectChildMenu }) => {
     // console.log('moduleMenu', moduleMenu);
-    const { isTrue } = insideMenu;
+    const { id ,  isTrue } = insideMenu;
  return (
   <>
     <li className={`list-group-item mx-3  my-1 ${active ? "on" : ""}`}>
@@ -11,8 +11,9 @@ const ModuleMenuChildrenItem = ({ insideMenu, onToggle, active }) => {
             <div className="form-check">
                 <input 
                     checked={isTrue || false}
-                 type="checkbox" className="form-check-input" name={''} id={''} />
-                <label className="form-check-label" htmlFor={''}>{insideMenu.menu_name}</label>
+                    onChange={ (event) => handleSelectChildMenu(event , parentId , id )}
+                 type="checkbox" className="form-check-input" name={''} id={id} />
+                <label className="form-check-label" htmlFor={id}>{insideMenu.menu_name}</label>
             </div>
             <button onClick={onToggle} className="btn btn sm">
                 <span className="control fw-bold">{active ? "—" : "+"} </span>
