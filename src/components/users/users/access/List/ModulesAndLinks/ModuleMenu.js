@@ -8,7 +8,7 @@ const ModuleMenu = ({ software_menu, onToggle, active, handleSelectMenu, handleS
 
   const { id, menu_name , isTrue } = software_menu;
 
-  const checkAllChildrenSelect = software_menu?.children?.filter( childrenMenu => childrenMenu?.isTrue !== true).length < 1 ;
+//   const checkAllChildrenSelect = software_menu?.children?.filter( childrenMenu => childrenMenu?.isTrue !== true).length < 1 ;
 
 
   return (

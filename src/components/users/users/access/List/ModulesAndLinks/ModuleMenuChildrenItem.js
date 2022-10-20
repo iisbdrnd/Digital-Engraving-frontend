@@ -4,7 +4,8 @@ import ChildrenInternalLinks from "./ChildrenInternalLinks";
 const ModuleMenuChildrenItem = ({ insideMenu, parentId, onToggle, active, handleSelectChildMenu , handleSelectInternalLinks }) => {
 
     const { id , isTrue } = insideMenu;
-    const checkAllInternalLinksSelect = insideMenu?.internal_links?.filter( internalLink => internalLink?.isTrue !== true).length < 1 ;
+
+    // const checkAllInternalLinksSelect = insideMenu?.internal_links?.filter( internalLink => internalLink?.isTrue !== true).length < 1 ;
 
  return (
   <>

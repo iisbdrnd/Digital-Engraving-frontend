@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
+import SelectRoleForModule from './SelectRoleForModule';
 import ModuleMenu from './ModuleMenu';
 // import SelectRoleForModule from './SelectRoleForModule';
 
-const Module = ({ modulesData, loading, allMenuAndResourceChecked, handleSelectMenu, handleSelectChildMenu, handleSelectInternalLinks }) => {
+const Module = ({ modulesData, loading, allMenuAndResourceChecked, handleSelectMenu, handleSelectChildMenu, handleSelectInternalLinks, handleRoleChange }) => {
 
     
   const [clicked, setClicked] = useState("0");
@@ -36,7 +37,7 @@ const Module = ({ modulesData, loading, allMenuAndResourceChecked, handleSelectM
                               type="checkbox" name="allMenuSelect" className="form-check-input" id="all-select" />
                               <label className="form-check-label" htmlFor="all-select">{modulesData?.software_module?.module_name}</label>
                           </div>
-                          {/* <SelectRoleForModule handleRoleChange={handleRoleChange}/> */}
+                          <SelectRoleForModule handleRoleChange={handleRoleChange}/>
                         </div>
                         <button className="btn btn-sm btn-secondary">Save</button>
                     </div>
