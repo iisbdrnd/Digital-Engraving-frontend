@@ -6,7 +6,7 @@ const ModuleMenu = ({ software_menu, onToggle, active, handleSelectMenu, handleS
 
 
 
-  const { id, menu_name } = software_menu;
+  const { id, menu_name , isTrue } = software_menu;
 
   const checkAllChildrenSelect = software_menu?.children?.filter( childrenMenu => childrenMenu?.isTrue !== true).length < 1 ;
 
@@ -16,7 +16,7 @@ const ModuleMenu = ({ software_menu, onToggle, active, handleSelectMenu, handleS
         <li className={`list-group-item my-1 ${active ? "active" : ""}`}>
             <div className="d-flex justify-content-between align-items-center">
                 <div className="form-check">
-                    <input checked={checkAllChildrenSelect} onChange={ (event) => handleSelectMenu(event , id)}  type="checkbox" className="form-check-input" id={id} />
+                    <input checked={isTrue || false} onChange={ (event) => handleSelectMenu(event , id)}  type="checkbox" className="form-check-input" id={id} />
                     <label className="form-check-label" htmlFor={id}>{menu_name}</label>
                 </div>
                 {

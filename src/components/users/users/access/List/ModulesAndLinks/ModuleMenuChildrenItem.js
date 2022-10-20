@@ -3,7 +3,7 @@ import ChildrenInternalLinks from "./ChildrenInternalLinks";
 
 const ModuleMenuChildrenItem = ({ insideMenu, parentId, onToggle, active, handleSelectChildMenu , handleSelectInternalLinks }) => {
 
-    const { id  } = insideMenu;
+    const { id , isTrue } = insideMenu;
     const checkAllInternalLinksSelect = insideMenu?.internal_links?.filter( internalLink => internalLink?.isTrue !== true).length < 1 ;
 
  return (
@@ -12,7 +12,7 @@ const ModuleMenuChildrenItem = ({ insideMenu, parentId, onToggle, active, handle
         <div className="d-flex justify-content-between align-items-center">
             <div className="form-check">
                 <input 
-                    checked={checkAllInternalLinksSelect}
+                    checked={isTrue || false}
                     onChange={ (event) => handleSelectChildMenu(event , parentId , id )}
                  type="checkbox" className="form-check-input" name={''} id={id} />
                 <label className="form-check-label" htmlFor={id}>{insideMenu.menu_name}</label>
