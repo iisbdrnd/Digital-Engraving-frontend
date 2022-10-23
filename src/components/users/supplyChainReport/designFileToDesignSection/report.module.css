@@ -14,3 +14,8 @@
 .reportPage.active{
     opacity: 1;
 }
+
+.reportAllPageWrapper{
+    height: calc(100vh - 400px);
+    overflow-y: scroll;
+}

@@ -91,20 +91,24 @@ const Report = ({fromDate, toDate}) => {
                                         </div>
                                     </div>
 
-                                    {
-                                        pageNumbers.map( (page) => (
-                                            <ReportPage 
-                                                page={page} 
-                                                currentPage={currentPage}
-                                                setCurrentPage={setCurrentPage}
-                                                isLoading={isLoading}
-                                                grandTotalCylinder={grandTotalCylinder}
-                                                grandTotalSurfaceArea={grandTotalSurfaceArea}
-                                                orderTypes={orderTypes}
-                                                reportsPerPage={reportsPerPage}
-                                             />
-                                        ))
-                                    }
+                                    <div className={styles.reportAllPageWrapper}>
+                                        {
+                                            pageNumbers.map( (page) => (
+                                                <ReportPage 
+                                                    page={page} 
+                                                    currentPage={currentPage}
+                                                    setCurrentPage={setCurrentPage}
+                                                    isLoading={isLoading}
+                                                    grandTotalCylinder={grandTotalCylinder}
+                                                    grandTotalSurfaceArea={grandTotalSurfaceArea}
+                                                    orderTypes={orderTypes}
+                                                    reportsPerPage={reportsPerPage}
+                                                />
+                                            ))
+                                        }
+                                    </div>
+
+                                    
 
                                 </div>
                             )
