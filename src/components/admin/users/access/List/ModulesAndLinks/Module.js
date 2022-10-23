@@ -3,7 +3,7 @@ import SelectRoleForModule from './SelectRoleForModule';
 import ModuleMenu from './ModuleMenu';
 // import SelectRoleForModule from './SelectRoleForModule';
 
-const Module = ({ modulesData, loading, allMenuAndResourceChecked, handleSelectMenu, handleSelectChildMenu, handleSelectInternalLinks, handleRoleChange }) => {
+const Module = ({ modulesData, loading, allMenuAndResourceChecked, handleSelectMenu, handleSelectChildMenu, handleSelectInternalLinks, handleRoleChange, saveData }) => {
 
     
   const [clicked, setClicked] = useState("0");
@@ -39,7 +39,7 @@ const Module = ({ modulesData, loading, allMenuAndResourceChecked, handleSelectM
                           </div>
                           <SelectRoleForModule handleRoleChange={handleRoleChange}/>
                         </div>
-                        <button className="btn btn-sm btn-secondary">Save</button>
+                        <button onClick={saveData} className="btn btn-sm btn-secondary">Save</button>
                     </div>
                     
                     <div className="card-body">

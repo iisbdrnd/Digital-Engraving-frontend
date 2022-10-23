@@ -7,6 +7,9 @@ import 'react-toastify/dist/ReactToastify.css';
 import UserAccessModules from './UserAccessModules';
 import { softwareMenuRearrange } from './ModulesAndLinks/utils';
 import { adminGetMethod } from '../../../../../api/action';
+import { useParams } from 'react-router';
+import { toast } from 'react-toastify';
+import { userPostMethod } from '../../../../../api/userAction';
 
 const UserAccess = () => {
 
@@ -17,7 +20,7 @@ const UserAccess = () => {
     const [modulesloading,setModulesLoading] = useState(false);
     const [ tab, setTab] = useState(0);
     const [ roleId, setRoleId] = useState(null);
-    // const {userId} = useParams();
+    const {userId} = useParams();
     // let dummyData = data.slice(0,5);
 
     //get all user access module by using user id  .software_menus
@@ -443,59 +446,59 @@ const UserAccess = () => {
     }
 
 
-
-
-
-
-    // // if click save data button
-    // const saveData = () => {
-        
-    //     //find whice software menu have check
-    //     const menusFilter = modulesData?.software_menus?.filter( module => module.isTrue === true);
-        
-    //     //modify software menu object
-    //     let menu = [];
-    //     for (const menuFilter of menusFilter) {
-    //         const obj = {
-    //             id : menuFilter.id
-    //         }
-    //         menu.push(obj)
-    //     }
-
-    //     //find whice intenal links check and set new object to true
-    //     let links = [];        
-    //     for(const menu of modulesData?.software_menus){
-    //         if(menu?.internal_links?.length > 0){
-    //             for(const internal_link of menu.internal_links){
-    //                 if(internal_link.isTrue === true){
-    //                     const obj = {id: internal_link.id}
-    //                     links.push(obj)
-    //                 }
-    //             }
-    //         }
-    //     }
-        
-
-    //     //create final post data
-    //     const user_id = parseInt(userId);
-    //     let data = {
-    //         user_id,
-    //         module_id : menusForModuleId,
-    //         menus: menu,
-    //         internal_links:links            
-    //     } 
-    //     // console.log(data);
     
-    //     // post api call with data
-    //     userPostMethod('api/user/userAccessingStore',data)
-    //     .then( res => {
-    //         // if data save successfull
-    //         if(res.data.message){
-    //             toast.success('User access added successfully');
-    //         }
-    //     })
+    // // if click save data button
+    const saveData = () => {
 
-    // }
+        let menus = [];
+        let internalLinks = [];
+
+        
+        for (const parentMenu of modulesData?.software_menus) {
+            if( parentMenu?.children?.length > 0){
+                for (const childrenMenu of parentMenu.children) {
+                    // check child have isTrue
+                    if(childrenMenu.isTrue === true){
+                        const childMenu = { id : childrenMenu.id}
+                        menus.push(childMenu)
+                    }
+                    // check child have inernal links
+                    if(childrenMenu?.internal_links?.length > 0){
+                        for(const internal_link of childrenMenu.internal_links){
+                            if(internal_link.isTrue === true){
+                                const obj = {id: internal_link.id}
+                                internalLinks.push(obj)
+                            }
+                        }
+                    }
+
+                }
+            }
+        }
+
+        
+
+        //create final post data
+        const user_id = parseInt(userId);
+        let data = {
+            user_id,
+            module_id : menusForModuleId,
+            menus: menus,
+            internal_links: internalLinks            
+        } 
+
+        // console.log('saveData',data);
+    
+        // post api call with data
+        userPostMethod('api/user/userAccessingStore',data)
+        .then( res => {
+            // if data save successfull
+            if(res.data.message){
+                toast.success('User access added successfully');
+            }
+        })
+
+    }
     
     return (
         <>
@@ -532,7 +535,7 @@ const UserAccess = () => {
         
             {
                 tab === 1 && (
-                <UserAccessModules allMenuAndResourceChecked={allMenuAndResourceChecked} handleSelectMenu={handleSelectMenu} handleSelectChildMenu={handleSelectChildMenu} handleSelectInternalLinks={handleSelectInternalLinks} handleRoleChange={handleRoleChange} modulesData={modulesData} loading={modulesloading} />
+                <UserAccessModules allMenuAndResourceChecked={allMenuAndResourceChecked} handleSelectMenu={handleSelectMenu} handleSelectChildMenu={handleSelectChildMenu} handleSelectInternalLinks={handleSelectInternalLinks} handleRoleChange={handleRoleChange} modulesData={modulesData} loading={modulesloading} saveData={saveData} />
                 )
             }
             
