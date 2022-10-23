@@ -7,7 +7,7 @@ import './report.css';
 import {
     Home,
     ArrowRightCircle,
-    ArrowRight
+    ArrowDown
 } from 'react-feather';
 import { Link } from 'react-router-dom';
 
@@ -16,6 +16,24 @@ const Report = () => {
     const [MENUITEMS, setMENUITEMS] = useState([]);
     const [mainmenu, setMainMenu] = useState([]);
      const menuObject = [];
+     const [clicked, setClicked] = useState("0");
+     const [showDropdown, setShowDropdown] = useState(false);
+
+     const handleShowDropdown = () => {
+        setShowDropdown(!showDropdown)
+     }
+
+      const handleToggle = (index) => {
+
+            if (clicked === index) {
+            return setClicked("0");
+            }
+            setClicked(index);
+        };
+
+     const handleCloseDropDown = () => {
+        setShowDropdown(false);
+     }
 
     useEffect(() => {
         let moduleId = localStorage.getItem('moduleId');
@@ -91,40 +109,93 @@ const Report = () => {
 
     console.log('usermenu',mainmenu, MENUITEMS);
 
+
+
     return (
         <>
+
+
             <div class="dropdown">
-                <button class="dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Dropdown button
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <div className="dropdown-container">
-                        <li>
-                            <a class="dropdown-item" href="#">Submenu item 1</a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="#">Submenu item 2</a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="#">Submenu item 3 &raquo; </a>
-                            <ul class="dropdown-menu dropdown-submenu">
-                            <li>
-                                <a class="dropdown-item" href="#">Multi level 1</a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="#">Multi level 2</a>
-                            </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="#">Submenu item 4</a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="#">Submenu item 5</a>
-                        </li>
-                    </div>
-                </div>
+                {
+                    MENUITEMS?.map( (menu) => (
+                        menu.type === 'link' ? (
+                            <Link 
+                                className='d-flex align-items-center' 
+                                onClick={handleCloseDropDown}
+                                to={{
+                                        pathname: process.env.PUBLIC_URL+menu.path,
+                                        state: { params: {menuId: menu.menuId} },
+                                        menuId: menu.menuId
+                                    }}
+                                params={ menu.menuId }
+                            >{menu.title}</Link>
+                        ) : (
+                            <>
+                                <button onClick={handleShowDropdown}>
+                                    {menu.title}
+                                </button>
+                                <div class={`dropdown-menu ${showDropdown && 'show' }`} aria-labelledby="dropdownMenuButton">
+                                    <div className="dropdown-container">
+                                        {
+                                            menu?.children?.map( (dropdown , index) => (
+                                                dropdown.type === 'sub' ? (
+                                                    <li>
+                                                        <div className="d-flex align-items-center justify-content-between dropdown-item"  onClick={ () => handleToggle(index)}>
+                                                            <span >{dropdown.title}</span> <ArrowDown style={ {marginTop : '0px'}}  color="black" size={10}/>
+                                                        </div>
+                                                        <div className={`children ${ clicked === index ? "active" : ""}`}>
+                                                            <ul className='subDropdown'>
+                                                                {
+                                                                    dropdown?.children?.map( (submultiMenu) => (
+                                                                        <li key={submultiMenu.title}>
+                                                                            {
+                                                                                submultiMenu.title && (
+                                                                                    <Link 
+                                                                                        className='d-flex align-items-center' 
+                                                                                        onClick={handleCloseDropDown}
+                                                                                        to={{
+                                                                                                pathname: process.env.PUBLIC_URL+submultiMenu.path,
+                                                                                                state: { params: {menuId: submultiMenu.menuId} },
+                                                                                                menuId: submultiMenu.menuId
+                                                                                            }}
+                                                                                        params={ submultiMenu.menuId }
+                                                                                    >{submultiMenu.title}</Link>
+                                                                                )
+                                                                            }
+                                                                        </li>
+                                                                    ))
+                                                                }
+                                                                
+                                                            </ul>
+                                                        </div>
+                                                    </li>
+                                                ) : (
+                                                    dropdown.title && (
+                                                        <li key={dropdown.title}>
+                                                            <Link 
+                                                                className='d-flex align-items-center dropdown-item' 
+                                                                onClick={handleCloseDropDown}
+                                                                to={{
+                                                                        pathname: process.env.PUBLIC_URL+dropdown.path,
+                                                                        state: { params: {menuId: dropdown.menuId} },
+                                                                        menuId: dropdown.menuId
+                                                                    }}
+                                                                params={ dropdown.menuId }
+                                                            >{dropdown.title}</Link>
+                                                        </li>
+                                                    )
+                                                )) 
+                                            )
+                                        }
+                                    </div>
+                                </div>
+                            </>
+                        )
+                    ))
+                }
+
             </div>
+
         </>
     );
 };
