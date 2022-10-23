@@ -301,7 +301,7 @@ const UserAccess = () => {
         const finalSoftWareMenus  = modulesData?.software_menus?.map( menu => menu.id === id ? copyFindSelectedMenu : menu );
 
         
-        const isParentMenuTrue = finalSoftWareMenus.every( parentMenu => parentMenu.isTrue === true );
+        const isParentMenuTrue = finalSoftWareMenus?.every( parentMenu => parentMenu.isTrue === true );
 
         //change module data object
         moduleData = {
@@ -346,7 +346,7 @@ const UserAccess = () => {
                 return { ...internalLink , isTrue: checked}
             } )
         }
-        const isAllInternalLinksTrue = childInternalLinks.every( internalLink => internalLink.isTrue === true );
+        const isAllInternalLinksTrue = childInternalLinks?.every( internalLink => internalLink.isTrue === true );
 
         childMenu = {
             ...childMenu, 
@@ -412,7 +412,7 @@ const UserAccess = () => {
            return  internalLink.id === internalLinksId ? updateInternalLink : internalLink
         })
 
-        const isAllInternalLinksTrue = updatedNewInternalLinks.every( internalLink => internalLink.isTrue === true );
+        const isAllInternalLinksTrue = updatedNewInternalLinks?.every( internalLink => internalLink.isTrue === true );
 
         childMenu = {
             ...childMenu, 
@@ -423,7 +423,7 @@ const UserAccess = () => {
         const updateChildMenu = findParentMenu.children?.map( currentChildMenu => currentChildMenu.id === menuChildId ? childMenu : currentChildMenu );
         
 
-        const isChildMenuTrue = updateChildMenu.every( childMenu => childMenu.isTrue === true );
+        const isChildMenuTrue = updateChildMenu?.every( childMenu => childMenu.isTrue === true );
 
         parentMenu  ={
             ...parentMenu,

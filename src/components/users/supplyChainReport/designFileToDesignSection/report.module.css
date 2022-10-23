@@ -1,5 +1,16 @@
 .reportWrapper{
     padding: 15px 10px;
     background-color: #ffffff;
+    /* border: 2px solid black; */
+}
+
+.reportPage{
+    opacity: 0.3;
     border: 2px solid black;
+    margin-top: 15px;
+    padding: 1% 5%;
+}
+
+.reportPage.active{
+    opacity: 1;
 }
