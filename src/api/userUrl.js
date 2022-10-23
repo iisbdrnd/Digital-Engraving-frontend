@@ -51,6 +51,9 @@ export const TEST_RSURL = 'api/user/test';
 //Client Stock
 export const CLIENT_STOCK_RSURL = 'api/user/clientStock';
 
+//Del Stock
+export const DEL_STOCK_RSURL = 'api/user/delStock';
+
 //CANCEL ORDER
 export const CANCEL_ORDER_RSURL = 'api/user/cancelOrder';
 
@@ -61,6 +64,9 @@ export const JOB_ORDER_DETAILS = 'api/user/jobOrderDetails';
 export const BASE_ORDER_RSURL = 'api/user/baseOrder';
 //PRINTERS
 export const printersAPI = 'api/user/printers';
+
+//ROLES
+export const rolesAPI = 'api/user/roles';
 
 //Custom Menus
 export const customMenuAPI = 'api/user/custom-menu';

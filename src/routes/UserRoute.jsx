@@ -73,6 +73,11 @@ import Printers from './../components/users/backOfficeSetup/printers/ListData';
 import PrintersAdd from './../components/users/backOfficeSetup/printers/Add';
 import PrintersEdit from './../components/users/backOfficeSetup/printers/Edit';
 
+//ROLES 
+import Roles from '../components/users/roles/ListData';
+//import PrintersAdd from './../components/users/backOfficeSetup/printers/Add';
+//import PrintersEdit from './../components/users/backOfficeSetup/printers/Edit';
+
 // USERS
 import SoftwareUserList from './../components/users/users/listData';
 
@@ -111,6 +116,11 @@ import TestEdit from './../components/users/test/Edit';
 import ClientStock from './../components/users/clientStock/ListData';
 import ClientStockAdd from './../components/users/clientStock/Add';
 import ClientStockEdit from './../components/users/clientStock/Edit';
+
+//DEl Stock
+import DelStock from './../components/users/delStock/ListData';
+import DelStockAdd from './../components/users/delStock/Add';
+import DelStockEdit from './../components/users/delStock/Edit';
 
 //Cancel Order
 import CancelOrderList from './../components/users/cancelOrder/ListData';
@@ -801,6 +811,11 @@ class UserRoute extends Component {
                   path={`${process.env.PUBLIC_URL}/printers/edit/:printersId`}
                   component={PrintersEdit}
                 />
+                {/* ROLES */}
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/role/index`}
+                  component={Roles}
+                />
                 {/* SUPPLIER INFORMATION */}
                 <UserAuthRoute
                   path={`${process.env.PUBLIC_URL}/supplierInformation/index`}
@@ -944,6 +959,19 @@ class UserRoute extends Component {
                 <UserAuthRoute
                   path={`${process.env.PUBLIC_URL}/clientStock/edit/:id`}
                   component={ClientStockEdit}
+                />
+                {/* Del Stock */}
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/delStock/index`}
+                  component={DelStock}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/delStock/add`}
+                  component={DelStockAdd}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/delStock/edit/:id`}
+                  component={DelStockEdit}
                 />
                 {/* Cancel Order */}
                 <UserAuthRoute
