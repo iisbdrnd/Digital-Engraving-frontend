@@ -60,6 +60,10 @@ const Report = ({fromDate, toDate}) => {
 //     }
 //   };
 
+  const handlePrint = () => {
+    window.print()
+  }
+
  
 
     return (
@@ -72,7 +76,7 @@ const Report = ({fromDate, toDate}) => {
                                 
                                 <div className={styles.reportWrapper}> 
                                     <div className="report-header d-flex justify-content-between align-items-center">
-                                        <div className="print_button">
+                                        <div onClick={handlePrint} className="print_button">
                                             {/* <ReactToPrint
                                                 trigger={() => {
                                                     return <button className="btn btn-default"><i className="fa fa-print" aria-hidden="true"></i> Print</button>;
