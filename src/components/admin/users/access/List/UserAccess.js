@@ -6,10 +6,9 @@ import 'react-toastify/dist/ReactToastify.css';
 // import { useParams } from 'react-router';
 import UserAccessModules from './UserAccessModules';
 import { softwareMenuRearrange } from './ModulesAndLinks/utils';
-import { adminGetMethod } from '../../../../../api/action';
+import { adminGetMethod, adminPostMethod } from '../../../../../api/action';
 import { useParams } from 'react-router';
 import { toast } from 'react-toastify';
-import { userPostMethod } from '../../../../../api/userAction';
 
 const UserAccess = () => {
 
@@ -360,7 +359,7 @@ const UserAccess = () => {
         const updateChildMenu = findParentMenu.children?.map( currentChildMenu => currentChildMenu.id === menuChildId ? childMenu : currentChildMenu )
 
         
-        const isChildMenuTrue = updateChildMenu?.every( childMenu => childMenu.isTrue === true );
+        const isChildMenuTrue = updateChildMenu?.some( childMenu => childMenu.isTrue === true );
 
         parentMenu  ={
             ...parentMenu,
@@ -426,7 +425,7 @@ const UserAccess = () => {
         const updateChildMenu = findParentMenu.children?.map( currentChildMenu => currentChildMenu.id === menuChildId ? childMenu : currentChildMenu );
         
 
-        const isChildMenuTrue = updateChildMenu?.every( childMenu => childMenu.isTrue === true );
+        const isChildMenuTrue = updateChildMenu?.some( childMenu => childMenu.isTrue === true );
 
         parentMenu  ={
             ...parentMenu,
@@ -455,6 +454,12 @@ const UserAccess = () => {
 
         
         for (const parentMenu of modulesData?.software_menus) {
+
+            if(parentMenu.isTrue === true){
+                const parentSelectedMenu = { id : parentMenu.id}
+                menus.push(parentSelectedMenu)
+            }
+
             if( parentMenu?.children?.length > 0){
                 for (const childrenMenu of parentMenu.children) {
                     // check child have isTrue
@@ -474,6 +479,7 @@ const UserAccess = () => {
 
                 }
             }
+
         }
 
         
@@ -490,7 +496,7 @@ const UserAccess = () => {
         // console.log('saveData',data);
     
         // post api call with data
-        userPostMethod('api/user/userAccessingStore',data)
+        adminPostMethod('api/admin/users/userAccessingStore',data)
         .then( res => {
             // if data save successfull
             if(res.data.message){
