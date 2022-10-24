@@ -60,10 +60,10 @@ const Report = ({fromDate, toDate}) => {
 //     }
 //   };
 
+  
   const handlePrint = () => {
     window.print()
   }
-
  
 
     return (

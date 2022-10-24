@@ -414,7 +414,7 @@ const UserAccess = () => {
            return  internalLink.id === internalLinksId ? updateInternalLink : internalLink
         })
 
-        const isAllInternalLinksTrue = updatedNewInternalLinks?.every( internalLink => internalLink.isTrue === true );
+        const isAllInternalLinksTrue = updatedNewInternalLinks?.some( internalLink => internalLink.isTrue === true );
 
         childMenu = {
             ...childMenu, 
