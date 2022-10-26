@@ -5,13 +5,8 @@ import React, { useEffect, useState } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
 // import { useParams } from 'react-router';
 import UserAccessModules from './UserAccessModules';
-<<<<<<< HEAD
 import { softwareMenuRearrange, setUserAlreadyMenuAccess } from './ModulesAndLinks/utils';
-import { adminGetMethod } from '../../../../../api/action';
-=======
-import { softwareMenuRearrange } from './ModulesAndLinks/utils';
 import { adminGetMethod, adminPostMethod } from '../../../../../api/action';
->>>>>>> 5511a3d11e6015548f227175aa3ebc7685de483b
 import { useParams } from 'react-router';
 import { toast } from 'react-toastify';
 
