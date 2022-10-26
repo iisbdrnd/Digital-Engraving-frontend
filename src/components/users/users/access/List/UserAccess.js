@@ -361,7 +361,7 @@ const UserAccess = () => {
         const updateChildMenu = findParentMenu.children?.map( currentChildMenu => currentChildMenu.id === menuChildId ? childMenu : currentChildMenu )
 
         
-        const isChildMenuTrue = updateChildMenu.every( childMenu => childMenu.isTrue === true );
+        const isChildMenuTrue = updateChildMenu.some( childMenu => childMenu.isTrue === true );
 
         parentMenu  ={
             ...parentMenu,
@@ -416,7 +416,7 @@ const UserAccess = () => {
            return  internalLink.id === internalLinksId ? updateInternalLink : internalLink
         })
 
-        const isAllInternalLinksTrue = updatedNewInternalLinks?.every( internalLink => internalLink.isTrue === true );
+        const isAllInternalLinksTrue = updatedNewInternalLinks?.some( internalLink => internalLink.isTrue === true );
 
         childMenu = {
             ...childMenu, 
@@ -427,7 +427,7 @@ const UserAccess = () => {
         const updateChildMenu = findParentMenu.children?.map( currentChildMenu => currentChildMenu.id === menuChildId ? childMenu : currentChildMenu );
         
 
-        const isChildMenuTrue = updateChildMenu?.every( childMenu => childMenu.isTrue === true );
+        const isChildMenuTrue = updateChildMenu?.some( childMenu => childMenu.isTrue === true );
 
         parentMenu  ={
             ...parentMenu,
@@ -454,6 +454,12 @@ const UserAccess = () => {
 
         
         for (const parentMenu of modulesData?.software_menus) {
+
+            if(parentMenu.isTrue === true){
+                const parentSelectedMenu = { id : parentMenu.id}
+                menus.push(parentSelectedMenu)
+            }
+
             if( parentMenu?.children?.length > 0){
                 for (const childrenMenu of parentMenu.children) {
                     // check child have isTrue
@@ -473,9 +479,8 @@ const UserAccess = () => {
 
                 }
             }
-        }
 
-        
+        }
 
         //create final post data
         const user_id = parseInt(userId);
