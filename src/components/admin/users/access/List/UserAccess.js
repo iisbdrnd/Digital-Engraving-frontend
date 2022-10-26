@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
 // import { useParams } from 'react-router';
 import UserAccessModules from './UserAccessModules';
-import { softwareMenuRearrange } from './ModulesAndLinks/utils';
+import { softwareMenuRearrange, setUserAlreadyMenuAccess } from './ModulesAndLinks/utils';
 import { adminGetMethod } from '../../../../../api/action';
 import { useParams } from 'react-router';
 import { toast } from 'react-toastify';
@@ -45,7 +45,8 @@ const UserAccess = () => {
 
             let menus;
             if (res?.data?.software_menus?.length > 0) {
-                menus = softwareMenuRearrange(res.data.software_menus)
+                const userAlreadyAccess = setUserAlreadyMenuAccess(res.data.software_menus);
+                menus = softwareMenuRearrange(userAlreadyAccess)
             }     
             
             const moduleData = {
@@ -189,8 +190,9 @@ const UserAccess = () => {
                     // software menu rearrange
                     let reArrangeMenus;
                     if (res?.data?.software_menus?.length > 0) {
-                        reArrangeMenus = softwareMenuRearrange(res.data.software_menus)
-                    } 
+                        const userAlreadyAccess = setUserAlreadyMenuAccess(res.data.software_menus);
+                        reArrangeMenus = softwareMenuRearrange(userAlreadyAccess)
+                    }  
 
                     tempData = {
                         ...tempData,

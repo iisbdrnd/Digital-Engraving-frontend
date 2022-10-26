@@ -33,4 +33,34 @@
     return rearrangeMenu;
 }
 
-// console.log(softwareMenuRearrange());
+
+
+export const setUserAlreadyMenuAccess = (menus) => {
+    const accessGiven = menus.map( (menu) => {
+
+        let internal_links;
+        if (menu.internal_links) {
+            internal_links = menu.internal_links.map( (link) => {
+                if (link.status === 1) {
+                    return {...link, isTrue: true}
+                }else{
+                    return link
+                }
+            })
+        }
+
+        const someInternalLinkTrue = internal_links?.some( (link) => link.isTrue === true )
+
+        if (menu.status === 1) {
+            return {...menu , internal_links : internal_links, isTrue: true}
+        } else if(someInternalLinkTrue){
+            return {...menu , internal_links : internal_links, isTrue: true}
+        } else {
+            return { ...menu , internal_links}
+        }
+
+    } )
+
+    return accessGiven;
+
+}
