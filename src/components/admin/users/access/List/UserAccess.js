@@ -44,8 +44,8 @@ const UserAccess = () => {
 
             let menus;
             if (res?.data?.software_menus?.length > 0) {
-                const userAlreadyAccess = setUserAlreadyMenuAccess(res.data.software_menus);
-                menus = softwareMenuRearrange(userAlreadyAccess)
+                // const userAlreadyAccess = setUserAlreadyMenuAccess(res.data.software_menus);
+                menus = softwareMenuRearrange(res.data.software_menus)
             }     
             
             const moduleData = {
@@ -189,8 +189,8 @@ const UserAccess = () => {
                     // software menu rearrange
                     let reArrangeMenus;
                     if (res?.data?.software_menus?.length > 0) {
-                        const userAlreadyAccess = setUserAlreadyMenuAccess(res.data.software_menus);
-                        reArrangeMenus = softwareMenuRearrange(userAlreadyAccess)
+                        // const userAlreadyAccess = setUserAlreadyMenuAccess(res.data.software_menus);
+                        reArrangeMenus = softwareMenuRearrange(res.data.software_menus)
                     }  
 
                     tempData = {
