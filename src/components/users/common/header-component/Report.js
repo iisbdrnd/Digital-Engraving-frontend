@@ -135,7 +135,7 @@ const Report = () => {
                                     {menu.title}
                                 </button>
                                 <div class={`dropdown-menu ${showDropdown && 'show' }`} aria-labelledby="dropdownMenuButton">
-                                    <div className="dropdown-container">
+                                    <div className={menu?.children.length > 15 ? `dropdown-container long` : 'dropdown-container'}>
                                         {
                                             menu?.children?.map( (dropdown , index) => (
                                                 dropdown.type === 'sub' ? (
