@@ -1,12 +1,23 @@
 
 // const menus = [
-//     { id : 1 , parent_id: 0 , menu_name : "Back Office Setup"},
-//     { id : 2 , parent_id: 1 , menu_name : "Department"},
-//     { id : 3 , parent_id: 1 , menu_name : "Company profile"},
-//     { id : 4 , parent_id: 0 , menu_name : "Configaration"},
-//     { id : 5 , parent_id: 4 , menu_name : "Role"},
-//     { id : 6 , parent_id: 0 , menu_name : "Home"}
+//     { id : 1 , status: 1, parent_id: 0 , menu_name : "Back Office Setup",
+//         internal_links : [
+//             {id: 77, name : 'add', status: 1,},
+//             {id: 77, name : 'edit',  status: 0,},
+//         ]
+//     },
+//     { id : 2 , status: 1, parent_id: 1 , menu_name : "Department"},
+//     { id : 3 , status: 1, parent_id: 1 , menu_name : "Company profile"},
+//     { id : 4 , status: 0, parent_id: 0 , menu_name : "Configaration"},
+//     { id : 5 , status: 0, parent_id: 4 , menu_name : "Role",
+//         internal_links : [
+//             {id: 77, name : 'add', status: 0,},
+//             {id: 77, name : 'edit',  status: 0,},
+//         ]
+//     },
+//     { id : 6 , status: 1, parent_id: 0 , menu_name : "Home"}
 // ]
+
  export const softwareMenuRearrange = (menus) => {
     const rearrangeMenu = [];
 
@@ -20,47 +31,104 @@
                 }
             }
 
-            const menuWithChildren = {
+            
+            if(children.length > 0){
+
+                let ifAnyChildrenTrue  = children.some( (child) => child.isTrue === true)
+
+                const menuWithChildren = {
+                    ...menu,
+                    isTrue: ifAnyChildrenTrue,
+                    children : children
+                }
+
+                rearrangeMenu.push(menuWithChildren)
+
+            } else {
+
+                const menuWithChildren = {
                 ...menu,
-                children : children
+                    children : children
+                }
+
+                rearrangeMenu.push(menuWithChildren)
+
             }
 
-            rearrangeMenu.push(menuWithChildren)
+            
 
         }
     }
 
     return rearrangeMenu;
+
 }
 
 
+export const setUserAlreadyMenuAccess = (userMenu , alreadyAccessMenu) => {
+    // get data whice check true
+    let modulesCheckTrueData = [];
+    for (const menu of userMenu) {
+        for (const roleMenu of alreadyAccessMenu ){
+            
+            if( menu.id === roleMenu.id){
 
-export const setUserAlreadyMenuAccess = (menus) => {
-    const accessGiven = menus.map( (menu) => {
+                let roleMenuData = {...menu , isTrue : true}
 
-        let internal_links;
-        if (menu.internal_links) {
-            internal_links = menu.internal_links.map( (link) => {
-                if (link.status === 1) {
-                    return {...link, isTrue: true}
-                }else{
-                    return link
+                //change internal links object and give isTrue to true
+                const roleMenuInternalLinks =  roleMenuData?.internal_links?.map( internal_link => {
+                    return {
+                        ...internal_link,
+                        isTrue: true
+                    }
+                })
+                roleMenuData = {
+                    ...roleMenuData,
+                    internal_links : roleMenuInternalLinks
                 }
-            })
+                modulesCheckTrueData.push(roleMenuData);
+                // console.log('data', menu , roleMenu);
+
+            }  
+
+        }
+    }
+
+    /* Filtering the menusWithOutCheck array and returning the menus that are not in the
+    modulesRoleCheckTrueData array. */
+    let menusWithOutCheck = userMenu?.filter(function(menu){
+        return !modulesCheckTrueData.some(function(checkmenu){   
+            return menu.id === checkmenu.id;          
+        });
+    });
+
+    // if the array of object have isTrue True then remove
+    const menusWithOutCheckAllFalse =  menusWithOutCheck.map( (menu) => {
+        let newMenu = {
+            ...menu,
+            isTrue : false
         }
 
-        const someInternalLinkTrue = internal_links?.some( (link) => link.isTrue === true )
-
-        if (menu.status === 1) {
-            return {...menu , internal_links : internal_links, isTrue: true}
-        } else if(someInternalLinkTrue){
-            return {...menu , internal_links : internal_links, isTrue: true}
-        } else {
-            return { ...menu , internal_links}
+        if(menu.internal_links.length > 0){
+            const newMenuInternallinks = menu.internal_links.map( (links) => {
+                return { ...links , isTrue : false }
+            } )
+            newMenu = {
+                ...newMenu, 
+                internal_links : newMenuInternallinks
+            }
+            return newMenu;
+        } else{
+        return newMenu; 
         }
+    })
 
-    } )
 
-    return accessGiven;
+    /* Creating a new array from the two arrays. */
+    const newSoftwareMenus = [
+        ...modulesCheckTrueData,
+        ...menusWithOutCheckAllFalse
+    ]
 
+    return newSoftwareMenus;
 }

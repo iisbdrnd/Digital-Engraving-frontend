@@ -5,8 +5,8 @@ import React, { useEffect, useState } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
 // import { useParams } from 'react-router';
 import UserAccessModules from './UserAccessModules';
+import {  userGetMethod, userPostMethod } from '../../../../../api/userAction';
 import { softwareMenuRearrange, setUserAlreadyMenuAccess } from './ModulesAndLinks/utils';
-import { adminGetMethod, adminPostMethod } from '../../../../../api/action';
 import { useParams } from 'react-router';
 import { toast } from 'react-toastify';
 
@@ -18,14 +18,15 @@ const UserAccess = () => {
     const [loading,setLoading] = useState(false);
     const [modulesloading,setModulesLoading] = useState(false);
     const [ tab, setTab] = useState(0);
+    const [ roleId, setRoleId] = useState(null);
     const {userId} = useParams();
     // let dummyData = data.slice(0,5);
 
     //get all user access module by using user id  .software_menus
-    const userModuleURl = `api/admin/projects/getModule/1`  //previous was ${userId}. Here 1 is folder id
+    const userModuleURl = `api/user/software-modules`  //previous was ${userId}. Here 1 is folder id
     useEffect( () => {
         setLoading(true);
-        adminGetMethod(userModuleURl)
+        userGetMethod(userModuleURl)
         .then( res => {
             setUserAccessData(res.data);
             // console.log('data',res.data)
@@ -35,57 +36,27 @@ const UserAccess = () => {
     
     
     //get all user access single module by using user id and module menu id
-    const userMenuForModuleURl = `api/admin/users/getMenusForModule/1/${menusForModuleId}`  //previous was ${userId}. Here 1 is project id
+    const userMenuForModuleURl = `api/user/getMenusForModule/1/${menusForModuleId}`  //previous was ${userId}. Here 1 is project id
     useEffect( () => {
         setModulesLoading(true);
-        adminGetMethod(userMenuForModuleURl)
+        userGetMethod(userMenuForModuleURl)
         .then( res => {
 
+            let menus;
             if (res?.data?.software_menus?.length > 0) {
-                
-                adminGetMethod(`api/admin/users/getMenusForModuleUserWise/${userId}/${menusForModuleId}`)
-                .then( (modulesRes) => {
-                    let currentAccessData = modulesRes.data ;
-
-                    
-                    if(currentAccessData.software_menus.length > 0){
-
-                        let newSoftwareMenus = setUserAlreadyMenuAccess( res.data.software_menus, currentAccessData.software_menus)
-
-                        // software menu rearrange
-                        const reArrangeMenus = softwareMenuRearrange(newSoftwareMenus);
-
-                        const moduleData = {
-                            ...res.data,
-                            software_menus : reArrangeMenus
-                        }
-                        
-                        setModulesData(moduleData);
-                        setModulesLoading(false)
-
-                    } else {
-
-                        let menus = softwareMenuRearrange(res.data.software_menus)
-
-                        const moduleData = {
-                            ...res.data,
-                            software_menus : menus
-                        }
-                        
-                        setModulesData(moduleData);
-                        setModulesLoading(false)
-
-                    }
-
-                })
-                
-            }    
+                // const userAlreadyAccess = setUserAlreadyMenuAccess(res.data.software_menus);
+                menus = softwareMenuRearrange(res.data.software_menus)
+            }      
             
+            const moduleData = {
+                ...res.data,
+                software_menus : menus
+            }
             
+            setModulesData(moduleData);
+            setModulesLoading(false)
         })
-        
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [menusForModuleId, userId])
+    }, [userMenuForModuleURl])
 
     
 
@@ -94,6 +65,7 @@ const UserAccess = () => {
     const openPopup = (id) => {
         setMenusForModuleId(id);
         setTab(1);
+        setRoleId(null);
     }
 
     /**
@@ -101,14 +73,19 @@ const UserAccess = () => {
      * @param event - The event object
      */
     const handleRoleChange = (event) => {
-
         const roleIdStr = event.target.value;
-        const roleId = parseInt(roleIdStr);
+        const getRoleId = parseInt(roleIdStr);
+        setRoleId(getRoleId)
+    }
 
-        const userRoleMenuURL = `api/admin/getModuleMenusForRole/${roleId}/${menusForModuleId}`
+
+    /* Fetching data from the server and setting it to the state by using role */
+    useEffect(  () => {
+        
+        const userRoleMenuURL = `api/user/getModuleMenusForRole/${roleId}/${menusForModuleId}`
 
         setModulesLoading(true);
-        adminGetMethod(userRoleMenuURL)
+        userGetMethod(userRoleMenuURL)
         .then(  ( res) => {
 
             const roleModulesData = res.data;
@@ -120,11 +97,74 @@ const UserAccess = () => {
            
             if(roleModulesData?.software_menus?.length > 0){
 
-                adminGetMethod(`api/admin/users/getMenusForModule/1/${menusForModuleId}`)
+                userGetMethod(`api/user/getMenusForModule/1/${menusForModuleId}`)
                 .then( (modulesRes) => {
                     let modulesData = modulesRes.data ;
+                    
+                    // get data whice check true
+                    let modulesRoleCheckTrueData = [];
+                    for (const menu of modulesData?.software_menus) {
+                        for (const roleMenu of roleModulesData.software_menus ){
+                            
+                            if( menu.id === roleMenu.id){
 
-                    const newSoftwareMenus = setUserAlreadyMenuAccess(modulesData?.software_menus, roleModulesData.software_menus)
+                                let roleMenuData = {...menu , isTrue : true}
+
+                                //change internal links object and give isTrue to true
+                                const roleMenuInternalLinks =  roleMenuData?.internal_links?.map( internal_link => {
+                                    return {
+                                        ...internal_link,
+                                        isTrue: true
+                                    }
+                                })
+                                roleMenuData = {
+                                    ...roleMenuData,
+                                    internal_links : roleMenuInternalLinks
+                                }
+                                modulesRoleCheckTrueData.push(roleMenuData);
+                                // console.log('data', menu , roleMenu);
+
+                            }  
+
+                        }
+                    }
+
+                    /* Filtering the menusWithOutCheck array and returning the menus that are not in the
+                    modulesRoleCheckTrueData array. */
+                    let menusWithOutCheck = modulesData?.software_menus?.filter(function(menu){
+                        return !modulesRoleCheckTrueData.some(function(checkmenu){   
+                            return menu.id === checkmenu.id;          
+                        });
+                    });
+
+                    // if the array of object have isTrue True then remove
+                    const menusWithOutCheckAllFalse =  menusWithOutCheck.map( (menu) => {
+                        let newMenu = {
+                            ...menu,
+                            isTrue : false
+                        }
+
+                        if(menu.internal_links.length > 0){
+                            const newMenuInternallinks = menu.internal_links.map( (links) => {
+                                return { ...links , isTrue : false }
+                            } )
+                            newMenu = {
+                                ...newMenu, 
+                                internal_links : newMenuInternallinks
+                            }
+                            return newMenu;
+                        } else{
+                        return newMenu; 
+                        }
+                    })
+
+
+                    /* Creating a new array from the two arrays. */
+                    const newSoftwareMenus = [
+                        ...modulesRoleCheckTrueData,
+                        ...menusWithOutCheckAllFalse
+                    ]
+
 
                     // software menu rearrange
                     const reArrangeMenus = softwareMenuRearrange(newSoftwareMenus);
@@ -138,11 +178,13 @@ const UserAccess = () => {
                     setModulesLoading(false);
                 })
 
+                
+
             } else {
                 /* Making an API call to get the menus for the module. */
-                const userMenuForModuleURl = `api/admin/users/getMenusForModule/1/${menusForModuleId}`
+                const userMenuForModuleURl = `api/user/getMenusForModule/1/${menusForModuleId}`
                 // jahid id then ashadul .. isChecked true
-                adminGetMethod(userMenuForModuleURl)
+                userGetMethod(userMenuForModuleURl)
                 .then( res => {                    
 
                     // software menu rearrange
@@ -161,10 +203,12 @@ const UserAccess = () => {
 
                     setModulesLoading(false);
                 })
+                
             }
         })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [roleId, menusForModuleId, userMenuForModuleURl ])
 
-    }
 
     // when select all
     const allMenuAndResourceChecked = ( event ) => {
@@ -307,18 +351,18 @@ const UserAccess = () => {
                 return { ...internalLink , isTrue: checked}
             } )
         }
-        // const isAllInternalLinksTrue = childInternalLinks?.some( internalLink => internalLink.isTrue === true );
+        const isAllInternalLinksTrue = childInternalLinks?.every( internalLink => internalLink.isTrue === true );
 
         childMenu = {
             ...childMenu, 
-            isTrue : checked,
+            isTrue : isAllInternalLinksTrue,
             internal_links: childInternalLinks
         }
 
         const updateChildMenu = findParentMenu.children?.map( currentChildMenu => currentChildMenu.id === menuChildId ? childMenu : currentChildMenu )
 
         
-        const isChildMenuTrue = updateChildMenu?.some( childMenu => childMenu.isTrue === true );
+        const isChildMenuTrue = updateChildMenu.some( childMenu => childMenu.isTrue === true );
 
         parentMenu  ={
             ...parentMenu,
@@ -400,11 +444,9 @@ const UserAccess = () => {
         }
         //set all menus module data
         setModulesData(moduleData);
-        
+
     }
 
-
-    
     // // if click save data button
     const saveData = () => {
 
@@ -441,8 +483,6 @@ const UserAccess = () => {
 
         }
 
-        
-
         //create final post data
         const user_id = parseInt(userId);
         let data = {
@@ -455,7 +495,7 @@ const UserAccess = () => {
         // console.log('saveData',data);
     
         // post api call with data
-        adminPostMethod('api/admin/users/userAccessingStore',data)
+        userPostMethod('api/user/userAccessingStore',data)
         .then( res => {
             // if data save successfull
             if(res.data.message){
@@ -483,7 +523,7 @@ const UserAccess = () => {
                                                     <d className={menusForModuleId === data.id ? "border d-flex flex-column py-3 justify-content-center align-items-center bg-secondary" : "border d-flex flex-column py-3 justify-content-center align-items-center" }
                                                     >
                                                         <i className="fa-solid fa-basket-shopping fa-2xl my-3 pb-2"></i>
-                                                        <h6 className='fs-3'>{data.module_name}</h6>
+                                                        <h6 className=''>{data.module_name}</h6>
                                                     </d>
                                                 </div>
                                             ))

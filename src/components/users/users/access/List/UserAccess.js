@@ -18,9 +18,11 @@ const UserAccess = () => {
     const [loading,setLoading] = useState(false);
     const [modulesloading,setModulesLoading] = useState(false);
     const [ tab, setTab] = useState(0);
-    const [ roleId, setRoleId] = useState(null);
     const {userId} = useParams();
-    // let dummyData = data.slice(0,5);
+    // get current login user
+    const stateStr = localStorage.getItem('state');
+    const statePar = JSON.parse(stateStr)
+    const loginUser = statePar.auth.user
 
     //get all user access module by using user id  .software_menus
     const userModuleURl = `api/user/software-modules`  //previous was ${userId}. Here 1 is folder id
@@ -36,27 +38,57 @@ const UserAccess = () => {
     
     
     //get all user access single module by using user id and module menu id
-    const userMenuForModuleURl = `api/user/getMenusForModule/1/${menusForModuleId}`  //previous was ${userId}. Here 1 is project id
+    const userMenuForModuleURl = `api/user/getMenusForModule/${loginUser.id}/${menusForModuleId}`  //previous was ${userId}. Here 1 is project id
     useEffect( () => {
         setModulesLoading(true);
         userGetMethod(userMenuForModuleURl)
         .then( res => {
 
-            let menus;
             if (res?.data?.software_menus?.length > 0) {
-                // const userAlreadyAccess = setUserAlreadyMenuAccess(res.data.software_menus);
-                menus = softwareMenuRearrange(res.data.software_menus)
-            }      
+                
+                userGetMethod(`api/user/getMenusForModule/${userId}/${menusForModuleId}`)
+                .then( (modulesRes) => {
+                    let currentAccessData = modulesRes.data ;
+
+                    
+                    if(currentAccessData.software_menus.length > 0){
+
+                        let newSoftwareMenus = setUserAlreadyMenuAccess( res.data.software_menus, currentAccessData.software_menus)
+
+                        // software menu rearrange
+                        const reArrangeMenus = softwareMenuRearrange(newSoftwareMenus);
+
+                        const moduleData = {
+                            ...res.data,
+                            software_menus : reArrangeMenus
+                        }
+                        
+                        setModulesData(moduleData);
+                        setModulesLoading(false)
+
+                    } else {
+
+                        let menus = softwareMenuRearrange(res.data.software_menus)
+
+                        const moduleData = {
+                            ...res.data,
+                            software_menus : menus
+                        }
+                        
+                        setModulesData(moduleData);
+                        setModulesLoading(false)
+
+                    }
+
+                })
+                
+            }    
             
-            const moduleData = {
-                ...res.data,
-                software_menus : menus
-            }
             
-            setModulesData(moduleData);
-            setModulesLoading(false)
         })
-    }, [userMenuForModuleURl])
+        
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [menusForModuleId, userId])
 
     
 
@@ -65,7 +97,6 @@ const UserAccess = () => {
     const openPopup = (id) => {
         setMenusForModuleId(id);
         setTab(1);
-        setRoleId(null);
     }
 
     /**
@@ -73,15 +104,10 @@ const UserAccess = () => {
      * @param event - The event object
      */
     const handleRoleChange = (event) => {
+
         const roleIdStr = event.target.value;
-        const getRoleId = parseInt(roleIdStr);
-        setRoleId(getRoleId)
-    }
+        const roleId = parseInt(roleIdStr);
 
-
-    /* Fetching data from the server and setting it to the state by using role */
-    useEffect(  () => {
-        
         const userRoleMenuURL = `api/user/getModuleMenusForRole/${roleId}/${menusForModuleId}`
 
         setModulesLoading(true);
@@ -97,74 +123,11 @@ const UserAccess = () => {
            
             if(roleModulesData?.software_menus?.length > 0){
 
-                userGetMethod(`api/user/getMenusForModule/1/${menusForModuleId}`)
+                userGetMethod(`api/user/getMenusForModule/${loginUser.id}/${menusForModuleId}`)
                 .then( (modulesRes) => {
                     let modulesData = modulesRes.data ;
-                    
-                    // get data whice check true
-                    let modulesRoleCheckTrueData = [];
-                    for (const menu of modulesData?.software_menus) {
-                        for (const roleMenu of roleModulesData.software_menus ){
-                            
-                            if( menu.id === roleMenu.id){
 
-                                let roleMenuData = {...menu , isTrue : true}
-
-                                //change internal links object and give isTrue to true
-                                const roleMenuInternalLinks =  roleMenuData?.internal_links?.map( internal_link => {
-                                    return {
-                                        ...internal_link,
-                                        isTrue: true
-                                    }
-                                })
-                                roleMenuData = {
-                                    ...roleMenuData,
-                                    internal_links : roleMenuInternalLinks
-                                }
-                                modulesRoleCheckTrueData.push(roleMenuData);
-                                // console.log('data', menu , roleMenu);
-
-                            }  
-
-                        }
-                    }
-
-                    /* Filtering the menusWithOutCheck array and returning the menus that are not in the
-                    modulesRoleCheckTrueData array. */
-                    let menusWithOutCheck = modulesData?.software_menus?.filter(function(menu){
-                        return !modulesRoleCheckTrueData.some(function(checkmenu){   
-                            return menu.id === checkmenu.id;          
-                        });
-                    });
-
-                    // if the array of object have isTrue True then remove
-                    const menusWithOutCheckAllFalse =  menusWithOutCheck.map( (menu) => {
-                        let newMenu = {
-                            ...menu,
-                            isTrue : false
-                        }
-
-                        if(menu.internal_links.length > 0){
-                            const newMenuInternallinks = menu.internal_links.map( (links) => {
-                                return { ...links , isTrue : false }
-                            } )
-                            newMenu = {
-                                ...newMenu, 
-                                internal_links : newMenuInternallinks
-                            }
-                            return newMenu;
-                        } else{
-                        return newMenu; 
-                        }
-                    })
-
-
-                    /* Creating a new array from the two arrays. */
-                    const newSoftwareMenus = [
-                        ...modulesRoleCheckTrueData,
-                        ...menusWithOutCheckAllFalse
-                    ]
-
+                    const newSoftwareMenus = setUserAlreadyMenuAccess(modulesData?.software_menus, roleModulesData.software_menus)
 
                     // software menu rearrange
                     const reArrangeMenus = softwareMenuRearrange(newSoftwareMenus);
@@ -178,11 +141,10 @@ const UserAccess = () => {
                     setModulesLoading(false);
                 })
 
-                
-
             } else {
                 /* Making an API call to get the menus for the module. */
-                const userMenuForModuleURl = `api/user/getMenusForModule/1/${menusForModuleId}`
+                const userMenuForModuleURl = `api/user/getMenusForModule/${loginUser.id}/${menusForModuleId}`
+                // jahid id then ashadul .. isChecked true
                 userGetMethod(userMenuForModuleURl)
                 .then( res => {                    
 
@@ -202,12 +164,10 @@ const UserAccess = () => {
 
                     setModulesLoading(false);
                 })
-                
             }
         })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [roleId, menusForModuleId, userMenuForModuleURl ])
 
+    }
 
     // when select all
     const allMenuAndResourceChecked = ( event ) => {
@@ -350,11 +310,11 @@ const UserAccess = () => {
                 return { ...internalLink , isTrue: checked}
             } )
         }
-        const isAllInternalLinksTrue = childInternalLinks?.every( internalLink => internalLink.isTrue === true );
+        // const isAllInternalLinksTrue = childInternalLinks?.every( internalLink => internalLink.isTrue === true );
 
         childMenu = {
             ...childMenu, 
-            isTrue : isAllInternalLinksTrue,
+            isTrue : checked,
             internal_links: childInternalLinks
         }
 

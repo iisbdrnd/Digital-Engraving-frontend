@@ -31,46 +31,104 @@
                 }
             }
 
-            const menuWithChildren = {
+            
+            if(children.length > 0){
+
+                let ifAnyChildrenTrue  = children.some( (child) => child.isTrue === true)
+
+                const menuWithChildren = {
+                    ...menu,
+                    isTrue: ifAnyChildrenTrue,
+                    children : children
+                }
+
+                rearrangeMenu.push(menuWithChildren)
+
+            } else {
+
+                const menuWithChildren = {
                 ...menu,
-                children : children
+                    children : children
+                }
+
+                rearrangeMenu.push(menuWithChildren)
+
             }
 
-            rearrangeMenu.push(menuWithChildren)
+            
 
         }
     }
 
     return rearrangeMenu;
+
 }
 
 
-export const setUserAlreadyMenuAccess = (menus) => {
-    const accessGiven = menus.map( (menu) => {
+export const setUserAlreadyMenuAccess = (userMenu , alreadyAccessMenu) => {
+    // get data whice check true
+    let modulesCheckTrueData = [];
+    for (const menu of userMenu) {
+        for (const roleMenu of alreadyAccessMenu ){
+            
+            if( menu.id === roleMenu.id){
 
-        let internal_links;
-        if (menu.internal_links) {
-            internal_links = menu.internal_links.map( (link) => {
-                if (link.status === 1) {
-                    return {...link, isTrue: true}
-                }else{
-                    return link
+                let roleMenuData = {...menu , isTrue : true}
+
+                //change internal links object and give isTrue to true
+                const roleMenuInternalLinks =  roleMenuData?.internal_links?.map( internal_link => {
+                    return {
+                        ...internal_link,
+                        isTrue: true
+                    }
+                })
+                roleMenuData = {
+                    ...roleMenuData,
+                    internal_links : roleMenuInternalLinks
                 }
-            })
+                modulesCheckTrueData.push(roleMenuData);
+                // console.log('data', menu , roleMenu);
+
+            }  
+
+        }
+    }
+
+    /* Filtering the menusWithOutCheck array and returning the menus that are not in the
+    modulesRoleCheckTrueData array. */
+    let menusWithOutCheck = userMenu?.filter(function(menu){
+        return !modulesCheckTrueData.some(function(checkmenu){   
+            return menu.id === checkmenu.id;          
+        });
+    });
+
+    // if the array of object have isTrue True then remove
+    const menusWithOutCheckAllFalse =  menusWithOutCheck.map( (menu) => {
+        let newMenu = {
+            ...menu,
+            isTrue : false
         }
 
-        const someInternalLinkTrue = internal_links?.some( (link) => link.isTrue === true )
-
-        if (menu.status === 1) {
-            return {...menu , internal_links : internal_links, isTrue: true}
-        } else if(someInternalLinkTrue){
-            return {...menu , internal_links : internal_links, isTrue: true}
-        } else {
-            return { ...menu , internal_links}
+        if(menu.internal_links.length > 0){
+            const newMenuInternallinks = menu.internal_links.map( (links) => {
+                return { ...links , isTrue : false }
+            } )
+            newMenu = {
+                ...newMenu, 
+                internal_links : newMenuInternallinks
+            }
+            return newMenu;
+        } else{
+        return newMenu; 
         }
+    })
 
-    } )
 
-    return accessGiven;
+    /* Creating a new array from the two arrays. */
+    const newSoftwareMenus = [
+        ...modulesCheckTrueData,
+        ...menusWithOutCheckAllFalse
+    ]
 
+    return newSoftwareMenus;
 }
