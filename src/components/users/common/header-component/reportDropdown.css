@@ -10,11 +10,7 @@
     text-align: left !important;
 }
 
-.dropdown li {
-    position: relative;
-}
-
-.dropdown li a {
+.dropdown > button {
     color: #4466f2;
     /* text-align: center; */
     text-decoration: none;
@@ -32,6 +28,9 @@
     display: none;
     line-height: normal;
     background-color: #ffffff;
+    /* height: 400px;
+    overflow-y: scroll;
+    background: white; */
 }
 
 .dropdown li ul li {
@@ -39,7 +38,6 @@
 }
 
 .dropdown li ul li a {
-    /* text-align: center; */
     color: #000000;
     font-size: 14px;
     font-weight: 400;
@@ -70,4 +68,7 @@ ul li:hover>a {
 ul li:hover>ul {
     display: block;
 }
+
+
+
  

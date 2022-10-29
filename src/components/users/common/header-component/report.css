@@ -1,0 +1,90 @@
+
+.dropdown {
+    margin: 0;
+    padding: 0;
+    background: white;
+    border: none;
+    cursor: pointer;
+    text-align: left !important;
+}
+
+.dropdown > button {
+    color: #4466f2;
+    text-decoration: none;
+    display: block;
+    padding: 5px 10px;
+    cursor: pointer;
+    border: 0px;
+    background: white;
+}
+.dropdown-menu li {
+    border: none !important;
+}
+.dropdown-item {
+    color: #000000 !important;
+    font-size: 14px;
+    font-weight: 400;
+    padding: 3px 10px;
+    display: block;
+    white-space: nowrap;
+    transition: all 0.3s ease-in-out;
+}
+.dropdown-item:hover {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    font-size: 15px;
+    font-weight: 700;
+    margin-left: 5px;
+}
+.dropdown-container{
+    position: static;
+    padding: 5px 10px;
+    display: flex;
+    flex-direction: column;
+    height: auto;
+}
+.dropdown-container.long{
+    height: 410px;
+    overflow-y: scroll;
+}
+.dropdown-container li {
+    margin: 0px 0px !important;
+}
+
+.children {
+  height: 0;
+  overflow: hidden;
+}
+.children.active {
+  height: auto;
+}
+.dropdown-menu{
+    position: absolute;
+    transform: translate3d(0px, 52px, 0px);
+    top: 0px;
+    left: 0px;
+    will-change: transform;
+}
+
+.dropdown-menu.show{
+    display: block;
+}
+.subDropdown{
+    margin-left: 20px;
+    display: flex;
+    flex-direction: column;
+}
+.subDropdown > li a {
+    color: #000000 !important;
+    font-size: 12px;
+    font-weight: 400;
+    padding: 3px 10px;
+    display: block;
+    white-space: nowrap;
+    transition: all 0.3s ease-in-out;
+}
+.subDropdown > li:hover > a {
+    background-color: #ffffff !important;
+    font-size: 14px;
+    font-weight: 500;
+}

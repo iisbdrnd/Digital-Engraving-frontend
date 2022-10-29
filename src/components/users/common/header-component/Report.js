@@ -2,11 +2,12 @@
 import React, { useEffect, useState } from 'react';
 import { userGetMethod } from '../../../../api/userAction';
 import { softWareMenus } from '../../../../api/userUrl';
-import "./reportDropdown.css";
+// import "./reportDropdown.css";
+import './report.css';
 import {
     Home,
     ArrowRightCircle,
-    ArrowRight
+    ArrowDown
 } from 'react-feather';
 import { Link } from 'react-router-dom';
 
@@ -15,6 +16,24 @@ const Report = () => {
     const [MENUITEMS, setMENUITEMS] = useState([]);
     const [mainmenu, setMainMenu] = useState([]);
      const menuObject = [];
+     const [clicked, setClicked] = useState("0");
+     const [showDropdown, setShowDropdown] = useState(false);
+
+     const handleShowDropdown = () => {
+        setShowDropdown(!showDropdown)
+     }
+
+      const handleToggle = (index) => {
+
+            if (clicked === index) {
+            return setClicked("0");
+            }
+            setClicked(index);
+        };
+
+     const handleCloseDropDown = () => {
+        setShowDropdown(false);
+     }
 
     useEffect(() => {
         let moduleId = localStorage.getItem('moduleId');
@@ -90,96 +109,93 @@ const Report = () => {
 
     console.log('usermenu',mainmenu, MENUITEMS);
 
+
+
     return (
         <>
-            <ul class="dropdown">
+
+
+            <div class="dropdown">
                 {
                     MENUITEMS?.map( (menu) => (
-                        <li key={menu.title}>
-                            {
-                                menu.type === 'link' ? (
-                                    <Link 
-                                        className='d-flex align-items-center' 
-                                        to={{
-                                                pathname: process.env.PUBLIC_URL+menu.path,
-                                                state: { params: {menuId: menu.menuId} },
-                                                menuId: menu.menuId
-                                            }}
-                                        params={ menu.menuId }
-                                    >{menu.title}</Link>
-                                ) : (
-                                    <>
-                                        <a href="#"
-                                            // className='d-flex align-items-center' 
-                                        > 
-
-                                        <div className="d-flex align-items-center">
-                                            <span className="menutitle">{menu.title}</span> 
-                                        </div>
-                                        </a>
-                                        <ul>
-                                            {
-                                                menu?.children?.map( (subMenu) => (
-                                                    subMenu.type === 'sub' ? (
-                                                            <li key={subMenu?.title}>
-                                                                <a href="#"
-                                                                    // className='d-flex align-items-center' 
-                                                                > 
-                                                                <div className="d-flex align-items-center">
-                                                                    <span className="menutitle">{subMenu.title}</span> <ArrowRight  color="black" size={10}/>
-                                                                </div> 
-                                                                </a>
-                                                                <ul>
-                                                                    {
-                                                                        subMenu?.children?.map( (submultiMenu) => (
-                                                                            <li key={submultiMenu.title}>
-                                                                                {
-                                                                                    submultiMenu.title && (
-                                                                                        <Link 
-                                                                                            className='d-flex align-items-center' 
-                                                                                            to={{
-                                                                                                    pathname: process.env.PUBLIC_URL+submultiMenu.path,
-                                                                                                    state: { params: {menuId: submultiMenu.menuId} },
-                                                                                                    menuId: submultiMenu.menuId
-                                                                                                }}
-                                                                                            params={ submultiMenu.menuId }
-                                                                                        >{submultiMenu.title}</Link>
-                                                                                    )
-                                                                                }
-                                                                            </li>
-                                                                        ))
-                                                                    }
-                                                                </ul>
+                        menu.type === 'link' ? (
+                            <Link 
+                                className='d-flex align-items-center' 
+                                onClick={handleCloseDropDown}
+                                to={{
+                                        pathname: process.env.PUBLIC_URL+menu.path,
+                                        state: { params: {menuId: menu.menuId} },
+                                        menuId: menu.menuId
+                                    }}
+                                params={ menu.menuId }
+                            >{menu.title}</Link>
+                        ) : (
+                            <>
+                                <button onClick={handleShowDropdown}>
+                                    {menu.title}
+                                </button>
+                                <div class={`dropdown-menu ${showDropdown && 'show' }`} aria-labelledby="dropdownMenuButton">
+                                    <div className={menu?.children.length > 15 ? `dropdown-container long` : 'dropdown-container'}>
+                                        {
+                                            menu?.children?.map( (dropdown , index) => (
+                                                dropdown.type === 'sub' ? (
+                                                    <li>
+                                                        <div className="d-flex align-items-center justify-content-between dropdown-item"  onClick={ () => handleToggle(index)}>
+                                                            <span >{dropdown.title}</span> <ArrowDown style={ {marginTop : '0px'}}  color="black" size={10}/>
+                                                        </div>
+                                                        <div className={`children ${ clicked === index ? "active" : ""}`}>
+                                                            <ul className='subDropdown'>
+                                                                {
+                                                                    dropdown?.children?.map( (submultiMenu) => (
+                                                                        <li key={submultiMenu.title}>
+                                                                            {
+                                                                                submultiMenu.title && (
+                                                                                    <Link 
+                                                                                        className='d-flex align-items-center' 
+                                                                                        onClick={handleCloseDropDown}
+                                                                                        to={{
+                                                                                                pathname: process.env.PUBLIC_URL+submultiMenu.path,
+                                                                                                state: { params: {menuId: submultiMenu.menuId} },
+                                                                                                menuId: submultiMenu.menuId
+                                                                                            }}
+                                                                                        params={ submultiMenu.menuId }
+                                                                                    >{submultiMenu.title}</Link>
+                                                                                )
+                                                                            }
+                                                                        </li>
+                                                                    ))
+                                                                }
                                                                 
-                                                                {/* if another dropdown here then ul > li > a */}
-                                                            </li>
-                                                        ) : (
-                                                            subMenu.title && (
-                                                                <li key={subMenu.title}>
-                                                                    <Link 
-                                                                        className='d-flex align-items-center' 
-                                                                        to={{
-                                                                                pathname: process.env.PUBLIC_URL+subMenu.path,
-                                                                                state: { params: {menuId: subMenu.menuId} },
-                                                                                menuId: subMenu.menuId
-                                                                            }}
-                                                                        params={ subMenu.menuId }
-                                                                    >{subMenu.title}</Link>
-                                                                </li>
-                                                            ) 
-                                                        )
-                                                ))
-                                            }
-                                        </ul>
-                                    </>
-                                )
-                            }
-                            
-                        </li>
+                                                            </ul>
+                                                        </div>
+                                                    </li>
+                                                ) : (
+                                                    dropdown.title && (
+                                                        <li key={dropdown.title}>
+                                                            <Link 
+                                                                className='d-flex align-items-center dropdown-item' 
+                                                                onClick={handleCloseDropDown}
+                                                                to={{
+                                                                        pathname: process.env.PUBLIC_URL+dropdown.path,
+                                                                        state: { params: {menuId: dropdown.menuId} },
+                                                                        menuId: dropdown.menuId
+                                                                    }}
+                                                                params={ dropdown.menuId }
+                                                            >{dropdown.title}</Link>
+                                                        </li>
+                                                    )
+                                                )) 
+                                            )
+                                        }
+                                    </div>
+                                </div>
+                            </>
+                        )
                     ))
                 }
-                
-            </ul>
+
+            </div>
+
         </>
     );
 };

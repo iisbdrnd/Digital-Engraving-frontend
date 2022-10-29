@@ -1,11 +1,14 @@
 
 /* eslint-disable no-unused-expressions */
 import React, { useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
+// import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useParams } from 'react-router';
+// import { useParams } from 'react-router';
 import UserAccessModules from './UserAccessModules';
 import {  userGetMethod, userPostMethod } from '../../../../../api/userAction';
+import { softwareMenuRearrange, setUserAlreadyMenuAccess } from './ModulesAndLinks/utils';
+import { useParams } from 'react-router';
+import { toast } from 'react-toastify';
 
 const UserAccess = () => {
 
@@ -38,7 +41,19 @@ const UserAccess = () => {
         setModulesLoading(true);
         userGetMethod(userMenuForModuleURl)
         .then( res => {
-            setModulesData(res.data);
+
+            let menus;
+            if (res?.data?.software_menus?.length > 0) {
+                // const userAlreadyAccess = setUserAlreadyMenuAccess(res.data.software_menus);
+                menus = softwareMenuRearrange(res.data.software_menus)
+            }      
+            
+            const moduleData = {
+                ...res.data,
+                software_menus : menus
+            }
+            
+            setModulesData(moduleData);
             setModulesLoading(false)
         })
     }, [userMenuForModuleURl])
@@ -63,11 +78,13 @@ const UserAccess = () => {
         setRoleId(getRoleId)
     }
 
+
     /* Fetching data from the server and setting it to the state by using role */
     useEffect(  () => {
         
         const userRoleMenuURL = `api/user/getModuleMenusForRole/${roleId}/${menusForModuleId}`
 
+        setModulesLoading(true);
         userGetMethod(userRoleMenuURL)
         .then(  ( res) => {
 
@@ -80,94 +97,110 @@ const UserAccess = () => {
            
             if(roleModulesData?.software_menus?.length > 0){
 
-                console.log('hello');
-                // get data whice check true
-                let modulesRoleCheckTrueData = [];
-                for (const menu of modulesData?.software_menus) {
-                    for (const roleMenu of roleModulesData.software_menus ){
-                        
-                        if( menu.id === roleMenu.id){
+                userGetMethod(`api/user/getMenusForModule/1/${menusForModuleId}`)
+                .then( (modulesRes) => {
+                    let modulesData = modulesRes.data ;
+                    
+                    // get data whice check true
+                    let modulesRoleCheckTrueData = [];
+                    for (const menu of modulesData?.software_menus) {
+                        for (const roleMenu of roleModulesData.software_menus ){
+                            
+                            if( menu.id === roleMenu.id){
 
-                            let roleMenuData = {...menu , isChecked : true}
+                                let roleMenuData = {...menu , isTrue : true}
 
-                            //change internal links object and give isChecked to true
-                            const roleMenuInternalLinks =  roleMenuData?.internal_links?.map( internal_link => {
-                                return {
-                                    ...internal_link,
-                                    isChecked: true
+                                //change internal links object and give isTrue to true
+                                const roleMenuInternalLinks =  roleMenuData?.internal_links?.map( internal_link => {
+                                    return {
+                                        ...internal_link,
+                                        isTrue: true
+                                    }
+                                })
+                                roleMenuData = {
+                                    ...roleMenuData,
+                                    internal_links : roleMenuInternalLinks
                                 }
-                            })
-                            roleMenuData = {
-                                ...roleMenuData,
-                                internal_links : roleMenuInternalLinks
-                            }
-                            modulesRoleCheckTrueData.push(roleMenuData);
-                            // console.log('data', menu , roleMenu);
+                                modulesRoleCheckTrueData.push(roleMenuData);
+                                // console.log('data', menu , roleMenu);
 
-                        }  
+                            }  
 
-                    }
-                }
-
-                /* Filtering the menusWithOutCheck array and returning the menus that are not in the
-                modulesRoleCheckTrueData array. */
-                let menusWithOutCheck = modulesData?.software_menus?.filter(function(menu){
-                    return !modulesRoleCheckTrueData.some(function(checkmenu){   
-                        return menu.id === checkmenu.id;          
-                    });
-                });
-
-                // if the array of object have isChecked True then remove
-                const menusWithOutCheckAllFalse =  menusWithOutCheck.map( (menu) => {
-                    let newMenu = {
-                        ...menu,
-                        isChecked : false
-                    }
-
-                    if(menu.internal_links.length > 0){
-                        const newMenuInternallinks = menu.internal_links.map( (links) => {
-                            return { ...links , isChecked : false }
-                        } )
-                        newMenu = {
-                            ...newMenu, 
-                            internal_links : newMenuInternallinks
                         }
-                        return newMenu;
-                    } else{
-                       return newMenu; 
                     }
+
+                    /* Filtering the menusWithOutCheck array and returning the menus that are not in the
+                    modulesRoleCheckTrueData array. */
+                    let menusWithOutCheck = modulesData?.software_menus?.filter(function(menu){
+                        return !modulesRoleCheckTrueData.some(function(checkmenu){   
+                            return menu.id === checkmenu.id;          
+                        });
+                    });
+
+                    // if the array of object have isTrue True then remove
+                    const menusWithOutCheckAllFalse =  menusWithOutCheck.map( (menu) => {
+                        let newMenu = {
+                            ...menu,
+                            isTrue : false
+                        }
+
+                        if(menu.internal_links.length > 0){
+                            const newMenuInternallinks = menu.internal_links.map( (links) => {
+                                return { ...links , isTrue : false }
+                            } )
+                            newMenu = {
+                                ...newMenu, 
+                                internal_links : newMenuInternallinks
+                            }
+                            return newMenu;
+                        } else{
+                        return newMenu; 
+                        }
+                    })
+
+
+                    /* Creating a new array from the two arrays. */
+                    const newSoftwareMenus = [
+                        ...modulesRoleCheckTrueData,
+                        ...menusWithOutCheckAllFalse
+                    ]
+
+
+                    // software menu rearrange
+                    const reArrangeMenus = softwareMenuRearrange(newSoftwareMenus);
+                    //update module data
+                    tempData = {
+                        ...tempData,
+                        software_menus : reArrangeMenus
+                    }
+                    //set module data to update data
+                    setModulesData(tempData);
+                    setModulesLoading(false);
                 })
 
-                // console.log('checked', menusWithOutCheckAllFalse);
-
-
-                /* Creating a new array from the two arrays. */
-                const newSoftwareMenus = [
-                    ...modulesRoleCheckTrueData,
-                    ...menusWithOutCheckAllFalse
-                ]
-
-                //update module data
-                tempData = {
-                    ...tempData,
-                    software_menus : newSoftwareMenus
-                }
-                //set module data to update data
-                setModulesData(tempData);
+                
 
             } else {
                 /* Making an API call to get the menus for the module. */
                 const userMenuForModuleURl = `api/user/getMenusForModule/1/${menusForModuleId}`
                 userGetMethod(userMenuForModuleURl)
-                .then( res => {
+                .then( res => {                    
+
+                    // software menu rearrange
+                    let reArrangeMenus;
+                    if (res?.data?.software_menus?.length > 0) {
+                        // const userAlreadyAccess = setUserAlreadyMenuAccess(res.data.software_menus);
+                        reArrangeMenus = softwareMenuRearrange(res.data.software_menus)
+                    } 
 
                     tempData = {
                         ...tempData,
-                        software_menus : res.data.software_menus
+                        software_menus : reArrangeMenus
                     }
 
                     setModulesData(tempData);
 
+                    setModulesLoading(false);
                 })
                 
             }
@@ -176,175 +209,289 @@ const UserAccess = () => {
     }, [roleId, menusForModuleId, userMenuForModuleURl ])
 
 
-
-    //checkbox handle 
-    const handleCheckChange = (e) => {
-        const {name , checked} = e.target;
+    // when select all
+    const allMenuAndResourceChecked = ( event ) => {
+        const {checked} = event.target;
 
         //copy module data
-        let tempData= {
+        let moduleData= {
             software_module : modulesData?.software_module,
             checkAll: false
         }
-        //If you want to give access of all modules
-        if( name === 'allSelect'){
-            const tempSoftware_menus = modulesData?.software_menus?.map( (data) => {
 
-                if(data?.internal_links?.length < 1){
-                    //if module don't have internal links
-                    return({ ...data , isChecked: checked});
-                } else {
-                    //if module have internal links
-                    let obj = {
-                         ...data , isChecked: checked
-                    }
-                    //change internal links object and give isChecked to true
-                    const internal_links =  data?.internal_links?.map( internal_link => {
-                        return {
-                            ...internal_link,
-                            isChecked: checked
-                        }
-                    })
-                    //update module access
-                    obj = {
-                        ...obj,
-                        internal_links
-                    }
-                    return obj
+        const allCheckedData = modulesData?.software_menus?.map( (menu) => {
+
+            if (menu.children?.length < 1) {
+                return {...menu , isTrue : checked}
+            } else {
+                // copy menu 
+                const copyMenuObject = {
+                    ...menu,
+                    isTrue: checked
                 }
-            });
-            //update module data
-            tempData = {
-                ...tempData,
-                software_menus : tempSoftware_menus
-            }
-            //set module data to update data
-            setModulesData(tempData);
-            
-        } else {
-            //find whice menus wants to access
-            const findSoftware_menus = modulesData?.software_menus?.find( data => data.id == name );
-            //copy the specific menu that you want to aceess 
-            let obj = {
-                ...findSoftware_menus,
-                isChecked : checked
-            }
-            //software menu internal links
-            let findSoftware_menus_internal_links;
-            //if software menu have internal linkes then update internal links and set isCheck true
-            if(findSoftware_menus?.internal_links?.length > 0){
-                findSoftware_menus_internal_links = findSoftware_menus?.internal_links?.map( internal_links => {
-                    return {...internal_links , isChecked : checked}
-                })
-            }
-            //update the object and internal links arrary set true
-            obj ={
-                ...obj,
-                internal_links : findSoftware_menus_internal_links
-            }
-            
-            //set object to whice menu want to update and get all software menus array
-            const final  = modulesData?.software_menus?.map( data => data.id == name ? obj : data );
 
-            //change module data object
-            tempData = {
-                ...tempData,
-                software_menus : final
+                const checkedChildren = menu?.children?.map( (childrenMenu) => {
+
+                    if(childrenMenu?.internal_links?.length < 1){
+                        return { ...childrenMenu, isTrue: checked }
+                    } else {
+                        const childrenMenuWithInternalLinks = {
+                             ...childrenMenu, 
+                             isTrue: checked 
+                        }
+                       const internal_links =  childrenMenu?.internal_links?.map( (internalLink) => {
+                                return { ...internalLink , isTrue: checked}
+                        })
+                        return { ...childrenMenuWithInternalLinks , internal_links: internal_links }
+                    }
+                    
+                })
+
+                return { ...copyMenuObject , children : checkedChildren }
+
             }
-            //set module data object
-            setModulesData(tempData);
+        })
+
+        //update module data
+        moduleData = {
+            ...moduleData,
+            software_menus : allCheckedData
         }
-        
+        //set module data to update data
+        setModulesData(moduleData);
+
     }
 
+    // when select menu
+    const handleSelectMenu = (event , id ) => {
 
-    //if cleck add , edit , delete  or update
-    const singleSelect = (e) => {
-        //get internal links id , software menu id
-        const {name , id, checked} = e.target;
+        const { checked } = event.target ;
         //copy module data
-        let tempData= {
+        let moduleData= {
             software_module : modulesData?.software_module,
             checkAll: false
         }
-        //find and copy object software menu by using software menu id
-        const findSoftware_menus = modulesData?.software_menus?.find( data => data.id == id );
-        let softwareMenusObj = {
-            ...findSoftware_menus
-        }
-        
-        //find whice internal link click or check
-        const internal_Link_update = findSoftware_menus.internal_links?.find( data => data.id == name );
-        //copy internal link object and check true or false
-        let updateObject = {
-            ...internal_Link_update,
-            isChecked: checked
+
+        const findMenus = modulesData?.software_menus?.find( menu => menu.id === id );
+
+        let copyFindSelectedMenu = {
+            ...findMenus , 
+            isTrue : checked
         }
 
-        //set object to whice intenal links want to update and get all internal links array
-        const final_internal_Link_update  = findSoftware_menus.internal_links?.map( data => data.id == name ? updateObject : data );
+        const checkedChildren = findMenus?.children?.map( (childrenMenu) => {
 
-        //if all internal links click then return true
-        const isAllInternalLinksTrue = final_internal_Link_update.every( internalLink => internalLink.isChecked === true );
+            if(childrenMenu?.internal_links?.length < 1){
+                return { ...childrenMenu, isTrue: checked }
+            } else {
+                const childrenMenuWithInternalLinks = {
+                        ...childrenMenu, 
+                        isTrue: checked 
+                }
+                const internal_links =  childrenMenu?.internal_links?.map( (internalLink) => {
+                        return { ...internalLink , isTrue: checked}
+                })
+                return { ...childrenMenuWithInternalLinks , internal_links: internal_links }
+            }
+            
+        })
 
-        //update single software menu object
-        softwareMenusObj = {
-            ...softwareMenusObj,
-            isChecked: isAllInternalLinksTrue,
-            internal_links: final_internal_Link_update
+        copyFindSelectedMenu = {
+            ...copyFindSelectedMenu,
+            children : checkedChildren
         }
 
         //set object to whice menu want to update and get all software menus array
-        const final  = modulesData?.software_menus?.map( data => data.id == id ? softwareMenusObj : data );
+        const finalSoftWareMenus  = modulesData?.software_menus?.map( menu => menu.id === id ? copyFindSelectedMenu : menu );
 
-        //update all menu final object
-        tempData = {
-            ...tempData,
-            software_menus : final
+        
+        const isParentMenuTrue = finalSoftWareMenus?.every( parentMenu => parentMenu.isTrue === true );
+
+        //change module data object
+        moduleData = {
+            ...moduleData,
+            isTrue : isParentMenuTrue,
+            software_menus : finalSoftWareMenus
+        }
+        //set module data object
+        setModulesData(moduleData);
+
+
+        console.log(moduleData);
+    }
+
+    // when click childMenu
+    const handleSelectChildMenu = ( event , parentId, menuChildId ) => {
+
+        const { checked } = event.target;
+        // copy softare module
+        let moduleData= {
+            software_module : modulesData?.software_module,
+            checkAll: false
+        }
+
+        const findParentMenu = modulesData?.software_menus?.find( parentMenu => parentMenu.id === parentId );
+
+        let parentMenu = {
+            ...findParentMenu
+        }
+
+        const findChildMenu = findParentMenu.children?.find( childrenMenu => childrenMenu.id === menuChildId );
+
+        let childMenu = {
+            ...findChildMenu,
+            isTrue : checked
+        }
+
+        let childInternalLinks;
+
+        if(findChildMenu?.internal_links?.length > 0){
+            childInternalLinks = findChildMenu?.internal_links?.map( ( internalLink) => {
+                return { ...internalLink , isTrue: checked}
+            } )
+        }
+        const isAllInternalLinksTrue = childInternalLinks?.every( internalLink => internalLink.isTrue === true );
+
+        childMenu = {
+            ...childMenu, 
+            isTrue : isAllInternalLinksTrue,
+            internal_links: childInternalLinks
+        }
+
+        const updateChildMenu = findParentMenu.children?.map( currentChildMenu => currentChildMenu.id === menuChildId ? childMenu : currentChildMenu )
+
+        
+        const isChildMenuTrue = updateChildMenu.some( childMenu => childMenu.isTrue === true );
+
+        parentMenu  ={
+            ...parentMenu,
+            isTrue : isChildMenuTrue,
+            children : updateChildMenu
+        }
+
+        const updateSoftwareMenu = modulesData?.software_menus?.map( currentParentMenu => currentParentMenu.id === parentId ? parentMenu : currentParentMenu );
+
+        moduleData = {
+            ...moduleData,
+            software_menus : updateSoftwareMenu
         }
         //set all menus module data
-        setModulesData(tempData);
+        setModulesData(moduleData);
+
+
+        console.log(updateSoftwareMenu);
+    }
+    
+    // when click internalLink
+    const handleSelectInternalLinks = ( event , parentId, menuChildId, internalLinksId ) => {
+
+        const { checked } = event.target;
+        // copy softare module
+        let moduleData= {
+            software_module : modulesData?.software_module,
+            checkAll: false
+        }
+
+        const findParentMenu = modulesData?.software_menus?.find( parentMenu => parentMenu.id === parentId );
+
+        let parentMenu = {
+            ...findParentMenu
+        }
+
+        const findChildMenu = findParentMenu.children?.find( childrenMenu => childrenMenu.id === menuChildId );
+
+        let childMenu = {
+            ...findChildMenu,
+        }
+
+        const findInteranlLink = findChildMenu.internal_links.find( internalLink => internalLink.id === internalLinksId );
+
+
+        const updateInternalLink = {
+            ...findInteranlLink,
+            isTrue : checked
+        }
+
+        const updatedNewInternalLinks = findChildMenu.internal_links.map( (internalLink) => {
+           return  internalLink.id === internalLinksId ? updateInternalLink : internalLink
+        })
+
+        const isAllInternalLinksTrue = updatedNewInternalLinks?.some( internalLink => internalLink.isTrue === true );
+
+        childMenu = {
+            ...childMenu, 
+            isTrue : isAllInternalLinksTrue,
+            internal_links: updatedNewInternalLinks
+        }
+
+        const updateChildMenu = findParentMenu.children?.map( currentChildMenu => currentChildMenu.id === menuChildId ? childMenu : currentChildMenu );
+        
+
+        const isChildMenuTrue = updateChildMenu?.some( childMenu => childMenu.isTrue === true );
+
+        parentMenu  ={
+            ...parentMenu,
+            isTrue: isChildMenuTrue,
+            children : updateChildMenu
+        }
+
+        const updateSoftwareMenu = modulesData?.software_menus?.map( currentParentMenu => currentParentMenu.id === parentId ? parentMenu : currentParentMenu );
+
+        moduleData = {
+            ...moduleData,
+            software_menus : updateSoftwareMenu
+        }
+        //set all menus module data
+        setModulesData(moduleData);
 
     }
 
-    // if click save data button
+    // // if click save data button
     const saveData = () => {
-        
-        //find whice software menu have check
-        const menusFilter = modulesData?.software_menus?.filter( module => module.isChecked === true);
-        
-        //modify software menu object
-        let menu = [];
-        for (const menuFilter of menusFilter) {
-            const obj = {
-                id : menuFilter.id
-            }
-            menu.push(obj)
-        }
 
-        //find whice intenal links check and set new object to true
-        let links = [];        
-        for(const menu of modulesData?.software_menus){
-            if(menu?.internal_links?.length > 0){
-                for(const internal_link of menu.internal_links){
-                    if(internal_link.isChecked === true){
-                        const obj = {id: internal_link.id}
-                        links.push(obj)
+        let menus = [];
+        let internalLinks = [];
+
+        
+        for (const parentMenu of modulesData?.software_menus) {
+
+            if(parentMenu.isTrue === true){
+                const parentSelectedMenu = { id : parentMenu.id}
+                menus.push(parentSelectedMenu)
+            }
+
+            if( parentMenu?.children?.length > 0){
+                for (const childrenMenu of parentMenu.children) {
+                    // check child have isTrue
+                    if(childrenMenu.isTrue === true){
+                        const childMenu = { id : childrenMenu.id}
+                        menus.push(childMenu)
                     }
+                    // check child have inernal links
+                    if(childrenMenu?.internal_links?.length > 0){
+                        for(const internal_link of childrenMenu.internal_links){
+                            if(internal_link.isTrue === true){
+                                const obj = {id: internal_link.id}
+                                internalLinks.push(obj)
+                            }
+                        }
+                    }
+
                 }
             }
+
         }
-        
 
         //create final post data
         const user_id = parseInt(userId);
         let data = {
             user_id,
             module_id : menusForModuleId,
-            menus: menu,
-            internal_links:links            
+            menus: menus,
+            internal_links: internalLinks            
         } 
-        // console.log(data);
+
+        // console.log('saveData',data);
     
         // post api call with data
         userPostMethod('api/user/userAccessingStore',data)
@@ -389,95 +536,14 @@ const UserAccess = () => {
                 </div>
             </div>
 
-            {/* {
-                tab === 0 && (
-                    <div className="container-fluid">
-                        <div className="row">
-                            <div className="col">
-                                <div className="card my-3 w-100">
-                                    <div className="card-header">
-                                        <h5>User Access</h5>
-                                    </div>
-                                    <div className="card-body">
-                                        <div className="row justify-content-between my-2">
-                                            <div className="col-md-3">
-                                                <form className='d-flex' action="">
-                                                    <input type="text" placeholder='Search' className="form-control" />
-                                                    <button className="btn btn-sm">GO</button>
-                                                </form>
-                                            </div>
-                                            <div className='col-md-1'>
-                                                <div className="d-flex">
-                                                    <select className="custom-select">
-                                                        <option selected>10</option>
-                                                        <option value="1">One</option>
-                                                        <option value="2">Two</option>
-                                                        <option value="3">Three</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="table-responsive">
-                                            <table className="table table-hover">
-                                                <thead className="thead-light">
-                                                    <tr>
-                                                        <th>No</th>
-                                                        <th><i className="fa-solid fa-arrow-down-up-across-line"></i> Menu Name </th>
-                                                        <th><i className="fa-solid fa-arrow-down-up-across-line"></i> Link Name</th>
-                                                        <th><i className="fa-solid fa-arrow-down-up-across-line"></i> Module Name </th>
-                                                        <th><i className="fa-solid fa-arrow-down-up-across-line"></i> Access Date</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    {
-                                                        dummyData.map( data => (
-                                                            <tr key={data.id}>
-                                                                <th>{data.id}</th>
-                                                                <td>{data.report_to}</td>
-                                                                <td>{data.name}</td>
-                                                                <td>{data.project_id}</td>
-                                                                <td>{data.regDate}</td>
-                                                            </tr>
-                                                        ))
-                                                    }
-                                                    
-                                                </tbody>
-                                                <tfoot>
-                                                    <tr>
-                                                        <th>No</th>
-                                                        <th>Menu Name</th>
-                                                        <th>Link Name</th>
-                                                        <th>Module Name</th>
-                                                        <th>Access Date</th>
-                                                    </tr>
-                                                </tfoot>
-                                            </table>
-                                        </div>
-                                        
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                )
-            } */}
+        
             {
                 tab === 1 && (
-                <UserAccessModules modulesData={modulesData} loading={modulesloading} handleCheckChange={handleCheckChange} singleSelect={singleSelect} saveData={saveData} handleRoleChange={handleRoleChange} />
+                <UserAccessModules allMenuAndResourceChecked={allMenuAndResourceChecked} handleSelectMenu={handleSelectMenu} handleSelectChildMenu={handleSelectChildMenu} handleSelectInternalLinks={handleSelectInternalLinks} handleRoleChange={handleRoleChange} modulesData={modulesData} loading={modulesloading} saveData={saveData} />
                 )
             }
             
-            {/* {
-                tab === 2 && (
-                    <h2>Accordian</h2>
-                )
-            }
-            
-            {
-                tab === 3 && (
-                    <h4>Tab 3</h4>
-                )
-            } */}
+
         </>
     );
 };
