@@ -19,8 +19,9 @@ const Report = ({fromDate, toDate}) => {
     const [grandTotalCylinder, setGrandTotalCyl] = useState([]);
     const [grandTotalSurfaceArea, setGrandTotalSurfaceArea] = useState([]);
     
-  const [currentPage, setCurrentPage] = useState(1);
-  const [reportsPerPage] = useState(1);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [moveToPage, setMoveToPage] = useState('');
+    const [reportsPerPage] = useState(1);
     // const [calculateCyl, setCalculateCyl] = useState(0);
 
     
@@ -76,6 +77,17 @@ const Report = ({fromDate, toDate}) => {
   const handlePrint = () => {
     window.print()
   }
+
+  const handleMoveToPage = () => {
+
+    const movePageNumberConvert = parseInt(moveToPage)
+    const pageHave = pageNumbers.includes(movePageNumberConvert);
+    if(pageHave){
+        setCurrentPage(movePageNumberConvert)
+    }
+    //  setMoveToPage();
+
+  }
  
 
     return (
@@ -88,15 +100,16 @@ const Report = ({fromDate, toDate}) => {
                                 
                                 <div className={styles.reportWrapper}> 
                                     <div className="report-header d-flex justify-content-between align-items-center">
-                                        <div onClick={handlePrint} className="print_button">
-                                            {/* <ReactToPrint
-                                                trigger={() => {
-                                                    return <button className="btn btn-default"><i className="fa fa-print" aria-hidden="true"></i> Print</button>;
-                                                }}
-                                                content={() => componentRef.current}
-                                                /> */}
-                                            <button className="btn btn-default"><i className="fa fa-print" aria-hidden="true"></i> Print</button>
+                                        <div className='d-flex'>
+                                            <div onClick={handlePrint} className="print_button">
+                                                <button className="btn btn-default"><i className="fa fa-print" aria-hidden="true"></i> Print</button>
+                                            </div>
+                                            <div class="form-group d-flex ms-2 ml-2">
+                                                <input onChange={ (e) => setMoveToPage(e.target.value)} type="text" class="form-control"  placeholder="search" />
+                                                <button onClick={handleMoveToPage} className="btn btn-sm btn-primary">search</button>
+                                            </div>
                                         </div>
+                                        
                                         <div className="pagination">
                                             <Pagination 
                                                 pageNumbers={pageNumbers}
