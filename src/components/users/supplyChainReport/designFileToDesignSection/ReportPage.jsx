@@ -43,13 +43,6 @@ export default function ReportPage({
         }
       >
         <div className="row">
-          {/* <div className="col-sm-12">
-            <button onClick={handlePrint} className="btn">
-              <button className="btn btn-default">
-                <i className="fa fa-print" aria-hidden="true"></i> Print
-              </button>
-            </button>
-          </div> */}
           <div className="col-sm-12">
             <div className="company-info d-flex  justify-content-center align-items-center  my-4">
               <img
