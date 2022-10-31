@@ -1,14 +1,17 @@
 import React from 'react';
 import ModuleMenuChildren from './ModuleMenuChildren';
 import './ModulesAndLinks.css';
+import ParentInternalLinks from './ParentInternalLinks';
 
-const ModuleMenu = ({ software_menu, onToggle, active, handleSelectMenu, handleSelectChildMenu, handleSelectInternalLinks }) => {
+const ModuleMenu = ({ software_menu, onToggle, active, handleSelectMenu, handleSelectChildMenu, handleSelectParentInternalLinks, handleSelectInternalLinks }) => {
 
 
 
   const { id, menu_name , isTrue } = software_menu;
 
 //   const checkAllChildrenSelect = software_menu?.children?.filter( childrenMenu => childrenMenu?.isTrue !== true).length < 1 ;
+
+console.log('software_menu',software_menu);
 
 
   return (
@@ -20,13 +23,16 @@ const ModuleMenu = ({ software_menu, onToggle, active, handleSelectMenu, handleS
                     <label className="form-check-label" htmlFor={id}>{menu_name}</label>
                 </div>
                 {
-                    software_menu?.children ? 
                     software_menu?.children.length > 0 && (
                         <button onClick={onToggle} className="btn btn sm">
                             <span className="control fw-bold">{active ? "—" : "+"} </span>
                         </button>
-                    ) : software_menu?.length > 0 && (
+                    )
+                }
+                {
+                    software_menu?.internal_links.length > 0 && (
                         <button onClick={onToggle} className="btn btn sm">
+                            <span className="control fw-bold">{active ? "—" : "+"} </span>
                         </button>
                     )
                 }
@@ -38,6 +44,19 @@ const ModuleMenu = ({ software_menu, onToggle, active, handleSelectMenu, handleS
 
             { software_menu?.children?.length > 0 &&   
                 <ModuleMenuChildren handleSelectChildMenu={handleSelectChildMenu} handleSelectInternalLinks={handleSelectInternalLinks}  menuChildren={software_menu.children} parentId={id} /> 
+            }
+            {
+                software_menu?.internal_links.length > 0 && (
+                    <ul className="p-2 d-flex flex-row justify-content-between align-items-center moduleInternalLinks">
+                        {software_menu?.internal_links?.map((internal_links, index) => (
+                            <ParentInternalLinks
+                                parentId={id}
+                                handleSelectParentInternalLinks={handleSelectParentInternalLinks}
+                                key={index} internal_links={internal_links} 
+                            />
+                        ))}
+                    </ul>
+                )
             }
 
         </div>

@@ -341,6 +341,52 @@ const UserAccess = () => {
 
         console.log(updateSoftwareMenu);
     }
+
+    
+    // when click parentInternal links
+    const handleSelectParentInternalLinks = ( event , parentId, internalLinksId ) => {
+
+        const { checked } = event.target;
+        // copy softare module
+        let moduleData= {
+            software_module : modulesData?.software_module,
+            checkAll: false
+        }
+
+        const findParentMenu = modulesData?.software_menus?.find( parentMenu => parentMenu.id === parentId );
+
+        let parentMenu = {
+            ...findParentMenu
+        }
+
+        const findInternalLinks = findParentMenu.internal_links?.find( internalLink => internalLink.id === internalLinksId );
+
+        let internalLink = {
+            ...findInternalLinks,
+            isTrue : checked
+        }
+
+        const updateInternalLinks = findParentMenu.internal_links?.map( currentInternalLink => currentInternalLink.id === internalLinksId ? internalLink : currentInternalLink )
+
+        
+        const isInternalLinkTrue = updateInternalLinks?.some( internalLink => internalLink.isTrue === true );
+
+        parentMenu  ={
+            ...parentMenu,
+            isTrue : isInternalLinkTrue,
+            internal_links : updateInternalLinks
+        }
+
+        const updateSoftwareMenu = modulesData?.software_menus?.map( currentParentMenu => currentParentMenu.id === parentId ? parentMenu : currentParentMenu );
+
+        moduleData = {
+            ...moduleData,
+            software_menus : updateSoftwareMenu
+        }
+        //set all menus module data
+        setModulesData(moduleData);
+
+    }
     
     // when click internalLink
     const handleSelectInternalLinks = ( event , parentId, menuChildId, internalLinksId ) => {
@@ -499,7 +545,7 @@ const UserAccess = () => {
         
             {
                 tab === 1 && (
-                <UserAccessModules allMenuAndResourceChecked={allMenuAndResourceChecked} handleSelectMenu={handleSelectMenu} handleSelectChildMenu={handleSelectChildMenu} handleSelectInternalLinks={handleSelectInternalLinks} handleRoleChange={handleRoleChange} modulesData={modulesData} loading={modulesloading} saveData={saveData} />
+                <UserAccessModules allMenuAndResourceChecked={allMenuAndResourceChecked} handleSelectMenu={handleSelectMenu} handleSelectChildMenu={handleSelectChildMenu} handleSelectParentInternalLinks={handleSelectParentInternalLinks} handleSelectInternalLinks={handleSelectInternalLinks} handleRoleChange={handleRoleChange} modulesData={modulesData} loading={modulesloading} saveData={saveData} />
                 )
             }
             
