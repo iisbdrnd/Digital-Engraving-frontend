@@ -1,19 +1,19 @@
 {
   "files": {
-    "main.css": "/static/css/main.173b984c.chunk.css",
-    "main.js": "/static/js/main.58b12798.chunk.js",
-    "main.js.map": "/static/js/main.58b12798.chunk.js.map",
+    "main.css": "/static/css/main.11cbe194.chunk.css",
+    "main.js": "/static/js/main.7f25c64e.chunk.js",
+    "main.js.map": "/static/js/main.7f25c64e.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.ee7ed324.js",
     "runtime-main.js.map": "/static/js/runtime-main.ee7ed324.js.map",
     "static/css/2.813e94c6.chunk.css": "/static/css/2.813e94c6.chunk.css",
-    "static/js/2.08ce7b39.chunk.js": "/static/js/2.08ce7b39.chunk.js",
-    "static/js/2.08ce7b39.chunk.js.map": "/static/js/2.08ce7b39.chunk.js.map",
+    "static/js/2.5bab617b.chunk.js": "/static/js/2.5bab617b.chunk.js",
+    "static/js/2.5bab617b.chunk.js.map": "/static/js/2.5bab617b.chunk.js.map",
     "index.html": "/index.html",
-    "precache-manifest.67b05714233326a4ad4461a9ea113785.js": "/precache-manifest.67b05714233326a4ad4461a9ea113785.js",
+    "precache-manifest.bc488163b56c555fbe75fcf0332fafb6.js": "/precache-manifest.bc488163b56c555fbe75fcf0332fafb6.js",
     "service-worker.js": "/service-worker.js",
     "static/css/2.813e94c6.chunk.css.map": "/static/css/2.813e94c6.chunk.css.map",
-    "static/css/main.173b984c.chunk.css.map": "/static/css/main.173b984c.chunk.css.map",
-    "static/js/2.08ce7b39.chunk.js.LICENSE.txt": "/static/js/2.08ce7b39.chunk.js.LICENSE.txt",
+    "static/css/main.11cbe194.chunk.css.map": "/static/css/main.11cbe194.chunk.css.map",
+    "static/js/2.5bab617b.chunk.js.LICENSE.txt": "/static/js/2.5bab617b.chunk.js.LICENSE.txt",
     "static/media/index.scss": "/static/media/zw.98a0162e.svg",
     "static/media/1.jpg": "/static/media/1.c016ede0.jpg",
     "static/media/2.jpg": "/static/media/2.c016ede0.jpg",
@@ -23,14 +23,16 @@
     "static/media/7.jpg": "/static/media/7.c016ede0.jpg",
     "static/media/8.jpg": "/static/media/8.c7f78c54.jpg",
     "static/media/UploadIcon.svg": "/static/media/UploadIcon.1cedb6e9.svg",
+    "static/media/browser.cjs": "/static/media/browser.5ef5f772.cjs",
+    "static/media/cylinder.bmp": "/static/media/cylinder.9640dc37.bmp",
     "static/media/endless-logo.png": "/static/media/endless-logo.ee8631c3.png",
     "static/media/Icon.css": "/static/media/icon-plus-gray.1f73c31f.svg"
   },
   "entrypoints": [
     "static/js/runtime-main.ee7ed324.js",
     "static/css/2.813e94c6.chunk.css",
-    "static/js/2.08ce7b39.chunk.js",
-    "static/css/main.173b984c.chunk.css",
-    "static/js/main.58b12798.chunk.js"
+    "static/js/2.5bab617b.chunk.js",
+    "static/css/main.11cbe194.chunk.css",
+    "static/js/main.7f25c64e.chunk.js"
   ]
 }

@@ -2,7 +2,7 @@
   "name": "endless",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://202.59.141.34:3030/",
+  "homepage": "https://delbd.eduvess.com",
   "dependencies": {
     "@emotion/styled": "^11.10.4",
     "@fullcalendar/daygrid": "^4.4.2",
