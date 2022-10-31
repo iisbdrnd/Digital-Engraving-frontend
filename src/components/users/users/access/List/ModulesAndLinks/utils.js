@@ -76,15 +76,32 @@ export const setUserAlreadyMenuAccess = (userMenu , alreadyAccessMenu) => {
                 let roleMenuData = {...menu , isTrue : true}
 
                 //change internal links object and give isTrue to true
-                const roleMenuInternalLinks =  roleMenuData?.internal_links?.map( internal_link => {
-                    return {
-                        ...internal_link,
-                        isTrue: true
+                // const roleMenuInternalLinks =  roleMenuData?.internal_links?.map( internal_link => {
+                //     return {
+                //         ...internal_link,
+                //         isTrue: true
+                //     }
+                // })
+                
+
+                const menuAccessInternalLinks = menu?.internal_links?.map( menuInternalLink => {
+                    for( const roleMenuInternalLink of roleMenuData?.internal_links) {
+                        if(menuInternalLink.id === roleMenuInternalLink.id ){
+                            return {
+                                ...menuInternalLink,
+                                isTrue: true
+                            }
+                        } else {
+                            return menuInternalLink
+                        }
                     }
                 })
+
+                // console.log('bla', menuAccessInternalLinks);
+
                 roleMenuData = {
                     ...roleMenuData,
-                    internal_links : roleMenuInternalLinks
+                    internal_links : menuAccessInternalLinks
                 }
                 modulesCheckTrueData.push(roleMenuData);
                 // console.log('data', menu , roleMenu);
