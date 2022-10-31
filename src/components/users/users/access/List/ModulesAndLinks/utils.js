@@ -75,36 +75,38 @@ export const setUserAlreadyMenuAccess = (userMenu , alreadyAccessMenu) => {
 
                 let roleMenuData = {...menu , isTrue : true}
 
-                //change internal links object and give isTrue to true
-                // const roleMenuInternalLinks =  roleMenuData?.internal_links?.map( internal_link => {
-                //     return {
-                //         ...internal_link,
-                //         isTrue: true
-                //     }
-                // })
-                
+                const internalLinksHaveAccess = []
+                for( const menuInternalLink of menu?.internal_links ){
+                    for( const roleMenuInternalLink of roleMenu?.internal_links) {
 
-                const menuAccessInternalLinks = menu?.internal_links?.map( menuInternalLink => {
-                    for( const roleMenuInternalLink of roleMenuData?.internal_links) {
                         if(menuInternalLink.id === roleMenuInternalLink.id ){
-                            return {
-                                ...menuInternalLink,
-                                isTrue: true
-                            }
-                        } else {
-                            return menuInternalLink
-                        }
+                            internalLinksHaveAccess.push({...menuInternalLink, isTrue: true})
+                        } 
                     }
+                }
+
+                let internalLinksWithOutCheck = menu?.internal_links?.filter(function(menu){
+                    return !roleMenu?.internal_links.some(function(checkmenu){   
+                        return menu.id === checkmenu.id;          
+                    });
+                });
+
+                let internalLinksWithOutCheckFalse = internalLinksWithOutCheck?.map( link => {
+                    return {...link , isTrue: false}
                 })
 
-                // console.log('bla', menuAccessInternalLinks);
+                const menuAccessInternalLinks = [
+                    ...internalLinksHaveAccess,
+                    ...internalLinksWithOutCheckFalse
+                ]
+
+                console.log('bla', menuAccessInternalLinks);
 
                 roleMenuData = {
                     ...roleMenuData,
                     internal_links : menuAccessInternalLinks
                 }
                 modulesCheckTrueData.push(roleMenuData);
-                // console.log('data', menu , roleMenu);
 
             }  
 

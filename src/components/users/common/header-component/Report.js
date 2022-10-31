@@ -109,19 +109,19 @@ const Report = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    useEffect( () => {
+    // useEffect( () => {
 
-        const closeDropDown = e => {
-            if(e.path[0] !== dropDownRef.current){
-                setShowDropdown(false);
-            }
-        }
+    //     const closeDropDown = e => {
+    //         if(e.path[0] !== dropDownRef.current){
+    //             setShowDropdown(false);
+    //         }
+    //     }
 
-        document.body.addEventListener('click', closeDropDown)
+    //     document.body.addEventListener('click', closeDropDown)
 
-        return () => document.body.removeEventListener('click', closeDropDown)
+    //     return () => document.body.removeEventListener('click', closeDropDown)
 
-    } , [])
+    // } , [])
 
 
 
