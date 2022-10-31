@@ -20,8 +20,8 @@ const Report = ({fromDate, toDate}) => {
     const [grandTotalSurfaceArea, setGrandTotalSurfaceArea] = useState([]);
     
     const [currentPage, setCurrentPage] = useState(1);
-    const [moveToPage, setMoveToPage] = useState('');
-    const [reportsPerPage] = useState(1);
+    const [moveToPage, setMoveToPage] = useState();
+    const [reportsPerPage] = useState(2);
     // const [calculateCyl, setCalculateCyl] = useState(0);
 
     
@@ -78,14 +78,20 @@ const Report = ({fromDate, toDate}) => {
     window.print()
   }
 
+  const handleSearchInput = (e) => {
+    setMoveToPage(e.target.value)
+  }
+
   const handleMoveToPage = () => {
 
     const movePageNumberConvert = parseInt(moveToPage)
     const pageHave = pageNumbers.includes(movePageNumberConvert);
     if(pageHave){
         setCurrentPage(movePageNumberConvert)
+        setMoveToPage('');
+    } else {
+        setMoveToPage('');
     }
-    //  setMoveToPage();
 
   }
  
@@ -105,7 +111,7 @@ const Report = ({fromDate, toDate}) => {
                                                 <button className="btn btn-default"><i className="fa fa-print" aria-hidden="true"></i> Print</button>
                                             </div>
                                             <div class="form-group d-flex ms-2 ml-2">
-                                                <input onChange={ (e) => setMoveToPage(e.target.value)} type="text" class="form-control"  placeholder="search" />
+                                                <input onChange={handleSearchInput} type="text" value={moveToPage} class="form-control"  placeholder="search" />
                                                 <button onClick={handleMoveToPage} className="btn btn-sm btn-primary">search</button>
                                             </div>
                                         </div>
