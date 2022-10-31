@@ -43,7 +43,7 @@ const UserAccess = () => {
 
             if (res?.data?.software_menus?.length > 0) {
                 
-                adminGetMethod(`api/admin/users/getMenusForModuleUserWise/${userId}/${menusForModuleId}`)
+                adminGetMethod(`api/admin/users/getMenusForModuleUserwise/${userId}/${menusForModuleId}`)
                 .then( (modulesRes) => {
                     let currentAccessData = modulesRes.data ;
 
