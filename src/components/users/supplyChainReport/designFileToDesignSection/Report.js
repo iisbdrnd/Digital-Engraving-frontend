@@ -94,6 +94,10 @@ const Report = ({fromDate, toDate}) => {
     }
 
   }
+
+  const lastIndexOfPagination = pageNumbers[ pageNumbers.length -1 ];
+
+//   console.log(lastIndexOfPagination);
  
 
     return (
@@ -251,18 +255,23 @@ const Report = ({fromDate, toDate}) => {
                                             )}
                                             </tbody>
                                         </table>
-                                        <table
-                                            className="particulars table table-bordered table-stripped"
-                                            cellSpacing="5"
-                                            cellPadding="5"
-                                            width="100%"
-                                            style={tableStyle}
-                                        >
-                                            <tr className="groupFont">
-                                            <td>Grand Total Cylinder: {grandTotalCylinder}</td>
-                                            <td>Grand Total Surface Area: {grandTotalSurfaceArea}</td>
-                                            </tr>
-                                        </table>
+                                        {
+                                            currentPage === lastIndexOfPagination && (
+                                                <table
+                                                    className="particulars table table-bordered table-stripped"
+                                                    cellSpacing="5"
+                                                    cellPadding="5"
+                                                    width="100%"
+                                                    style={tableStyle}
+                                                >
+                                                    <tr className="groupFont">
+                                                    <td>Grand Total Cylinder: {grandTotalCylinder}</td>
+                                                    <td>Grand Total Surface Area: {grandTotalSurfaceArea}</td>
+                                                    </tr>
+                                                </table>
+                                            )
+                                        }
+                                        
                                         </div>
                                     </div>
                                 </div>
