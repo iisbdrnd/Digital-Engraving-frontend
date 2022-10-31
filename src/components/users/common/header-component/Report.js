@@ -10,9 +10,11 @@ import {
     ArrowDown
 } from 'react-feather';
 import { Link } from 'react-router-dom';
+import { useRef } from 'react';
 
 const Report = () => {
 
+    const dropDownRef = useRef(null);
     const [MENUITEMS, setMENUITEMS] = useState([]);
     const [mainmenu, setMainMenu] = useState([]);
      const menuObject = [];
@@ -20,7 +22,7 @@ const Report = () => {
      const [showDropdown, setShowDropdown] = useState(false);
 
      const handleShowDropdown = () => {
-        setShowDropdown(!showDropdown)
+        setShowDropdown( prevState => !prevState)
      }
 
       const handleToggle = (index) => {
@@ -107,6 +109,22 @@ const Report = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    useEffect( () => {
+
+        const closeDropDown = e => {
+            if(e.path[0] !== dropDownRef.current){
+                setShowDropdown(false);
+            }
+        }
+
+        document.body.addEventListener('click', closeDropDown)
+
+        return () => document.body.removeEventListener('click', closeDropDown)
+
+    } , [])
+
+
+
     console.log('usermenu',mainmenu, MENUITEMS);
 
 
@@ -131,7 +149,7 @@ const Report = () => {
                             >{menu.title}</Link>
                         ) : (
                             <>
-                                <button onClick={handleShowDropdown}>
+                                <button  ref={dropDownRef} onClick={handleShowDropdown}>
                                     {menu.title}
                                 </button>
                                 <div class={`dropdown-menu ${showDropdown && 'show' }`} aria-labelledby="dropdownMenuButton">
