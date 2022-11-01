@@ -11,8 +11,6 @@ const ModuleMenu = ({ software_menu, onToggle, active, handleSelectMenu, handleS
 
 //   const checkAllChildrenSelect = software_menu?.children?.filter( childrenMenu => childrenMenu?.isTrue !== true).length < 1 ;
 
-console.log('software_menu',software_menu);
-
 
   return (
       <>

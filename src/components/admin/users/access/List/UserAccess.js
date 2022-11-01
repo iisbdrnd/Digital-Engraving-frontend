@@ -179,7 +179,20 @@ const UserAccess = () => {
         const allCheckedData = modulesData?.software_menus?.map( (menu) => {
 
             if (menu.children?.length < 1) {
-                return {...menu , isTrue : checked}
+
+                if(menu?.internal_links?.length < 1){
+                    return { ...menu, isTrue: checked }
+                } else {
+                    const childrenMenuWithInternalLinks = {
+                            ...menu, 
+                            isTrue: checked 
+                    }
+                    const internal_links =  menu?.internal_links?.map( (internalLink) => {
+                            return { ...internalLink , isTrue: checked}
+                    })
+                    return { ...childrenMenuWithInternalLinks , internal_links: internal_links }
+                }
+
             } else {
                 // copy menu 
                 const copyMenuObject = {
@@ -236,42 +249,74 @@ const UserAccess = () => {
             isTrue : checked
         }
 
-        const checkedChildren = findMenus?.children?.map( (childrenMenu) => {
+        // console.log('child', copyFindSelectedMenu);
+
+        if(copyFindSelectedMenu.resource === 0){
+
+            const checkedChildren = findMenus?.children?.map( (childrenMenu) => {
 
             if(childrenMenu?.internal_links?.length < 1){
                 return { ...childrenMenu, isTrue: checked }
             } else {
-                const childrenMenuWithInternalLinks = {
-                        ...childrenMenu, 
-                        isTrue: checked 
+                    const childrenMenuWithInternalLinks = {
+                            ...childrenMenu, 
+                            isTrue: checked 
+                    }
+                    const internal_links =  childrenMenu?.internal_links?.map( (internalLink) => {
+                            return { ...internalLink , isTrue: checked}
+                    })
+                    return { ...childrenMenuWithInternalLinks , internal_links: internal_links }
                 }
-                const internal_links =  childrenMenu?.internal_links?.map( (internalLink) => {
-                        return { ...internalLink , isTrue: checked}
-                })
-                return { ...childrenMenuWithInternalLinks , internal_links: internal_links }
+                
+            })
+
+            copyFindSelectedMenu = {
+                ...copyFindSelectedMenu,
+                children : checkedChildren
             }
+
+            //set object to whice menu want to update and get all software menus array
+            const finalSoftWareMenus  = modulesData?.software_menus?.map( menu => menu.id === id ? copyFindSelectedMenu : menu );
+
             
-        })
+            const isParentMenuTrue = finalSoftWareMenus?.every( parentMenu => parentMenu.isTrue === true );
 
-        copyFindSelectedMenu = {
-            ...copyFindSelectedMenu,
-            children : checkedChildren
+            //change module data object
+            moduleData = {
+                ...moduleData,
+                isTrue : isParentMenuTrue,
+                software_menus : finalSoftWareMenus
+            }
+            //set module data object
+            setModulesData(moduleData);
+        } else {
+            
+            const internal_links =  findMenus?.internal_links?.map( (internalLink) => {
+                    return { ...internalLink , isTrue: checked}
+            })
+
+            copyFindSelectedMenu = {
+                ...copyFindSelectedMenu,
+                internal_links : internal_links
+            }
+
+            //set object to whice menu want to update and get all software menus array
+            const finalSoftWareMenus  = modulesData?.software_menus?.map( menu => menu.id === id ? copyFindSelectedMenu : menu );
+
+            
+            const isParentMenuTrue = finalSoftWareMenus?.every( parentMenu => parentMenu.isTrue === true );
+
+            //change module data object
+            moduleData = {
+                ...moduleData,
+                isTrue : isParentMenuTrue,
+                software_menus : finalSoftWareMenus
+            }
+            //set module data object
+            setModulesData(moduleData);
         }
-
-        //set object to whice menu want to update and get all software menus array
-        const finalSoftWareMenus  = modulesData?.software_menus?.map( menu => menu.id === id ? copyFindSelectedMenu : menu );
 
         
-        const isParentMenuTrue = finalSoftWareMenus?.every( parentMenu => parentMenu.isTrue === true );
-
-        //change module data object
-        moduleData = {
-            ...moduleData,
-            isTrue : isParentMenuTrue,
-            software_menus : finalSoftWareMenus
-        }
-        //set module data object
-        setModulesData(moduleData);
 
 
         console.log(moduleData);
