@@ -515,22 +515,25 @@ const UserAccess = () => {
                 menus.push(parentSelectedMenu)
 
                 if( parentMenu.resource === 0){
-                    for (const childrenMenu of parentMenu.children) {
+                    for (const childrenMenu of parentMenu?.children) {
                         // check child have isTrue
                         if(childrenMenu.isTrue === true){
                             const childMenu = { id : childrenMenu.id}
                             menus.push(childMenu)
 
-                            for(const internal_link of childrenMenu.internal_links){
-                                if(internal_link.isTrue === true){
-                                    const obj = {id: internal_link.id}
-                                    internalLinks.push(obj)
+                            if(childrenMenu?.internal_links?.length > 0){
+                                for(const internal_link of childrenMenu?.internal_links){
+                                    if(internal_link.isTrue === true){
+                                        const obj = {id: internal_link.id}
+                                        internalLinks.push(obj)
+                                    }
                                 }
                             }
+
                         }
                     }
                 } else if ( parentMenu.resource === 1){
-                    for(const internal_link of parentMenu.internal_links){
+                    for(const internal_link of parentMenu?.internal_links){
                         if(internal_link.isTrue === true){
                             const obj = {id: internal_link.id}
                             internalLinks.push(obj)
