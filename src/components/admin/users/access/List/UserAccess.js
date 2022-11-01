@@ -485,7 +485,18 @@ const UserAccess = () => {
                 }
             }
 
+            if( parentMenu?.internal_links?.length > 0){
+                for(const internal_link of parentMenu.internal_links){
+                    if(internal_link.isTrue === true){
+                        const obj = {id: internal_link.id}
+                        internalLinks.push(obj)
+                    }
+                }
+            }
+
         }
+
+        console.log('modulesData', modulesData?.software_menus);
 
         
 
