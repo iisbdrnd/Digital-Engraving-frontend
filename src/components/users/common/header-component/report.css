@@ -12,10 +12,13 @@
     color: #4466f2;
     text-decoration: none;
     display: block;
-    padding: 5px 10px;
+    padding: 16px 10px;
     cursor: pointer;
     border: 0px;
-    background: white;
+    background-color: transparent;
+}
+.dropdown > button.longtitle {
+    padding: 8px 10px;
 }
 .dropdown-menu li {
     border: none !important;
@@ -59,17 +62,26 @@
 .children.active {
   height: auto;
 }
+/* .dropdownHoverBtn{
+    margin-top: 5px;
+} */
 .dropdown-menu{
     position: absolute;
-    transform: translate3d(0px, 52px, 0px);
+    margin-top: 0px;
+    padding-top: 0px;
+    transform: translate3d(0px, 55px, 0px);
     top: 0px;
     left: 0px;
     will-change: transform;
 }
 
-.dropdown-menu.show{
+.dropdown:hover > .dropdown-menu{
     display: block;
 }
+
+/* .dropdown-menu.show{
+    display: block;
+} */
 .subDropdown{
     margin-left: 20px;
     display: flex;

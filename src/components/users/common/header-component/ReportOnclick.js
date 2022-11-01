@@ -149,8 +149,7 @@ const Report = () => {
                             >{menu.title}</Link>
                         ) : (
                             <>
-                             {/* onClick={handleShowDropdown} */}
-                                <button className={menu.title.length > 7 ? 'dropdownHoverBtn longtitle' : 'dropdownHoverBtn'}  ref={dropDownRef}>
+                                <button  ref={dropDownRef} onClick={handleShowDropdown}>
                                     {menu.title}
                                 </button>
                                 <div class={`dropdown-menu ${showDropdown && 'show' }`} aria-labelledby="dropdownMenuButton">
