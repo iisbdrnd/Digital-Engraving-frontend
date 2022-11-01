@@ -75,13 +75,13 @@
     will-change: transform;
 }
 
-.dropdown:hover > .dropdown-menu{
+/* .dropdown:hover > .dropdown-menu{
+    display: block !important;
+} */
+
+.dropdown-menu.show{
     display: block;
 }
-
-/* .dropdown-menu.show{
-    display: block;
-} */
 .subDropdown{
     margin-left: 20px;
     display: flex;
@@ -100,4 +100,16 @@
     background-color: #ffffff !important;
     font-size: 14px;
     font-weight: 500;
+}
+
+.arrow {
+  border: solid black;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 3px;
+}
+
+.down {
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
 }
