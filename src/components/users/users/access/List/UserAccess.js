@@ -458,43 +458,42 @@ const UserAccess = () => {
         let menus = [];
         let internalLinks = [];
 
+        console.log('softwareMenu', modulesData?.software_menus);
+
         
         for (const parentMenu of modulesData?.software_menus) {
 
             if(parentMenu.isTrue === true){
+
                 const parentSelectedMenu = { id : parentMenu.id}
                 menus.push(parentSelectedMenu)
-            }
 
-            if( parentMenu?.children?.length > 0){
-                for (const childrenMenu of parentMenu.children) {
-                    // check child have isTrue
-                    if(childrenMenu.isTrue === true){
-                        const childMenu = { id : childrenMenu.id}
-                        menus.push(childMenu)
-                    }
-                    // check child have inernal links
-                    if(childrenMenu?.internal_links?.length > 0){
-                        for(const internal_link of childrenMenu.internal_links){
-                            if(internal_link.isTrue === true){
-                                const obj = {id: internal_link.id}
-                                internalLinks.push(obj)
+                if( parentMenu.resource === 0){
+                    for (const childrenMenu of parentMenu.children) {
+                        // check child have isTrue
+                        if(childrenMenu.isTrue === true){
+                            const childMenu = { id : childrenMenu.id}
+                            menus.push(childMenu)
+
+                            for(const internal_link of childrenMenu.internal_links){
+                                if(internal_link.isTrue === true){
+                                    const obj = {id: internal_link.id}
+                                    internalLinks.push(obj)
+                                }
                             }
                         }
                     }
-
-                }
-            }
-
-            if( parentMenu?.internal_links?.length > 0){
-                for(const internal_link of parentMenu.internal_links){
-                    if(internal_link.isTrue === true){
-                        const obj = {id: internal_link.id}
-                        internalLinks.push(obj)
+                } else if ( parentMenu.resource === 1){
+                    for(const internal_link of parentMenu.internal_links){
+                        if(internal_link.isTrue === true){
+                            const obj = {id: internal_link.id}
+                            internalLinks.push(obj)
+                        }
                     }
                 }
-            }
 
+            }
+        
         }
 
         //create final post data
@@ -506,10 +505,9 @@ const UserAccess = () => {
             internal_links: internalLinks            
         } 
 
-        // console.log('saveData',data);
     
         // post api call with data
-        userPostMethod('api/user/userAccessingStore',data)
+        userPostMethod('api/admin/users/userAccessingStore',data)
         .then( res => {
             // if data save successfull
             if(res.data.message){
