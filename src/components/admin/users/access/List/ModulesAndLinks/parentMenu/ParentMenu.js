@@ -1,7 +1,7 @@
 import React from 'react';
-import ModuleMenuChildren from './ModuleMenuChildren';
-import './ModulesAndLinks.css';
+import ModuleMenuChildren from '../childrenMenu/ChildrenMenu';
 import ParentInternalLinks from './ParentInternalLinks';
+import '../ModulesAndLinks.css'
 
 const ModuleMenu = ({ software_menu, onToggle, active, handleSelectMenu, handleSelectChildMenu, handleSelectParentInternalLinks, handleSelectInternalLinks }) => {
 

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
+import ParentMenu from './parentMenu/ParentMenu';
 import SelectRoleForModule from './SelectRoleForModule';
-import ModuleMenu from './ModuleMenu';
 // import SelectRoleForModule from './SelectRoleForModule';
 
 const Module = ({ modulesData, loading, allMenuAndResourceChecked, handleSelectMenu, handleSelectChildMenu, handleSelectInternalLinks, handleSelectParentInternalLinks, handleRoleChange, saveData }) => {
@@ -45,14 +45,15 @@ const Module = ({ modulesData, loading, allMenuAndResourceChecked, handleSelectM
                     <div className="card-body">
                       <ul className="list-group m-2">
                               {modulesData?.software_menus?.map((software_menu, index) => (
-                                  <ModuleMenu
-                                  handleSelectMenu={handleSelectMenu}
-                                  handleSelectChildMenu={handleSelectChildMenu}
-                                  handleSelectParentInternalLinks={handleSelectParentInternalLinks}
-                                  handleSelectInternalLinks={handleSelectInternalLinks}
-                                  onToggle={() => handleToggle(index)}
-                                  active={clicked === index}
-                                  key={index} software_menu={software_menu} />
+                                  <ParentMenu
+                                    handleSelectMenu={handleSelectMenu}
+                                    handleSelectChildMenu={handleSelectChildMenu}
+                                    handleSelectParentInternalLinks={handleSelectParentInternalLinks}
+                                    handleSelectInternalLinks={handleSelectInternalLinks}
+                                    onToggle={() => handleToggle(index)}
+                                    active={clicked === index}
+                                    key={index} software_menu={software_menu} 
+                                  />
                               ))}
                           </ul>
                     </div>

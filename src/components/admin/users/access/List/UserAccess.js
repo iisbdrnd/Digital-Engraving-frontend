@@ -430,7 +430,7 @@ const UserAccess = () => {
 
     }
     
-    // when click internalLink
+    // when click child internal link internalLink
     const handleSelectInternalLinks = ( event , parentId, menuChildId, internalLinksId ) => {
 
         const { checked } = event.target;

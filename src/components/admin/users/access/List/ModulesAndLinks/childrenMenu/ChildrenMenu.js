@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import ModuleMenuChildrenItem from "./ModuleMenuChildrenItem";
+import ChildrenMenuItem from "./ChildrenMenuItem";
 
 
 const ModuleMenuChildren = ({ menuChildren ,parentId ,  handleSelectChildMenu , handleSelectInternalLinks}) => {
@@ -17,7 +17,7 @@ const ModuleMenuChildren = ({ menuChildren ,parentId ,  handleSelectChildMenu , 
   return (
     <ul className="list-group">
       {menuChildren.map((insideMenu, index) => (
-        <ModuleMenuChildrenItem handleSelectInternalLinks={handleSelectInternalLinks} handleSelectChildMenu={handleSelectChildMenu} onToggle={() => handleToggle(index)} active={clicked === index} key={index} insideMenu={insideMenu} parentId={parentId} />
+        <ChildrenMenuItem handleSelectInternalLinks={handleSelectInternalLinks} handleSelectChildMenu={handleSelectChildMenu} onToggle={() => handleToggle(index)} active={clicked === index} key={index} insideMenu={insideMenu} parentId={parentId} />
       ))}
     </ul>
   );

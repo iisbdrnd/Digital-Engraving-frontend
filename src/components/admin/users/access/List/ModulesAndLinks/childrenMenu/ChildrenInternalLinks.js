@@ -1,7 +1,7 @@
 import React from 'react';
-import './ModulesAndLinks.css';
+import '../ModulesAndLinks.css'
 
-const ParentInternalLinks = ({ internal_links,active, handleSelectParentInternalLinks, parentId }) => {
+const ChildrenInternalLinks = ({ internal_links,active, handleSelectInternalLinks, parentId, menuChildId }) => {
 
   return (
       <>
@@ -9,7 +9,7 @@ const ParentInternalLinks = ({ internal_links,active, handleSelectParentInternal
             <div className="d-flex justify-content-between align-items-center">
                 <div className="form-check">
                     <input 
-                      onChange={ (event) => handleSelectParentInternalLinks(event , parentId , internal_links.id )}
+                      onChange={ (event) => handleSelectInternalLinks(event , parentId , menuChildId, internal_links.id )}
                       checked={internal_links.isTrue || false}
                       type="checkbox"
                       className="form-check-input"
@@ -25,4 +25,4 @@ const ParentInternalLinks = ({ internal_links,active, handleSelectParentInternal
   );
 };
 
-export default ParentInternalLinks;
+export default ChildrenInternalLinks;
