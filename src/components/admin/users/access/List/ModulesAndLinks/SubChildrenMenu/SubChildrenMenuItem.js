@@ -1,9 +1,9 @@
 import React from "react";
 import SubChildrenInternalLinks from "./SubChildrenInternalLinks";
 
-const SubChildrenMenuItem = ({ insideMenu, parentId, onToggle, active, handleSelectChildMenu , handleSelectInternalLinks }) => {
+const SubChildrenMenuItem = ({ subChildrenMenu, parentId, menuChildId, onToggle, active, handleSelectSubChildMenu }) => {
 
-    const { id , isTrue } = insideMenu;
+    const { id , isTrue } = subChildrenMenu;
 
     // const checkAllInternalLinksSelect = insideMenu?.internal_links?.filter( internalLink => internalLink?.isTrue !== true).length < 1 ;
 
@@ -14,12 +14,12 @@ const SubChildrenMenuItem = ({ insideMenu, parentId, onToggle, active, handleSel
             <div className="form-check">
                 <input 
                     checked={isTrue || false}
-                    onChange={ (event) => handleSelectChildMenu(event , parentId , id )}
+                    onChange={ (event) => handleSelectSubChildMenu(event , parentId, menuChildId, id )}
                  type="checkbox" className="form-check-input" name={''} id={id} />
-                <label className="form-check-label" htmlFor={id}>{insideMenu.menu_name}</label>
+                <label className="form-check-label" htmlFor={id}>{subChildrenMenu.menu_name}</label>
             </div>
             {
-                insideMenu?.internal_links?.length > 0 && (
+                subChildrenMenu?.internal_links?.length > 0 && (
                     <button onClick={onToggle} className="btn btn sm">
                         <span className="control fw-bold">{active ? "—" : "+"} </span>
                     </button>
@@ -30,13 +30,13 @@ const SubChildrenMenuItem = ({ insideMenu, parentId, onToggle, active, handleSel
     <div className={`accordionX mx-4 ${active ? "open" : ""}`}>
 
             {
-                insideMenu?.internal_links.length > 0 && (
+                subChildrenMenu?.internal_links.length > 0 && (
                     <ul className="p-2 d-flex flex-row justify-content-between align-items-center moduleInternalLinks">
-                        {insideMenu?.internal_links?.map((internal_links, index) => (
+                        {subChildrenMenu?.internal_links?.map((internal_links, index) => (
                             <SubChildrenInternalLinks
                                 parentId={parentId}
-                                menuChildId={id}
-                                handleSelectInternalLinks={handleSelectInternalLinks}
+                                menuChildId={menuChildId}
+                                menuSubChildId={id}
                                 key={index} internal_links={internal_links} 
                             />
                         ))}

@@ -3,7 +3,7 @@ import ParentMenu from './parentMenu/ParentMenu';
 import SelectRoleForModule from './SelectRoleForModule';
 // import SelectRoleForModule from './SelectRoleForModule';
 
-const Module = ({ modulesData, loading, allMenuAndResourceChecked, handleSelectMenu, handleSelectChildMenu, handleSelectInternalLinks, handleSelectParentInternalLinks, handleRoleChange, saveData }) => {
+const Module = ({ modulesData, loading, allMenuAndResourceChecked, handleSelectMenu, handleSelectChildMenu, handleSelectSubChildMenu, handleSelectParentInternalLinks, handleRoleChange, saveData }) => {
 
     
   const [clicked, setClicked] = useState("0");
@@ -49,7 +49,7 @@ const Module = ({ modulesData, loading, allMenuAndResourceChecked, handleSelectM
                                     handleSelectMenu={handleSelectMenu}
                                     handleSelectChildMenu={handleSelectChildMenu}
                                     handleSelectParentInternalLinks={handleSelectParentInternalLinks}
-                                    handleSelectInternalLinks={handleSelectInternalLinks}
+                                    handleSelectSubChildMenu={handleSelectSubChildMenu}
                                     onToggle={() => handleToggle(index)}
                                     active={clicked === index}
                                     key={index} software_menu={software_menu} 
