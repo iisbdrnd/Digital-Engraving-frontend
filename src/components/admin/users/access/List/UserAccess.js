@@ -96,10 +96,7 @@ const UserAccess = () => {
         setTab(1);
     }
 
-    /**
-     * When the user changes the role, set the roleId to the value of the role selected.
-     * @param event - The event object
-     */
+    // when set user role
     const handleRoleChange = (event) => {
 
         const roleIdStr = event.target.value;
@@ -178,6 +175,7 @@ const UserAccess = () => {
 
         const allCheckedData = modulesData?.software_menus?.map( (menu) => {
 
+            // when parent menu dont have children
             if (menu.children?.length < 1) {
 
                 if(menu?.internal_links?.length < 1){
@@ -202,8 +200,33 @@ const UserAccess = () => {
 
                 const checkedChildren = menu?.children?.map( (childrenMenu) => {
 
+                    // if children menu dont have internal link
                     if(childrenMenu?.internal_links?.length < 1){
-                        return { ...childrenMenu, isTrue: checked }
+
+                        // if childmenu have subChildMenu 
+                        if(childrenMenu?.children?.length > 0){
+
+                            const subChildMenu = childrenMenu?.children?.map( (subChildMenu) => {
+                                // if subChild don't have internal links
+                                if (subChildMenu?.internal_links?.length < 1) {
+                                    return {...subChildMenu, isTrue: checked }
+                                } else {
+                                    const copySubChildMenu = {
+                                        ...subChildMenu,
+                                        isTrue: checked
+                                    }
+                                    const internal_links =  subChildMenu?.internal_links?.map( (internalLink) => {
+                                            return { ...internalLink , isTrue: checked}
+                                    })
+                                    return { ...copySubChildMenu , internal_links: internal_links }
+                                }
+                            })
+
+                            return { ...childrenMenu, isTrue: checked , children: subChildMenu }
+                            
+                        } else {
+                            return { ...childrenMenu, isTrue: checked }
+                        }
                     } else {
                         const childrenMenuWithInternalLinks = {
                              ...childrenMenu, 
@@ -227,6 +250,8 @@ const UserAccess = () => {
             ...moduleData,
             software_menus : allCheckedData
         }
+
+        // console.log('pera', moduleData);
         //set module data to update data
         setModulesData(moduleData);
 
