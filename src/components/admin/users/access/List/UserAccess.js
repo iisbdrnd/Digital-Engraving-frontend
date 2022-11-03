@@ -163,7 +163,7 @@ const UserAccess = () => {
 
     }
 
-    // when select all
+    // when check all
     const allMenuAndResourceChecked = ( event ) => {
         const {checked} = event.target;
 
@@ -257,7 +257,7 @@ const UserAccess = () => {
 
     }
 
-    // when select menu
+    // when check menu
     const handleSelectMenu = (event , id ) => {
 
         const { checked } = event.target ;
@@ -280,9 +280,34 @@ const UserAccess = () => {
 
             const checkedChildren = findMenus?.children?.map( (childrenMenu) => {
 
-            if(childrenMenu?.internal_links?.length < 1){
-                return { ...childrenMenu, isTrue: checked }
-            } else {
+                // if children menu dont have internal link
+                if(childrenMenu?.internal_links?.length < 1){
+
+                    // if childmenu have subChildMenu 
+                    if(childrenMenu?.children?.length > 0){
+
+                        const subChildMenu = childrenMenu?.children?.map( (subChildMenu) => {
+                            // if subChild don't have internal links
+                            if (subChildMenu?.internal_links?.length < 1) {
+                                return {...subChildMenu, isTrue: checked }
+                            } else {
+                                const copySubChildMenu = {
+                                    ...subChildMenu,
+                                    isTrue: checked
+                                }
+                                const internal_links =  subChildMenu?.internal_links?.map( (internalLink) => {
+                                        return { ...internalLink , isTrue: checked}
+                                })
+                                return { ...copySubChildMenu , internal_links: internal_links }
+                            }
+                        })
+
+                        return { ...childrenMenu, isTrue: checked , children: subChildMenu }
+                        
+                    } else {
+                        return { ...childrenMenu, isTrue: checked }
+                    }
+                } else {
                     const childrenMenuWithInternalLinks = {
                             ...childrenMenu, 
                             isTrue: checked 
@@ -341,13 +366,95 @@ const UserAccess = () => {
             setModulesData(moduleData);
         }
 
-        
-
-
-        console.log(moduleData);
     }
+    
+    // when check menu
+    // const handleSelectMenu = (event , id ) => {
 
-    // when click childMenu
+    //     const { checked } = event.target ;
+    //     //copy module data
+    //     let moduleData= {
+    //         software_module : modulesData?.software_module,
+    //         checkAll: false
+    //     }
+
+    //     const findMenus = modulesData?.software_menus?.find( menu => menu.id === id );
+
+    //     let copyFindSelectedMenu = {
+    //         ...findMenus , 
+    //         isTrue : checked
+    //     }
+
+    //     // console.log('child', copyFindSelectedMenu);
+
+    //     if(copyFindSelectedMenu.resource === 0){
+
+    //         const checkedChildren = findMenus?.children?.map( (childrenMenu) => {
+
+    //         if(childrenMenu?.internal_links?.length < 1){
+    //             return { ...childrenMenu, isTrue: checked }
+    //         } else {
+    //                 const childrenMenuWithInternalLinks = {
+    //                         ...childrenMenu, 
+    //                         isTrue: checked 
+    //                 }
+    //                 const internal_links =  childrenMenu?.internal_links?.map( (internalLink) => {
+    //                         return { ...internalLink , isTrue: checked}
+    //                 })
+    //                 return { ...childrenMenuWithInternalLinks , internal_links: internal_links }
+    //             }
+                
+    //         })
+
+    //         copyFindSelectedMenu = {
+    //             ...copyFindSelectedMenu,
+    //             children : checkedChildren
+    //         }
+
+    //         //set object to whice menu want to update and get all software menus array
+    //         const finalSoftWareMenus  = modulesData?.software_menus?.map( menu => menu.id === id ? copyFindSelectedMenu : menu );
+
+            
+    //         const isParentMenuTrue = finalSoftWareMenus?.every( parentMenu => parentMenu.isTrue === true );
+
+    //         //change module data object
+    //         moduleData = {
+    //             ...moduleData,
+    //             isTrue : isParentMenuTrue,
+    //             software_menus : finalSoftWareMenus
+    //         }
+    //         //set module data object
+    //         setModulesData(moduleData);
+    //     } else {
+            
+    //         const internal_links =  findMenus?.internal_links?.map( (internalLink) => {
+    //                 return { ...internalLink , isTrue: checked}
+    //         })
+
+    //         copyFindSelectedMenu = {
+    //             ...copyFindSelectedMenu,
+    //             internal_links : internal_links
+    //         }
+
+    //         //set object to whice menu want to update and get all software menus array
+    //         const finalSoftWareMenus  = modulesData?.software_menus?.map( menu => menu.id === id ? copyFindSelectedMenu : menu );
+
+            
+    //         const isParentMenuTrue = finalSoftWareMenus?.every( parentMenu => parentMenu.isTrue === true );
+
+    //         //change module data object
+    //         moduleData = {
+    //             ...moduleData,
+    //             isTrue : isParentMenuTrue,
+    //             software_menus : finalSoftWareMenus
+    //         }
+    //         //set module data object
+    //         setModulesData(moduleData);
+    //     }
+
+    // }
+
+    // when check childMenu
     const handleSelectChildMenu = ( event , parentId, menuChildId ) => {
 
         const { checked } = event.target;
