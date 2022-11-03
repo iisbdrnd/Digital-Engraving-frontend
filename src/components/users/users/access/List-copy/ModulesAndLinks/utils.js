@@ -26,25 +26,8 @@
             const children = []
 
             for (const childMenu of menus) {
-
                 if (childMenu.parent_id === menu.id) {
-
-                    let childMenuCopy = {...childMenu}
-                    const thiredChildren = []
-
-                    for( const thiredChildMenu of menus){
-
-                        if (thiredChildMenu.parent_id === childMenu.id) {
-                            thiredChildren.push(thiredChildMenu)
-                        }
-
-                    }
-
-                    childMenuCopy = {
-                        ...childMenuCopy,
-                        children : thiredChildren
-                    }
-                    children.push(childMenuCopy)
+                    children.push(childMenu)
                 }
             }
 
@@ -77,7 +60,6 @@
         }
     }
 
-    console.log('pera', rearrangeMenu);
     return rearrangeMenu;
 
 }
