@@ -2,7 +2,7 @@ import React from "react";
 import SubChildrenMenu from "../SubChildrenMenu/SubChildrenMenu";
 import ChildrenInternalLinks from "./ChildrenInternalLinks";
 
-const ModuleMenuChildrenItem = ({ childMenu, parentId, onToggle, active, handleSelectChildMenu , handleSelectSubChildMenu }) => {
+const ModuleMenuChildrenItem = ({ childMenu, parentId, onToggle, active, handleSelectChildMenu , handleSelectSubChildMenu, handleSelectSubChildInternalLinks }) => {
 
     const { id , isTrue } = childMenu;
 
@@ -49,7 +49,7 @@ const ModuleMenuChildrenItem = ({ childMenu, parentId, onToggle, active, handleS
 
             {/* if parent children have childen */}
             { childMenu?.children?.length > 0 &&   
-                <SubChildrenMenu handleSelectSubChildMenu={handleSelectSubChildMenu}  menuChildren={childMenu.children}  parentId={parentId} menuChildId={id} /> 
+                <SubChildrenMenu handleSelectSubChildInternalLinks={handleSelectSubChildInternalLinks} handleSelectSubChildMenu={handleSelectSubChildMenu}  menuChildren={childMenu.children}  parentId={parentId} menuChildId={id} /> 
             }
 
 

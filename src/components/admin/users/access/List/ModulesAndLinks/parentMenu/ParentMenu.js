@@ -3,7 +3,7 @@ import ModuleMenuChildren from '../childrenMenu/ChildrenMenu';
 import ParentInternalLinks from './ParentInternalLinks';
 import '../ModulesAndLinks.css'
 
-const ModuleMenu = ({ software_menu, onToggle, active, handleSelectMenu, handleSelectChildMenu, handleSelectParentInternalLinks, handleSelectSubChildMenu }) => {
+const ModuleMenu = ({ software_menu, onToggle, active, handleSelectMenu, handleSelectChildMenu, handleSelectParentInternalLinks, handleSelectSubChildMenu, handleSelectSubChildInternalLinks }) => {
 
 
 
@@ -41,7 +41,7 @@ const ModuleMenu = ({ software_menu, onToggle, active, handleSelectMenu, handleS
         <div className={`answer_wrapper ${active ? "open" : ""}`}>
 
             { software_menu?.children?.length > 0 &&   
-                <ModuleMenuChildren handleSelectChildMenu={handleSelectChildMenu} handleSelectSubChildMenu={handleSelectSubChildMenu}  menuChildren={software_menu.children} parentId={id} /> 
+                <ModuleMenuChildren handleSelectChildMenu={handleSelectChildMenu} handleSelectSubChildMenu={handleSelectSubChildMenu} handleSelectSubChildInternalLinks={handleSelectSubChildInternalLinks}  menuChildren={software_menu.children} parentId={id} /> 
             }
             {
                 software_menu?.internal_links.length > 0 && (

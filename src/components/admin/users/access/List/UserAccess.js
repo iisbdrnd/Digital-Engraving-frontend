@@ -782,9 +782,6 @@ const UserAccess = () => {
             }
 
         }
-
-        
-
         const updateChildMenu = findParentMenu.children?.map( currentChildMenu => currentChildMenu.id === childMenuId ? childMenu : currentChildMenu );
         
 
@@ -803,6 +800,91 @@ const UserAccess = () => {
             software_menus : updateSoftwareMenu
         }
 
+        //set all menus module data
+        setModulesData(moduleData);
+        
+    }
+
+    // when select sub menu
+    const handleSelectSubChildInternalLinks = ( event , parentId, menuChildId, subMenuChildId,  internalLinksId ) => {
+
+        const { checked } = event.target;
+        // copy softare module
+        let moduleData= {
+            software_module : modulesData?.software_module,
+            checkAll: false
+        }
+
+        const findParentMenu = modulesData?.software_menus?.find( parentMenu => parentMenu.id === parentId );
+
+        let parentMenu = {
+            ...findParentMenu
+        }
+        
+
+        const findChildMenu = findParentMenu.children?.find( childrenMenu => childrenMenu.id === menuChildId );
+
+        let childMenu = {
+            ...findChildMenu,
+        }
+        
+
+        const findSubChildMenu = findChildMenu.children?.find( subChildrenMenu => subChildrenMenu.id === subMenuChildId );
+
+        let subChildMenu = {
+            ...findSubChildMenu,
+        }
+
+        const findInteranlLink = findSubChildMenu.internal_links.find( internalLink => internalLink.id === internalLinksId );
+
+
+        const updateInternalLink = {
+            ...findInteranlLink,
+            isTrue : checked
+        }
+
+        const updatedNewInternalLinks = findSubChildMenu.internal_links.map( (internalLink) => {
+           return  internalLink.id === internalLinksId ? updateInternalLink : internalLink
+        })
+
+        const isAllInternalLinksTrue = updatedNewInternalLinks?.some( internalLink => internalLink.isTrue === true );
+
+        subChildMenu = {
+            ...subChildMenu, 
+            isTrue : isAllInternalLinksTrue,
+            internal_links: updatedNewInternalLinks
+        }
+
+        
+        
+        const updateSubChildMenu = findChildMenu.children?.map( currentSubChildMenu => currentSubChildMenu.id === subMenuChildId ? subChildMenu : currentSubChildMenu );
+        
+
+        const isSubChildMenuTrue = updateSubChildMenu?.some( subChildMenu => subChildMenu.isTrue === true );
+
+        childMenu  ={
+            ...childMenu,
+            isTrue: isSubChildMenuTrue,
+            children : updateSubChildMenu
+        }
+
+        const updateChildMenu = findParentMenu.children?.map( currentChildMenu => currentChildMenu.id === menuChildId ? childMenu : currentChildMenu );
+        
+
+        const isChildMenuTrue = updateChildMenu?.some( childMenu => childMenu.isTrue === true );
+
+        parentMenu  ={
+            ...parentMenu,
+            isTrue: isChildMenuTrue,
+            children : updateChildMenu
+        }
+
+        const updateSoftwareMenu = modulesData?.software_menus?.map( currentParentMenu => currentParentMenu.id === parentId ? parentMenu : currentParentMenu );
+
+        moduleData = {
+            ...moduleData,
+            software_menus : updateSoftwareMenu
+        }
         //set all menus module data
         setModulesData(moduleData);
         
@@ -914,7 +996,7 @@ const UserAccess = () => {
         
             {
                 tab === 1 && (
-                <UserAccessModules allMenuAndResourceChecked={allMenuAndResourceChecked} handleSelectMenu={handleSelectMenu} handleSelectChildMenu={handleSelectChildMenu} handleSelectParentInternalLinks={handleSelectParentInternalLinks} handleSelectSubChildMenu={handleSelectSubChildMenu} handleRoleChange={handleRoleChange} modulesData={modulesData} loading={modulesloading} saveData={saveData} />
+                <UserAccessModules allMenuAndResourceChecked={allMenuAndResourceChecked} handleSelectMenu={handleSelectMenu} handleSelectChildMenu={handleSelectChildMenu} handleSelectParentInternalLinks={handleSelectParentInternalLinks} handleSelectSubChildMenu={handleSelectSubChildMenu} handleSelectSubChildInternalLinks={handleSelectSubChildInternalLinks} handleRoleChange={handleRoleChange} modulesData={modulesData} loading={modulesloading} saveData={saveData} />
                 )
             }
             

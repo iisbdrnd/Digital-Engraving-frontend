@@ -1,7 +1,7 @@
 import React from "react";
 import SubChildrenInternalLinks from "./SubChildrenInternalLinks";
 
-const SubChildrenMenuItem = ({ subChildrenMenu, parentId, menuChildId, onToggle, active, handleSelectSubChildMenu }) => {
+const SubChildrenMenuItem = ({ subChildrenMenu, parentId, menuChildId, onToggle, active, handleSelectSubChildMenu, handleSelectSubChildInternalLinks }) => {
 
     const { id , isTrue } = subChildrenMenu;
 
@@ -37,6 +37,7 @@ const SubChildrenMenuItem = ({ subChildrenMenu, parentId, menuChildId, onToggle,
                                 parentId={parentId}
                                 menuChildId={menuChildId}
                                 menuSubChildId={id}
+                                handleSelectSubChildInternalLinks={handleSelectSubChildInternalLinks}
                                 key={index} internal_links={internal_links} 
                             />
                         ))}
