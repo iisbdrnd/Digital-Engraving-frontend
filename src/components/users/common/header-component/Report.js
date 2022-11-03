@@ -133,17 +133,14 @@ const Report = () => {
 
     // } , [])
 
-
-
-    console.log('usermenu',mainmenu, MENUITEMS);
+    // dropdown
+    // {menu?.children.length > 15 ? `dropdown-container long` : 'dropdown-container'}
 
 
 
     return (
         <>
-
-
-            <div onMouseOver={handleOpenDropDown} onMouseOut={handlehoverOutDropDown} class="dropdown">
+            <div onMouseEnter={handleOpenDropDown} onMouseLeave={handlehoverOutDropDown} class="dropdown">
                 {
                     MENUITEMS?.map( (menu) => (
                         menu.type === 'link' ? (
@@ -160,22 +157,23 @@ const Report = () => {
                         ) : (
                             <>
                              {/* onClick={handleShowDropdown} */}
-                                <button className={menu.title.length > 7 ? 'dropdownHoverBtn longtitle' : 'dropdownHoverBtn'}  ref={dropDownRef}>
+                                <button className={`dropdownHoverBtn ${menu.title.length > 7 && 'longtitle'}`} ref={dropDownRef}>
                                     {menu.title}
                                 </button>
+                                {/* ${showDropdown && 'show' } */}
                                 <div id="dropdown-hover-container" class={`dropdown-menu ${showDropdown && 'show' }`} aria-labelledby="dropdownMenuButton">
-                                    <div className={menu?.children.length > 15 ? `dropdown-container long` : 'dropdown-container'}>
+                                    <div className='dropdown-container'>
                                         {
                                             menu?.children?.map( (dropdown , index) => (
                                                 dropdown.type === 'sub' ? (
-                                                    <li  onMouseOut={handleToggleClose}  onMouseOver={ () => handleToggle(index)}>
+                                                    <li className='dropdown-item-hover'>
                                                         <div className="d-flex align-items-center justify-content-between dropdown-item">
                                                             <span >{dropdown.title}</span> 
-                                                            <i class="arrow down"></i>
+                                                            &raquo;
                                                             
                                                             {/* <ArrowDown style={ {marginTop : '0px'}}  color="black" size={10}/> */}
                                                         </div>
-                                                        <div className={`children ${ clicked === index ? "active" : ""}`}>
+                                                        <div className={`children active`}>
                                                             <ul className='subDropdown'>
                                                                 {
                                                                     dropdown?.children?.map( (submultiMenu) => (
