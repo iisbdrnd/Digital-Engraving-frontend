@@ -805,7 +805,7 @@ const UserAccess = () => {
         
     }
 
-    // when select sub menu
+    // when select sub menu internal links
     const handleSelectSubChildInternalLinks = ( event , parentId, menuChildId, subMenuChildId,  internalLinksId ) => {
 
         const { checked } = event.target;
@@ -898,42 +898,67 @@ const UserAccess = () => {
         let menus = [];
         let internalLinks = [];
 
-        console.log('softwareMenu', modulesData?.software_menus);
-
         
         for (const parentMenu of modulesData?.software_menus) {
 
+            // if parent menu check 
             if(parentMenu.isTrue === true){
 
                 const parentSelectedMenu = { id : parentMenu.id}
                 menus.push(parentSelectedMenu)
 
-                if( parentMenu.resource === 0){
-                    for (const childrenMenu of parentMenu?.children) {
-                        // check child have isTrue
+                // if parentmenu have children
+                if( parentMenu.resource === 0 && parentMenu.children.length){
+
+                    for (const childrenMenu of parentMenu.children) {
+                        // if children menu check 
                         if(childrenMenu.isTrue === true){
                             const childMenu = { id : childrenMenu.id}
                             menus.push(childMenu)
 
-                            if(childrenMenu?.internal_links?.length > 0){
-                                for(const internal_link of childrenMenu?.internal_links){
+                            if(childrenMenu.resource === 0 && childrenMenu.children.length){
+
+                                for(const subChildMenu of childrenMenu.children){
+
+                                    if(subChildMenu.isTrue === true){
+                                        const subchildMenu = { id : subChildMenu.id}
+                                        menus.push(subchildMenu)
+
+                                        if(subChildMenu.internal_links.length > 0){
+                                            for(const internal_link of subChildMenu.internal_links){
+                                                if(internal_link.isTrue === true){
+                                                    const obj = {id: internal_link.id}
+                                                    internalLinks.push(obj)
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
+                            } else if(childrenMenu.resource === 1) {
+
+                                for(const internal_link of childrenMenu.internal_links){
                                     if(internal_link.isTrue === true){
                                         const obj = {id: internal_link.id}
                                         internalLinks.push(obj)
                                     }
                                 }
+
                             }
 
                             
                         }
                     }
+
                 } else if ( parentMenu.resource === 1){
+
                     for(const internal_link of parentMenu?.internal_links){
                         if(internal_link.isTrue === true){
                             const obj = {id: internal_link.id}
                             internalLinks.push(obj)
                         }
                     }
+
                 }
 
             }
@@ -948,6 +973,8 @@ const UserAccess = () => {
             menus: menus,
             internal_links: internalLinks            
         } 
+
+        console.log('pera', data);
 
     
         // post api call with data
