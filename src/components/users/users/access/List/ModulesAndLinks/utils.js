@@ -26,51 +26,146 @@
             const children = []
 
             for (const childMenu of menus) {
+
                 if (childMenu.parent_id === menu.id) {
-                    children.push(childMenu)
+
+                    let childMenuCopy = {...childMenu}
+                    const thiredChildren = []
+
+                    for( const thiredChildMenu of menus){
+
+                        if (thiredChildMenu.parent_id === childMenu.id) {
+                            thiredChildren.push(thiredChildMenu)
+                        }
+
+                    }
+
+                    childMenuCopy = {
+                        ...childMenuCopy,
+                        children : thiredChildren
+                    }
+                    children.push(childMenuCopy)
                 }
             }
 
-            const menuWithChildren = {
+            
+            if(children.length > 0){
+
+                let ifAnyChildrenTrue  = children.some( (child) => child.isTrue === true)
+
+                const menuWithChildren = {
+                    ...menu,
+                    isTrue: ifAnyChildrenTrue,
+                    children : children
+                }
+
+                rearrangeMenu.push(menuWithChildren)
+
+            } else {
+
+                const menuWithChildren = {
                 ...menu,
-                children : children
+                    children : children
+                }
+
+                rearrangeMenu.push(menuWithChildren)
+
             }
 
-            rearrangeMenu.push(menuWithChildren)
+            
 
         }
     }
 
+    console.log('pera', rearrangeMenu);
     return rearrangeMenu;
+
 }
 
 
-export const setUserAlreadyMenuAccess = (menus) => {
-    const accessGiven = menus.map( (menu) => {
+export const setUserAlreadyMenuAccess = (userMenu , alreadyAccessMenu) => {
+    // get data whice check true
+    let modulesCheckTrueData = [];
+    for (const menu of userMenu) {
+        for (const roleMenu of alreadyAccessMenu ){
+            
+            if( menu.id === roleMenu.id){
 
-        let internal_links;
-        if (menu.internal_links) {
-            internal_links = menu.internal_links.map( (link) => {
-                if (link.status === 1) {
-                    return {...link, isTrue: true}
-                }else{
-                    return link
+                let roleMenuData = {...menu , isTrue : true}
+
+                const internalLinksHaveAccess = []
+                for( const menuInternalLink of menu?.internal_links ){
+                    for( const roleMenuInternalLink of roleMenu?.internal_links) {
+
+                        if(menuInternalLink.id === roleMenuInternalLink.id ){
+                            internalLinksHaveAccess.push({...menuInternalLink, isTrue: true})
+                        } 
+                    }
                 }
-            })
+
+                let internalLinksWithOutCheck = menu?.internal_links?.filter(function(menu){
+                    return !roleMenu?.internal_links.some(function(checkmenu){   
+                        return menu.id === checkmenu.id;          
+                    });
+                });
+
+                let internalLinksWithOutCheckFalse = internalLinksWithOutCheck?.map( link => {
+                    return {...link , isTrue: false}
+                })
+
+                const menuAccessInternalLinks = [
+                    ...internalLinksHaveAccess,
+                    ...internalLinksWithOutCheckFalse
+                ]
+
+                console.log('bla', menuAccessInternalLinks);
+
+                roleMenuData = {
+                    ...roleMenuData,
+                    internal_links : menuAccessInternalLinks
+                }
+                modulesCheckTrueData.push(roleMenuData);
+
+            }  
+
+        }
+    }
+
+    /* Filtering the menusWithOutCheck array and returning the menus that are not in the
+    modulesRoleCheckTrueData array. */
+    let menusWithOutCheck = userMenu?.filter(function(menu){
+        return !modulesCheckTrueData.some(function(checkmenu){   
+            return menu.id === checkmenu.id;          
+        });
+    });
+
+    // if the array of object have isTrue True then remove
+    const menusWithOutCheckAllFalse =  menusWithOutCheck.map( (menu) => {
+        let newMenu = {
+            ...menu,
+            isTrue : false
         }
 
-        const someInternalLinkTrue = internal_links?.some( (link) => link.isTrue === true )
-
-        if (menu.status === 1) {
-            return {...menu , internal_links : internal_links, isTrue: true}
-        } else if(someInternalLinkTrue){
-            return {...menu , internal_links : internal_links, isTrue: true}
-        } else {
-            return { ...menu , internal_links}
+        if(menu.internal_links.length > 0){
+            const newMenuInternallinks = menu.internal_links.map( (links) => {
+                return { ...links , isTrue : false }
+            } )
+            newMenu = {
+                ...newMenu, 
+                internal_links : newMenuInternallinks
+            }
+            return newMenu;
+        } else{
+        return newMenu; 
         }
+    })
 
-    } )
 
-    return accessGiven;
+    /* Creating a new array from the two arrays. */
+    const newSoftwareMenus = [
+        ...modulesCheckTrueData,
+        ...menusWithOutCheckAllFalse
+    ]
 
+    return newSoftwareMenus;
 }

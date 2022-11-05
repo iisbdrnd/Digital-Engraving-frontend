@@ -1,16 +1,18 @@
-import React, { useState } from "react";
-import { useEffect } from "react";
-import { userGetMethod } from "../../../../../../api/userAction";
+import React, { useState } from 'react'
+import { useEffect } from 'react';
+import { userGetMethod } from '../../../../../../api/userAction';
 
 export default function SelectRoleForModule({ handleRoleChange }) {
-  const [roles, setRoles] = useState([]);
 
-  const roleUrl = "api/user/getRole";
-  useEffect(() => {
-    userGetMethod(roleUrl).then((res) => {
-      setRoles(res.data.roles);
-    });
-  }, []);
+    const [roles , setRoles ] = useState([]);
+
+    const roleUrl = "api/user/getRole";
+    useEffect( () => {
+        userGetMethod(roleUrl)
+        .then( (res ) => {
+            setRoles(res.data.roles);
+        })
+    } , [])
 
   return (
     <>

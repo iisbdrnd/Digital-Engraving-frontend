@@ -2,7 +2,6 @@
 .dropdown {
     margin: 0;
     padding: 0;
-    background: white;
     border: none;
     cursor: pointer;
     text-align: left !important;
@@ -12,10 +11,13 @@
     color: #4466f2;
     text-decoration: none;
     display: block;
-    padding: 5px 10px;
+    padding: 18px 15px;
     cursor: pointer;
     border: 0px;
-    background: white;
+    background-color: transparent;
+}
+.dropdown > button.longtitle {
+    padding: 8px 15px;
 }
 .dropdown-menu li {
     border: none !important;
@@ -42,36 +44,57 @@
     display: flex;
     flex-direction: column;
     height: auto;
+    border: 1px solid gray;
 }
 .dropdown-container.long{
     height: 410px;
     overflow-y: scroll;
 }
 .dropdown-container li {
-    margin: 0px 0px !important;
+    margin: 1px 0px !important;
 }
 
 .children {
-  height: 0;
-  overflow: hidden;
+    display: none;
+    position: absolute;
+    left: 100%;
+    top: -7px;
+}
+.dropdown-item-hover:hover > .children.active{
+    display: block;
 }
 .children.active {
-  height: auto;
+    display: none;
+    position: absolute;
+    left: 100%;
+    top: -7px;
 }
+/* .dropdownHoverBtn{
+    margin-top: 5px;
+} */
 .dropdown-menu{
     position: absolute;
-    transform: translate3d(0px, 52px, 0px);
+    margin-top: 0px;
+    padding-top: 0px;
+    transform: translate3d(0px, 55px, 0px);
     top: 0px;
     left: 0px;
     will-change: transform;
 }
 
+/* .dropdown:hover > .dropdown-menu{
+    display: block !important;
+} */
+
 .dropdown-menu.show{
     display: block;
 }
 .subDropdown{
-    margin-left: 20px;
+    margin-left: 11px;
+    padding: 5px 10px;
+    border: 1px solid gray;
     display: flex;
+    background: #fff;
     flex-direction: column;
 }
 .subDropdown > li a {
@@ -87,4 +110,16 @@
     background-color: #ffffff !important;
     font-size: 14px;
     font-weight: 500;
+}
+
+.arrow {
+  border: solid black;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 3px;
+}
+
+.down {
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
 }

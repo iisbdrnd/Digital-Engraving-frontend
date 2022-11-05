@@ -18,9 +18,14 @@ const ModuleMenuChildrenItem = ({ insideMenu, parentId, onToggle, active, handle
                  type="checkbox" className="form-check-input" name={''} id={id} />
                 <label className="form-check-label" htmlFor={id}>{insideMenu.menu_name}</label>
             </div>
-            <button onClick={onToggle} className="btn btn sm">
-                <span className="control fw-bold">{active ? "—" : "+"} </span>
-            </button>
+            {
+                insideMenu?.internal_links?.length > 0 && (
+                    <button onClick={onToggle} className="btn btn sm">
+                        <span className="control fw-bold">{active ? "—" : "+"} </span>
+                    </button>
+                )
+            }
+            
         </div>
     </li>
     <div className={`accordionX mx-4 ${active ? "open" : ""}`}>
