@@ -181,12 +181,12 @@ export default function ListData(props) {
                                         <table className="table table-border-horizontal">
                                             <thead>
                                                 <tr>
-                                                    <th scope="col" width="5%" onClick={() => sortHandler(1)} ><i className="fa fa-sort"></i> SL.</th>
-                                                    <th scope="col" width="15%" onClick={() => sortHandler(2)} ><i className="fa fa-sort"></i> Job No</th>
-                                                    <th scope="col" width="15%" onClick={() => sortHandler(3)} ><i className="fa fa-sort"></i> Job Name</th>
-                                                    <th scope="col" width="10%" onClick={() => sortHandler(4)} ><i className="fa fa-sort"></i> Quantity</th>                                                        
+                                                    <th scope="col" width="5%" onClick={() => sortHandler(1)}><i className="fa fa-sort"></i> SL.</th>
+                                                    <th scope="col" width="15%" onClick={() => sortHandler(2)}><i className="fa fa-sort"></i> Job No</th>
+                                                    <th scope="col" width="15%" onClick={() => sortHandler(3)}><i className="fa fa-sort"></i> Job Name</th>
+                                                    <th scope="col" width="10%" onClick={() => sortHandler(4)}><i className="fa fa-sort"></i> Quantity</th>                                                        
                                                     <th scope="col" width="15%" onClick={() => sortHandler(5)}><i className="fa fa-sort"></i> Client</th>
-                                                    {/* <th scope="col" width="10%" ><i className="fa fa-sort"></i> Design Approve</th> */}
+                                                    <th scope="col" width="10%" onClick={() => sortHandler(6)}><i className="fa fa-sort"></i> Status</th>
                                                     {/* <th scope="col" width="7%">Action</th> */}
                                                 </tr>
                                             </thead>
@@ -202,6 +202,7 @@ export default function ListData(props) {
                                                                         <td>{item.job_name}</td>
                                                                         <td>{item.total_cylinder}</td>
                                                                         <td>{item.client_name}</td>
+                                                                        <td>{item.status==1?'stock in':'stock out'}</td>
                                                                         {/* <td>
                                                                             {item.design_to_design_status == 0 ? 
                                                                             <Link 

@@ -32,6 +32,8 @@ const Add = (props) => {
             entry_date         : '',
             agreement_date     : '',
             total_cylinder_qty : '',
+            client_id          : '',
+            printer_id         : '',
             job_order_qty_limit: 0,
             orderQty           : 0
         }
@@ -90,7 +92,7 @@ const Add = (props) => {
             if (stateName === 'job_order_id') {
                 userGetMethod(`${JOB_ORDER_DETAILS}?jobOrderId=${selectedValue}`)
                     .then(response => {
-                        let { id, job_name, job_no, printer_name, job_type, fl, cir, total_surface_area, client_name, total_cylinder_qty, entry_date, agreement_date } = response.data.jobOrderDetails;
+                        let { id, job_name, job_no, printer_name, job_type, fl, cir, total_surface_area, client_name, total_cylinder_qty, entry_date, agreement_date, client_id, printer_id } = response.data.jobOrderDetails;
                         setJobOrderData({
                             'job_order_qty_limit': total_cylinder_qty,
                             'job_name'          : job_name,
@@ -104,7 +106,9 @@ const Add = (props) => {
                             'id'                : id,
                             'entry_date'        : entry_date,
                             'agreement_date'    : agreement_date,
-                            'total_cylinder_qty': total_cylinder_qty
+                            'total_cylinder_qty': total_cylinder_qty,
+                            'client_id'         : client_id,
+                            'printer_id'        : printer_id
                         });
                     });
             }
@@ -120,7 +124,7 @@ const Add = (props) => {
     // FOR DEL STOCKS ARRAY READY
     const addOrderDetailsHandler = (event) => {
         
-        let {job_no, receive_date, qty, remarks,client_name, id} = jobOrderData;
+        let {job_no, receive_date, qty, remarks,client_name, id, total_cylinder_qty, client_id, printer_id} = jobOrderData;
         
         if (jobOrderData.job_order_qty_limit > 0) {
             // OBJECT CREATE & PUSH IN AN ARRAY
@@ -132,6 +136,9 @@ const Add = (props) => {
             delStockDetails_obj.remarks = remarks;
             delStockDetails_obj.client_name = client_name;
             delStockDetails_obj.id = id;
+            delStockDetails_obj.total_cylinder_qty = total_cylinder_qty;
+            delStockDetails_obj.client_id = client_id;
+            delStockDetails_obj.printer_id = printer_id;
 
             if ((parseInt(jobOrderData.orderQty) + parseInt(delStockDetails_obj.qty)) <= parseInt(jobOrderData.job_order_qty_limit)) {
                 delStockDetails_arr.push(delStockDetails_obj);
@@ -164,6 +171,7 @@ const Add = (props) => {
                 }
                 // EMPTY DEL STOCKS ALL FIELDS
                 setJobOrderData({
+                    job_no          :'',
                     receive_date    : '',
                     qty             : '',
                     remarks         : '',
@@ -398,6 +406,22 @@ const Add = (props) => {
                                                             type="hidden"  
                                                             onChange={delStocksInputHander}
                                                             value={jobOrderData.id}
+                                                        />
+                                                        <input 
+                                                            className="form-control" 
+                                                            id="client_id" 
+                                                            name="client_id" 
+                                                            type="hidden"  
+                                                            onChange={delStocksInputHander}
+                                                            value={jobOrderData.client_id}
+                                                        />
+                                                        <input 
+                                                            className="form-control" 
+                                                            id="printer_id" 
+                                                            name="printer_id" 
+                                                            type="hidden"  
+                                                            onChange={delStocksInputHander}
+                                                            value={jobOrderData.printer_id}
                                                         />
                                                         <div className="col-md-1 mb-4 m-t-5">
                                                             <span className="btn btn-primary btn-sm mr-1 m-t-20" type="add" onClick={addOrderDetailsHandler}>Add</span>
