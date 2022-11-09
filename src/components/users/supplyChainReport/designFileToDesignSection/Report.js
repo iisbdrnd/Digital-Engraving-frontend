@@ -33,6 +33,12 @@ const Report = ({fromDate, toDate}) => {
             setJorderTypes(response.data.orderTypes);
             setGrandTotalCyl(response.data.grandTotalCyl);
             setGrandTotalSurfaceArea(response.data.grandTotalSurfaceArea);
+            // if orderTypes have data
+            if(response.data?.grandTotalCyl){
+                setCurrentPage(1)
+            } else {
+                setCurrentPage(0)
+            }
             setIsLoading(false);
         })
         .catch(error => console.log(error))
@@ -72,6 +78,16 @@ const Report = ({fromDate, toDate}) => {
         setCurrentPage(prevCount => prevCount - 1);
     }
   };
+
+  const gotoFirstPage = () => {
+    if(pageNumbers.length > 0){
+        setCurrentPage(1);
+    }
+  }
+
+  const gotoLastPage = () => {
+    setCurrentPage( pageNumbers.length);
+  }
 
   
   const handlePrint = () => {
@@ -126,6 +142,8 @@ const Report = ({fromDate, toDate}) => {
                                                 currentPage={currentPage}
                                                 nextPage={nextPage}
                                                 previousPage={previousPage}
+                                                gotoFirstPage={gotoFirstPage}
+                                                gotoLastPage={gotoLastPage}
                                                 paginate={paginate} 
                                             />
                                         </div>
@@ -278,6 +296,21 @@ const Report = ({fromDate, toDate}) => {
                             )
                         }
                         
+                    </div>
+                    <div className="col-sm-12">
+                        <div className="d-flex justify-content-end bg-white py-2">
+                            <div className="pagination">
+                                <Pagination 
+                                    pageNumbers={pageNumbers}
+                                    currentPage={currentPage}
+                                    nextPage={nextPage}
+                                    previousPage={previousPage}
+                                    gotoFirstPage={gotoFirstPage}
+                                    gotoLastPage={gotoLastPage}
+                                    paginate={paginate} 
+                                />
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
