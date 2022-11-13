@@ -218,6 +218,10 @@ import FinishedCylinderStatusForm from './../components/users/supplyChainReport/
 import FinishedCylinderStatusReport from './../components/users/supplyChainReport/finishedCylinderStatus/Report';
 import YearlyJobFlowForm from './../components/users/supplyChainReport/yearlyJobFlow/Form';
 import YearlyJobFlowReport from './../components/users/supplyChainReport/yearlyJobFlow/Report';
+import ClientStockForm from './../components/users/supplyChainReport/clientStockReport/Form';
+import ClientStockReport from './../components/users/supplyChainReport/clientStockReport/Report';
+import ClientStockBalanceForm from './../components/users/supplyChainReport/clientStockBalanceReport/Form';
+import ClientStockBalanceReport from './../components/users/supplyChainReport/clientStockBalanceReport/Report';
 import MonthlyJobFlowForm from './../components/users/supplyChainReport/monthlyJobFlow/Form';
 import MonthlyJobFlowReport from './../components/users/supplyChainReport/monthlyJobFlow/Report';
 import MonthlyProductionForm from './../components/users/supplyChainReport/monthlyProduction/Form';
@@ -576,6 +580,14 @@ class UserRoute extends Component {
             <UserAuthRoute
               path={`${process.env.PUBLIC_URL}/yearlyJobFlow/report/:report_type/:year/:cylinder_type`}
               component={YearlyJobFlowReport}
+            />
+            <UserAuthRoute
+              path={`${process.env.PUBLIC_URL}/clientStockReport/report/:client_id/:printer_id`}
+              component={ClientStockReport}
+            />
+            <UserAuthRoute
+              path={`${process.env.PUBLIC_URL}/clientStockBalanceReport/report/:client_id/:printer_id`}
+              component={ClientStockBalanceReport}
             />
             <UserAuthRoute
               path={`${process.env.PUBLIC_URL}/monthlyJobFlow/report/:month/:year/:cylinder_type`}
@@ -1149,6 +1161,14 @@ class UserRoute extends Component {
                 <UserAuthRoute
                   path={`${process.env.PUBLIC_URL}/yearlyJobFlow`}
                   component={YearlyJobFlowForm}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/clientStockReport`}
+                  component={ClientStockForm}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/clientStockBalanceReport`}
+                  component={ClientStockBalanceForm}
                 />
                 <UserAuthRoute
                   path={`${process.env.PUBLIC_URL}/monthlyJobFlow`}

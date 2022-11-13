@@ -209,6 +209,10 @@ export const MONTHLY_JOB_FLOW_REPORT = 'api/user/monthlyJobFlow';
 export const MONTHLY_PRODUCTION_REPORT = 'api/user/monthlyProduction';
 export const DAILY_PRODUCTION_REPORT = 'api/user/dailyProduction';
 export const DAILY_JOB_FLOW_DETAILS_REPORT = 'api/user/dailyJobFlowDetails';
+export const CLIENT_STOCK_REPORT_FORM = 'api/user/clientStockReportForm';
+export const CLIENT_STOCK_REPORT = 'api/user/clientStockReport';
+export const CLIENT_STOCK_BALANCE_REPORT_FORM = 'api/user/clientStockBalanceReportForm';
+export const CLIENT_STOCK_BALANCE_REPORT = 'api/user/clientStockBalanceReport';
 
 //END SUPPLY CHAIN REPORT
 
