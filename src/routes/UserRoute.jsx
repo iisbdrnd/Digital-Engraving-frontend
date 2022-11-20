@@ -74,7 +74,7 @@ import PrintersAdd from './../components/users/backOfficeSetup/printers/Add';
 import PrintersEdit from './../components/users/backOfficeSetup/printers/Edit';
 
 //ROLES 
-import Roles from '../components/users/roles/ListData';
+import Roles from '../components/users/roles/listData';
 //import PrintersAdd from './../components/users/backOfficeSetup/printers/Add';
 //import PrintersEdit from './../components/users/backOfficeSetup/printers/Edit';
 
@@ -406,6 +406,7 @@ import BillCollection from './../components/users/factory/bill/Collection';
 //User App
 import UserApp from "./../components/UserApp";
 import UserAccess from "../components/users/users/access/List/UserAccess";
+import RoleAccess from "../components/users/roles/access/List/RoleAccess";
 
 class UserRoute extends Component {
     constructor(props) {
@@ -770,6 +771,11 @@ class UserRoute extends Component {
                 <UserAuthRoute
                   path={`${process.env.PUBLIC_URL}/user-access-link/:userId`}
                   component={UserAccess}
+                />
+                {/* roles access link  */}
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/role-access-link/:roleId`}
+                  component={RoleAccess}
                 />
                 {/* USER DEPARTMENT */}
                 <UserAuthRoute
