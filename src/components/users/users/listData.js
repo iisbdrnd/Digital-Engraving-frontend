@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import Datatable from '../common/datatable';
 import 'react-toastify/dist/ReactToastify.css';
 import { userGetMethod } from '../../../api/userAction';
+import { usersRsurl } from '../../../api/userUrl'
 
 class ListData extends Component {
     constructor(props) {
@@ -64,7 +65,7 @@ class ListData extends Component {
                                             pagination={true}
                                             class="-striped -highlight"
                                             editLink="users/edit"
-                                            // deleteLink={usersRsurl}
+                                            deleteLink={usersRsurl}
                                             accessLink="user-access-link"
                                         />
                                     )}

@@ -1,5 +1,7 @@
 //ME
 export const UserMe = 'api/user/me';
+// USER URL
+export const usersRsurl = 'api/user/user';
 //LOGIN
 export const UserLoginPost = 'api/user/postLogin';
 //APPS

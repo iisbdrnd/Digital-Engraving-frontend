@@ -19,7 +19,7 @@ export default function SelectRoleForModule({ handleRoleChange }) {
           onChange={handleRoleChange}
           className="custom-select custom-select-sm"
         >
-          <option>Select Role</option>
+          <option>Select Designation</option>
           {roles.map((role) => (
             <option key={role.id} value={role.id}>
               {role.role_name}

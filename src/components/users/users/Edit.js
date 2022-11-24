@@ -2,8 +2,8 @@ import React, { Fragment, Component } from 'react';
 import Breadcrumb from '../common/breadcrumb';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { adminPutMethod, adminGetMethod } from '../../../api/action'
-import { usersRsurl } from '../../../api/adminUrl'
+import { userPutMethod, userGetMethod } from '../../../api/userAction'
+import { usersRsurl } from '../../../api/userUrl'
 import { SubmitButton } from '../../common/GlobalButton';
 import { Typeahead } from 'react-bootstrap-typeahead';
 import 'react-bootstrap-typeahead/css/Typeahead.css';
@@ -38,7 +38,7 @@ class Edit extends Component {
             branch: this.state.branch[0].id,
             timezone_id: this.state.timezone_id[0].id,
         }
-        let response = adminPutMethod(`${usersRsurl}/${this.state.userId}`, postData)
+        let response = userPutMethod(`${usersRsurl}/${this.state.userId}`, postData)
             .then(response => { 
                 if (response.data.status == 1) { toast.success(response.data.message) } else { toast.error(response.data.message) }
             })
@@ -59,7 +59,7 @@ class Edit extends Component {
     }
     
     componentDidMount() {
-        adminGetMethod(`${usersRsurl}/${this.state.userId}/edit`)
+        userGetMethod(`${usersRsurl}/${this.state.userId}/edit`)
             .then(response => { 
                 console.log('response', response.data);
                 // FOR DESIGNATION
@@ -232,7 +232,7 @@ class Edit extends Component {
 
                                         </div>
                                     </div>
-                                    <SubmitButton link="users/list" />
+                                    <SubmitButton link="users/index" />
                                 </div>
                             </form>
                         </div>

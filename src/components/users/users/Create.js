@@ -2,9 +2,9 @@ import React, { Fragment, Component } from 'react';
 import Breadcrumb from '../common/breadcrumb';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { adminPostMethod, adminGetMethod, globalGetMethod } from '../../../api/action'
+import { userPostMethod, userGetMethod, globalGetMethod } from '../../../api/userAction'
 import { timezoneList } from '../../../api/generalUrl'
-import { usersRsurl } from '../../../api/adminUrl'
+import { usersRsurl } from '../../../api/userUrl'
 import { SubmitButton } from '../../common/GlobalButton';
 import { Typeahead } from 'react-bootstrap-typeahead';
 import 'react-bootstrap-typeahead/css/Typeahead.css';
@@ -50,7 +50,7 @@ class Create extends Component {
             timezone_id: this.state.timezone_id,
         }
         
-        let response = adminPostMethod(usersRsurl, postData)
+        let response = userPostMethod(usersRsurl, postData)
             .then(response => { 
                 if (response.data.status == 1) { toast.success(response.data.message) } else { toast.error(response.data.message) }
             })
@@ -77,7 +77,7 @@ class Create extends Component {
     }
     
     componentDidMount() {
-        adminGetMethod(`${usersRsurl}/create`)
+        userGetMethod(`${usersRsurl}/create`)
         .then(result => { 
             // FOR DESIGNATION
             let designationOption = [];
@@ -240,7 +240,7 @@ class Create extends Component {
                                             </div>
                                         </div>
                                     </div>
-                                    <SubmitButton link="users/list" />
+                                    <SubmitButton link="users/index" />
                                 </div>
                             </form>
                         </div>

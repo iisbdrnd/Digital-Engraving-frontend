@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import Datatable from '../common/datatable';
 import 'react-toastify/dist/ReactToastify.css';
 import { userGetMethod } from '../../../api/userAction';
+import { rolesAPI } from '../../../api/userUrl'
 
 class ListData extends Component {
     constructor(props) {
@@ -14,16 +15,16 @@ class ListData extends Component {
             isDelete: false,
             columns: [
                 { Header: 'SL.', style: {textAlign: 'center'}, width: 50, Cell: (row) => <div>{row.index + 1}</div>, filterable: false},
-                { Header: 'Role Id', style: {textAlign: 'center'}, accessor: 'id'},
-                { Header: 'Role Name', style: {textAlign: 'center'}, accessor: 'role_name' },
+                { Header: 'Designation Id', style: {textAlign: 'center'}, accessor: 'id'},
+                { Header: 'Designation Name', style: {textAlign: 'center'}, accessor: 'role_name' },
                 { Header: 'Status', accessor: 'valid', width: 100, style: {textAlign: 'center'}, sortable: false, Cell: ({value}) => (value >= 1 ? 'Active' : 'Deactive'), filterable: false }
             ]
         }
     }
 
     componentDidMount() {
-        const usersRsurl = `api/user/roles`
-        let response = userGetMethod(usersRsurl)
+        const rolesAPI = `api/user/roles`
+        let response = userGetMethod(rolesAPI)
         .then(response => {
             console.log(response.data.roles)
             this.setState({
@@ -38,7 +39,7 @@ class ListData extends Component {
         let { isLoading, allRoles, columns } = this.state
         return (
             <Fragment>
-                <Breadcrumb title="Role List" parent="Role" />
+                <Breadcrumb title="Designation List" parent="Role" />
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col-sm-12">
@@ -62,7 +63,7 @@ class ListData extends Component {
                                             pagination={true}
                                             class="-striped -highlight"
                                             editLink="role/edit"
-                                            // deleteLink={usersRsurl}
+                                            deleteLink={rolesAPI}
                                             accessLink="role-access-link"
                                         />
                                     )}

@@ -75,11 +75,13 @@ import PrintersEdit from './../components/users/backOfficeSetup/printers/Edit';
 
 //ROLES 
 import Roles from '../components/users/roles/listData';
-//import PrintersAdd from './../components/users/backOfficeSetup/printers/Add';
-//import PrintersEdit from './../components/users/backOfficeSetup/printers/Edit';
+import CreateSoftwareRole from './../components/users/roles/Create';
+import EditSoftwareRole from './../components/users/roles/Edit';
 
 // USERS
 import SoftwareUserList from './../components/users/users/listData';
+import CreateSoftwareUser from './../components/users/users/Create';
+import EditSoftwareUser from './../components/users/users/Edit';
 
 
 //SUPPLIER INFORMATION
@@ -767,6 +769,14 @@ class UserRoute extends Component {
                   path={`${process.env.PUBLIC_URL}/users/index`}
                   component={SoftwareUserList}
                 />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/users/add`}
+                  component={CreateSoftwareUser}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/users/edit/:userId`}
+                  component={EditSoftwareUser}
+                />
                 {/* users access link  */}
                 <UserAuthRoute
                   path={`${process.env.PUBLIC_URL}/user-access-link/:userId`}
@@ -776,6 +786,14 @@ class UserRoute extends Component {
                 <UserAuthRoute
                   path={`${process.env.PUBLIC_URL}/role-access-link/:roleId`}
                   component={RoleAccess}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/role/add`}
+                  component={CreateSoftwareRole}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/role/edit/:roleId`}
+                  component={EditSoftwareRole}
                 />
                 {/* USER DEPARTMENT */}
                 <UserAuthRoute

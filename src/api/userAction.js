@@ -29,6 +29,12 @@ export const userDeleteMethod = (url, paramId) => {
     return getMainResponse;
 }
 
+export const globalGetMethod = (url) => {
+    let mainResponse = [];
+    mainResponse = axios.get(`${process.env.REACT_APP_BASEURL}/${url}`)
+    return mainResponse;
+}
+
 //GENERAL ACTIONS
 export const getMethod = (url) => {
     const token = sessionStorage.getItem('token');

@@ -47,7 +47,7 @@ class ListData extends Component {
         return (
             <Fragment>
                 
-                <Breadcrumb title="Designation List" parent="Designation" />
+                <Breadcrumb title="Department List" parent="Designation" />
 
                 <div className="container-fluid">
                     <div className="row">

@@ -4,17 +4,17 @@ import React, { useEffect, useState } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
 import RoleAccessModules from './RoleAccessModules';
 import { softwareMenuRearrange, setUserAlreadyMenuAccess } from './ModulesAndLinks/utils';
-import {  userGetMethod, userPostMethod } from '../../../../../api/userAction';
+import { userGetMethod, userPostMethod } from '../../../../../api/userAction';
 import { useParams } from 'react-router';
 import { toast } from 'react-toastify';
 
 const UserAccess = () => {
 
-    const [userAccessData , setUserAccessData] = useState();
-    const [modulesData , setModulesData] = useState();
-    const [menusForModuleId , setMenusForModuleId] = useState(null);
+    const [userAccessData, setUserAccessData] = useState();
+    const [modulesData, setModulesData] = useState();
+    const [menusForModuleId, setMenusForModuleId] = useState(null);
     const [loading,setLoading] = useState(false);
-    const [modulesloading,setModulesLoading] = useState(false);
+    const [modulesloading, setModulesLoading] = useState(false);
     const [tab, setTab] = useState(0);
     const {roleId} = useParams();
     // get current login user
@@ -120,17 +120,17 @@ const UserAccess = () => {
                             ...menu, 
                             isTrue: checked 
                     }
-                    const internal_links =  menu?.internal_links?.map( (internalLink) => {
-                            return { ...internalLink , isTrue: checked}
+                    const internal_links =  menu?.internal_links?.map((internalLink) => {
+                            return { ...internalLink, isTrue: checked}
                     })
-                    return { ...childrenMenuWithInternalLinks , internal_links: internal_links }
+                    return { ...childrenMenuWithInternalLinks, internal_links : internal_links }
                 }
 
             } else {
                 // copy menu 
                 const copyMenuObject = {
                     ...menu,
-                    isTrue: checked
+                    isTrue : checked
                 }
 
                 const checkedChildren = menu?.children?.map( (childrenMenu) => {
@@ -141,41 +141,41 @@ const UserAccess = () => {
                         // if childmenu have subChildMenu 
                         if(childrenMenu?.children?.length > 0){
 
-                            const subChildMenu = childrenMenu?.children?.map( (subChildMenu) => {
+                            const subChildMenu = childrenMenu?.children?.map((subChildMenu) => {
                                 // if subChild don't have internal links
                                 if (subChildMenu?.internal_links?.length < 1) {
-                                    return {...subChildMenu, isTrue: checked }
+                                    return {...subChildMenu, isTrue : checked }
                                 } else {
                                     const copySubChildMenu = {
                                         ...subChildMenu,
-                                        isTrue: checked
+                                        isTrue : checked
                                     }
-                                    const internal_links =  subChildMenu?.internal_links?.map( (internalLink) => {
-                                            return { ...internalLink , isTrue: checked}
+                                    const internal_links =  subChildMenu?.internal_links?.map((internalLink) => {
+                                            return { ...internalLink , isTrue : checked}
                                     })
-                                    return { ...copySubChildMenu , internal_links: internal_links }
+                                    return { ...copySubChildMenu, internal_links: internal_links }
                                 }
                             })
 
-                            return { ...childrenMenu, isTrue: checked , children: subChildMenu }
+                            return { ...childrenMenu, isTrue : checked , children: subChildMenu }
                             
                         } else {
-                            return { ...childrenMenu, isTrue: checked }
+                            return { ...childrenMenu, isTrue : checked }
                         }
                     } else {
                         const childrenMenuWithInternalLinks = {
                              ...childrenMenu, 
-                             isTrue: checked 
+                             isTrue : checked 
                         }
-                       const internal_links =  childrenMenu?.internal_links?.map( (internalLink) => {
-                                return { ...internalLink , isTrue: checked}
+                       const internal_links =  childrenMenu?.internal_links?.map((internalLink) => {
+                                return { ...internalLink , isTrue : checked}
                         })
-                        return { ...childrenMenuWithInternalLinks , internal_links: internal_links }
+                        return { ...childrenMenuWithInternalLinks , internal_links : internal_links }
                     }
                     
                 })
 
-                return { ...copyMenuObject , children : checkedChildren }
+                return { ...copyMenuObject, children : checkedChildren }
 
             }
         })
@@ -197,7 +197,7 @@ const UserAccess = () => {
 
         const { checked } = event.target ;
         //copy module data
-        let moduleData= {
+        let moduleData = {
             software_module : modulesData?.software_module,
             checkAll: false
         }
@@ -221,36 +221,36 @@ const UserAccess = () => {
                     // if childmenu have subChildMenu 
                     if(childrenMenu?.children?.length > 0){
 
-                        const subChildMenu = childrenMenu?.children?.map( (subChildMenu) => {
+                        const subChildMenu = childrenMenu?.children?.map((subChildMenu) => {
                             // if subChild don't have internal links
                             if (subChildMenu?.internal_links?.length < 1) {
-                                return {...subChildMenu, isTrue: checked }
+                                return {...subChildMenu, isTrue : checked }
                             } else {
                                 const copySubChildMenu = {
                                     ...subChildMenu,
-                                    isTrue: checked
+                                    isTrue : checked
                                 }
-                                const internal_links =  subChildMenu?.internal_links?.map( (internalLink) => {
-                                        return { ...internalLink , isTrue: checked}
+                                const internal_links =  subChildMenu?.internal_links?.map((internalLink) => {
+                                        return { ...internalLink, isTrue : checked}
                                 })
-                                return { ...copySubChildMenu , internal_links: internal_links }
+                                return { ...copySubChildMenu, internal_links : internal_links }
                             }
                         })
 
-                        return { ...childrenMenu, isTrue: checked , children: subChildMenu }
+                        return { ...childrenMenu, isTrue : checked, children : subChildMenu }
                         
                     } else {
-                        return { ...childrenMenu, isTrue: checked }
+                        return { ...childrenMenu, isTrue : checked }
                     }
                 } else {
                     const childrenMenuWithInternalLinks = {
                             ...childrenMenu, 
-                            isTrue: checked 
+                            isTrue : checked 
                     }
                     const internal_links =  childrenMenu?.internal_links?.map( (internalLink) => {
-                            return { ...internalLink , isTrue: checked}
+                            return { ...internalLink, isTrue : checked}
                     })
-                    return { ...childrenMenuWithInternalLinks , internal_links: internal_links }
+                    return { ...childrenMenuWithInternalLinks, internal_links : internal_links }
                 }
                 
             })
@@ -261,7 +261,7 @@ const UserAccess = () => {
             }
 
             //set object to whice menu want to update and get all software menus array
-            const finalSoftWareMenus  = modulesData?.software_menus?.map( menu => menu.id === id ? copyFindSelectedMenu : menu );
+            const finalSoftWareMenus = modulesData?.software_menus?.map( menu => menu.id === id ? copyFindSelectedMenu : menu );
 
             
             const isParentMenuTrue = finalSoftWareMenus?.every( parentMenu => parentMenu.isTrue === true );
@@ -276,8 +276,8 @@ const UserAccess = () => {
             setModulesData(moduleData);
         } else {
             
-            const internal_links =  findMenus?.internal_links?.map( (internalLink) => {
-                    return { ...internalLink , isTrue: checked}
+            const internal_links =  findMenus?.internal_links?.map((internalLink) => {
+                    return { ...internalLink, isTrue: checked}
             })
 
             copyFindSelectedMenu = {
@@ -286,7 +286,7 @@ const UserAccess = () => {
             }
 
             //set object to whice menu want to update and get all software menus array
-            const finalSoftWareMenus  = modulesData?.software_menus?.map( menu => menu.id === id ? copyFindSelectedMenu : menu );
+            const finalSoftWareMenus = modulesData?.software_menus?.map( menu => menu.id === id ? copyFindSelectedMenu : menu );
 
             
             const isParentMenuTrue = finalSoftWareMenus?.every( parentMenu => parentMenu.isTrue === true );
@@ -304,7 +304,7 @@ const UserAccess = () => {
     }   
     
     // when check childMenu
-    const handleSelectChildMenu = ( event , parentId, menuChildId ) => {
+    const handleSelectChildMenu = ( event, parentId, menuChildId ) => {
 
         const { checked } = event.target;
         // copy softare module
@@ -329,38 +329,38 @@ const UserAccess = () => {
         // when childmenu  have sub child menu
         if (findChildMenu.resource === 0) {
 
-            const subChildMenu = findChildMenu?.children?.map( (subChildMenu) => {
+            const subChildMenu = findChildMenu?.children?.map((subChildMenu) => {
                 // if subChild don't have internal links
                 if (subChildMenu?.internal_links?.length < 1) {
-                    return {...subChildMenu, isTrue: checked }
+                    return {...subChildMenu, isTrue:  checked }
                 } else {
                     const copySubChildMenu = {
                         ...subChildMenu,
-                        isTrue: checked
+                        isTrue : checked
                     }
-                    const internal_links =  subChildMenu?.internal_links?.map( (internalLink) => {
-                            return { ...internalLink , isTrue: checked}
+                    const internal_links =  subChildMenu?.internal_links?.map((internalLink) => {
+                            return { ...internalLink, isTrue : checked}
                     })
                     return { ...copySubChildMenu , internal_links: internal_links }
                 }
             })
 
-            childMenu =  { ...childMenu, isTrue: checked , children: subChildMenu }
+            childMenu =  { ...childMenu, isTrue : checked, children : subChildMenu }
             
         } else {
 
             let childInternalLinks;
 
             if(findChildMenu?.internal_links?.length > 0){
-                childInternalLinks = findChildMenu?.internal_links?.map( ( internalLink) => {
-                    return { ...internalLink , isTrue: checked}
+                childInternalLinks = findChildMenu?.internal_links?.map((internalLink) => {
+                    return { ...internalLink, isTrue: checked}
                 } )
             }
 
             childMenu = {
                 ...childMenu, 
                 isTrue : checked,
-                internal_links: childInternalLinks
+                internal_links : childInternalLinks
             }
         }
 
@@ -399,7 +399,7 @@ const UserAccess = () => {
         // copy softare module
         let moduleData= {
             software_module : modulesData?.software_module,
-            checkAll: false
+            checkAll : false
         }
 
         const findParentMenu = modulesData?.software_menus?.find( parentMenu => parentMenu.id === parentId );
@@ -436,14 +436,14 @@ const UserAccess = () => {
     }
 
     // when select sub menu
-    const handleSelectSubChildMenu = ( event , parentId, childMenuId, subMenuChildId ) => {
+    const handleSelectSubChildMenu = ( event, parentId, childMenuId, subMenuChildId ) => {
 
 
         const { checked } = event.target;
         // copy softare module
         let moduleData= {
             software_module : modulesData?.software_module,
-            checkAll: false
+            checkAll : false
         }
 
         const findParentMenu = modulesData?.software_menus?.find( parentMenu => parentMenu.id === parentId );
@@ -466,7 +466,7 @@ const UserAccess = () => {
             //copy findSubChildren
             let copySubChildren = {
                 ...findSubChildren,
-                isTrue: checked
+                isTrue : checked
             }
 
             // if sub Children dont have internal link
@@ -475,7 +475,7 @@ const UserAccess = () => {
                 const internal_links =  findSubChildren?.internal_links?.map( (internalLink) => {
                         return { ...internalLink , isTrue: checked}
                 })
-                copySubChildren =  { ...copySubChildren , internal_links: internal_links }
+                copySubChildren =  { ...copySubChildren, internal_links : internal_links }
 
             }
 
@@ -488,7 +488,7 @@ const UserAccess = () => {
             childMenu = {
                 ...childMenu, 
                 isTrue : ifSomeSubChildTrue,
-                children: updateSubChildrenMenu
+                children : updateSubChildrenMenu
             }
 
         } else {
@@ -501,7 +501,7 @@ const UserAccess = () => {
                 isTrue : checked
             }
 
-            const updatedNewInternalLinks = findChildMenu.internal_links.map( (internalLink) => {
+            const updatedNewInternalLinks = findChildMenu.internal_links.map((internalLink) => {
             return  internalLink.id === subMenuChildId ? updateInternalLink : internalLink
             })
 
@@ -510,7 +510,7 @@ const UserAccess = () => {
             childMenu = {
                 ...childMenu, 
                 isTrue : isAllInternalLinksTrue,
-                internal_links: updatedNewInternalLinks
+                internal_links : updatedNewInternalLinks
             }
 
         }
@@ -521,7 +521,7 @@ const UserAccess = () => {
 
         parentMenu  ={
             ...parentMenu,
-            isTrue: isChildMenuTrue,
+            isTrue : isChildMenuTrue,
             children : updateChildMenu
         }
 
@@ -538,13 +538,13 @@ const UserAccess = () => {
     }
 
     // when select sub menu internal links
-    const handleSelectSubChildInternalLinks = ( event , parentId, menuChildId, subMenuChildId,  internalLinksId ) => {
+    const handleSelectSubChildInternalLinks = ( event, parentId, menuChildId, subMenuChildId, internalLinksId ) => {
 
         const { checked } = event.target;
         // copy softare module
         let moduleData= {
             software_module : modulesData?.software_module,
-            checkAll: false
+            checkAll : false
         }
 
         const findParentMenu = modulesData?.software_menus?.find( parentMenu => parentMenu.id === parentId );
@@ -583,7 +583,7 @@ const UserAccess = () => {
         subChildMenu = {
             ...subChildMenu, 
             isTrue : isAllInternalLinksTrue,
-            internal_links: updatedNewInternalLinks
+            internal_links : updatedNewInternalLinks
         }
         
         const updateSubChildMenu = findChildMenu.children?.map( currentSubChildMenu => currentSubChildMenu.id === subMenuChildId ? subChildMenu : currentSubChildMenu );
@@ -591,9 +591,9 @@ const UserAccess = () => {
 
         const isSubChildMenuTrue = updateSubChildMenu?.some( subChildMenu => subChildMenu.isTrue === true );
 
-        childMenu  ={
+        childMenu = {
             ...childMenu,
-            isTrue: isSubChildMenuTrue,
+            isTrue : isSubChildMenuTrue,
             children : updateSubChildMenu
         }
 
@@ -602,9 +602,9 @@ const UserAccess = () => {
 
         const isChildMenuTrue = updateChildMenu?.some( childMenu => childMenu.isTrue === true );
 
-        parentMenu  ={
+        parentMenu = {
             ...parentMenu,
-            isTrue: isChildMenuTrue,
+            isTrue : isChildMenuTrue,
             children : updateChildMenu
         }
 
