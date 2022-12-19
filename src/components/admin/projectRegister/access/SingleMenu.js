@@ -9,19 +9,15 @@ const SingleMenu = (props) => {
     }
     return (
         <Fragment>
-            <div className="row accessMenu">
+            <div className={`row accessMenu`}>
                 <label className="accessMenuName" htmlFor="chk-ani2">
                     {props.menuName}
                 </label>
-                {/* <select className="menuSelect" onChange={(e) => changeMenuSelect(e)}>
+                <select className="menuSelect" onChange={(e) => changeMenuSelect(e)}>
                     <option value="">Select</option>
                     <option value="1">Yes</option>
                     <option value="0">No</option>
-                </select> */}
-                <div className="checkbox checkbox-dark">
-                    <input id="inline-1" type="checkbox" />
-                    <label for="inline-1">Option<span className="digits"> 1</span></label>
-                </div>
+                </select>
             </div>
         </Fragment>
     );

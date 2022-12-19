@@ -142,7 +142,7 @@ class UserEdit extends Component {
                                                 <input type='text' className="form-control" name='name' value={admindata.name} onChange={this.changeHandeler}/>
                                             </div>
                                             <div className="form-group">
-                                                <label className="form-label">Sur Name</label>
+                                                <label className="form-label">Surname</label>
                                                 <input type='text' className="form-control" name='surname' value={admindata.surname} onChange={this.changeHandeler}/>
                                             </div>
                                             <div className="form-group">

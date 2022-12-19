@@ -10,11 +10,12 @@ import { DEL_STOCK_RSURL, JOB_ORDER_DETAILS } from '../../../api/userUrl';
 import SweetAlert from 'sweetalert2';
 
 const Add = (props) => {
-    const { handleSubmit, register, errors } = useForm();
+    const { handleSubmit, register, errors, reset } = useForm();
     const [isLoading, setIsLoading] = useState(true);
     const [dropdownData, setDropdownData] = useState({});
     const [typeheadOptions, setTypeheadOptions] = useState({});
     const [delStockDetails, setDelStockDetails] = useState([]);
+    const [selectedValue,setSelectedValue] = useState([])
 
     let [jobOrderData, setJobOrderData] = useReducer(
         (state, newState) => ({...state, ...newState}),
@@ -85,11 +86,12 @@ const Add = (props) => {
             setDropdownData(
                 (prevstate) => ({
                     ...prevstate,
-                    [stateName]: selectedValue,
-                    [stateName+'_name']: selectedValueName,
+                    job_order_id: selectedValue,
+                    [stateName + '_name']: selectedValueName,
                 })
             );
-            if (stateName === 'job_order_id') {
+            if (stateName == 'job_order_id') {
+                setSelectedValue(event)
                 userGetMethod(`${JOB_ORDER_DETAILS}?jobOrderId=${selectedValue}`)
                     .then(response => {
                         let { id, job_name, job_no, printer_name, job_type, fl, cir, total_surface_area, client_name, total_cylinder_qty, entry_date, agreement_date, client_id, printer_id } = response.data.jobOrderDetails;
@@ -205,6 +207,7 @@ const Add = (props) => {
                     console.log(response);
                     if (response.data.status == 1) {
                         toast.success(response.data.message)
+                        clearFormField(e);
                         e.target.reset();
                     } else {
                         toast.error(response.data.message)
@@ -214,6 +217,29 @@ const Add = (props) => {
         } else {
             SweetAlert.fire({title:"Warning", text:"Please order all required cylinder qty!", icon:"warning"});
         }
+    }
+
+    const clearFormField = (event) => {
+        setJobOrderData({
+            'job_order_qty_limit': null,
+            'job_name': null,
+            'job_no': '',
+            'printer_name': null,
+            'job_type': null,
+            'fl': null,
+            'cir': null,
+            'total_surface_area': null,
+            'client_name': null,
+            'id': null,
+            'entry_date': null,
+            'agreement_date': null,
+            'total_cylinder_qty': null,
+            'client_id': null,
+            'printer_id': null,
+            'orderQty': 0
+        });
+        setSelectedValue([]);
+        setDelStockDetails([]);
     }
 
     var menuId = 0;
@@ -255,8 +281,8 @@ const Add = (props) => {
                                                             labelKey={option => `${option.name}`}
                                                             options={typeheadOptions['job_orders']}
                                                             placeholder="Select Job No..."
-                                                            onChange={(e) => dropDownChange(e, 'job_order_id')}
-                                                            selected={dropdownData.job_order_id}
+                                                            onChange={(e) => { dropDownChange(e, 'job_order_id') }}
+                                                            selected={selectedValue}
                                                             disabled={job_order_id != null ? 'disabled' : ''}
                                                             ref={register({
                                                                 required: 'Job No Field Required'

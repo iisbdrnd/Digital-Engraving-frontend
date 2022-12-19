@@ -40,7 +40,7 @@ import MenuEdit from './../components/admin/menu/Edit';
 //MENUS ADMIN 
 import MenuList from './../components/admin/menu/ListData';
 import AccessLinkProject from './../components/admin/projectRegister/access/AccessingSystem';
-import ProjectAdd from './../components/admin/projectRegister/add';
+import ProjectAdd from './../components/admin/projectRegister/Create';
 import ProjectEdit from './../components/admin/projectRegister/Edit';
 //Projects Registration
 import ProjectRegisterList from './../components/admin/projectRegister/listData';

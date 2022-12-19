@@ -1,5 +1,5 @@
 import React, { useState, Fragment } from 'react';
-import { Navigation } from 'react-feather';
+import { Tag } from 'react-feather';
 
 const Module = (props) => {
     return (
@@ -7,19 +7,12 @@ const Module = (props) => {
             {
                 props.softModules.map((module, key)=> {
                     return (
-                        <div className="col-md-4" key={key}>
-                            <div className="card o-hidden">
-                                <div className="bg-primary b-r-4 card-body cursor-pointer" onClick={() => props.clickHandler(module.id)} >
-                                    <div className="media static-top-widget">
-                                        <div className="align-self-center text-center">
-                                            <Navigation />
-                                        </div>
-                                        <div className="media-body">
-                                            <span className="m-0">{module.module_name}</span>
-                                            <Navigation className="icon-bg" />
-                                        </div>
-                                    </div>
+                        <div className="col-md-2 chart-widget" style={{ cursor:"pointer", marginTop: "15px"}} onClick={() => props.clickHandler(module.id)} key={key}>
+                            <div className="media">
+                                <div className="media-body">
+                                    <p>{module.module_name}</p>
                                 </div>
+                                <Tag />
                             </div>
                         </div>
                     )
