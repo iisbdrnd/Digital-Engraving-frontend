@@ -14,9 +14,10 @@ export default function ListData(props) {
     const [hasAccess, setHasAccess] = useState({});
     const [accLoad, setAccLoad] = useState(true);
     const [currentPage, setCurrentPage] = useState();
-    const [perPage, setPerPage] = useState();
+    const [perPage, setPerPage] = useState(5);
     const [totalData, setTotalData] = useState(0);
     const [ascDesc, setAscDesc] = useState(false);
+    const [jobActiveStatus, setJobActiveStatus] = useState(0);
 
     var menuId = 0;
     if (props.location.state === undefined) {
@@ -37,13 +38,20 @@ export default function ListData(props) {
         pageChange();
     },[]);
 
+    useEffect(() => {
+        perPageBoxChange();
+    },[jobActiveStatus,perPage])
+
     const handleSearchText = (e) => {
         setSearchText(e);
     }
     const searchHandler = (e) => {
         setIsLoading(true);
-        userGetMethod(DESIGN_TO_FACTORY_RSURL+'?searchText='+searchText)
+        userGetMethod(`${DESIGN_TO_FACTORY_RSURL}?design_to_factory_status=${jobActiveStatus}&page=${1}&perPage=${perPage}&searchText=${searchText}`)
         .then(response => {
+            setCurrentPage(response.data.pendingDesignToFactories.current_page)
+            setPerPage(response.data.pendingDesignToFactories.per_page)
+            setTotalData(response.data.pendingDesignToFactories.total)
             setBaseReceiveData(response.data.pendingDesignToFactories.data)
             setIsLoading(false);
         })
@@ -69,9 +77,8 @@ export default function ListData(props) {
     const pageChange = (pageNumber = 1) => {
         setIsLoading(true);
         // TABLE DATA READY
-        userGetMethod(`${DESIGN_TO_FACTORY_RSURL}?page=${pageNumber}`)
+        userGetMethod(`${DESIGN_TO_FACTORY_RSURL}?design_to_factory_status=${jobActiveStatus}&page=${pageNumber}&perPage=${perPage}&searchText=${searchText}`)
             .then(response => {
-                console.log("res", response.data);
                 setCurrentPage(response.data.pendingDesignToFactories.current_page)
                 setPerPage(response.data.pendingDesignToFactories.per_page)
                 setTotalData(response.data.pendingDesignToFactories.total)
@@ -82,11 +89,9 @@ export default function ListData(props) {
     }
 
     const perPageBoxChange = (e) => {
-        let paramValue = e.target.value;
-        let paramName = e.target.name;
         setIsLoading(true);
         // TABLE DATA READY
-        userGetMethod(`${DESIGN_TO_FACTORY_RSURL}?${paramName}=${paramValue}`)
+        userGetMethod(`${DESIGN_TO_FACTORY_RSURL}?design_to_factory_status=${jobActiveStatus}&perPage=${perPage}&searchText=${searchText}`)
             .then(response => {
                 setCurrentPage(response.data.pendingDesignToFactories.current_page)
                 setPerPage(response.data.pendingDesignToFactories.per_page)
@@ -159,9 +164,9 @@ export default function ListData(props) {
                                     <div className="custom-table-pagination m-r-10">
                                         <label className="mt-3">
                                             <span>
-                                                <select className="form-control pagi-select" name="design_to_factory_status" onChange={perPageBoxChange} >
+                                                <select className="form-control pagi-select" name="design_to_factory_status" onChange={(e) => setJobActiveStatus(parseInt(e.target.value))} value={jobActiveStatus} >
                                                     <option value="2">All Receive</option>
-                                                    <option value="0" selected={true} >Pending Receive</option>
+                                                    <option value="0">Pending Receive</option>
                                                     <option value="1">Done Receive</option>
                                                 </select>
                                             </span>
@@ -170,7 +175,7 @@ export default function ListData(props) {
                                 </div>
                                 <div className="col-md-4 col-lg-4">
                                     <AddButton link="designToFactory/add" menuId={menuId} />
-                                    <PerPageBox pageBoxChange={perPageBoxChange}/>
+                                    <PerPageBox pageBoxChange={perPageBoxChange} perPage={perPage} setPerPage={setPerPage}/>
                                 </div>
                             </div>
                                 

@@ -14,9 +14,10 @@ export default function ListData(props) {
     const [hasAccess, setHasAccess] = useState({});
     const [accLoad, setAccLoad] = useState(true);
     const [currentPage, setCurrentPage] = useState();
-    const [perPage, setPerPage] = useState();
+    const [perPage, setPerPage] = useState(5);
     const [totalData, setTotalData] = useState(0);
     const [ascDesc, setAscDesc] = useState(false);
+    const [jobActiveStatus, setJobActiveStatus] = useState(0);
 
     var menuId = 0;
     if (props.location.state === undefined) {
@@ -37,13 +38,19 @@ export default function ListData(props) {
         pageChange();
     },[]);
 
+    useEffect(() => {
+        perPageBoxChange();
+    },[jobActiveStatus,perPage])
     const handleSearchText = (e) => {
         setSearchText(e);
     }
     const searchHandler = (e) => {
         setIsLoading(true);
-        userGetMethod(BASE_ORDER_RSURL+'?searchText='+searchText)
+        userGetMethod(`${BASE_ORDER_RSURL}?base_order_status=${jobActiveStatus}&page=${1}&perPage=${perPage}&searchText=${searchText}`)
         .then(response => {
+            setCurrentPage(response.data.pendingAgreements.current_page)
+            setPerPage(response.data.pendingAgreements.per_page)
+            setTotalData(response.data.pendingAgreements.total)
             setJobAgreementData(response.data.pendingAgreements.data)
             setIsLoading(false);
         })
@@ -69,7 +76,7 @@ export default function ListData(props) {
     const pageChange = (pageNumber = 1) => {
         setIsLoading(true);
         // TABLE DATA READY
-        userGetMethod(`${BASE_ORDER_RSURL}?page=${pageNumber}`)
+        userGetMethod(`${BASE_ORDER_RSURL}?base_order_status=${jobActiveStatus}&page=${pageNumber}&perPage=${perPage}&searchText=${searchText}`)
             .then(response => {
                 setCurrentPage(response.data.pendingAgreements.current_page)
                 setPerPage(response.data.pendingAgreements.per_page)
@@ -81,11 +88,9 @@ export default function ListData(props) {
     }
 
     const perPageBoxChange = (e) => {
-        let paramValue = e.target.value;
-        let paramName = e.target.name;
         setIsLoading(true);
         // TABLE DATA READY
-        userGetMethod(`${BASE_ORDER_RSURL}?${paramName}=${paramValue}`)
+        userGetMethod(`${BASE_ORDER_RSURL}?base_order_status=${jobActiveStatus}&perPage=${perPage}&searchText=${searchText}`)
             .then(response => {
                 setCurrentPage(response.data.pendingAgreements.current_page)
                 setPerPage(response.data.pendingAgreements.per_page)
@@ -158,9 +163,9 @@ export default function ListData(props) {
                                     <div className="custom-table-pagination m-r-10">
                                         <label className="mt-3">
                                             <span>
-                                                <select className="form-control pagi-select" name="base_order_status" onChange={perPageBoxChange} >
+                                                <select className="form-control pagi-select" name="base_order_status" onChange={(e) => setJobActiveStatus(parseInt(e.target.value))} value={jobActiveStatus} >
                                                     <option value="2">All</option>
-                                                    <option value="0" selected={true} >Pending</option>
+                                                    <option value="0">Pending</option>
                                                     <option value="1">Done</option>
                                                 </select>
                                             </span>
@@ -169,7 +174,7 @@ export default function ListData(props) {
                                 </div>
                                 <div className="col-md-4 col-lg-4">
                                     <AddButton link="baseOrder/add" menuId={menuId} />
-                                    <PerPageBox pageBoxChange={perPageBoxChange}/>
+                                    <PerPageBox pageBoxChange={perPageBoxChange} perPage={perPage} setPerPage={setPerPage}/>
                                 </div>
                             </div>
                                 

@@ -14,7 +14,7 @@ export default function ListData(props) {
     const [hasAccess, setHasAccess] = useState({});
     const [accLoad, setAccLoad] = useState(true);
     const [currentPage, setCurrentPage] = useState();
-    const [perPage, setPerPage] = useState();
+    const [perPage, setPerPage] = useState(5);
     const [totalData, setTotalData] = useState(0);
     const [ascDesc, setAscDesc] = useState(false);
 
@@ -37,13 +37,20 @@ export default function ListData(props) {
         pageChange();
     },[]);
 
+    useEffect(() => {
+        perPageBoxChange();
+    },[perPage])
+
     const handleSearchText = (e) => {
         setSearchText(e);
     }
     const searchHandler = (e) => {
         setIsLoading(true);
-        userGetMethod(CLIENT_STOCK_RSURL+'?searchText='+searchText)
+        userGetMethod(`${CLIENT_STOCK_RSURL}?page=${1}&perPage=${perPage}&searchText=${searchText}`)
         .then(response => {
+            setCurrentPage(response.data.clientStocks.current_page)
+            setPerPage(response.data.clientStocks.per_page)
+            setTotalData(response.data.clientStocks.total)
             setClientStockData(response.data.clientStocks.data)
             setIsLoading(false);
         })
@@ -69,9 +76,8 @@ export default function ListData(props) {
     const pageChange = (pageNumber = 1) => {
         setIsLoading(true);
         // TABLE DATA READY
-        userGetMethod(`${CLIENT_STOCK_RSURL}?page=${pageNumber}`)
+        userGetMethod(`${CLIENT_STOCK_RSURL}?page=${pageNumber}&perPage=${perPage}&searchText=${searchText}`)
             .then(response => {
-                console.log(response.data.clientStocks);
                 setCurrentPage(response.data.clientStocks.current_page)
                 setPerPage(response.data.clientStocks.per_page)
                 setTotalData(response.data.clientStocks.total)
@@ -82,11 +88,9 @@ export default function ListData(props) {
     }
 
     const perPageBoxChange = (e) => {
-        let paramValue = e.target.value;
-        let paramName = e.target.name;
         setIsLoading(true);
         // TABLE DATA READY
-        userGetMethod(`${CLIENT_STOCK_RSURL}?${paramName}=${paramValue}`)
+        userGetMethod(`${CLIENT_STOCK_RSURL}?perPage=${perPage}&searchText=${searchText}`)
             .then(response => {
                 setCurrentPage(response.data.clientStocks.current_page)
                 setPerPage(response.data.clientStocks.per_page)
@@ -155,8 +159,8 @@ export default function ListData(props) {
                                         </div>
                                     </div>
                                 </div>
-                                {/* <div className="col-md-5 col-lg-5">
-                                    <div className="custom-table-pagination m-r-10">
+                                <div className="col-md-5 col-lg-5">
+                                    {/* <div className="custom-table-pagination m-r-10">
                                         <label className="mt-3">
                                             <span>
                                                 <select className="form-control pagi-select" name="design_to_design_status" onChange={perPageBoxChange} >
@@ -166,11 +170,11 @@ export default function ListData(props) {
                                                 </select>
                                             </span>
                                         </label>
-                                    </div>
-                                </div> */}
+                                    </div> */}
+                                </div>
                                 <div className="col-md-4 col-lg-4">
                                     <AddButton link="clientStock/add" menuId={menuId} />
-                                    <PerPageBox pageBoxChange={perPageBoxChange}/>
+                                    <PerPageBox pageBoxChange={perPageBoxChange} perPage={perPage} setPerPage={setPerPage}/>
                                 </div>
                             </div>
                                 

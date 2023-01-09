@@ -6,6 +6,7 @@ import { userGetMethod, userDeleteMethod } from '../../../api/userAction';
 import { AddButton, EditButton, DeleteButton, PerPageBox } from '../../common/GlobalButton';
 import Pagination from "react-js-pagination";
 
+
 export default function ListData(props) {
     const [jobOrderData, setJobOrderData] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -13,7 +14,7 @@ export default function ListData(props) {
     const [hasAccess, setHasAccess] = useState({});
     const [accLoad, setAccLoad] = useState(true);
     const [currentPage, setCurrentPage] = useState();
-    const [perPage, setPerPage] = useState();
+    const [perPage, setPerPage] = useState(5);
     const [totalData, setTotalData] = useState(0);
     const [ascDesc, setAscDesc] = useState(false);
 
@@ -36,13 +37,20 @@ export default function ListData(props) {
         pageChange();
     },[]);
 
+    useEffect(() => {
+        perPageBoxChange();
+    },[perPage])
+
     const handleSearchText = (e) => {
         setSearchText(e);
     }
     const searchHandler = (e) => {
         setIsLoading(true);
-        userGetMethod(JOB_ORDER_RSURL+'?searchText='+searchText)
+        userGetMethod(`${JOB_ORDER_RSURL}?page=${1}&perPage=${perPage}&searchText=${searchText}`)
         .then(response => {
+            setCurrentPage(response.data.jobOrders.current_page)
+            setPerPage(response.data.jobOrders.per_page)
+            setTotalData(response.data.jobOrders.total)
             setJobOrderData(response.data.jobOrders.data)
             setIsLoading(false);
         })
@@ -68,7 +76,7 @@ export default function ListData(props) {
     const pageChange = (pageNumber = 1) => {
         setIsLoading(true);
         // TABLE DATA READY
-        userGetMethod(`${JOB_ORDER_RSURL}?page=${pageNumber}`)
+        userGetMethod(`${JOB_ORDER_RSURL}?page=${pageNumber}&perPage=${perPage}&searchText=${searchText}`)
             .then(response => {
                 setCurrentPage(response.data.jobOrders.current_page)
                 setPerPage(response.data.jobOrders.per_page)
@@ -80,10 +88,9 @@ export default function ListData(props) {
     }
 
     const perPageBoxChange = (e) => {
-        let perPage = e.target.value;
         setIsLoading(true);
         // TABLE DATA READY
-        userGetMethod(`${JOB_ORDER_RSURL}?perPage=${perPage}`)
+        userGetMethod(`${JOB_ORDER_RSURL}?perPage=${perPage}&searchText=${searchText}`)
             .then(response => {
                 setCurrentPage(response.data.jobOrders.current_page)
                 setPerPage(response.data.jobOrders.per_page)
@@ -159,7 +166,7 @@ export default function ListData(props) {
 
                                 <div className="col-md-6 col-lg-6">
                                     <AddButton link="jobOrder/add" menuId={menuId} />
-                                    <PerPageBox pageBoxChange={perPageBoxChange}/>
+                                    <PerPageBox pageBoxChange={perPageBoxChange} perPage={perPage} setPerPage={setPerPage}/>
                                 </div>
                             </div>
                                 

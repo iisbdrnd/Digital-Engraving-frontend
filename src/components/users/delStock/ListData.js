@@ -14,7 +14,7 @@ export default function ListData(props) {
     const [hasAccess, setHasAccess] = useState({});
     const [accLoad, setAccLoad] = useState(true);
     const [currentPage, setCurrentPage] = useState();
-    const [perPage, setPerPage] = useState();
+    const [perPage, setPerPage] = useState(5);
     const [totalData, setTotalData] = useState(0);
     const [ascDesc, setAscDesc] = useState(false);
 
@@ -37,13 +37,20 @@ export default function ListData(props) {
         pageChange();
     },[]);
 
+    useEffect(() => {
+        perPageBoxChange();
+    },[perPage])
+
     const handleSearchText = (e) => {
         setSearchText(e);
     }
     const searchHandler = (e) => {
         setIsLoading(true);
-        userGetMethod(DEL_STOCK_RSURL+'?searchText='+searchText)
+        userGetMethod(`${DEL_STOCK_RSURL}?page=${1}&perPage=${perPage}&searchText=${searchText}`)
         .then(response => {
+            setCurrentPage(response.data.delStocks.current_page)
+            setPerPage(response.data.delStocks.per_page)
+            setTotalData(response.data.delStocks.total)
             setDelStockData(response.data.delStocks.data)
             setIsLoading(false);
         })
@@ -69,9 +76,8 @@ export default function ListData(props) {
     const pageChange = (pageNumber = 1) => {
         setIsLoading(true);
         // TABLE DATA READY
-        userGetMethod(`${DEL_STOCK_RSURL}?page=${pageNumber}`)
+        userGetMethod(`${DEL_STOCK_RSURL}?page=${pageNumber}&perPage=${perPage}&searchText=${searchText}`)
             .then(response => {
-                console.log(response.data.delStocks);
                 setCurrentPage(response.data.delStocks.current_page)
                 setPerPage(response.data.delStocks.per_page)
                 setTotalData(response.data.delStocks.total)
@@ -82,16 +88,14 @@ export default function ListData(props) {
     }
 
     const perPageBoxChange = (e) => {
-        let paramValue = e.target.value;
-        let paramName = e.target.name;
         setIsLoading(true);
         // TABLE DATA READY
-        userGetMethod(`${DEL_STOCK_RSURL}?${paramName}=${paramValue}`)
+        userGetMethod(`${DEL_STOCK_RSURL}?perPage=${perPage}&searchText=${searchText}`)
             .then(response => {
                 setCurrentPage(response.data.delStocks.current_page)
                 setPerPage(response.data.delStocks.per_page)
                 setTotalData(response.data.delStocks.total)
-                setDelStockData(response.data.clientStocks.data)
+                setDelStockData(response.data.delStocks.data)
                 setIsLoading(false)
             })
             .catch(error => console.log(error))
@@ -155,9 +159,11 @@ export default function ListData(props) {
                                         </div>
                                     </div>
                                 </div>
+                                <div className="col-md-5 col-lg-5">
+                                </div>
                                 <div className="col-md-4 col-lg-4">
                                     <AddButton link="delStock/add" menuId={menuId} />
-                                    <PerPageBox pageBoxChange={perPageBoxChange}/>
+                                    <PerPageBox pageBoxChange={perPageBoxChange} perPage={perPage} setPerPage={setPerPage}/>
                                 </div>
                             </div>
                                 

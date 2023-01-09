@@ -14,9 +14,10 @@ export default function ListData(props) {
     const [hasAccess, setHasAccess] = useState({});
     const [accLoad, setAccLoad] = useState(true);
     const [currentPage, setCurrentPage] = useState();
-    const [perPage, setPerPage] = useState();
+    const [perPage, setPerPage] = useState(5);
     const [totalData, setTotalData] = useState(0);
     const [ascDesc, setAscDesc] = useState(false);
+    const [jobActiveStatus, setJobActiveStatus] = useState(0);
 
     var menuId = 0;
     if (props.location.state === undefined) {
@@ -37,15 +38,21 @@ export default function ListData(props) {
         pageChange();
     },[]);
 
+    useEffect(() => {
+        perPageBoxChange();
+    },[jobActiveStatus,perPage])
+
     const handleSearchText = (e) => {
         setSearchText(e);
     }
     const searchHandler = (e) => {
         setIsLoading(true);
-        userGetMethod(QUALITY_CONTROL_RS_URL+'?searchText='+searchText)
+        userGetMethod(`${QUALITY_CONTROL_RS_URL}?qc_status=${jobActiveStatus}&page=${1}&perPage=${perPage}&searchText=${searchText}`)
         .then(response => {
+            setCurrentPage(response.data.jobOrders.current_page)
+            setPerPage(response.data.jobOrders.per_page)
+            setTotalData(response.data.jobOrders.total)
             setJobOrderData(response.data.jobOrders.data)
-            // setBaseReceiveData(response.data.pendingDesignToFactories.data)
             setIsLoading(false);
         })
         .catch(error => console.log(error)); 
@@ -70,7 +77,7 @@ export default function ListData(props) {
     const pageChange = (pageNumber = 1) => {
         setIsLoading(true);
         // TABLE DATA READY
-        userGetMethod(`${QUALITY_CONTROL_RS_URL}?page=${pageNumber}`)
+        userGetMethod(`${QUALITY_CONTROL_RS_URL}?qc_status=${jobActiveStatus}&page=${pageNumber}&perPage=${perPage}&searchText=${searchText}`)
             .then(response => {
                 console.log("res", response.data);
                 setCurrentPage(response.data.jobOrders.current_page)
@@ -83,12 +90,9 @@ export default function ListData(props) {
     }
 
     const perPageBoxChange = (e) => {
-        let paramValue = e.target.value;
-        let paramName = e.target.name;
-        
         setIsLoading(true);
         // TABLE DATA READY
-        userGetMethod(`${QUALITY_CONTROL_RS_URL}?${paramName}=${paramValue}`)
+        userGetMethod(`${QUALITY_CONTROL_RS_URL}?qc_status=${jobActiveStatus}&perPage=${perPage}&searchText=${searchText}`)
             .then(response => {
                 setCurrentPage(response.data.jobOrders.current_page)
                 setPerPage(response.data.jobOrders.per_page)
@@ -160,10 +164,11 @@ export default function ListData(props) {
                                     <div className="custom-table-pagination m-r-10">
                                         <label className="mt-3">
                                             <span>
-                                                <select className="form-control pagi-select" name="qc_status" onChange={perPageBoxChange} >
-                                                    <option value="2">All Quality Control</option>
-                                                    <option value="1" selected={true} >Running Quality Control</option>
-                                                    <option value="0">Close Quality Control</option>
+                                                <select className="form-control pagi-select" name="qc_status" onChange={(e) => setJobActiveStatus(parseInt(e.target.value))} value={jobActiveStatus} >
+                                                    <option value="3">All Quality Control</option>
+                                                    <option value="0">Running Quality Control</option>
+                                                    <option value="1">Done Quality Control</option>
+                                                    <option value="2">Failed Quality Control</option>
                                                 </select>
                                             </span>
                                         </label>
@@ -171,7 +176,7 @@ export default function ListData(props) {
                                 </div>
                                 <div className="col-md-4 col-lg-4">
                                     <AddButton link="qualityControl/add" menuId={menuId} />
-                                    <PerPageBox pageBoxChange={perPageBoxChange}/>
+                                    <PerPageBox pageBoxChange={perPageBoxChange} perPage={perPage} setPerPage={setPerPage}/>
                                 </div>
                             </div>
                                 

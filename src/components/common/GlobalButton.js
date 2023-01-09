@@ -116,7 +116,7 @@ export const PerPageBox = props => {
             <div className="custom-table-pagination m-r-10 pull-right">
                 <label className="mt-3">
                     <span>
-                        <select className="form-control pagi-select" name="perPage" onChange={props.pageBoxChange}>
+                        <select className="form-control pagi-select" name="perPage" onChange={(e) => props.setPerPage(parseInt(e.target.value))} value={props.perPage}>
                             <option value="5">5</option>
                             <option value="10">10</option>
                             <option value="15">15</option>

@@ -14,9 +14,10 @@ export default function ListData(props) {
     const [hasAccess, setHasAccess] = useState({});
     const [accLoad, setAccLoad] = useState(true);
     const [currentPage, setCurrentPage] = useState();
-    const [perPage, setPerPage] = useState();
+    const [perPage, setPerPage] = useState(5);
     const [totalData, setTotalData] = useState(0);
     const [ascDesc, setAscDesc] = useState(false);
+    const [jobActiveStatus, setJobActiveStatus] = useState(0);
 
     var menuId = 0;
     if (props.location.state === undefined) {
@@ -37,13 +38,20 @@ export default function ListData(props) {
         pageChange();
     },[]);
 
+    useEffect(() => {
+        perPageBoxChange();
+    },[jobActiveStatus,perPage])
+
     const handleSearchText = (e) => {
         setSearchText(e);
     }
     const searchHandler = (e) => {
         setIsLoading(true);
-        userGetMethod(JOB_AGREEMENT_RSURL+'?searchText='+searchText)
+        userGetMethod(`${JOB_AGREEMENT_RSURL}?agreement_status=${jobActiveStatus}&page=${1}&perPage=${perPage}&searchText=${searchText}`)
         .then(response => {
+            setCurrentPage(response.data.pendingJobOrders.current_page)
+            setPerPage(response.data.pendingJobOrders.per_page)
+            setTotalData(response.data.pendingJobOrders.total)
             setJobAgreementData(response.data.pendingJobOrders.data)
             setIsLoading(false);
         })
@@ -69,7 +77,7 @@ export default function ListData(props) {
     const pageChange = (pageNumber = 1) => {
         setIsLoading(true);
         // TABLE DATA READY
-        userGetMethod(`${JOB_AGREEMENT_RSURL}?page=${pageNumber}`)
+        userGetMethod(`${JOB_AGREEMENT_RSURL}?agreement_status=${jobActiveStatus}&page=${pageNumber}&perPage=${perPage}&searchText=${searchText}`)
             .then(response => {
                 setCurrentPage(response.data.pendingJobOrders.current_page)
                 setPerPage(response.data.pendingJobOrders.per_page)
@@ -81,11 +89,9 @@ export default function ListData(props) {
     }
 
     const perPageBoxChange = (e) => {
-        let paramValue = e.target.value;
-        let paramName = e.target.name;
         setIsLoading(true);
         // TABLE DATA READY
-        userGetMethod(`${JOB_AGREEMENT_RSURL}?${paramName}=${paramValue}`)
+        userGetMethod(`${JOB_AGREEMENT_RSURL}?agreement_status=${jobActiveStatus}&perPage=${perPage}&searchText=${searchText}`)
             .then(response => {
                 setCurrentPage(response.data.pendingJobOrders.current_page)
                 setPerPage(response.data.pendingJobOrders.per_page)
@@ -158,9 +164,9 @@ export default function ListData(props) {
                                     <div className="custom-table-pagination m-r-10">
                                         <label className="mt-3">
                                             <span>
-                                                <select className="form-control pagi-select" name="agreement_status" onChange={perPageBoxChange} >
+                                                <select className="form-control pagi-select" name="agreement_status" onChange={(e) => setJobActiveStatus(parseInt(e.target.value))} value={jobActiveStatus}  >
                                                     <option value="2">All Orders</option>
-                                                    <option value="0" selected={true} >Pending Orders</option>
+                                                    <option value="0">Pending Orders</option>
                                                     <option value="1">Done Orders</option>
                                                 </select>
                                             </span>
@@ -169,7 +175,7 @@ export default function ListData(props) {
                                 </div>
                                 <div className="col-md-4 col-lg-4">
                                     <AddButton link="jobAgreement/add" menuId={menuId} />
-                                    <PerPageBox pageBoxChange={perPageBoxChange}/>
+                                    <PerPageBox pageBoxChange={perPageBoxChange} perPage={perPage} setPerPage={setPerPage}/>
                                 </div>
                             </div>
                                 
@@ -208,14 +214,16 @@ export default function ListData(props) {
                                                                         <td>{item.total_cylinder_qty}</td>
                                                                         <td>{item.per_square_amount}</td>
                                                                         <td>
-                                                                        <Link 
-                                                                        to={{
-                                                                            pathname: `${process.env.PUBLIC_URL}/jobAgreement/add`,
-                                                                            state: { params: {menuId: menuId, job_order_id : item.id} }
-                                                                        }}
-                                                                        className="btn btn-secondary btn-xs">
-                                                                            Agreement
-                                                                        </Link>
+                                                                            {item.agreement_status == 0 ? 
+                                                                            <Link 
+                                                                                to={{
+                                                                                    pathname: `${process.env.PUBLIC_URL}/jobAgreement/add`,
+                                                                                    state: { params: {menuId: menuId, job_order_id : item.id} }
+                                                                                }}
+                                                                                className="btn btn-secondary btn-xs">
+                                                                                    Agreement
+                                                                            </Link>
+                                                                            : 'Done'}
                                                                         </td>
                                                                         <td className="">
                                                                             {

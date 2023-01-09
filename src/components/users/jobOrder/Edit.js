@@ -417,8 +417,9 @@ const Edit = (props) => {
                                                                 required: 'Eye Mark Color Type Field Required'
                                                             })} >
                                                             <option>Select One</option>
-                                                            <option selected={jobOrderInput.eye_mark_color == 'Combo1' ? true : false} value="Combo1">Combo1</option>
-                                                            <option selected={jobOrderInput.eye_mark_color == 'Combo2' ? true : false} value="Combo2">Combo2</option>
+                                                            <option selected={jobOrderInput.eye_mark_color == 'White' ? true : false} value="White">White</option>
+                                                            <option selected={jobOrderInput.eye_mark_color == 'Black' ? true : false} value="Black">Black</option>
+                                                            <option selected={jobOrderInput.eye_mark_color == 'Red' ? true : false} value="Red">Red</option>
                                                         </select>
                                                         {errors.eye_mark_color && <p className='text-danger'>{errors.eye_mark_color.message}</p>}
                                                     </div> 
