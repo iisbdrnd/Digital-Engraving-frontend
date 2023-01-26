@@ -206,23 +206,15 @@ export default function TankSchedule(props) {
                                                         labelKey={option => `${option.name}`}
                                                         options={typeheadOptions['job_orders']}
                                                         placeholder="Select Job No"
+                                                        inputProps={{ required: true }}
                                                         onChange={(e) => dropDownChange(e, 'job_order_id')}
                                                     />
                                                 </div>
 
                                                 <div className="col-md-2 mb-3">
                                                     <label htmlFor="cylinder_id">Cylinder Id</label>
-                                                    {/* <input 
-                                                        className="form-control" 
-                                                        id="cylinder_id" 
-                                                        name="cylinder_id"
-                                                        value={cylScheduleFormData.cylinder_id} 
-                                                        type="text" 
-                                                        placeholder="Cylinder Id"
-                                                        onChange={inputHandler}
-                                                    /> */}
-                                                    <select className="form-control" onChange={inputHandler} id="cylinder_id" name="cylinder_id">
-                                                        <option> Select One </option>
+                                                    <select className="form-control" onChange={inputHandler} id="cylinder_id" name="cylinder_id" defaultValue=''>
+                                                        <option value=''>Select One</option>
                                                         {cylScheduleFormData.job_cylinder_ids && cylScheduleFormData.job_cylinder_ids.map(cylinder => (
                                                             <option value={cylinder} key={cylinder}>{cylinder}</option> // DATA PASS FROM CONTROLLER WITH PLUCK
                                                         ))}
@@ -231,8 +223,8 @@ export default function TankSchedule(props) {
 
                                                 <div className="col-md-2 mb-3">
                                                     <label htmlFor="job_type">Job Type</label>
-                                                    <select className="form-control" onChange={inputHandler} id="job_type" name="job_type">
-                                                        <option> Select One </option>
+                                                    <select className="form-control" onChange={inputHandler} id="job_type" name="job_type" defaultValue=''>
+                                                        <option value=''>Select One</option>
                                                         <option value="1">Per Cylinder</option>
                                                         <option value="2">Per Sqr cm</option>
                                                         <option value="3">Per Sqr inch</option>
@@ -245,6 +237,7 @@ export default function TankSchedule(props) {
                                                         className="form-control" 
                                                         id="fl" 
                                                         name="fl"
+                                                        required
                                                         disabled="disabled"
                                                         value={cylScheduleFormData.fl} 
                                                         type="number" 
@@ -260,6 +253,7 @@ export default function TankSchedule(props) {
                                                         id="cir" 
                                                         name="cir"
                                                         disabled="disabled"
+                                                        required
                                                         value={cylScheduleFormData.cir} 
                                                         type="number" 
                                                         placeholder="Cir" 
@@ -273,6 +267,7 @@ export default function TankSchedule(props) {
                                                         className="form-control" 
                                                         id="dia" 
                                                         name="dia"
+                                                        required
                                                         disabled="disabled"
                                                         value={cylScheduleFormData.dia} 
                                                         type="number" 
@@ -287,6 +282,7 @@ export default function TankSchedule(props) {
                                                         className="form-control" 
                                                         id="est_plating_order" 
                                                         name="est_plating_order"
+                                                        required
                                                         value={cylScheduleFormData.est_plating_order} 
                                                         type="number" 
                                                         placeholder="" 
@@ -300,6 +296,7 @@ export default function TankSchedule(props) {
                                                         className="form-control" 
                                                         id="surface_area" 
                                                         name="surface_area"
+                                                        required
                                                         value={cylScheduleFormData.surface_area} 
                                                         type="number" 
                                                         placeholder="" 

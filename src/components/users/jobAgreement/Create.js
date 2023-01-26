@@ -160,12 +160,13 @@ const Add = (props) => {
                                                 <legend className="w-auto text-left">Basic</legend>
 
                                                 <div className="form-group row">
-                                                    <label className="col-sm-4 col-form-label required" htmlFor="agreement_date">Agreement Date</label>
+                                                    <label className="col-sm-4 col-form-label" htmlFor="agreement_date">Agreement Date</label>
                                                     <div className="col-sm-8">
                                                         <input 
                                                             className="form-control" 
                                                             id="agreement_date" 
-                                                            name="agreement_date" 
+                                                            name="agreement_date"
+                                                            required 
                                                             type="text" 
                                                             readOnly={'readonly'}
                                                             value={jobAgreementInput.agreement_date}
@@ -187,6 +188,7 @@ const Add = (props) => {
                                                             options={typeheadOptions['job_orders']}
                                                             placeholder="Select Job No..."
                                                             onChange={(e) => dropDownChange(e, 'job_order_id')}
+                                                            inputProps={{ required: true }}
                                                             selected={jobAgreementInput.job_order_id}
                                                             disabled={job_order_id != null ? 'disabled' : ''}
                                                             ref={register({
@@ -203,8 +205,9 @@ const Add = (props) => {
                                                         <select className="form-control" required id="cyl_rate_status" name="cyl_rate_status"
                                                             ref={register({
                                                                 required: 'Cyl Rate Status Field Required'
-                                                            })} >
-                                                            <option> Select One </option>
+                                                            })}
+                                                            defaultValue=''>
+                                                            <option value=''>Select One</option>
                                                             <option selected={jobAgreementInput.cyl_rate_status == 1 ? true : false} value="1">Per Cylinder</option>
                                                             <option selected={jobAgreementInput.cyl_rate_status == 2 ? true : false} value="2">Per Sqr cm</option>
                                                             <option selected={jobAgreementInput.cyl_rate_status == 3 ? true : false} value="3">Per Sqr inch</option>
@@ -214,12 +217,13 @@ const Add = (props) => {
                                                 </div>
 
                                                 <div className="form-group row">
-                                                    <label className="col-sm-4 col-form-label required" htmlFor="limit_square_cm">Sqr Limit</label>
+                                                    <label className="col-sm-4 col-form-label" htmlFor="limit_square_cm">Sqr Limit</label>
                                                     <div className="col-sm-8">
                                                         <input 
                                                             className="form-control" 
                                                             id="limit_square_cm" 
-                                                            name="limit_square_cm" 
+                                                            name="limit_square_cm"
+                                                            required 
                                                             type="text" 
                                                             placeholder="Sqr Limit" 
                                                             value={jobAgreementInput.limit_square_cm}
@@ -261,13 +265,14 @@ const Add = (props) => {
                                                     :
                                                     (
                                                         <div className="form-group row">
-                                                            <label className="col-sm-4 col-form-label required" htmlFor="vat">Vat</label>
+                                                            <label className="col-sm-4 col-form-label" htmlFor="vat">Vat</label>
                                                             <div className="col-sm-8">
                                                                 <div className="input-group">
                                                                     <input 
                                                                         className="form-control" 
                                                                         id="vat" 
-                                                                        name="vat" 
+                                                                        name="vat"
+                                                                        required 
                                                                         type="text" 
                                                                         // placeholder="Vat" 
                                                                         aria-label="Vat"
@@ -295,8 +300,9 @@ const Add = (props) => {
                                                         <select className="form-control" required id="printer_mark" name="printer_mark"
                                                             ref={register({
                                                                 required: 'Printer Mark Field Required'
-                                                            })} >
-                                                            <option> Select One </option>
+                                                            })}
+                                                            defaultValue=''>
+                                                            <option value=''>Select One</option>
                                                             <option selected={jobAgreementInput.printer_mark == 'Yes' ? true : false} value="Yes">Yes</option>
                                                             <option selected={jobAgreementInput.printer_mark == 'No' ? true : false} value="No">No</option>
                                                         </select>

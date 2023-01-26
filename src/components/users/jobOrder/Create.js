@@ -197,8 +197,9 @@ const Add = (props) => {
                                                         <select className="form-control" required  id="job_type" name="job_type"
                                                             ref={register({
                                                                 required: 'Job Order Type Field Required'
-                                                            })} >
-                                                            <option> Select One </option>
+                                                            })} 
+                                                            defaultValue=''>
+                                                            <option value=''> Select One </option>
                                                             <option value="New">New</option>
                                                             <option value="Remake">Remake</option>
                                                             <option value="Redo">Redo</option>
@@ -238,6 +239,7 @@ const Add = (props) => {
                                                             options={typeheadOptions['job_sub_classes']}
                                                             placeholder="Select Sub Class..."
                                                             onChange={(e) => dropDownChange(e, 'job_sub_class_id')}
+                                                            inputProps={{ required: true }}
                                                             ref={register({
                                                                 required: 'Sub Class Field Required'
                                                             })}
@@ -256,6 +258,7 @@ const Add = (props) => {
                                                             options={typeheadOptions['clients']}
                                                             placeholder="Select Client..."
                                                             onChange={(e) => dropDownChange(e, 'client_id')}
+                                                            inputProps={{ required: true }}
                                                             ref={register({
                                                                 required: 'Client Name Field Required'
                                                             })}
@@ -274,6 +277,7 @@ const Add = (props) => {
                                                             options={typeheadOptions['printers']}
                                                             placeholder="Select Printer..."
                                                             onChange={(e) => dropDownChange(e, 'printer_id')}
+                                                            inputProps={{ required: true }}
                                                             ref={register({
                                                                 required: 'Printer Name Field Required'
                                                             })}
@@ -292,6 +296,7 @@ const Add = (props) => {
                                                             options={typeheadOptions['marketing_persons']}
                                                             placeholder="Select Person..."
                                                             onChange={(e) => dropDownChange(e, 'marketing_person_id')}
+                                                            inputProps={{ required: true }}
                                                             ref={register({
                                                                 required: 'Marketing Person Field Required'
                                                             })}
@@ -300,13 +305,14 @@ const Add = (props) => {
                                                     </div>
                                                 </div>
                                                 <div className="form-group row">
-                                                    <label className="col-sm-4 col-form-label" htmlFor="design_machine_id">Designer Machine</label>
+                                                    <label className="col-sm-4 col-form-label required" htmlFor="design_machine_id">Designer Machine</label>
                                                     <div className="col-sm-8">
                                                         <Typeahead
                                                             id="design_machine_id"
                                                             name="design_machine_id"
                                                             labelKey={option => `${option.name}`}
                                                             options={typeheadOptions['design_machines']}
+                                                            inputProps={{ required: true }}
                                                             placeholder="Select Person..."
                                                             onChange={(e) => dropDownChange(e, 'design_machine_id')}
                                                             ref={register({})}
@@ -344,8 +350,9 @@ const Add = (props) => {
                                                         <select className="form-control" required  id="eye_mark_color" name="eye_mark_color"
                                                             ref={register({
                                                                 required: 'Eye Mark Color Type Field Required'
-                                                            })} >
-                                                            <option>Select One</option>
+                                                            })} 
+                                                            defaultValue=''>
+                                                            <option value=''>Select One</option>
                                                             <option value="White">White</option>
                                                             <option value="Black">Black</option>
                                                             <option value="Red">Red</option>
@@ -403,7 +410,8 @@ const Add = (props) => {
                                                                 <input 
                                                                     className="form-control" 
                                                                     id="design_width" 
-                                                                    name="design_width" 
+                                                                    name="design_width"
+                                                                    required 
                                                                     type="text" 
                                                                     placeholder="Job Width" 
                                                                     // value={jobOrderData.design_width}
@@ -422,7 +430,8 @@ const Add = (props) => {
                                                                 <input 
                                                                     className="form-control" 
                                                                     id="ups" 
-                                                                    name="ups" 
+                                                                    name="ups"
+                                                                    required 
                                                                     type="text" 
                                                                     placeholder="UPS" 
                                                                     // value={jobOrderData.ups}
@@ -441,7 +450,8 @@ const Add = (props) => {
                                                                 <input 
                                                                     className="form-control" 
                                                                     id="printing_width" 
-                                                                    name="printing_width" 
+                                                                    name="printing_width"
+                                                                    required 
                                                                     type="text" 
                                                                     placeholder="Printing Width" 
                                                                     value={calculationValue.design_width * calculationValue.ups}
@@ -460,7 +470,8 @@ const Add = (props) => {
                                                                 <input 
                                                                     className="form-control" 
                                                                     id="face_length" 
-                                                                    name="face_length" 
+                                                                    name="face_length"
+                                                                    required 
                                                                     type="text" 
                                                                     placeholder="FL" 
                                                                     onChange={e=>calculateFormValue(e)}
@@ -479,7 +490,8 @@ const Add = (props) => {
                                                                 <input 
                                                                     className="form-control" 
                                                                     id="extra_face_length" 
-                                                                    name="extra_face_length" 
+                                                                    name="extra_face_length"
+                                                                    required 
                                                                     type="text" 
                                                                     placeholder="Extra Width" 
                                                                     readOnly={'readonly'}
@@ -501,7 +513,8 @@ const Add = (props) => {
                                                                 <input 
                                                                     className="form-control" 
                                                                     id="design_height" 
-                                                                    name="design_height" 
+                                                                    name="design_height"
+                                                                    required 
                                                                     type="text" 
                                                                     placeholder="Job Height" 
                                                                     onChange={e=>calculateFormValue(e)}
@@ -519,7 +532,8 @@ const Add = (props) => {
                                                                 <input 
                                                                     className="form-control" 
                                                                     id="rpt" 
-                                                                    name="rpt" 
+                                                                    name="rpt"
+                                                                    required 
                                                                     type="text" 
                                                                     placeholder="RPT" 
                                                                     onChange={e=>calculateFormValue(e)}
@@ -537,7 +551,8 @@ const Add = (props) => {
                                                                 <input 
                                                                     className="form-control" 
                                                                     id="circumference" 
-                                                                    name="circumference" 
+                                                                    name="circumference"
+                                                                    required 
                                                                     type="text" 
                                                                     placeholder="Circumference" 
                                                                     value={calculationValue.design_height * calculationValue.rpt}
@@ -556,7 +571,8 @@ const Add = (props) => {
                                                                 <input 
                                                                     className="form-control" 
                                                                     id="printing_height" 
-                                                                    name="printing_height" 
+                                                                    name="printing_height"
+                                                                    required 
                                                                     type="text" 
                                                                     placeholder="Printing Height" 
                                                                     readOnly={'readonly'}
@@ -583,8 +599,9 @@ const Add = (props) => {
                                                         <select className="form-control" required  id="cylinder_type" name="cylinder_type"
                                                             ref={register({
                                                                 required: 'Cylinder Type Field Required'
-                                                            })} >
-                                                            <option> Select One</option>
+                                                            })} 
+                                                            defaultValue=''>
+                                                            <option value=''> Select One</option>
                                                             <option value="A">A</option>
                                                             <option value="B">B</option>
                                                             <option value="C">C</option>
@@ -599,7 +616,8 @@ const Add = (props) => {
                                                         <input 
                                                             className="form-control" 
                                                             id="total_cylinder_qty" 
-                                                            name="total_cylinder_qty" 
+                                                            name="total_cylinder_qty"
+                                                            required 
                                                             type="text" 
                                                             placeholder="Cylinder Qty"
                                                             onChange={e=>calculateFormValue(e)} 
@@ -617,8 +635,9 @@ const Add = (props) => {
                                                         <select className="form-control" required  id="printing_status" name="printing_status"
                                                             ref={register({
                                                                 required: 'Printing Status Field Required'
-                                                            })} >
-                                                            <option> Select One</option>
+                                                            })} 
+                                                            defaultValue=''>
+                                                            <option value=''> Select One</option>
                                                             <option value="Surface">Surface</option>
                                                             <option value="Reverse">Reverse</option>
                                                         </select>
@@ -632,7 +651,8 @@ const Add = (props) => {
                                                         <input 
                                                             className="form-control" 
                                                             id="surface_area" 
-                                                            name="surface_area" 
+                                                            name="surface_area"
+                                                            required 
                                                             type="text" 
                                                             placeholder="Face Length" 
                                                             readOnly={'readonly'}
@@ -651,7 +671,8 @@ const Add = (props) => {
                                                         <input 
                                                             className="form-control" 
                                                             id="total_surface_area" 
-                                                            name="total_surface_area" 
+                                                            name="total_surface_area"
+                                                            required 
                                                             type="text" 
                                                             placeholder="Total Surface Area" 
                                                             value={(calculationValue.total_cylinder_qty * (calculationValue.face_length * (calculationValue.design_height * calculationValue.rpt)))/100}
@@ -666,12 +687,13 @@ const Add = (props) => {
                                                 <div className="form-group row">
                                                     <div className="col-md-4">
                                                         <div className="row">
-                                                            <label className="col-sm-5 col-form-label" htmlFor="fl">FL (mm)</label>
+                                                            <label className="col-sm-5 col-form-label required" htmlFor="fl">FL (mm)</label>
                                                             <div className="col-sm-7">
                                                                 <input 
                                                                     className="form-control" 
                                                                     id="fl" 
-                                                                    name="fl" 
+                                                                    name="fl"
+                                                                    required 
                                                                     type="text" 
                                                                     placeholder="FL" 
                                                                     disabled="disabled"
@@ -683,12 +705,13 @@ const Add = (props) => {
                                                     </div>
                                                     <div className="col-md-4">
                                                         <div className="row">
-                                                            <label className="col-sm-5 col-form-label" htmlFor="cir">Cir (mm)</label>
+                                                            <label className="col-sm-5 col-form-label required" htmlFor="cir">Cir (mm)</label>
                                                             <div className="col-sm-7">
                                                                 <input 
                                                                     className="form-control" 
                                                                     id="cir" 
-                                                                    name="cir" 
+                                                                    name="cir"
+                                                                    required 
                                                                     type="text" 
                                                                     placeholder="Cir" 
                                                                     disabled="disabled"
@@ -700,12 +723,13 @@ const Add = (props) => {
                                                     </div>
                                                     <div className="col-md-4">
                                                         <div className="row">
-                                                            <label className="col-sm-5 col-form-label" htmlFor="dia">Dia (mm)</label>
+                                                            <label className="col-sm-5 col-form-labelb required" htmlFor="dia">Dia (mm)</label>
                                                             <div className="col-sm-7">
                                                                 <input 
                                                                     className="form-control" 
                                                                     id="dia" 
-                                                                    name="dia" 
+                                                                    name="dia"
+                                                                    required 
                                                                     type="text" 
                                                                     placeholder="Dia" 
                                                                     disabled='disabled'
@@ -737,7 +761,8 @@ const Add = (props) => {
                                                             <input 
                                                                 className="form-control" 
                                                                 id="remarks" 
-                                                                name="remarks" 
+                                                                name="remarks"
+                                                                required 
                                                                 type="text" 
                                                                 placeholder="Remarks" 
                                                                 // value={jobOrderData.remarks}

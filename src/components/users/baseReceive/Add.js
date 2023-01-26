@@ -164,6 +164,7 @@ const CylinderInfo = (props) => {
                                                         options={typeheadOptions['job_orders']}
                                                         placeholder="Select Job No..."
                                                         onChange={(e) => dropDownChange(e, 'job_order_id')}
+                                                        inputProps={{ required: true }}
                                                         selected={baseReceiveInput.job_order_id}
                                                         disabled={job_order_id != null ? 'disabled' : ''}
                                                         ref={register({
@@ -175,9 +176,9 @@ const CylinderInfo = (props) => {
                                             </div>
                                         
                                             <div className="form-group row">
-                                                <label className="col-sm-3 col-form-label required" htmlFor="challan_no">Challan No</label>
+                                                <label className="col-sm-3 col-form-label" htmlFor="challan_no">Challan No</label>
                                                 <div className="col-sm-9">
-                                                    <input className="form-control" name="challan_no" id="challan_no" type="text" placeholder="Challan No" ref={register({ required: true })} />
+                                                    <input className="form-control" name="challan_no" required id="challan_no" type="text" placeholder="Challan No" ref={register({ required: true })} />
                                                     <span>{errors.challan_no && 'Challan No is required'}</span>
                                                     <div className="valid-feedback">Looks good!</div>
                                                 </div>
@@ -189,8 +190,9 @@ const CylinderInfo = (props) => {
                                                     <select className="form-control" required id="material" name="material"
                                                     ref={register({
                                                         required: 'Material Field Required'
-                                                    })} >
-                                                        <option value=""> Select One </option>
+                                                    })} 
+                                                    defaultValue=''>
+                                                    <option value=''> Select One </option>
                                                         <option value="1"> Sheet </option>
                                                         <option value="2"> Pipe </option>
                                                         <option value="3"> Ex-Stock </option>
@@ -200,18 +202,18 @@ const CylinderInfo = (props) => {
                                             </div>
                                         
                                             <div className="form-group row">
-                                                <label className="col-sm-3 col-form-label required" htmlFor="initial_weight">Initial Weight</label>
+                                                <label className="col-sm-3 col-form-label" htmlFor="initial_weight">Initial Weight</label>
                                                 <div className="col-sm-9">
-                                                    <input className="form-control" name="initial_weight" id="initial_weight" type="text" placeholder="Initial Weight" ref={register({ required: true })} />
+                                                    <input className="form-control" name="initial_weight" required id="initial_weight" type="text" placeholder="Initial Weight" ref={register({ required: true })} />
                                                     <span>{errors.initial_weight && 'Initial Weight is required'}</span>
                                                     <div className="valid-feedback">Looks good!</div>
                                                 </div>
                                             </div>
                                         
                                             <div className="form-group row">
-                                                <label className="col-sm-3 col-form-label required" htmlFor="final_weight">Final Weight</label>
+                                                <label className="col-sm-3 col-form-label" htmlFor="final_weight">Final Weight</label>
                                                 <div className="col-sm-9">
-                                                    <input className="form-control" name="final_weight" id="final_weight" type="text" placeholder="Final Weight" ref={register({ required: true })} />
+                                                    <input className="form-control" name="final_weight" required id="final_weight" type="text" placeholder="Final Weight" ref={register({ required: true })} />
                                                     <span>{errors.final_weight && 'Final Weight is required'}</span>
                                                     <div className="valid-feedback">Looks good!</div>
                                                 </div>

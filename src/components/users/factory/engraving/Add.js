@@ -133,6 +133,7 @@ const Add = (props) => {
                                                         options={typeHeadOptions['job_orders']}
                                                         placeholder="Select Job No..."
                                                         onChange={(e) => dropDownChange(e, 'job_order_pk_id')}
+                                                        inputProps={{ required: true }}
                                                         // selected={designToFactoryInput.job_order_pk_id}
                                                         // disabled={job_order_pk_id != null ? 'disabled' : ''}
                                                         ref={register({
@@ -144,7 +145,7 @@ const Add = (props) => {
 
                                                 <label className="col-md-3 col-form-label label-form required ">Cylinder Id</label>
                                                 <div className="col-md-9">
-                                                    <select className="form-control" name='cylinder_id' onChange={(e)=>setStateData({'cylinder_id': e.target.value})} ref={register({required: true })}>
+                                                    <select className="form-control" name='cylinder_id' onChange={(e)=>setStateData({'cylinder_id': e.target.value})} ref={register({required: true })} defaultValue=''>
                                                         <option value="">select one</option>
                                                         {
                                                             stateData.engraves.length > 0 ? (
@@ -291,7 +292,7 @@ const Add = (props) => {
                                                     <div className="col-md-7">
                                                         <input type="text" disabled='disabled' value={stateData.shiftData.shift_type == 1 ? 'Day' : stateData.shiftData.shift_type == 2 ? 'Evening' : 'Night'} className="form-control"/>
 
-                                                        <input type="hidden" value={stateData.shiftData.shift_pk_id} className="form-control" name="shift_id" ref={register({ required: true })}/>
+                                                        <input type="hidden" value={stateData.shiftData.shift_pk_id} className="form-control" name="shift_id" required ref={register({ required: true })}/>
                                                     </div>
                                                 
                                                     <label className="col-md-5 col-form-label label-form">Done by</label>

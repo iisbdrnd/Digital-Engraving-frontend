@@ -9,10 +9,12 @@ import { SubmitButton } from '../../../common/GlobalButton';
 
 const Add = (props) => {
     const { handleSubmit, register, errors } = useForm();
-
+    const {location} = props;
     const [isLoading, setIsLoading] = useState(true);
     const [typeHeadOptions, setTypeHeadOptions] = useState({});
     const [dropDownData, setDropdownData] = useState();
+
+    const [selectedJobOrders, setSelectedJobOrders] = useState({});
 
     let [jobOrderData, setJobOrderData] = useReducer(
         (state, newState) => ({...state, ...newState}),
@@ -81,8 +83,36 @@ const Add = (props) => {
                         jobOrderObj.id = order.id;
                         jobOrderObj.name = `[${order.job_no}] ` + order.job_name;
                         jobOrderOptions.push(jobOrderObj);
+                        if(props.location.state.params.job_order_id && props.location.state.params.job_order_id == jobOrderObj.id){
+                            setSelectedJobOrders(jobOrderObj);
+                        }
                     })
                 }
+                if(props.location.state.params.job_order_id)
+                { setDropdownData(
+                    (prevstate) => ({
+                        ...prevstate,
+                        'job_order_pk_id': props.location.state.params.job_order_id,
+                    })
+                )
+                }
+                if(props.location.state.params.job_order_id) 
+                {userGetMethod(`${JOB_ORDER_DETAILS}?jobOrderId=${props.location.state.params.job_order_id}?`)
+                .then(response => {
+                    let { job_no, job_type, fl, cir, dia, marketing_p_name, printer_name, total_cylinder_qty, client_name} = response.data.jobOrderDetails;
+                    setJobOrderData({
+                        'job_no'            : job_no,
+                        'client_name'       : client_name,
+                        'marketing_p_name'  : marketing_p_name,
+                        'job_type'          : job_type,
+                        'total_cylinder_qty': total_cylinder_qty,
+                        'printer_name'      : printer_name,
+                        'desired_fl'        : fl,
+                        'desired_cir'       : cir,
+                        'desired_dia'       : dia
+                    });
+                }) }
+
                 setJobOrderData({
                     'machines'      : response.data.machines,
                     'polishMachines': response.data.polishMachines,
@@ -97,11 +127,10 @@ const Add = (props) => {
                 setIsLoading(false);
             });
     }, []);
-    
+
     const dropDownChange = (e, fieldName) => {
         if(e.length > 0){
             const selectedValueId = e[0].id;
-
             setDropdownData(
                 (prevstate) => ({
                     ...prevstate,
@@ -191,10 +220,10 @@ const Add = (props) => {
 
                         {/* Before Grinding Check Start */}
                         <td>
-                            <input onChange={e=>changeInputHandler(i, e, 'before_fl')} className="form-control" name="before_fl" id="before_fl" type="number" placeholder="FL" />
+                            <input onChange={e=>changeInputHandler(i, e, 'before_fl')} className="form-control" name="before_fl" id="before_fl" type="number" placeholder="FL" required/>
                         </td>
                         <td>
-                            <input onChange={e=>changeInputHandler(i, e, 'before_dia')} className="form-control" name="before_dia" id="before_dia" type="number" placeholder="Dia" />
+                            <input onChange={e=>changeInputHandler(i, e, 'before_dia')} className="form-control" name="before_dia" id="before_dia" type="number" placeholder="Dia" required/>
                         </td>
                         <td>
                             <input onInput={e=>changeInputHandler(i, e, 'before_target')} className="form-control" name="before_target" id="before_target" type="number" placeholder="Target" />
@@ -215,22 +244,22 @@ const Add = (props) => {
 
                         {/* After Grinding Check Start */}
                         <td>
-                            <input onChange={e=>changeInputHandler(i, e, 'after_dia')} className="form-control" name="after_dia" id="after_dia" type="number" placeholder="Dia" />
+                            <input onChange={e=>changeInputHandler(i, e, 'after_dia')} className="form-control" name="after_dia" id="after_dia" type="number" placeholder="Dia" required/>
                         </td>
                         <td>
                             <input onChange={e=>changeInputHandler(i, e, 'after_pinhole')} className="form-control" name="after_pinhole" id="after_pinhole" type="number" placeholder="#Pin Hole" />
                         </td>
                         <td style={{textAlign: 'center'}}>
-                            <input onChange={e=>changeInputHandler(i, e, 'after_base_down', true)} value={1} type="checkbox" name='after_base_down' id={i} />
+                            <input ref={register({required: 'Machine Field Required'})} onChange={e=>changeInputHandler(i, e, 'after_base_down', true)} value={1} type="checkbox" name='after_base_down' id={i} />
                         </td>
                         <td style={{textAlign: 'center'}}>
                             <input onChange={e=>changeInputHandler(i, e, 'after_key_lock', true)} type="checkbox" name='after_key_lock' value={1} id={i} />
                         </td>
                         <td style={{textAlign: 'center'}}>
-                            <input onChange={e=>changeInputHandler(i, e, 'after_cone_prob', true)} type="checkbox" name='after_cone_prob' value={1} id={i} />
+                            <input  onChange={e=>changeInputHandler(i, e, 'after_cone_prob', true)} type="checkbox" name='after_cone_prob' value={1} id={i}/>
                         </td>
                         <td style={{textAlign: 'center'}}>
-                            <input onChange={e=>changeInputHandler(i, e, 'after_mark_as_complete', true)} type="checkbox" name='after_mark_as_complete' value={1} id={i} />
+                            <input ref={register({required: 'Machine Field Required'})} onChange={e=>changeInputHandler(i, e, 'after_mark_as_complete', true)} type="checkbox" name='after_mark_as_complete' value={1} id={i} required />
                         </td>
                         {/* After Grinding Check End */}
 
@@ -279,7 +308,8 @@ const Add = (props) => {
                                                             options={typeHeadOptions['job_orders']}
                                                             placeholder="Select Job No..."
                                                             onChange={(e) => dropDownChange(e, 'job_order_pk_id')}
-                                                            // selected={designToFactoryInput.job_order_pk_id}
+                                                            inputProps={{ required: true }}
+                                                            defaultInputValue={selectedJobOrders?.name}
                                                             // disabled={job_order_pk_id != null ? 'disabled' : ''}
                                                             ref={register({
                                                                 required: 'Job No Field Required'
@@ -361,11 +391,11 @@ const Add = (props) => {
                                                             <label className="col-sm-5 col-form-label" htmlFor="machine">Machine</label>
                                                             <div className="col-sm-7">
                                                                 <select className="form-control" id="machine" name="machine" 
-                                                                defaultValue=""
                                                                 ref={register({
                                                                     required: 'Machine Field Required'
-                                                                })}>
-                                                                    <option value="">Select Machine</option>
+                                                                })} 
+                                                                defaultValue=''>
+                                                                <option value=''> Select Machine </option>
                                                                     {
                                                                         jobOrderData.machines.map((machine, key)=>(
                                                                             <option value={machine.id} key={key}>{machine.machine_name}</option>
@@ -381,12 +411,12 @@ const Add = (props) => {
                                                             <label className="col-sm-5 col-form-label" htmlFor="shift">shift</label>
                                                             <div className="col-sm-7">
                                                                 <select className="form-control" id="shift" name="shift" 
-                                                                defaultValue=""
                                                                 onChange={(e)=>shiftChangeHandler(e.target.value)}
                                                                 ref={register({
                                                                     required: 'Shift Field Required'
-                                                                })}>
-                                                                    <option value="">Select Shift</option>
+                                                                })} 
+                                                                defaultValue=''>
+                                                                    <option value=''> Select Shift </option>
                                                                     <option value="1">Day</option>
                                                                     <option value="2">Evening</option>
                                                                     <option value="3">Night</option>
@@ -401,7 +431,7 @@ const Add = (props) => {
                                                         <div className="row">
                                                             <label className="col-sm-5 col-form-label" htmlFor="start_time">Start Time</label>
                                                             <div className="col-sm-7">
-                                                                <input className="form-control" name="start_time" id="start_time" type="text" placeholder="Start Time" ref={register({ required: true })} />
+                                                                <input className="form-control" name="start_time" required id="start_time" type="text" placeholder="Start Time" ref={register({ required: true })} />
                                                                 {/* <DatePicker className="form-control digits" selected={startDate} onChange={dropDownChange} showTimeSelect showTimeSelectOnly timeIntervals={15} timeCaption="Time" dateFormat="h:mm aa" /> */}
 
                                                                 <span>{errors.start_time && 'Start Time is required'}</span>
@@ -415,11 +445,11 @@ const Add = (props) => {
                                                             <label className="col-sm-5 col-form-label" htmlFor="polishing">Polishing</label>
                                                             <div className="col-sm-7">
                                                                 <select className="form-control" id="polishing" name="polishing" 
-                                                                defaultValue=""
                                                                 ref={register({
                                                                     required: 'Polishing Field Required'
-                                                                })}>
-                                                                    <option value="">Select Polishing</option>
+                                                                })} 
+                                                                defaultValue=''>
+                                                                    <option value=''> Select Polishing </option>
                                                                     {jobOrderData.polishMachines.map((item, index)=>( 
                                                                         <option value={item.id} key={index}>{item.machine_name}</option>
                                                                     ))}
@@ -436,11 +466,11 @@ const Add = (props) => {
                                                             <label className="col-sm-5 col-form-label" htmlFor="done_by">Done By</label>
                                                             <div className="col-sm-7">
                                                                 <select className="form-control" id="done_by" name="done_by" 
-                                                                defaultValue=""
                                                                 ref={register({
                                                                     required: 'Done By Field Required'
-                                                                })}>
-                                                                    <option value="">Select Done By</option>
+                                                                })} 
+                                                                defaultValue=''>
+                                                                    <option value=''> Select One </option>
                                                                     {
                                                                         jobOrderData.employeeInfos.map((employee, key)=>(
                                                                             <option key={key} value={employee.id}>{employee.name}</option>
@@ -455,7 +485,7 @@ const Add = (props) => {
                                                         <div className="row">
                                                             <label className="col-sm-5 col-form-label" htmlFor="end_time">End Time</label>
                                                             <div className="col-sm-7">
-                                                                <input className="form-control" name="end_time" id="end_time" type="text" placeholder="End Time" ref={register({ required: true })} />
+                                                                <input className="form-control" name="end_time" required id="end_time" type="text" placeholder="End Time" ref={register({ required: true })} />
                                                                 <span>{errors.end_time && 'End Time is required'}</span>
                                                                 <div className="valid-feedback">Looks good!</div>
                                                             </div>
@@ -506,7 +536,6 @@ const Add = (props) => {
                                                                 </tr>
 
                                                                 {jobOrderData.total_cylinder_qty ? rowsByTotalCyl() : null }
-                                                                
                                                             </tbody>
                                                             
                                                         </table>
@@ -531,7 +560,7 @@ const Add = (props) => {
                                                             <div className="row">
                                                                 <label className="col-sm-5 col-form-label" htmlFor="final_fl">Final FL</label>
                                                                 <div className="col-sm-7">
-                                                                    <input className="form-control" name="final_fl" id="final_fl" type="number" placeholder="Final FL" ref={register({ required: true })} />
+                                                                    <input className="form-control" name="final_fl" required id="final_fl" type="number" placeholder="Final FL" ref={register({ required: true })} />
                                                                     <span>{errors.final_fl && 'Final FL is required'}</span>
                                                                     <div className="valid-feedback">Looks good!</div>
                                                                 </div>
@@ -542,7 +571,7 @@ const Add = (props) => {
                                                             <div className="row">
                                                                 <label className="col-sm-5 col-form-label" htmlFor="final_dia">Final Dia</label>
                                                                 <div className="col-sm-7">
-                                                                    <input className="form-control" name="final_dia" id="final_dia" type="number" placeholder="Final Dia" ref={register({ required: true })}/>
+                                                                    <input className="form-control" name="final_dia" required id="final_dia" type="number" placeholder="Final Dia" ref={register({ required: true })}/>
                                                                     <span>{errors.final_dia && 'Final Dia is required'}</span>
                                                                     <div className="valid-feedback">Looks good!</div>
                                                                 </div>
@@ -553,7 +582,7 @@ const Add = (props) => {
                                                             <div className="row">
                                                                 <label className="col-sm-5 col-form-label" htmlFor="final_cir">Final Cir</label>
                                                                 <div className="col-sm-7">
-                                                                    <input disabled value={100} className="form-control" name="final_cir" id="final_cir" type="number" placeholder="Final Cir" ref={register({ required: true })} />
+                                                                    <input disabled value={100} className="form-control" name="final_cir" required id="final_cir" type="number" placeholder="Final Cir" ref={register({ required: true })} />
                                                                     <span>{errors.final_cir && 'Final Cir is required'}</span>
                                                                     <div className="valid-feedback">Looks good!</div>
                                                                 </div>

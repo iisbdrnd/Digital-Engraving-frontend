@@ -153,6 +153,7 @@ const Add = (props) => {
                                                         options={typeHeadOptions['job_orders']}
                                                         placeholder="Select Job No..."
                                                         onChange={(e) => dropDownChange(e, 'job_order_id')}
+                                                        inputProps={{ required: true }}
                                                         selected={jobAgreementInput.job_order_id}
                                                         disabled={job_order_id != null ? 'disabled' : ''}
                                                         ref={register({
@@ -164,9 +165,9 @@ const Add = (props) => {
                                             </div>
 
                                             <div className="form-group row">
-                                                <label className="col-sm-3 col-form-label required" htmlFor="send_date">Send Date</label>
+                                                <label className="col-sm-3 col-form-label" htmlFor="send_date">Send Date</label>
                                                 <div className="col-sm-9">
-                                                    <input className="form-control digits" id="send_date" name="send_date" readOnly={'readonly'} type="text" value={jobAgreementInput.send_date} ref={register({ required: true })} />
+                                                    <input className="form-control digits" id="send_date" name="send_date" required readOnly={'readonly'} type="text" value={jobAgreementInput.send_date} ref={register({ required: true })} />
                                                     {errors.send_date && 'Send Date is required'}
                                                     <div className="valid-feedback">Looks good!</div>
                                                 </div>

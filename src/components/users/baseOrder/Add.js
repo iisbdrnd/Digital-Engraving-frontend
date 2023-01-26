@@ -250,6 +250,7 @@ const Add = (props) => {
                                                             options={typeheadOptions['job_orders']}
                                                             placeholder="Select Job No..."
                                                             onChange={(e) => dropDownChange(e, 'job_order_id')}
+                                                            inputProps={{ required: true }}
                                                             selected={dropdownData.job_order_id}
                                                             disabled={job_order_id != null ? 'disabled' : ''}
                                                             ref={register({
@@ -268,7 +269,8 @@ const Add = (props) => {
                                                         <input 
                                                             className="form-control" 
                                                             id="total_cylinder_qty" 
-                                                            name="total_cylinder_qty" 
+                                                            name="total_cylinder_qty"
+                                                            required 
                                                             readOnly={'readonly'}
                                                             value={jobOrderData.job_order_qty_limit}
                                                         />
@@ -284,6 +286,7 @@ const Add = (props) => {
                                                             className="form-control" 
                                                             id="order_date" 
                                                             name="order_date" 
+                                                            required
                                                             readOnly={'readonly'}
                                                             value={jobOrderData.order_date}
                                                         />
@@ -308,6 +311,7 @@ const Add = (props) => {
                                                                 options={typeheadOptions['suppliers']}
                                                                 placeholder="Select Issue To"
                                                                 onChange={(e) => dropDownChange(e, 'supplier_id')}
+                                                                inputProps={{ required: true }}
                                                                 defaultValue={jobOrderData.supplier_id}
                                                             />
                                                         </div>
@@ -331,6 +335,7 @@ const Add = (props) => {
                                                                 className="form-control" 
                                                                 id="qty" 
                                                                 name="qty" 
+                                                                required
                                                                 type="number" 
                                                                 placeholder="Qty" 
                                                                 onChange={orderDetailsInputHander}
@@ -343,7 +348,8 @@ const Add = (props) => {
                                                             <input 
                                                                 className="form-control" 
                                                                 id="delivery_date" 
-                                                                name="delivery_date" 
+                                                                name="delivery_date"
+                                                                required 
                                                                 type="date" 
                                                                 placeholder="Delivery Date" 
                                                                 onChange={orderDetailsInputHander}

@@ -298,6 +298,7 @@ const Add = (props) => {
                                                                 options={typeheadOptions['job_orders']}
                                                                 placeholder="Select Job No..."
                                                                 onChange={(e) => { dropDownChange(e, 'job_order_id') }}
+                                                                inputProps={{ required: true }}
                                                                 selected={selectedValue}
                                                                 disabled={job_order_id != null ? 'disabled' : ''}
                                                                 ref={register({
@@ -392,6 +393,7 @@ const Add = (props) => {
                                                                     className="form-control"
                                                                     id="job_no"
                                                                     name="job_no"
+                                                                    required
                                                                     type="text"
                                                                     placeholder="Job No."
                                                                     onChange={clientStocksInputHander}
@@ -405,6 +407,7 @@ const Add = (props) => {
                                                                     className="form-control"
                                                                     id="receive_date"
                                                                     name="receive_date"
+                                                                    required
                                                                     type="date"
                                                                     placeholder="Receive Date"
                                                                     onChange={clientStocksInputHander}
@@ -417,6 +420,7 @@ const Add = (props) => {
                                                                     className="form-control"
                                                                     id="qty"
                                                                     name="qty"
+                                                                    required
                                                                     type="number"
                                                                     placeholder="Qty"
                                                                     onChange={clientStocksInputHander}

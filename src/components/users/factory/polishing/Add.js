@@ -239,6 +239,7 @@ const Add = (props) => {
                                                         options={stateData['job_orders']}
                                                         placeholder="Select Job No..."
                                                         onChange={(e) => dropDownChange(e, 'job_order_pk_id')}
+                                                        inputProps={{ required: true }}
                                                         selected={stateData.job_order_id}
                                                         ref={register({
                                                             required: 'Job No Field Required'
@@ -250,8 +251,8 @@ const Add = (props) => {
                                                 <div className="col-md-9">
                                                     <select className="form-control" name="polishing_pk_id" onChange={cylinderOnChange} ref={register({
                                                         required: 'Cylinder Id Field Required'
-                                                    })} defaultValue={digPolishingCylinderId ? digPolishingCylinderId : null}>
-                                                        <option>select one</option>
+                                                    })} defaultValue={digPolishingCylinderId ? digPolishingCylinderId :''}>
+                                                        <option value=''>Select One</option>
                                                         {
                                                             stateData.allPolishingData.map((data, key)=>(
                                                                 <option value={data.id} key={key}>{data.cylinder_id} {data.rework == 1 ? "(Rework)" : ""} </option>
@@ -272,7 +273,7 @@ const Add = (props) => {
                                                         <select className="form-control" name="rough_cut_polishing_machine_id" onChange= {inputChangeHandler} ref={register({
                                                             required: 'Machine Rough Cut Field Required'
                                                         })} value={stateData.rough_cut_polishing_machine_id ? stateData.rough_cut_polishing_machine_id : ''}>
-                                                            <option>select one</option>
+                                                            <option value=''>Select One</option>
                                                             {
                                                                 stateData.polishMachines.map((machine, key)=>(
                                                                     <option value={machine.id} key={key}>{machine.machine_name}</option>
@@ -286,7 +287,7 @@ const Add = (props) => {
                                                         <select className="form-control" name="fine_cut_polishing_machine_id" onChange={inputChangeHandler} ref={register({ 
                                                             required: true 
                                                         })} value={stateData.fine_cut_polishing_machine_id ? stateData.fine_cut_polishing_machine_id : ''}>
-                                                            <option>select one</option>
+                                                            <option value=''>Select One</option>
                                                             {
                                                                 stateData.polishMachines.map((machine, key)=>(
                                                                     <option value={machine.id} key={key}>{machine.machine_name}</option>
@@ -301,6 +302,7 @@ const Add = (props) => {
                                                             type="text" 
                                                             className="form-control" 
                                                             name="on_time" 
+                                                            required
                                                             ref={register({
                                                                 required: 'On Time Field Required'
                                                             })}
@@ -314,7 +316,8 @@ const Add = (props) => {
                                                         <input 
                                                             type="date" 
                                                             className="form-control" 
-                                                            name="polishing_date" 
+                                                            name="polishing_date"
+                                                            required 
                                                             onChange={inputChangeHandler}
                                                             ref={register({required: true })}
                                                             value={stateData.polishing_date ? stateData.polishing_date : ''}
@@ -328,7 +331,7 @@ const Add = (props) => {
                                                         <> */}
                                                     <label className="col-md-5 col-form-label label-form">Production Date</label>
                                                     <div className="col-md-7">
-                                                        <input type="date" className="form-control" name="production_date" onChange={inputChangeHandler} ref={register({ required: true })} value={stateData.production_date ? stateData.production_date : ''}/>
+                                                        <input type="date" className="form-control" name="production_date" required onChange={inputChangeHandler} ref={register({ required: true })} value={stateData.production_date ? stateData.production_date : ''}/>
                                                     </div>
                                                         
                                                     <label className="col-md-5 col-form-label label-form">Shift</label>
@@ -343,13 +346,13 @@ const Add = (props) => {
                                                     
                                                     <label className="col-md-5 col-form-label label-form">Est, Duration</label>
                                                     <div className="col-md-5">
-                                                        <input type="time" className="form-control" name="est_duration" onChange={inputChangeHandler} ref={register({ required: true })} value={stateData.est_duration ? stateData.est_duration : ''}/>
+                                                        <input type="time" className="form-control" name="est_duration" required onChange={inputChangeHandler} ref={register({ required: true })} value={stateData.est_duration ? stateData.est_duration : ''}/>
                                                     </div>
                                                     <label className="col-form-label label-form pull-right">hh:mm</label>
                                                 
                                                     <label className="col-md-5 col-form-label label-form">Est, End Time</label>
                                                     <div className="col-md-7">
-                                                        <input type="text" className="form-control" name="est_end_time" onChange={inputChangeHandler} ref={register({ required: true })} value={stateData.est_end_time ? stateData.est_end_time : ''}/>
+                                                        <input type="text" className="form-control" name="est_end_time" required onChange={inputChangeHandler} ref={register({ required: true })} value={stateData.est_end_time ? stateData.est_end_time : ''}/>
                                                     </div>
                                                     
                                                     {/* <label className="col-md-5 col-form-label label-form">Rework </label>
@@ -373,7 +376,7 @@ const Add = (props) => {
                                                             <label className="col-md-5 col-form-label label-form">Done by</label>
                                                             <div className="col-md-7">
                                                                 <select className="form-control" name="done_by" onChange={inputChangeHandler} ref={register({})} value={stateData.done_by ? stateData.done_by : ''}>
-                                                                    <option>select one</option>
+                                                                    <option value=''>Select One</option>
                                                                     {
                                                                         stateData.shiftDutyPersons.map((dutyPerson, key)=>(
                                                                             <option value={dutyPerson.employee_id} key={key}>{dutyPerson.employee_name}</option> //employee_id MEANS dig_employee_information.id and employee_name MEANS dig_employee_information.name 
@@ -399,12 +402,12 @@ const Add = (props) => {
                                                     
                                                     <label className="col-md-5 col-form-label label-form"> Dia after Rough Cut</label>
                                                     <div className="col-md-7">
-                                                        <input type="text" className="form-control" name="dia_after_rough_cut" onChange={inputChangeHandler} ref={register({ required: true })} value={stateData.dia_after_rough_cut ? stateData.dia_after_rough_cut : ''} />
+                                                        <input type="text" className="form-control" name="dia_after_rough_cut" required onChange={inputChangeHandler} ref={register({ required: true })} value={stateData.dia_after_rough_cut ? stateData.dia_after_rough_cut : ''} />
                                                     </div>
                                                 
                                                     <label className="col-md-5 col-form-label label-form">Dia after Fine Cut</label>
                                                     <div className="col-md-7">
-                                                        <input type="text" className="form-control" name="dia_after_fine_cut" onChange={inputChangeHandler} ref={register({ required: true })} value={stateData.dia_after_fine_cut ? stateData.dia_after_fine_cut : ''} />
+                                                        <input type="text" className="form-control" name="dia_after_fine_cut" required onChange={inputChangeHandler} ref={register({ required: true })} value={stateData.dia_after_fine_cut ? stateData.dia_after_fine_cut : ''} />
                                                     </div>
                                                 
                                                     <label className="col-md-5 col-form-label label-form">A. off Time</label>
@@ -422,7 +425,7 @@ const Add = (props) => {
                                                     <label className="col-md-5 col-form-label label-form">Output Status</label>
                                                     <div className="col-md-7">
                                                         <select className="form-control" name="output_status" onChange={inputChangeHandler} ref={register({})} defaultValue={stateData.output_status ? stateData.output_status : ''}>
-                                                            <option>select one</option>
+                                                            <option value=''>Select One</option>
                                                             <option value="1">Ok</option>
                                                             <option value="0">Not Ok</option>
                                                         </select>
