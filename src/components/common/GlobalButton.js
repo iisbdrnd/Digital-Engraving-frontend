@@ -79,6 +79,23 @@ export const EditButton = props => {
         </Fragment>
     )
 }
+export const ShowButton = props => {
+    return (
+        <Fragment>
+            { 
+                <Link 
+                    to={{
+                        pathname: props.link,
+                        state: { params: {menuId: props.menuId} }
+                    }}
+                    className="fas fa-eye" 
+                    style={{ width: 25, fontSize: 16, padding: 0, color: 'rgb(40, 167, 69)', cursor: "pointer" }}>
+                </Link>
+            }
+            
+        </Fragment>
+    )
+}
 
 export const DeleteButton = props => {
     return (

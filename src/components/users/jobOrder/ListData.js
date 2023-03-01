@@ -3,7 +3,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { toast } from 'react-toastify';
 import { JOB_ORDER_RSURL, userHasAccess } from '../../../api/userUrl';
 import { userGetMethod, userDeleteMethod } from '../../../api/userAction';
-import { AddButton, EditButton, DeleteButton, PerPageBox } from '../../common/GlobalButton';
+import { AddButton, EditButton, ShowButton, DeleteButton, PerPageBox } from '../../common/GlobalButton';
 import Pagination from "react-js-pagination";
 
 
@@ -205,6 +205,7 @@ export default function ListData(props) {
                                                                             {
                                                                                 accLoad === false ? <>
                                                                                     {hasAccess.edit === true ? <EditButton link={`/jobOrder/edit/${item.id}`} menuId={ menuId } /> : ''} 
+                                                                                    {hasAccess.show === true ? <ShowButton link={`/jobOrder/show/${item.id}`} menuId={ menuId } /> : ''} 
                                                                                     {hasAccess.destroy === true ? <DeleteButton deleteLink={JOB_ORDER_RSURL} deleteHandler={ deleteHandler } menuId={ menuId } dataId={item.id} /> : ''} 
                                                                                 </> : ''
                                                                             }

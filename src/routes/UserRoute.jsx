@@ -108,6 +108,7 @@ import UserEmployeeEdit from './../components/users/employee/Edit';
 import JobOrder from './../components/users/jobOrder/ListData';
 import JobOrderAdd from './../components/users/jobOrder/Create';
 import JobOrderEdit from './../components/users/jobOrder/Edit';
+import JobOrderShow from './../components/users/jobOrder/Show';
 
 //TEST
 import Test from './../components/users/test/ListData';
@@ -969,6 +970,10 @@ class UserRoute extends Component {
                 <UserAuthRoute
                   path={`${process.env.PUBLIC_URL}/jobOrder/edit/:id`}
                   component={JobOrderEdit}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/jobOrder/show/:id`}
+                  component={JobOrderShow}
                 />
                 {/* TEST */}
                 <UserAuthRoute

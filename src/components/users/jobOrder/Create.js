@@ -14,6 +14,7 @@ const Add = (props) => {
     const [dropdownData, setDropdownData] = useState({});
     const [multipleDropdownData, setMultipleDropdownData] = useState([]);
     const [typeheadOptions, setTypeheadOptions] = useState({});
+   // const [jobId, setJobId] = useState(0);
 
     let [calculationValue, setCalculationValue] = useReducer(
         (state, newState) => ({...state, ...newState}),
@@ -29,6 +30,9 @@ const Add = (props) => {
             total_cylinder_qty  : 0,
         }
     );
+    // const [ jobInfo, setJobInfo] = useState({
+    //     'jobName': ''
+    // });
 
     useEffect(() => {
         userGetMethod(`${JOB_ORDER_RSURL}/create`)
@@ -79,6 +83,17 @@ const Add = (props) => {
                         subClassOptions.push(subClassObj);
                     })
                 }
+                // FOR REFERENCE JOB
+                // let referenceJobsOptions = [];
+                // if (response.data.referenceJobs && response.data.referenceJobs.length > 0) {
+                //     response.data.referenceJobs.map(referenceJob => 
+                //     {
+                //         let referenceJobObj = {};
+                //         referenceJobObj.id = referenceJob.id;
+                //         referenceJobObj.name = referenceJob.job_name;
+                //         referenceJobsOptions.push(referenceJobObj);
+                //     })
+                // }
                 
                 // FOR JOB SUB CLASS
                 let additionalColorOptions = [];
@@ -110,6 +125,7 @@ const Add = (props) => {
                         ['printers']: printerOptions,
                         ['clients']: clientOptions,
                         ['job_sub_classes']: subClassOptions,
+                        //['reference_jobs']: referenceJobsOptions,
                         ['additional_colors']: additionalColorOptions,
                         ['design_machines']: designMachineOptions,
                     })
@@ -136,10 +152,25 @@ const Add = (props) => {
             {[event.target.name] : event.target.value},
         );
     }
+    // const jobChangeHandler = (e) => {
+    //     var selectJobId = e[0]['id'];
+    //     setJobId(selectJobId);
+    //     userGetMethod(`${JOB_ORDER_RSURL}/${selectJobId}`)
+    //         .then(response => {
+    //             //console.log('res', response);
+    //             setJobInfo({
+    //                 jobName: response.data.jobOrder.job_name,
+    //                 clientId: response.data.jobOrder.client_id,
+    //                 printerId: response.data.jobOrder.printer_id,
+    //             });
+    //         })
+    //         .catch(error => console.log(error))   
+    // }
 
     const submitHandler = (data, e) => {
         data.client_id           = dropdownData.client_id;
         data.job_sub_class_id    = dropdownData.job_sub_class_id;
+        //data.reference_job       = dropdownData.reference_job;
         data.marketing_person_id = dropdownData.marketing_person_id;
         data.printer_id          = dropdownData.printer_id;
         data.design_machine_id   = dropdownData.design_machine_id;
@@ -148,7 +179,6 @@ const Add = (props) => {
             color_id_final_arr.push(item.id);
         })
         data.color_id = color_id_final_arr;
-        console.log("data", data);
 
         userPostMethod(JOB_ORDER_RSURL, data)
             .then(response => {
@@ -169,8 +199,6 @@ const Add = (props) => {
     }else{
         menuId = props.location.state.params.menuId;
     }
-
-    console.log('multipleDropdownData', multipleDropdownData);
     
     return (
         <Fragment>
@@ -209,6 +237,26 @@ const Add = (props) => {
                                                         {errors.job_type && <p className='text-danger'>{errors.job_type.message}</p>}
                                                     </div>
                                                 </div>
+                                                {/* <div className="form-group row">
+                                                    <label className="col-sm-4 col-form-label required" htmlFor="reference_job">Reference Job</label>
+                                                    <div className="col-sm-8">
+                                                        <Typeahead
+                                                            id="reference_job"
+                                                            name="reference_job"
+                                                            labelKey={option => `${option.name}`}
+                                                            options={typeheadOptions['reference_jobs']}
+                                                            placeholder="Select Reference Job..."
+                                                            //onChange={(e) => dropDownChange(e, 'reference_job')}
+                                                            onChange={jobChangeHandler}
+                                                            value={option => `${option.id}`}
+                                                            inputProps={{ required: true }}
+                                                            ref={register({
+                                                                required: 'Reference Job Field Required'
+                                                            })}
+                                                        />
+                                                        {errors.reference_job && <p className='text-danger'>{errors.reference_job.message}</p>}
+                                                    </div>
+                                                </div> */}
 
                                                 <div className="form-group row">
                                                     <label className="col-sm-4 col-form-label required" htmlFor="job_name">Job Name</label>
@@ -217,10 +265,10 @@ const Add = (props) => {
                                                             className="form-control" 
                                                             id="job_name" 
                                                             name="job_name"
+                                                            //value={jobInfo.jobName}
                                                             required 
                                                             type="text" 
                                                             placeholder="Job Name" 
-                                                            // value={jobOrderData.job_name}
                                                             ref={register({
                                                                 required: 'Job Name Field Required'
                                                             })}
