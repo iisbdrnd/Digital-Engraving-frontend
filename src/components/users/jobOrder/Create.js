@@ -276,6 +276,39 @@ const Add = (props) => {
                                                         {errors.job_name && <p className='text-danger'>{errors.job_name.message}</p>}
                                                     </div>
                                                 </div>
+                                                <div className='form-group row'>
+                                                <label className="col-sm-4 col-form-label required" htmlFor="link_job">Link Job</label>
+                                                    <div className="col-sm-1 text-center mt-2">
+                                                        <input 
+                                                            className="form-control" 
+                                                            id="link_job" 
+                                                            name="link_job"
+                                                            //value={jobInfo.jobName}
+                                                            onChange={(e) => console.log(e.target.checked)}
+                                                            required 
+                                                            type="checkbox" 
+                                                            ref={register({
+                                                                required: 'Link job  Field Required'
+                                                            })}
+                                                        />
+                                                        {errors.job_name && <p className='text-danger'>{errors.job_name.message}</p>}
+                                                    </div>
+                                                    <label className="col-sm-3 col-form-label required" htmlFor="job_name">Job Order</label>
+                                                    <div className="col-sm-4">
+                                                    <select className="form-control" required  id="eye_mark_color" name="eye_mark_color"
+                                                            ref={register({
+                                                                required: 'Eye Mark Color Type Field Required'
+                                                            })} 
+                                                            defaultValue=''>
+                                                            <option value=''>Select One</option>
+                                                            <option value="White">White</option>
+                                                            <option value="Black">Black</option>
+                                                            <option value="Red">Red</option>
+                                                        </select>
+                                                        {errors.job_name && <p className='text-danger'>{errors.job_name.message}</p>}
+                                                    </div>
+                                                    
+                                                </div>
 
                                                 <div className="form-group row">
                                                     <label className="col-sm-4 col-form-label required" htmlFor="job_sub_class_id">Sub Class</label>

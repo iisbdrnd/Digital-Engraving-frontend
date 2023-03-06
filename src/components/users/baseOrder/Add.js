@@ -85,11 +85,14 @@ const Add = (props) => {
         if(event.length > 0){
             const selectedValue = event[0].id;
             const selectedValueName = event[0].name;
+            var obj={
+                id : selectedValue,
+                name: selectedValueName
+            }
             setDropdownData(
                 (prevstate) => ({
                     ...prevstate,
-                    [stateName]: selectedValue,
-                    [stateName+'_name']: selectedValueName,
+                   [stateName]:[obj]
                 })
             );
             if (stateName === 'job_order_id') {
@@ -104,6 +107,7 @@ const Add = (props) => {
         } 
 
     }
+    console.log(dropdownData);
     // FOR ORDER DETAILS DATA INPUT
     const orderDetailsInputHander = (event) => {
         setJobOrderData(
@@ -122,8 +126,8 @@ const Add = (props) => {
                 // OBJECT CREATE & PUSH IN AN ARRAY
                 let baseOrderDetails_arr = [];
                 let baseOrderDetails_obj = {};
-                baseOrderDetails_obj.supplier_id = dropdownData.supplier_id;
-                baseOrderDetails_obj.supplier_id_name = dropdownData.supplier_id_name;
+                baseOrderDetails_obj.supplier_id = dropdownData.supplier_id[0].id;
+                baseOrderDetails_obj.supplier_id_name = dropdownData.supplier_id[0].name;
                 baseOrderDetails_obj.job_ref_id = job_ref_id;
                 baseOrderDetails_obj.delivery_date = delivery_date;
                 baseOrderDetails_obj.qty = qty;
@@ -335,7 +339,7 @@ const Add = (props) => {
                                                                 className="form-control" 
                                                                 id="qty" 
                                                                 name="qty" 
-                                                                required
+                                                                // required
                                                                 type="number" 
                                                                 placeholder="Qty" 
                                                                 onChange={orderDetailsInputHander}
@@ -349,7 +353,7 @@ const Add = (props) => {
                                                                 className="form-control" 
                                                                 id="delivery_date" 
                                                                 name="delivery_date"
-                                                                required 
+                                                                // required 
                                                                 type="date" 
                                                                 placeholder="Delivery Date" 
                                                                 onChange={orderDetailsInputHander}
