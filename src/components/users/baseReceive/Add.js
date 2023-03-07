@@ -4,7 +4,7 @@ import useForm from 'react-hook-form'
 import Breadcrumb from '../common/breadcrumb';
 import { PanelRefreshIcons, SubmitButton } from '../../common/GlobalButton';
 import { userGetMethod, userPostMethod } from '../../../api/userAction';
-import { BASE_RECEIVE_RSURL, JOB_ORDER_DETAILS } from '../../../api/userUrl';
+import { BASE_RECEIVE_RSURL, BASE_ORDER_DETAILS } from '../../../api/userUrl';
 import { Typeahead } from 'react-bootstrap-typeahead';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -27,53 +27,55 @@ const CylinderInfo = (props) => {
             cyl_rate_status   : '',
             limit_square_cm   : 0,
             vat_status        : '',
-            job_order_id      : '', 
+            base_detail_id    : '', 
             client_name       : '',
-            total_cylinder_qty: ''
+            total_cylinder_qty: '',
+            supplier_name     : ''
+
         }
     );
 
-    let job_order_id = props.location.state.params.job_order_id ? props.location.state.params.job_order_id : null;
-    console.log('job_order_id', job_order_id);
+    let  base_detail_id = props.location.state.params.base_detail_id ? props.location.state.params.base_detail_id : null;
+
     useEffect(() => {
-        pageRefreshHandler(job_order_id);
+        pageRefreshHandler(base_detail_id);
     },[]);
 
-    const pageRefreshHandler = (job_order_id = null) => {
+    const pageRefreshHandler = (base_detail_id = null) => {
         setIsLoading(true);
-        userGetMethod(`${BASE_RECEIVE_RSURL}/create?job_order_id=${job_order_id}`)
+        userGetMethod(`${BASE_RECEIVE_RSURL}/create?base_detail_id=${base_detail_id}`)
             .then(response => {
                 console.log('response', response.data);
                 // FOR JOB ORDER
-                let jobOrderOptions = [];
-                if (response.data.jobOrder) {
-                    console.log('response.data.jobOrder', response.data.jobOrder);
-                    let jobOrderObj = {};
-                    jobOrderObj.id = response.data.jobOrder.id;
-                    jobOrderObj.name = `[${response.data.jobOrder.job_no}] ` + response.data.jobOrder.job_name;
-                    jobOrderOptions.push(jobOrderObj);
+                let BaseOrderOptions = [];
+                if (response.data.baseOrderDetail) {
+                    console.log('response.data.baseOrderDetail', response.data.baseOrderDetail);
+                    let BaseOrderObj = {};
+                    BaseOrderObj.id = response.data.baseOrderDetail.id;
+                    BaseOrderObj.name = `[${response.data.baseOrderDetail.job_no}] ` +response.data.baseOrderDetail.job_name;
+                    BaseOrderOptions.push(BaseOrderObj);
 
-                    if (response.data.jobOrder != null) { 
+                    if (response.data.baseOrderDetail != null) { 
                         setBaseReceiveInput({
-                            'job_order_id': [jobOrderObj]
+                            'base_detail_id': [BaseOrderObj]
                         })
                     }
-                    dropDownChange([{id : response.data.jobOrder.id}], 'job_order_id');
+                    dropDownChange([{id : response.data.baseOrderDetail.id}], 'base_detail_id');
                 }
                 
-                if (response.data.jobOrders && response.data.jobOrders.length > 0) {
-                    response.data.jobOrders.map(order => 
+                if (response.data.baseOrderDetails && response.data.baseOrderDetails.length > 0) {
+                    response.data.baseOrderDetails.map(order => 
                     {
-                        let jobOrderObj = {};
-                        jobOrderObj.id = order.id;
-                        jobOrderObj.name = `[${order.job_no}] ` + order.job_name;
-                        jobOrderOptions.push(jobOrderObj);
+                        let BaseOrderObj = {};
+                        BaseOrderObj.id = order.id;
+                        BaseOrderObj.name = `[${order.job_no}] ` + `[${order.supplier_name}]` +` `+order.job_name;
+                        BaseOrderOptions.push(BaseOrderObj);
                     })
                 }
                 setTypeheadOptions(
                     (prevstate) => ({
                         ...prevstate,
-                        ['job_orders']: jobOrderOptions,
+                        ['base_orders']: BaseOrderOptions,
                     })
                 );
 
@@ -91,28 +93,25 @@ const CylinderInfo = (props) => {
                 })
             );
 
-            userGetMethod(`${JOB_ORDER_DETAILS}?jobOrderId=${selectedValue}`)
+            userGetMethod(`${BASE_ORDER_DETAILS}?baseDetailId=${selectedValue}`)
                 .then(response => {
-                    let { job_name, printer_name, client_email, bill_config_type, printer_mark, marketing_p_name, cyl_rate_status, limit_square_cm, vat_status, client_name, total_cylinder_qty} = response.data.jobOrderDetails;
+                    console.log(response.data,selectedValue)
+                    let { job_name, printer_name, client_name, total_cylinder_qty,supplier_name,job_order_id} = response.data.baseOrderDetails;
                     setBaseReceiveInput({
                         'job_name'          : job_name,
                         'printer_name'      : printer_name,
-                        'client_email'      : client_email,
-                        'bill_config_type'  : bill_config_type,
-                        'printer_mark'      : printer_mark,
-                        'marketing_p_name'  : marketing_p_name,
-                        'cyl_rate_status'   : cyl_rate_status,
-                        'limit_square_cm'   : limit_square_cm,
-                        'vat_status'        : vat_status,
                         'client_name'       : client_name,
-                        'total_cylinder_qty': total_cylinder_qty
+                        'total_cylinder_qty': total_cylinder_qty,
+                        'supplier_name'     : supplier_name,
+                        'job_id'            : job_order_id
                     });
                 });
         } 
     }
 
     const submitHandler = (data, e) => {
-        data.job_order_id = dropdownData.job_order_id;
+        data.id = dropdownData.base_detail_id;
+        data.job_id = baseReceiveInput.job_id;
         userPostMethod(BASE_RECEIVE_RSURL, data)
             .then(response => {
                 if (response.data.status == 1) {
@@ -155,23 +154,23 @@ const CylinderInfo = (props) => {
                                     <div className="row">
                                         <div className="col-md-6">
                                             <div className="form-group row">
-                                                <label className="col-sm-3 col-form-label required" htmlFor="job_order_id">Job No</label>
+                                                <label className="col-sm-3 col-form-label required" htmlFor="base_detail_id">Job No</label>
                                                 <div className="col-sm-9">
                                                     <Typeahead
-                                                        id="job_order_id"
-                                                        name="job_order_id"
+                                                        id="base_detail_id"
+                                                        name="base_detail_id"
                                                         labelKey={option => `${option.name}`}
-                                                        options={typeheadOptions['job_orders']}
+                                                        options={typeheadOptions['base_orders']}
                                                         placeholder="Select Job No..."
-                                                        onChange={(e) => dropDownChange(e, 'job_order_id')}
+                                                        onChange={(e) => dropDownChange(e, 'base_detail_id')}
                                                         inputProps={{ required: true }}
-                                                        selected={baseReceiveInput.job_order_id}
-                                                        disabled={job_order_id != null ? 'disabled' : ''}
+                                                        selected={baseReceiveInput.base_detail_id}
+                                                        disabled={base_detail_id != null ? 'disabled' : ''}
                                                         ref={register({
                                                             required: 'Job No Field Required'
                                                         })}
                                                     />
-                                                    {errors.job_order_id && <p className='text-danger'>{errors.job_order_id.message}</p>}
+                                                    {errors.base_detail_id && <p className='text-danger'>{errors.base_detail_id.message}</p>}
                                                 </div>
                                             </div>
                                         
@@ -252,6 +251,11 @@ const CylinderInfo = (props) => {
                                                                 <td align="right">No of Cylinder</td>
                                                                 <td>:</td>
                                                                 <td>{baseReceiveInput.total_cylinder_qty}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td align="right">Supplier Name</td>
+                                                                <td>:</td>
+                                                                <td>{baseReceiveInput.supplier_name}</td>
                                                             </tr>
 
                                                         </tbody>

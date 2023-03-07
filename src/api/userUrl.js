@@ -64,6 +64,7 @@ export const JOB_AGREEMENT_RSURL = 'api/user/jobAgreement';
 export const JOB_ORDER_DETAILS = 'api/user/jobOrderDetails';
 //BASE ORDER
 export const BASE_ORDER_RSURL = 'api/user/baseOrder';
+export const BASE_ORDER_DETAILS = 'api/user/baseOrderDetails';
 //PRINTERS
 export const printersAPI = 'api/user/printers';
 

@@ -191,7 +191,8 @@ export default function ListData(props) {
                                                     <th scope="col" width="15%" onClick={() => sortHandler(3)} ><i className="fa fa-sort"></i> Job Name</th>
                                                     <th scope="col" width="10%" onClick={() => sortHandler(4)} ><i className="fa fa-sort"></i> Type</th>                                                        
                                                     <th scope="col" width="15%" onClick={() => sortHandler(5)}><i className="fa fa-sort"></i> Client</th>
-                                                    <th scope="col" width="10%" ><i className="fa fa-sort"></i> Receive</th>
+                                                    <th scope="col" width="15%"> Supplier</th>
+                                                    <th scope="col" width="10%">Receive</th>
                                                     {/* <th scope="col" width="15%" onClick={() => sortHandler(6)} ><i className="fa fa-sort"></i> Printer</th>
                                                     <th scope="col" width="10%" ><i className="fa fa-sort"></i> Per Sqr Amount</th> */}
                                                     <th scope="col" width="7%">Action</th>
@@ -209,15 +210,13 @@ export default function ListData(props) {
                                                                         <td>{item.job_name}</td>
                                                                         <td>{item.job_type}</td>
                                                                         <td>{item.client_name}</td>
-                                                                        {/* <td>{item.printer_name}</td>
-                                                                        <td>{item.total_cylinder_qty}</td>
-                                                                        <td>{item.per_square_amount}</td> */}
+                                                                        <td>{item.supplier_name}</td>
                                                                         <td>
                                                                             {item.base_receive_status == 0 ? 
                                                                             <Link 
                                                                                 to={{
                                                                                     pathname: `${process.env.PUBLIC_URL}/baseReceive/add`,
-                                                                                    state: { params: {menuId: menuId, job_order_id : item.id} }
+                                                                                    state: { params: {menuId: menuId, base_detail_id : item.id} }
                                                                                 }}
                                                                                 className="btn btn-secondary btn-xs">
                                                                                     Order Receive
