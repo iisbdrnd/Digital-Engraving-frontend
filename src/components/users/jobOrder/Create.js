@@ -14,6 +14,8 @@ const Add = (props) => {
     const [dropdownData, setDropdownData] = useState({});
     const [multipleDropdownData, setMultipleDropdownData] = useState([]);
     const [typeheadOptions, setTypeheadOptions] = useState({});
+    const [linkjob, setLinkjob] = useState(false)
+    const [jobOrderType, setJobOrderType] = useState(null)
    // const [jobId, setJobId] = useState(0);
 
     let [calculationValue, setCalculationValue] = useReducer(
@@ -38,6 +40,7 @@ const Add = (props) => {
         userGetMethod(`${JOB_ORDER_RSURL}/create`)
             .then(response => {
                 // FOR MARKETING PERSON
+
                 let marketingEmpOptions = [];
                 if (response.data.marketingPersons && response.data.marketingPersons.length > 0) {
                     response.data.marketingPersons.map(person => 
@@ -84,16 +87,16 @@ const Add = (props) => {
                     })
                 }
                 // FOR REFERENCE JOB
-                // let referenceJobsOptions = [];
-                // if (response.data.referenceJobs && response.data.referenceJobs.length > 0) {
-                //     response.data.referenceJobs.map(referenceJob => 
-                //     {
-                //         let referenceJobObj = {};
-                //         referenceJobObj.id = referenceJob.id;
-                //         referenceJobObj.name = referenceJob.job_name;
-                //         referenceJobsOptions.push(referenceJobObj);
-                //     })
-                // }
+                let referenceJobsOptions = [];
+                if (response.data.referenceJobs && response.data.referenceJobs.length > 0) {
+                    response.data.referenceJobs.map(referenceJob => 
+                    {
+                        let referenceJobObj = {};
+                        referenceJobObj.id = referenceJob.id;
+                        referenceJobObj.name = referenceJob.job_name;
+                        referenceJobsOptions.push(referenceJobObj);
+                    })
+                }
                 
                 // FOR JOB SUB CLASS
                 let additionalColorOptions = [];
@@ -125,7 +128,7 @@ const Add = (props) => {
                         ['printers']: printerOptions,
                         ['clients']: clientOptions,
                         ['job_sub_classes']: subClassOptions,
-                        //['reference_jobs']: referenceJobsOptions,
+                        ['reference_jobs']: referenceJobsOptions,
                         ['additional_colors']: additionalColorOptions,
                         ['design_machines']: designMachineOptions,
                     })
@@ -170,7 +173,7 @@ const Add = (props) => {
     const submitHandler = (data, e) => {
         data.client_id           = dropdownData.client_id;
         data.job_sub_class_id    = dropdownData.job_sub_class_id;
-        //data.reference_job       = dropdownData.reference_job;
+        data.reference_job       = dropdownData.reference_job;
         data.marketing_person_id = dropdownData.marketing_person_id;
         data.printer_id          = dropdownData.printer_id;
         data.design_machine_id   = dropdownData.design_machine_id;
@@ -207,7 +210,7 @@ const Add = (props) => {
                     <div className="col-sm-12">
                         <div className="card">
                             <div className="card-header">
-                                <h5>Job Order Create</h5>
+                                <h5>Job Order Created</h5>
                             </div>
                             <div className="card-body">
                             {isLoading ? (<img src={process.env.PUBLIC_URL+'/preloader.gif'} alt="Data Loading"/>):
@@ -223,6 +226,7 @@ const Add = (props) => {
                                                     <label className="col-sm-4 col-form-label required" htmlFor="job_type">Job Order Type</label>
                                                     <div className="col-sm-8">
                                                         <select className="form-control" required  id="job_type" name="job_type"
+                                                            onChange={(e) => setJobOrderType(e.target.value)}
                                                             ref={register({
                                                                 required: 'Job Order Type Field Required'
                                                             })} 
@@ -237,7 +241,25 @@ const Add = (props) => {
                                                         {errors.job_type && <p className='text-danger'>{errors.job_type.message}</p>}
                                                     </div>
                                                 </div>
-                                                {/* <div className="form-group row">
+                                                <div className='form-group row'>
+                                                <label className="col-sm-4 col-form-label required" htmlFor="link_job">Link Job</label>
+                                                    <div className="col-sm-2 mt-2">
+                                                        <input 
+                                                            // className="form-control" 
+                                                            // id="link_job" 
+                                                            name="link_job"
+                                                            //value={jobInfo.jobName}
+                                                            onChange={(e) => setLinkjob(e.target.checked)}
+                                                            required={jobOrderType =='New' ? false : true}
+                                                            type="checkbox" 
+                                                            ref={register({
+                                                                required: 'Lik job  Field Required'
+                                                            })}
+                                                        />
+                                                        {errors.job_name && <p className='text-danger'>{errors.job_name.message}</p>}
+                                                    </div>
+                                                </div>
+                                                {linkjob == true &&  <div className="form-group row">
                                                     <label className="col-sm-4 col-form-label required" htmlFor="reference_job">Reference Job</label>
                                                     <div className="col-sm-8">
                                                         <Typeahead
@@ -246,17 +268,17 @@ const Add = (props) => {
                                                             labelKey={option => `${option.name}`}
                                                             options={typeheadOptions['reference_jobs']}
                                                             placeholder="Select Reference Job..."
-                                                            //onChange={(e) => dropDownChange(e, 'reference_job')}
-                                                            onChange={jobChangeHandler}
+                                                            onChange={(e) => dropDownChange(e, 'reference_job')}
+                                                            // onChange={jobChangeHandler}
                                                             value={option => `${option.id}`}
-                                                            inputProps={{ required: true }}
+                                                            inputProps={{ required: jobOrderType == 'New' ? false : true }}
                                                             ref={register({
                                                                 required: 'Reference Job Field Required'
                                                             })}
                                                         />
                                                         {errors.reference_job && <p className='text-danger'>{errors.reference_job.message}</p>}
                                                     </div>
-                                                </div> */}
+                                                </div>}
 
                                                 <div className="form-group row">
                                                     <label className="col-sm-4 col-form-label required" htmlFor="job_name">Job Name</label>
@@ -276,40 +298,21 @@ const Add = (props) => {
                                                         {errors.job_name && <p className='text-danger'>{errors.job_name.message}</p>}
                                                     </div>
                                                 </div>
-                                                <div className='form-group row'>
-                                                <label className="col-sm-4 col-form-label required" htmlFor="link_job">Link Job</label>
-                                                    <div className="col-sm-1 text-center mt-2">
-                                                        <input 
-                                                            className="form-control" 
-                                                            id="link_job" 
-                                                            name="link_job"
-                                                            //value={jobInfo.jobName}
-                                                            onChange={(e) => console.log(e.target.checked)}
-                                                            required 
-                                                            type="checkbox" 
+                                                    {/* {linkjob === true && <div className='form-group row'>
+                                                    <label className="col-sm-4 col-form-label required" htmlFor="reference_job">Reference Job</label>
+                                                    <div className="col-sm-8">
+                                                    <select className="form-control" required={jobOrderType =='New' ? false : true}  id="reference_job" name="reference_job"
                                                             ref={register({
-                                                                required: 'Link job  Field Required'
-                                                            })}
-                                                        />
-                                                        {errors.job_name && <p className='text-danger'>{errors.job_name.message}</p>}
-                                                    </div>
-                                                    <label className="col-sm-3 col-form-label required" htmlFor="job_name">Job Order</label>
-                                                    <div className="col-sm-4">
-                                                    <select className="form-control" required  id="eye_mark_color" name="eye_mark_color"
-                                                            ref={register({
-                                                                required: 'Eye Mark Color Type Field Required'
+                                                                required: 'Reference Job Field Required'
                                                             })} 
                                                             defaultValue=''>
                                                             <option value=''>Select One</option>
-                                                            <option value="White">White</option>
-                                                            <option value="Black">Black</option>
-                                                            <option value="Red">Red</option>
+                                                            {typeheadOptions['reference_jobs'].map(item => <option  value={item?.id}>{item?.name}</option>)}
                                                         </select>
                                                         {errors.job_name && <p className='text-danger'>{errors.job_name.message}</p>}
                                                     </div>
-                                                    
-                                                </div>
-
+                                                    </div>}
+                                                     */}
                                                 <div className="form-group row">
                                                     <label className="col-sm-4 col-form-label required" htmlFor="job_sub_class_id">Sub Class</label>
                                                     <div className="col-sm-8">
