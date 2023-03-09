@@ -228,190 +228,107 @@ const Add = (props) => {
                           <fieldset className="border">
                             <legend className="w-auto text-left">Basic</legend>
 
-                            <div className="form-group row">
-                              <label
-                                className="col-sm-4 col-form-label required"
-                                htmlFor="job_type"
-                              >
-                                Job Order Type
-                              </label>
-                              <div className="col-sm-8">
-                                <select
-                                  className="form-control"
-                                  required
-                                  id="job_type"
-                                  name="job_type"
-                                  onChange={(e) =>
-                                    setJobOrderType(e.target.value)
-                                  }
-                                  ref={register({
-                                    required: "Job Order Type Field Required",
-                                  })}
-                                  defaultValue=""
-                                >
-                                  <option value=""> Select One </option>
-                                  <option value="New">New</option>
-                                  <option value="Remake">Remake</option>
-                                  <option value="Redo">Redo</option>
-                                  <option value="DC/RC">DC/RC</option>
-                                </select>
-                                {errors.job_type && (
-                                  <p className="text-danger">
-                                    {errors.job_type.message}
-                                  </p>
-                                )}
-                              </div>
-                            </div>
-                            <div className="row">
-                              <div className="col-md-6">
-                                <div className="form-group row">
-                                  <label
-                                    className="col-sm-8 col-form-label required"
-                                    htmlFor="link_job"
-                                  >
-                                    Link Job
-                                  </label>
-                                  <div className="col-sm-4 mt-2">
-                                    <input
-                                      // className="form-control"
-                                      // id="link_job"
-                                      name="link_job"
-                                      //value={jobInfo.jobName}
-                                      onChange={(e) =>
-                                        setLinkjob(e.target.checked)
-                                      }
-                                      required={
-                                        jobOrderType == "New" ? false : true
-                                      }
-                                      type="checkbox"
-                                      ref={register({
-                                        required: "Lik job  Field Required",
-                                      })}
-                                    />
-                                    {errors.job_name && (
-                                      <p className="text-danger">
-                                        {errors.job_name.message}
-                                      </p>
-                                    )}
-                                  </div>
-                                </div>
-                              </div>
-                              <div className="col-md-6">
-                                {linkjob == true && (
-                                  <div className="form-group row">
-                                    <label
-                                      className="col-sm-4 col-form-label required"
-                                      htmlFor="reference_job"
-                                    >
-                                      Reff Job
-                                    </label>
-                                    <div className="col-sm-8">
-                                      <Typeahead
-                                        id="reference_job"
-                                        name="reference_job"
-                                        labelKey={(option) => `${option.name}`}
-                                        options={
-                                          typeheadOptions["reference_jobs"]
-                                        }
-                                        placeholder="Select Reference Job..."
-                                        onChange={(e) =>
-                                          dropDownChange(e, "reference_job")
-                                        }
-                                        // onChange={jobChangeHandler}
-                                        value={(option) => `${option.id}`}
-                                        inputProps={{
-                                          required:
-                                            jobOrderType == "New"
-                                              ? false
-                                              : true,
-                                        }}
-                                        ref={register({
-                                          required:
-                                            "Reference Job Field Required",
-                                        })}
-                                      />
-                                      {errors.reference_job && (
-                                        <p className="text-danger">
-                                          {errors.reference_job.message}
-                                        </p>
-                                      )}
-                                    </div>
-                                  </div>
-                                )}
-                              </div>
-                            </div>
-
-                            <div className="form-group row">
-                              <label
-                                className="col-sm-4 col-form-label required"
-                                htmlFor="job_name"
-                              >
-                                Job Name
-                              </label>
-                              <div className="col-sm-8">
-                                <input
-                                  className="form-control"
-                                  id="job_name"
-                                  name="job_name"
-                                  //value={jobInfo.jobName}
-                                  required
-                                  type="text"
-                                  placeholder="Job Name"
-                                  ref={register({
-                                    required: "Job Name Field Required",
-                                  })}
-                                />
-                                {errors.job_name && (
-                                  <p className="text-danger">
-                                    {errors.job_name.message}
-                                  </p>
-                                )}
-                              </div>
-                            </div>
-                            {/* {linkjob === true && <div className='form-group row'>
-                                                    <label className="col-sm-4 col-form-label required" htmlFor="reference_job">Reference Job</label>
+                                                <div className="form-group row">
+                                                    <label className="col-sm-4 col-form-label required" htmlFor="job_type">Job Order Type</label>
                                                     <div className="col-sm-8">
-                                                    <select className="form-control" required={jobOrderType =='New' ? false : true}  id="reference_job" name="reference_job"
+                                                        <select className="form-control" required  id="job_type" name="job_type"
+                                                            onChange={(e) => setJobOrderType(e.target.value)}
                                                             ref={register({
-                                                                required: 'Reference Job Field Required'
+                                                                required: 'Job Order Type Field Required'
                                                             })} 
                                                             defaultValue=''>
-                                                            <option value=''>Select One</option>
-                                                            {typeheadOptions['reference_jobs'].map(item => <option  value={item?.id}>{item?.name}</option>)}
+                                                            <option value=''> Select One </option>
+                                                            <option value="New">New</option>
+                                                            <option value="Remake">Remake</option>
+                                                            <option value="Redo">Redo</option>
+                                                            <option value="DC/RC">DC/RC</option>                                                           
                                                         </select>
+                                                        {errors.job_type && <p className='text-danger'>{errors.job_type.message}</p>}
+                                                    </div>
+                                                </div>
+                                                <div className="row">
+                                                     <div className="col-md-6">
+                                                     <div className='form-group row'>
+                                                <label className="col-sm-8 col-form-label required" htmlFor="link_job">Link Job</label>
+                                                    <div className="col-sm-4 mt-2">
+                                                        <input 
+                                                            // className="form-control" 
+                                                            // id="link_job" 
+                                                            name="link_job"
+                                                            //value={jobInfo.jobName}
+                                                            onChange={(e) => setLinkjob(e.target.checked)}
+                                                            required={jobOrderType =='New' ? false : true}
+                                                            type="checkbox" 
+                                                            ref={register({
+                                                                required: 'Lik job  Field Required'
+                                                            })}
+                                                        />
                                                         {errors.job_name && <p className='text-danger'>{errors.job_name.message}</p>}
                                                     </div>
-                                                    </div>}
-                                                     */}
-                            <div className="form-group row">
-                              <label
-                                className="col-sm-4 col-form-label required"
-                                htmlFor="job_sub_class_id"
-                              >
-                                Sub Class
-                              </label>
-                              <div className="col-sm-8">
-                                <Typeahead
-                                  id="job_sub_class_id"
-                                  name="job_sub_class_id"
-                                  labelKey={(option) => `${option.name}`}
-                                  options={typeheadOptions["job_sub_classes"]}
-                                  placeholder="Select Sub Class..."
-                                  onChange={(e) =>
-                                    dropDownChange(e, "job_sub_class_id")
-                                  }
-                                  inputProps={{ required: true }}
-                                  ref={register({
-                                    required: "Sub Class Field Required",
-                                  })}
-                                />
-                                {errors.job_sub_class_id && (
-                                  <p className="text-danger">
-                                    {errors.job_sub_class_id.message}
-                                  </p>
-                                )}
-                              </div>
-                            </div>
+                                                </div>
+                                                     </div>
+                                                     <div className='col-md-6'>
+                                                     {linkjob == true &&  <div className="form-group row">
+                                                    <label className="col-sm-4 col-form-label required" htmlFor="reference_job">Ref Job</label>
+                                                    <div className="col-sm-8">
+                                                        <Typeahead
+                                                            id="reference_job"
+                                                            name="reference_job"
+                                                            labelKey={option => `${option.name}`}
+                                                            options={typeheadOptions['reference_jobs']}
+                                                            placeholder="Select Reference Job..."
+                                                            onChange={(e) => dropDownChange(e, 'reference_job')}
+                                                            // onChange={jobChangeHandler}
+                                                            value={option => `${option.id}`}
+                                                            inputProps={{ required: jobOrderType == 'New' ? false : true }}
+                                                            ref={register({
+                                                                required: 'Reference Job Field Required'
+                                                            })}
+                                                        />
+                                                        {errors.reference_job && <p className='text-danger'>{errors.reference_job.message}</p>}
+                                                    </div>
+                                                </div>}
+                                                     </div>
+                                                </div>
+                                                
+
+                                                <div className="form-group row">
+                                                    <label className="col-sm-4 col-form-label required" htmlFor="job_name">Job Name</label>
+                                                    <div className="col-sm-8">
+                                                        <input 
+                                                            className="form-control" 
+                                                            id="job_name" 
+                                                            name="job_name"
+                                                            //value={jobInfo.jobName}
+                                                            required 
+                                                            type="text" 
+                                                            placeholder="Job Name" 
+                                                            ref={register({
+                                                                required: 'Job Name Field Required'
+                                                            })}
+                                                        />
+                                                        {errors.job_name && <p className='text-danger'>{errors.job_name.message}</p>}
+                                                    </div>
+                                                </div>
+                                               
+                                                <div className="form-group row">
+                                                    <label className="col-sm-4 col-form-label required" htmlFor="job_sub_class_id">Sub Class</label>
+                                                    <div className="col-sm-8">
+                                                        <Typeahead
+                                                            id="job_sub_class_id"
+                                                            name="job_sub_class_id"
+                                                            labelKey={option => `${option.name}`}
+                                                            options={typeheadOptions['job_sub_classes']}
+                                                            placeholder="Select Sub Class..."
+                                                            onChange={(e) => dropDownChange(e, 'job_sub_class_id')}
+                                                            inputProps={{ required: true }}
+                                                            ref={register({
+                                                                required: 'Sub Class Field Required'
+                                                            })}
+                                                        />
+                                                        {errors.job_sub_class_id && <p className='text-danger'>{errors.job_sub_class_id.message}</p>}
+                                                    </div>
+                                                </div>
 
                             <div className="form-group row">
                               <label
@@ -1095,105 +1012,72 @@ const Add = (props) => {
                               </div>
                             </div>
 
-                            <div className="form-group row">
-                              <div className="col-md-4">
-                                <div className="row">
-                                  <label
-                                    className="col-sm-6 col-form-label required"
-                                    htmlFor="fl"
-                                  >
-                                    FL (mm)
-                                  </label>
-                                  <div className="col-sm-6">
-                                    <input
-                                      className="form-control"
-                                      id="fl"
-                                      name="fl"
-                                      required
-                                      type="text"
-                                      placeholder="FL"
-                                      disabled="disabled"
-                                      value={calculationValue.face_length}
-                                    />
-                                    {errors.fl && (
-                                      <p className="text-danger">
-                                        {errors.fl.message}
-                                      </p>
-                                    )}
-                                  </div>
-                                </div>
-                              </div>
-                              <div className="col-md-4">
-                                <div className="row">
-                                  <label
-                                    className="col-sm-6 col-form-label required"
-                                    htmlFor="cir"
-                                  >
-                                    Cir (mm)
-                                  </label>
-                                  <div className="col-sm-6">
-                                    <input
-                                      className="form-control"
-                                      id="cir"
-                                      name="cir"
-                                      required
-                                      type="text"
-                                      placeholder="Cir"
-                                      disabled="disabled"
-                                      value={
-                                        calculationValue.design_height *
-                                        calculationValue.rpt
-                                      }
-                                    />
-                                    {errors.cir && (
-                                      <p className="text-danger">
-                                        {errors.cir.message}
-                                      </p>
-                                    )}
-                                  </div>
-                                </div>
-                              </div>
-                              <div className="col-md-4">
-                                <div className="row">
-                                  <label
-                                    className="col-sm-6 col-form-labelb required"
-                                    htmlFor="dia"
-                                  >
-                                    Dia (mm)
-                                  </label>
-                                  <div className="col-sm-6">
-                                    <input
-                                      className="form-control"
-                                      id="dia"
-                                      name="dia"
-                                      required
-                                      type="text"
-                                      placeholder="Dia"
-                                      disabled="disabled"
-                                      value={Math.round(
-                                        (calculationValue.design_height *
-                                          calculationValue.rpt) /
-                                          Math.PI
-                                      )}
-                                      // value={jobOrderData.dia}
-                                      // calculationValue.design_height * calculationValue.rpt
-                                      // calculationValue.face_length
-                                      ref={register({
-                                        required: "Dia Field Required",
-                                      })}
-                                    />
-                                    {errors.dia && (
-                                      <p className="text-danger">
-                                        {errors.dia.message}
-                                      </p>
-                                    )}
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </fieldset>
-                        </div>
-                      </div>
+                                                <div className="form-group row">
+                                                    <div className="col-md-4">
+                                                        <div className="row">
+                                                            <label className="col-sm-6 col-form-label required" htmlFor="fl">FL (mm)</label>
+                                                            <div className="col-sm-6">
+                                                                <input 
+                                                                    className="form-control" 
+                                                                    id="fl" 
+                                                                    name="fl"
+                                                                    required 
+                                                                    type="text" 
+                                                                    placeholder="FL" 
+                                                                    disabled="disabled"
+                                                                    value={calculationValue.face_length}
+                                                                />
+                                                                {errors.fl && <p className='text-danger'>{errors.fl.message}</p>}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div className="col-md-4">
+                                                        <div className="row">
+                                                            <label className="col-sm-6 col-form-label required" htmlFor="cir">Cir (mm)</label>
+                                                            <div className="col-sm-6">
+                                                                <input 
+                                                                    className="form-control" 
+                                                                    id="cir" 
+                                                                    name="cir"
+                                                                    required 
+                                                                    type="text" 
+                                                                    placeholder="Cir" 
+                                                                    disabled="disabled"
+                                                                    value={calculationValue.design_height * calculationValue.rpt}
+                                                                />
+                                                                {errors.cir && <p className='text-danger'>{errors.cir.message}</p>}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div className="col-md-4">
+                                                        <div className="row">
+                                                            <label className="col-sm-6 col-form-labelb required" htmlFor="dia">Dia (mm)</label>
+                                                            <div className="col-sm-6">
+                                                                <input 
+                                                                    className="form-control" 
+                                                                    id="dia" 
+                                                                    name="dia"
+                                                                    required 
+                                                                    type="text" 
+                                                                    placeholder="Dia" 
+                                                                    disabled='disabled'
+                                                                    value={Math.round((calculationValue.design_height * calculationValue.rpt) / Math.PI)}
+                                                                    // value={jobOrderData.dia}
+                                                                    // calculationValue.design_height * calculationValue.rpt
+                                                                    // calculationValue.face_length
+                                                                    ref={register({
+                                                                        required: 'Dia Field Required'
+                                                                    })}
+                                                                />
+                                                                {errors.dia && <p className='text-danger'>{errors.dia.message}</p>}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </fieldset>
+                                        </div>
+                                    
+                                    </div>
 
                       <div className="row">
                         <div className="col-md-12">
