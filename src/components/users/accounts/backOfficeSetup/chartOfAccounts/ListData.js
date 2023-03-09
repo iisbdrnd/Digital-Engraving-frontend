@@ -84,6 +84,19 @@ export default function ListData(props) {
     }
 
     const perPageHandler = (e) => {
+        setIsLoading(true);
+        //TABLE DATA READY
+        let perPage = e.target.value
+        userGetMethod(`${chartOfAccountAPI}?perPage=${perPage}`)
+            .then(response => {
+                setCurrentPage(response.data.accounts.current_page)
+                setPerPage(response.data.accounts.per_page)
+                setTotalData(response.data.accounts.total)
+                setChartOfAccountData(response.data.accounts.data)
+                setIsLoading(false);
+            })
+            .catch(error => console.log(error))
+
     }
 
     const sortHandler = (params) => {
@@ -155,7 +168,7 @@ export default function ListData(props) {
                                     <div className="custom-table-pagination m-r-10 pull-right">
                                         <label className="mt-3">
                                             <span>
-                                                <select className="form-control pagi-select" onChange={perPageHandler}>
+                                                <select className="form-control pagi-select" onChange={perPageHandler} value={perPage}>
                                                     <option value="5">5</option>
                                                     <option value="10">10</option>
                                                     <option value="15">15</option>
