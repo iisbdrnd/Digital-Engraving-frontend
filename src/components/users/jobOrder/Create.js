@@ -235,15 +235,16 @@ const Add = (props) => {
                                                             <option value="New">New</option>
                                                             <option value="Remake">Remake</option>
                                                             <option value="Redo">Redo</option>
-                                                            <option value="DC/RC">DC/RC</option>
-                                                            
+                                                            <option value="DC/RC">DC/RC</option>                                                           
                                                         </select>
                                                         {errors.job_type && <p className='text-danger'>{errors.job_type.message}</p>}
                                                     </div>
                                                 </div>
-                                                <div className='form-group row'>
-                                                <label className="col-sm-4 col-form-label required" htmlFor="link_job">Link Job</label>
-                                                    <div className="col-sm-2 mt-2">
+                                                <div className="row">
+                                                     <div className="col-md-6">
+                                                     <div className='form-group row'>
+                                                <label className="col-sm-8 col-form-label required" htmlFor="link_job">Link Job</label>
+                                                    <div className="col-sm-4 mt-2">
                                                         <input 
                                                             // className="form-control" 
                                                             // id="link_job" 
@@ -259,8 +260,10 @@ const Add = (props) => {
                                                         {errors.job_name && <p className='text-danger'>{errors.job_name.message}</p>}
                                                     </div>
                                                 </div>
-                                                {linkjob == true &&  <div className="form-group row">
-                                                    <label className="col-sm-4 col-form-label required" htmlFor="reference_job">Reference Job</label>
+                                                     </div>
+                                                     <div className='col-md-6'>
+                                                     {linkjob == true &&  <div className="form-group row">
+                                                    <label className="col-sm-4 col-form-label required" htmlFor="reference_job">Ref Job</label>
                                                     <div className="col-sm-8">
                                                         <Typeahead
                                                             id="reference_job"
@@ -279,6 +282,9 @@ const Add = (props) => {
                                                         {errors.reference_job && <p className='text-danger'>{errors.reference_job.message}</p>}
                                                     </div>
                                                 </div>}
+                                                     </div>
+                                                </div>
+                                                
 
                                                 <div className="form-group row">
                                                     <label className="col-sm-4 col-form-label required" htmlFor="job_name">Job Name</label>
@@ -298,21 +304,7 @@ const Add = (props) => {
                                                         {errors.job_name && <p className='text-danger'>{errors.job_name.message}</p>}
                                                     </div>
                                                 </div>
-                                                    {/* {linkjob === true && <div className='form-group row'>
-                                                    <label className="col-sm-4 col-form-label required" htmlFor="reference_job">Reference Job</label>
-                                                    <div className="col-sm-8">
-                                                    <select className="form-control" required={jobOrderType =='New' ? false : true}  id="reference_job" name="reference_job"
-                                                            ref={register({
-                                                                required: 'Reference Job Field Required'
-                                                            })} 
-                                                            defaultValue=''>
-                                                            <option value=''>Select One</option>
-                                                            {typeheadOptions['reference_jobs'].map(item => <option  value={item?.id}>{item?.name}</option>)}
-                                                        </select>
-                                                        {errors.job_name && <p className='text-danger'>{errors.job_name.message}</p>}
-                                                    </div>
-                                                    </div>}
-                                                     */}
+                                               
                                                 <div className="form-group row">
                                                     <label className="col-sm-4 col-form-label required" htmlFor="job_sub_class_id">Sub Class</label>
                                                     <div className="col-sm-8">
@@ -771,8 +763,8 @@ const Add = (props) => {
                                                 <div className="form-group row">
                                                     <div className="col-md-4">
                                                         <div className="row">
-                                                            <label className="col-sm-5 col-form-label required" htmlFor="fl">FL (mm)</label>
-                                                            <div className="col-sm-7">
+                                                            <label className="col-sm-6 col-form-label required" htmlFor="fl">FL (mm)</label>
+                                                            <div className="col-sm-6">
                                                                 <input 
                                                                     className="form-control" 
                                                                     id="fl" 
@@ -789,8 +781,8 @@ const Add = (props) => {
                                                     </div>
                                                     <div className="col-md-4">
                                                         <div className="row">
-                                                            <label className="col-sm-5 col-form-label required" htmlFor="cir">Cir (mm)</label>
-                                                            <div className="col-sm-7">
+                                                            <label className="col-sm-6 col-form-label required" htmlFor="cir">Cir (mm)</label>
+                                                            <div className="col-sm-6">
                                                                 <input 
                                                                     className="form-control" 
                                                                     id="cir" 
@@ -807,8 +799,8 @@ const Add = (props) => {
                                                     </div>
                                                     <div className="col-md-4">
                                                         <div className="row">
-                                                            <label className="col-sm-5 col-form-labelb required" htmlFor="dia">Dia (mm)</label>
-                                                            <div className="col-sm-7">
+                                                            <label className="col-sm-6 col-form-labelb required" htmlFor="dia">Dia (mm)</label>
+                                                            <div className="col-sm-6">
                                                                 <input 
                                                                     className="form-control" 
                                                                     id="dia" 
