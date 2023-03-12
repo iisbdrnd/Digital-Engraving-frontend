@@ -270,6 +270,47 @@ const Edit = (props) => {
                                                         {errors.job_type && <p className='text-danger'>{errors.job_type.message}</p>}
                                                     </div>
                                                 </div>
+                                                
+                                                <div className="row">
+                                                     <div className="col-md-6">
+                                                     <div className='form-group row'>
+                                                <label className="col-sm-8 col-form-label required" htmlFor="link_job">Link Job</label>
+                                                    <div className="col-sm-4 mt-2">
+                                                        <input 
+                                                            name="link_job"
+                                                            // onChange={(e) => setLinkjob(e.target.checked)}
+                                                            // required={jobType =='New' ? false : true}
+                                                            type="checkbox" 
+                                                            ref={register({
+                                                                required: 'Lik job  Field Required'
+                                                            })}
+                                                        />
+                                                        {errors.job_name && <p className='text-danger'>{errors.job_name.message}</p>}
+                                                    </div>
+                                                </div>
+                                                     </div>
+                                                     <div className='col-md-6'>
+                                                     <div className="form-group row">
+                                                    <label className="col-sm-4 col-form-label required" htmlFor="reference_job">Ref Job</label>
+                                                    <div className="col-sm-8">
+                                                    <Typeahead
+                                                            id="job_sub_class_id"
+                                                            name="job_sub_class_id"
+                                                            labelKey={option => `${option.name}`}
+                                                            options={typeheadOptions['job_sub_classes']}
+                                                            placeholder="Select Sub Class..."
+                                                            onChange={(e) => dropDownChange(e, 'job_sub_class_id')}
+                                                            selected={jobOrderInput.job_sub_class_id}
+                                                            ref={register({
+                                                                required: 'Sub Class Field Required'
+                                                            })}
+                                                        />
+                                                        
+                                                        {errors.reference_job && <p className='text-danger'>{errors.reference_job.message}</p>}
+                                                    </div>
+                                                </div>
+                                                     </div>
+                                                </div>
 
                                                 <div className="form-group row">
                                                     <label className="col-sm-4 col-form-label required" htmlFor="job_name">Job Name</label>
@@ -289,7 +330,7 @@ const Edit = (props) => {
                                                         {errors.job_name && <p className='text-danger'>{errors.job_name.message}</p>}
                                                     </div>
                                                 </div>
-
+ 
                                                 <div className="form-group row">
                                                     <label className="col-sm-4 col-form-label required" htmlFor="job_sub_class_id">Sub Class</label>
                                                     <div className="col-sm-8">
