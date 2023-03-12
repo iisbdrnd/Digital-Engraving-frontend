@@ -291,7 +291,6 @@ const Add = (props) => {
                                                      </div>
                                                 </div>
                                                 
-
                                                 <div className="form-group row">
                                                     <label className="col-sm-4 col-form-label required" htmlFor="job_name">Job Name</label>
                                                     <div className="col-sm-8">
