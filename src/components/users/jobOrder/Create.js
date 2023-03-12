@@ -151,6 +151,7 @@ const Add = (props) => {
     }
 
     const calculateFormValue = (event) => {
+        console.log(event.target.value);
         setCalculationValue(
             {[event.target.name] : event.target.value},
         );
@@ -171,6 +172,7 @@ const Add = (props) => {
     // }
 
     const submitHandler = (data, e) => {
+        console.log(data);
         data.client_id           = dropdownData.client_id;
         data.job_sub_class_id    = dropdownData.job_sub_class_id;
         data.reference_job       = dropdownData.reference_job;
@@ -249,7 +251,7 @@ const Add = (props) => {
                                                 <div className="row">
                                                      <div className="col-md-6">
                                                      <div className='form-group row'>
-                                                <label className="col-sm-8 col-form-label required" htmlFor="link_job">Link Job</label>
+                                                <label className="col-sm-8 col-form-label" htmlFor="link_job">Link Job</label>
                                                     <div className="col-sm-4 mt-2">
                                                         <input 
                                                             // className="form-control" 
@@ -259,11 +261,11 @@ const Add = (props) => {
                                                             onChange={(e) => setLinkjob(e.target.checked)}
                                                             required={jobOrderType =='New' ? false : true}
                                                             type="checkbox" 
-                                                            ref={register({
-                                                                required: 'Lik job  Field Required'
-                                                            })}
+                                                            // ref={register({
+                                                            //     required: 'Lik job  Field Required'
+                                                            // })}
                                                         />
-                                                        {errors.job_name && <p className='text-danger'>{errors.job_name.message}</p>}
+                                                        {/* {errors.job_name && <p className='text-danger'>{errors.job_name.message}</p>} */}
                                                     </div>
                                                 </div>
                                                      </div>
@@ -884,33 +886,25 @@ const Add = (props) => {
                               </div>
                             </div>
 
-                            <div className="form-group row">
-                              <label
-                                className="col-sm-4 col-form-label required"
-                                htmlFor="total_cylinder_qty"
-                              >
-                                Cylinder Qty
-                              </label>
-                              <div className="col-sm-8">
-                                <input
-                                  className="form-control"
-                                  id="total_cylinder_qty"
-                                  name="total_cylinder_qty"
-                                  required
-                                  type="text"
-                                  placeholder="Cylinder Qty"
-                                  onChange={(e) => calculateFormValue(e)}
-                                  ref={register({
-                                    required: "Cylinder Qty Field Required",
-                                  })}
-                                />
-                                {errors.total_cylinder_qty && (
-                                  <p className="text-danger">
-                                    {errors.total_cylinder_qty.message}
-                                  </p>
-                                )}
-                              </div>
-                            </div>
+                                                <div className="form-group row">
+                                                    <label className="col-sm-4 col-form-label required" htmlFor="total_cylinder_qty">Cylinder Qty</label>
+                                                    <div className="col-sm-8">
+                                                        <input 
+                                                            className="form-control" 
+                                                            id="total_cylinder_qty" 
+                                                            name="total_cylinder_qty"
+                                                            required 
+                                                            type="text" 
+                                                            placeholder="Cylinder Qty"
+                                                            value={multipleDropdownData.length>0 ? multipleDropdownData.length : ''}
+                                                            onChange={e=>calculateFormValue(e)} 
+                                                            ref={register({
+                                                                required: 'Cylinder Qty Field Required'
+                                                            })}
+                                                        />
+                                                        {errors.total_cylinder_qty && <p className='text-danger'>{errors.total_cylinder_qty.message}</p>}
+                                                    </div>
+                                                </div>
 
                             <div className="form-group row">
                               <label
