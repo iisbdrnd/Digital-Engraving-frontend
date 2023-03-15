@@ -885,8 +885,7 @@ const Add = (props) => {
                                 )}
                               </div>
                             </div>
-
-                                                <div className="form-group row">
+                            <div className="form-group row">
                                                     <label className="col-sm-4 col-form-label required" htmlFor="total_cylinder_qty">Cylinder Qty</label>
                                                     <div className="col-sm-8">
                                                         <input 
@@ -905,6 +904,7 @@ const Add = (props) => {
                                                         {errors.total_cylinder_qty && <p className='text-danger'>{errors.total_cylinder_qty.message}</p>}
                                                     </div>
                                                 </div>
+                                              
 
                             <div className="form-group row">
                               <label

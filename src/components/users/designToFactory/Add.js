@@ -15,6 +15,7 @@ const Add = (props) => {
     const [status, setStatus] = useState(true);
     const [typeHeadOptions, setTypeHeadOptions] = useState({});
     const [dropDownData, setDropdownData] = useState();
+    const [file,setFile] = useState();
 
     let [designToFactoryInput, setDesignToFactoryInput] = useReducer(
         (state, newState) => ({...state, ...newState}),
@@ -105,8 +106,12 @@ const Add = (props) => {
     
     const submitHandler = (data, e) => {
         data.job_order_id = dropDownData.job_order_id;
-        console.log("data", data);
-        userPostMethod(DESIGN_TO_FACTORY_RSURL, data)
+        const formData = new FormData();
+        formData.append('upload_file',file);
+        formData.append('job_order_id',data.job_order_id);
+        formData.append('send_date',data.send_date);
+        formData.append('remark',data.remark);
+        userPostMethod(DESIGN_TO_FACTORY_RSURL, formData)
             .then(response => {
                 console.log("response.data", response.data);
                 if (response.data.status == 1) {
@@ -175,6 +180,12 @@ const Add = (props) => {
                                                 <label className="col-sm-3 col-form-label" htmlFor="remark">Remarks</label>
                                                 <div className="col-sm-9">
                                                     <input className="form-control" id="remark" name="remark" type="text" placeholder="Remarks" ref={register({})} />
+                                                </div>
+                                            </div>
+                                            <div className='form-group row'>
+                                                <label className='col-sm-3 col-form-label' htmlFor='upload_file'>Upload File</label>
+                                                <div className='col-sm-9'>
+                                                    <input className='form-control' id='upload_file' name='upload_file' type='file' onChange={(e) => setFile(e.target.files[0])} />
                                                 </div>
                                             </div>
                                         </div>

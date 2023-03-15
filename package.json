@@ -2,7 +2,7 @@
   "name": "endless",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://delbd.eduvess.com",
+  "homepage": "https://icube7.delbd.com/",
   "dependencies": {
     "@emotion/styled": "^11.10.4",
     "@fullcalendar/daygrid": "^4.4.2",

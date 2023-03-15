@@ -135,7 +135,6 @@ const Add = (props) => {
     
                 if ((parseInt(jobOrderData.orderQty) + parseInt(baseOrderDetails_obj.qty)) <= parseInt(jobOrderData.job_order_qty_limit)) {
                     baseOrderDetails_arr.push(baseOrderDetails_obj);
-    
                     // PUSH BASE ORDER DETAILS MAIN ARRAY
                     if (baseOrderDetails.length > 0) {
                         // CHECKING FOR DUPLICATE ENTRY
