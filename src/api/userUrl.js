@@ -145,6 +145,7 @@ export const AccountsReceivableReportActionApi = 'api/user/AccountsReceivableRep
 export const GRINDING_RSURL = 'api/user/grinding';
 export const GRINDING_JOB_ORDER_DETAILS = 'api/user/jobOrderDetailsFromGrinding';
 export const GET_EMPLOYEE_BY_SHIFT = 'api/user/getEmployeeByShift';
+export const GRINDING_DETAILS = 'api/user/grindingDetails';
 //GRINDING MACHINE
 export const MACHINE_RSURL = 'api/user/machine';
 //POLISHING MACHINE
