@@ -6,6 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import useForm from "react-hook-form";
 import { Typeahead } from 'react-bootstrap-typeahead';
 import { SubmitButton } from '../../../common/GlobalButton';
+import SweetAlert from 'sweetalert2';
 
 const Add = (props) => {
     const { handleSubmit, register, errors } = useForm();
@@ -180,7 +181,7 @@ const Add = (props) => {
             )
         }
     }
-
+   
     const shiftChangeHandler = (shiftId) => {
         userGetMethod(`${GET_EMPLOYEE_BY_SHIFT}/${shiftId}`)
             .then(response => {
@@ -191,10 +192,14 @@ const Add = (props) => {
     }
 
     const submitHandler = (data, e) => {
+        e.preventDefault();
+        if((Object.keys(grindingInput['after_mark_as_complete']).length)==0){
+            toast.warn("Please select mimnum one cylinder")
+            return;
+        }    
         data.job_order_pk_id = dropDownData.job_order_pk_id;
         data.grindingDetails = grindingInput;
         data.total_cylinder_qty = jobOrderData.total_cylinder_qty;
-        console.log(data);
         userPostMethod(GRINDING_RSURL, data)
             .then(response => {
                 if (response.data.status == 1) {
@@ -223,7 +228,7 @@ const Add = (props) => {
 
                         {/* Before Grinding Check Start */}
                         <td>
-                            <input onChange={e=>markedComplete.includes(i) ?  changeInputHandler(i, e, 'before_fl') : ''} className="form-control" name="before_fl" id="before_fl" type="number" placeholder="FL" required={markedComplete.includes(i) ? true : false}/>
+                            <input onChange={e=> changeInputHandler(i, e, 'before_fl')} className="form-control" name="before_fl" id="before_fl" type="number" placeholder="FL" required={markedComplete.includes(i) ? true : false}/>
                         </td>
                         <td>
                             <input onChange={e=>changeInputHandler(i, e, 'before_dia')} className="form-control" name="before_dia" id="before_dia" type="number" placeholder="Dia" required={markedComplete.includes(i) ? true : false}/>
@@ -253,7 +258,7 @@ const Add = (props) => {
                             <input onChange={e=>changeInputHandler(i, e, 'after_pinhole')} className="form-control" name="after_pinhole" id="after_pinhole" type="number" placeholder="#Pin Hole" />
                         </td>
                         <td style={{textAlign: 'center'}}>
-                            <input ref={register({required: 'Machine Field Required'})} onChange={e=>changeInputHandler(i, e, 'after_base_down', true)} value={1} type="checkbox" name='after_base_down' id={i} />
+                            <input  onChange={e=>changeInputHandler(i, e, 'after_base_down', true)} value={1} type="checkbox" name='after_base_down' id={i} />
                         </td>
                         <td style={{textAlign: 'center'}}>
                             <input onChange={e=>changeInputHandler(i, e, 'after_key_lock', true)} type="checkbox" name='after_key_lock' value={1} id={i} />
@@ -262,7 +267,7 @@ const Add = (props) => {
                             <input  onChange={e=>changeInputHandler(i, e, 'after_cone_prob', true)} type="checkbox" name='after_cone_prob' value={1} id={i}/>
                         </td>
                         <td style={{textAlign: 'center'}}>
-                            <input ref={register({required: 'Machine Field Required'})} onChange={e=>changeInputHandler(i, e, 'after_mark_as_complete', true)} type="checkbox" name='after_mark_as_complete' value={1} id={i} />
+                            <input  onChange={e=>changeInputHandler(i, e, 'after_mark_as_complete', true)} type="checkbox" name='after_mark_as_complete' value={1} id={i} />
                         </td>
                         {/* After Grinding Check End */}
 
