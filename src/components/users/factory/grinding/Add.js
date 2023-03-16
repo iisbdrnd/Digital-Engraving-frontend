@@ -15,6 +15,7 @@ const Add = (props) => {
     const [dropDownData, setDropdownData] = useState();
 
     const [selectedJobOrders, setSelectedJobOrders] = useState({});
+    const [markedComplete, setMarkedComplete] = useState([]);
 
     let [jobOrderData, setJobOrderData] = useReducer(
         (state, newState) => ({...state, ...newState}),
@@ -62,7 +63,6 @@ const Add = (props) => {
             remarks_for_cyl       : {},
         }
     );
-
 
     var menuId = 0;
     if (props.location.state === undefined) {
@@ -157,6 +157,9 @@ const Add = (props) => {
     }
 
     const changeInputHandler = (i, e, fieldName, checkbox = false) => {
+        if(fieldName == 'after_mark_as_complete'){
+            setMarkedComplete([...markedComplete,i]);
+        }
         setGrindingInput(
             {
                 [fieldName]: {
@@ -165,7 +168,7 @@ const Add = (props) => {
                 }
             }
         )
-
+        
         if (checkbox && grindingInput[fieldName].hasOwnProperty(e.target.id)) {
             setGrindingInput(
                 {
@@ -191,7 +194,7 @@ const Add = (props) => {
         data.job_order_pk_id = dropDownData.job_order_pk_id;
         data.grindingDetails = grindingInput;
         data.total_cylinder_qty = jobOrderData.total_cylinder_qty;
-
+        console.log(data);
         userPostMethod(GRINDING_RSURL, data)
             .then(response => {
                 if (response.data.status == 1) {
@@ -220,10 +223,10 @@ const Add = (props) => {
 
                         {/* Before Grinding Check Start */}
                         <td>
-                            <input onChange={e=>changeInputHandler(i, e, 'before_fl')} className="form-control" name="before_fl" id="before_fl" type="number" placeholder="FL" required/>
+                            <input onChange={e=>markedComplete.includes(i) ?  changeInputHandler(i, e, 'before_fl') : ''} className="form-control" name="before_fl" id="before_fl" type="number" placeholder="FL" required={markedComplete.includes(i) ? true : false}/>
                         </td>
                         <td>
-                            <input onChange={e=>changeInputHandler(i, e, 'before_dia')} className="form-control" name="before_dia" id="before_dia" type="number" placeholder="Dia" required/>
+                            <input onChange={e=>changeInputHandler(i, e, 'before_dia')} className="form-control" name="before_dia" id="before_dia" type="number" placeholder="Dia" required={markedComplete.includes(i) ? true : false}/>
                         </td>
                         <td>
                             <input onInput={e=>changeInputHandler(i, e, 'before_target')} className="form-control" name="before_target" id="before_target" type="number" placeholder="Target" />
@@ -244,7 +247,7 @@ const Add = (props) => {
 
                         {/* After Grinding Check Start */}
                         <td>
-                            <input onChange={e=>changeInputHandler(i, e, 'after_dia')} className="form-control" name="after_dia" id="after_dia" type="number" placeholder="Dia" required/>
+                            <input onChange={e=>changeInputHandler(i, e, 'after_dia')} className="form-control" name="after_dia" id="after_dia" type="number" placeholder="Dia" required={markedComplete.includes(i) ? true : false}/>
                         </td>
                         <td>
                             <input onChange={e=>changeInputHandler(i, e, 'after_pinhole')} className="form-control" name="after_pinhole" id="after_pinhole" type="number" placeholder="#Pin Hole" />
@@ -259,7 +262,7 @@ const Add = (props) => {
                             <input  onChange={e=>changeInputHandler(i, e, 'after_cone_prob', true)} type="checkbox" name='after_cone_prob' value={1} id={i}/>
                         </td>
                         <td style={{textAlign: 'center'}}>
-                            <input ref={register({required: 'Machine Field Required'})} onChange={e=>changeInputHandler(i, e, 'after_mark_as_complete', true)} type="checkbox" name='after_mark_as_complete' value={1} id={i} required />
+                            <input ref={register({required: 'Machine Field Required'})} onChange={e=>changeInputHandler(i, e, 'after_mark_as_complete', true)} type="checkbox" name='after_mark_as_complete' value={1} id={i} />
                         </td>
                         {/* After Grinding Check End */}
 
