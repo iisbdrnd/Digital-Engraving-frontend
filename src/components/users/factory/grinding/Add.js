@@ -1,12 +1,11 @@
 import React, { Fragment, useState, useEffect, useReducer } from 'react';
-import { JOB_ORDER_DETAILS, GRINDING_RSURL, GET_EMPLOYEE_BY_SHIFT } from '../../../../api/userUrl';
+import { JOB_ORDER_DETAILS, GRINDING_RSURL, GET_EMPLOYEE_BY_SHIFT, GRINDING_DETAILS } from '../../../../api/userUrl';
 import { userGetMethod, userPostMethod } from '../../../../api/userAction';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import useForm from "react-hook-form";
 import { Typeahead } from 'react-bootstrap-typeahead';
 import { SubmitButton } from '../../../common/GlobalButton';
-import SweetAlert from 'sweetalert2';
 
 const Add = (props) => {
     const { handleSubmit, register, errors } = useForm();
@@ -17,6 +16,7 @@ const Add = (props) => {
 
     const [selectedJobOrders, setSelectedJobOrders] = useState({});
     const [markedComplete, setMarkedComplete] = useState([]);
+    const [grindingValues, setGrindingValues] = useState([]);
 
     let [jobOrderData, setJobOrderData] = useReducer(
         (state, newState) => ({...state, ...newState}),
@@ -64,6 +64,7 @@ const Add = (props) => {
             remarks_for_cyl       : {},
         }
     );
+
 
     var menuId = 0;
     if (props.location.state === undefined) {
@@ -154,12 +155,34 @@ const Add = (props) => {
                         'desired_dia'       : dia
                     });
                 });
+
+            userGetMethod(`${GRINDING_DETAILS}?job_id=3`)
+                .then(response => {
+                    console.log(response?.data?.grindingDetails);
+                    setGrindingValues(response?.data?.grindingDetails);
+                });
         }
     }
 
     const changeInputHandler = (i, e, fieldName, checkbox = false) => {
         if(fieldName == 'after_mark_as_complete'){
-            setMarkedComplete([...markedComplete,i]);
+           setMarkedComplete([...markedComplete,i]) 
+           setGrindingInput(
+                {
+                    ['cylinder_id']: {
+                        ...grindingInput['cylinder_id'],
+                        [i]: (jobOrderData.job_no).concat("-", (i+1).toString())
+                    }
+                }
+            )
+           setGrindingInput(
+                {
+                    ['serial']: {
+                        ...grindingInput['serial'],
+                        [i]: i+1
+                    }
+                }
+            )
         }
         setGrindingInput(
             {
@@ -181,6 +204,7 @@ const Add = (props) => {
             )
         }
     }
+    console.log(grindingInput,markedComplete);
    
     const shiftChangeHandler = (shiftId) => {
         userGetMethod(`${GET_EMPLOYEE_BY_SHIFT}/${shiftId}`)
@@ -220,7 +244,7 @@ const Add = (props) => {
                 <>
                     <tr>
                         <td>
-                            <input value={i+1} disabled className="form-control" name="serial" id="serial" type="text" placeholder="Serial" />
+                            <input  value={i+1} disabled className="form-control" name="serial" id="serial" type="text" placeholder="Serial" />
                         </td>
                         <td>
                             <input onChange={e=>changeInputHandler(i, e, 'cylinder_id')} value={`${jobOrderData.job_no}-${i+1}`} disabled className="form-control" name="cylinder_id" id="cylinder_id" type="text" placeholder="Cylinder Id" />
