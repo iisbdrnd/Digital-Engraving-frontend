@@ -17,6 +17,7 @@ const Add = (props) => {
     const [selectedJobOrders, setSelectedJobOrders] = useState({});
     const [markedComplete, setMarkedComplete] = useState([]);
     const [grindingValues, setGrindingValues] = useState([]);
+    const [grapped,setGrapped] = useState(false);
 
     let [jobOrderData, setJobOrderData] = useReducer(
         (state, newState) => ({...state, ...newState}),
@@ -125,10 +126,23 @@ const Add = (props) => {
                         ['job_orders']: jobOrderOptions,
                     })
                 );
-
                 setIsLoading(false);
             });
     }, []);
+
+    const getGrinder = () => {
+        var cylinder_arr =[];
+        var sr_arr = [];
+        for(let i=0;i<jobOrderData.total_cylinder_qty;i++){
+           var cy_id =  (jobOrderData.job_no).concat("-", (i+1).toString());
+           cylinder_arr.push(cy_id);
+           sr_arr.push(i+1);
+        }
+        setGrindingInput({['cylinder_id']:cylinder_arr});
+        setGrindingInput({['serial']:sr_arr})
+        setGrapped(true);
+    }
+    console.log(grindingInput);
 
     const dropDownChange = (e, fieldName) => {
         if(e.length > 0){
@@ -156,7 +170,7 @@ const Add = (props) => {
                     });
                 });
 
-            userGetMethod(`${GRINDING_DETAILS}?job_id=3`)
+            userGetMethod(`${GRINDING_DETAILS}?job_id=${selectedValueId}?`)
                 .then(response => {
                     console.log(response?.data?.grindingDetails);
                     setGrindingValues(response?.data?.grindingDetails);
@@ -165,24 +179,34 @@ const Add = (props) => {
     }
 
     const changeInputHandler = (i, e, fieldName, checkbox = false) => {
+        if(!grapped){ 
+            getGrinder();
+        }
         if(fieldName == 'after_mark_as_complete'){
-           setMarkedComplete([...markedComplete,i]) 
-           setGrindingInput(
-                {
-                    ['cylinder_id']: {
-                        ...grindingInput['cylinder_id'],
-                        [i]: (jobOrderData.job_no).concat("-", (i+1).toString())
-                    }
-                }
-            )
-           setGrindingInput(
-                {
-                    ['serial']: {
-                        ...grindingInput['serial'],
-                        [i]: i+1
-                    }
-                }
-            )
+            console.log(e.target.checked,e.target.value);
+            if(e.target.checked == true) {
+                setMarkedComplete([...markedComplete,i]) ;
+            }else if(e.target.checked == false){
+                var index = markedComplete.indexOf(i);
+                markedComplete.splice(index,1);
+                setMarkedComplete(markedComplete);
+            }
+        //    setGrindingInput(
+        //         {
+        //             ['cylinder_id']: {
+        //                 ...grindingInput['cylinder_id'],
+        //                 [i]: (jobOrderData.job_no).concat("-", (i+1).toString())
+        //             }
+        //         }
+        //     )
+        //    setGrindingInput(
+        //         {
+        //             ['serial']: {
+        //                 ...grindingInput['serial'],
+        //                 [i]: i+1
+        //             }
+        //         }
+        //     )
         }
         setGrindingInput(
             {
@@ -204,7 +228,6 @@ const Add = (props) => {
             )
         }
     }
-    console.log(grindingInput,markedComplete);
    
     const shiftChangeHandler = (shiftId) => {
         userGetMethod(`${GET_EMPLOYEE_BY_SHIFT}/${shiftId}`)
@@ -217,7 +240,7 @@ const Add = (props) => {
 
     const submitHandler = (data, e) => {
         e.preventDefault();
-        if((Object.keys(grindingInput['after_mark_as_complete']).length)==0){
+        if(markedComplete.length == 0){
             toast.warn("Please select mimnum one cylinder")
             return;
         }    
@@ -244,7 +267,7 @@ const Add = (props) => {
                 <>
                     <tr>
                         <td>
-                            <input  value={i+1} disabled className="form-control" name="serial" id="serial" type="text" placeholder="Serial" />
+                            <input  defaultValue={i+1}  disabled className="form-control" name="serial" id="serial" type="text" placeholder="Serial" />
                         </td>
                         <td>
                             <input onChange={e=>changeInputHandler(i, e, 'cylinder_id')} value={`${jobOrderData.job_no}-${i+1}`} disabled className="form-control" name="cylinder_id" id="cylinder_id" type="text" placeholder="Cylinder Id" />
