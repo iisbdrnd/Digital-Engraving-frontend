@@ -224,7 +224,7 @@ const Add = (props) => {
             {
                 [fieldName]: {
                     ...grindingInput[fieldName],
-                    [i]: e.target.value
+                    [i]: e.target.type == "checkbox" ? (e.target.checked ? 1: 0) : e.target.value 
                 }
             }
         )

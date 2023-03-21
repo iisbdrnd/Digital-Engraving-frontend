@@ -164,7 +164,7 @@ const Sidebar = (props) => {
     return (
         <Fragment>
             <div className="page-sidebar">
-                <div className="main-header-left d-none d-lg-block">
+                <div className="main-header-left  d-lg-block">
                     <div className="logo-wrapper compactLogo">
                         <Link to={`${process.env.PUBLIC_URL}/welcome`}>
                             <img className="blur-up lazyloaded" src={logo_compact} alt="" />
@@ -266,7 +266,6 @@ const Sidebar = (props) => {
                                                                         </ul>
                                                                     : ''}
                                                                     {/* Customs End */}
-
                                                                 </li>
                                                             )}
                                                         </ul>

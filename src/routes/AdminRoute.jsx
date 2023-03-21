@@ -102,7 +102,7 @@ class AdminRoute extends Component {
         return (
           <Switch>
             <AdminGuestRoute
-              path={`${process.env.PUBLIC_URL}/login`}
+              exact path={`${process.env.PUBLIC_URL}/login`}
               component={AdminSignin}
             />
             <AdminAuthRoute
