@@ -17,7 +17,9 @@ const Add = (props) => {
     const [selectedJobOrders, setSelectedJobOrders] = useState({});
     const [markedComplete, setMarkedComplete] = useState([]);
     const [grindingValues, setGrindingValues] = useState([]);
+    const [grindingMaster, setGrindingMaster] = useState([]);
     const [grapped,setGrapped] = useState(false);
+    const [chk, setChk] = useState(true);
 
     let [jobOrderData, setJobOrderData] = useReducer(
         (state, newState) => ({...state, ...newState}),
@@ -142,7 +144,6 @@ const Add = (props) => {
         setGrindingInput({['serial']:sr_arr})
         setGrapped(true);
     }
-    console.log(grindingInput);
 
     const dropDownChange = (e, fieldName) => {
         if(e.length > 0){
@@ -172,17 +173,44 @@ const Add = (props) => {
 
             userGetMethod(`${GRINDING_DETAILS}?job_id=${selectedValueId}?`)
                 .then(response => {
-                    console.log(response?.data?.grindingDetails);
                     setGrindingValues(response?.data?.grindingDetails);
+                    updateGrindingInput(response?.data?.grindingDetails);
+                    setGrindingMaster(response?.data?.grindingMaster);
                 });
         }
     }
+    const updateGrindingInput = (values) => {
+        Object.entries(grindingInput).map(([key, value]) => {
+            var temp_obj = {};
+            values.map((item,index) => 
+            {
+                Object.entries(item).map(([rkey, rvalue]) => {
+                    if(key == rkey && key != "cylinder_id" && key != "serial"){
+                    Object.assign(temp_obj, {[index]: rvalue});
+                    if(rkey  == 'after_mark_as_complete' && rvalue==1){
+                        setMarkedComplete([...markedComplete,index]);
+                    }
+                    }
+                })
+            })
+            setGrindingInput({[key]:temp_obj})
+        })
+    }
+    console.log(grindingInput);
+
+    const  changeMasterGrinder = (e) => {
+        setGrindingMaster({...grindingMaster,[e.target.name] : e.target.value});
+    }
+
+    useEffect(() => {
+        shiftChangeHandler(parseInt(grindingMaster?.shift))
+    },[grindingMaster?.shift])
 
     const changeInputHandler = (i, e, fieldName, checkbox = false) => {
         if(!grapped){ 
             getGrinder();
         }
-        if(fieldName == 'after_mark_as_complete'){
+        if(fieldName == 'after_mark_as_complete') {
             console.log(e.target.checked,e.target.value);
             if(e.target.checked == true) {
                 setMarkedComplete([...markedComplete,i]) ;
@@ -191,22 +219,6 @@ const Add = (props) => {
                 markedComplete.splice(index,1);
                 setMarkedComplete(markedComplete);
             }
-        //    setGrindingInput(
-        //         {
-        //             ['cylinder_id']: {
-        //                 ...grindingInput['cylinder_id'],
-        //                 [i]: (jobOrderData.job_no).concat("-", (i+1).toString())
-        //             }
-        //         }
-        //     )
-        //    setGrindingInput(
-        //         {
-        //             ['serial']: {
-        //                 ...grindingInput['serial'],
-        //                 [i]: i+1
-        //             }
-        //         }
-        //     )
         }
         setGrindingInput(
             {
@@ -222,7 +234,7 @@ const Add = (props) => {
                 {
                     [fieldName]: {
                         ...grindingInput[fieldName],
-                        [i]: 0
+                        [i]: e.target.checked ? 1 : 0
                     }
                 }
             )
@@ -240,6 +252,8 @@ const Add = (props) => {
 
     const submitHandler = (data, e) => {
         e.preventDefault();
+        getGrinder()
+        console.log(data,grindingValues);
         if(markedComplete.length == 0){
             toast.warn("Please select mimnum one cylinder")
             return;
@@ -270,60 +284,60 @@ const Add = (props) => {
                             <input  defaultValue={i+1}  disabled className="form-control" name="serial" id="serial" type="text" placeholder="Serial" />
                         </td>
                         <td>
-                            <input onChange={e=>changeInputHandler(i, e, 'cylinder_id')} value={`${jobOrderData.job_no}-${i+1}`} disabled className="form-control" name="cylinder_id" id="cylinder_id" type="text" placeholder="Cylinder Id" />
+                            <input onChange={e=>changeInputHandler(i, e, 'cylinder_id')} value={`${jobOrderData.job_no}-${i+1}`}  disabled className="form-control" name="cylinder_id" id="cylinder_id" type="text" placeholder="Cylinder Id" />
                         </td>
 
                         {/* Before Grinding Check Start */}
                         <td>
-                            <input onChange={e=> changeInputHandler(i, e, 'before_fl')} className="form-control" name="before_fl" id="before_fl" type="number" placeholder="FL" required={markedComplete.includes(i) ? true : false}/>
+                            <input onChange={e=> changeInputHandler(i, e, 'before_fl')} value={grindingInput['before_fl'][i] ? parseInt(grindingInput['before_fl'][i]) : null} className="form-control" name="before_fl" id="before_fl" type="number" placeholder="FL" required={markedComplete.includes(i) ? true : false}/>
                         </td>
                         <td>
-                            <input onChange={e=>changeInputHandler(i, e, 'before_dia')} className="form-control" name="before_dia" id="before_dia" type="number" placeholder="Dia" required={markedComplete.includes(i) ? true : false}/>
+                            <input onChange={e=>changeInputHandler(i, e, 'before_dia')} className="form-control" value={grindingInput['before_dia'][i] ? parseInt(grindingInput['before_dia'][i]) : null} name="before_dia" id="before_dia" type="number" placeholder="Dia" required={markedComplete.includes(i) ? true : false}/>
                         </td>
                         <td>
-                            <input onInput={e=>changeInputHandler(i, e, 'before_target')} className="form-control" name="before_target" id="before_target" type="number" placeholder="Target" />
+                            <input onInput={e=>changeInputHandler(i, e, 'before_target')} value={grindingInput['before_target'][i] ? parseInt(grindingInput['before_target'][i]) : null} className="form-control" name="before_target" id="before_target" type="number" placeholder="Target" />
                         </td>
                         <td>
-                            <input onChange={e=>changeInputHandler(i, e, 'before_pinhole')} className="form-control" name="before_pinhole" id="before_pinhole" type="number" placeholder="#Pin Hole" />
+                            <input onChange={e=>changeInputHandler(i, e, 'before_pinhole')} value={grindingInput['before_pinhole'][i] ? parseInt(grindingInput['before_pinhole'][i]) : null} className="form-control" name="before_pinhole" id="before_pinhole" type="number" placeholder="#Pin Hole" />
                         </td>
                         <td style={{textAlign: 'center'}}>
-                            <input onChange={e=>changeInputHandler(i, e, 'before_base_down' , true)} value={1} type="checkbox" name="before_base_down" id={i} />
+                            <input onChange={e=>changeInputHandler(i, e, 'before_base_down' , true)} defaultChecked={grindingInput['before_base_down'][i] == 1 ? chk : null} type="checkbox" name="before_base_down" id={i} />
                         </td>
                         <td style={{textAlign: 'center'}}>
-                            <input onChange={e=>changeInputHandler(i, e, 'before_key_lock' , true)} value={1} id={i} type="checkbox" name="before_key_lock" />
+                            <input onChange={e=>changeInputHandler(i, e, 'before_key_lock' , true)}  defaultChecked={grindingInput['before_key_lock'][i] == 1 ? chk : null}  id={i} type="checkbox" name="before_key_lock" />
                         </td>
                         <td style={{textAlign: 'center'}}>
-                            <input onChange={e=>changeInputHandler(i, e, 'before_cone_prob' , true)} value={1} id={i} type="checkbox" name="before_cone_prob" />
+                            <input onChange={e=>changeInputHandler(i, e, 'before_cone_prob' , true)} defaultChecked={grindingInput['before_cone_prob'][i] == 1 ? chk : null}  id={i} type="checkbox" name="before_cone_prob" />
                         </td>
                         {/* Before Grinding Check End */}
 
                         {/* After Grinding Check Start */}
                         <td>
-                            <input onChange={e=>changeInputHandler(i, e, 'after_dia')} className="form-control" name="after_dia" id="after_dia" type="number" placeholder="Dia" required={markedComplete.includes(i) ? true : false}/>
+                            <input onChange={e=>changeInputHandler(i, e, 'after_dia')} value={grindingInput['after_dia'][i] ? parseInt(grindingInput['after_dia'][i]) : null} className="form-control" name="after_dia" id="after_dia" type="number" placeholder="Dia" required={markedComplete.includes(i) ? true : false}/>
                         </td>
                         <td>
-                            <input onChange={e=>changeInputHandler(i, e, 'after_pinhole')} className="form-control" name="after_pinhole" id="after_pinhole" type="number" placeholder="#Pin Hole" />
+                            <input onChange={e=>changeInputHandler(i, e, 'after_pinhole')} value={grindingInput['after_pinhole'][i] ? parseInt(grindingInput['after_pinhole'][i]) : null} className="form-control" name="after_pinhole" id="after_pinhole" type="number" placeholder="#Pin Hole" />
                         </td>
                         <td style={{textAlign: 'center'}}>
-                            <input  onChange={e=>changeInputHandler(i, e, 'after_base_down', true)} value={1} type="checkbox" name='after_base_down' id={i} />
+                            <input  onChange={e=>changeInputHandler(i, e, 'after_base_down', true)} defaultChecked={grindingInput['after_base_down'][i] == 1 ? chk : null} type="checkbox" name='after_base_down' id={i} />
                         </td>
                         <td style={{textAlign: 'center'}}>
-                            <input onChange={e=>changeInputHandler(i, e, 'after_key_lock', true)} type="checkbox" name='after_key_lock' value={1} id={i} />
+                            <input onChange={e=>changeInputHandler(i, e, 'after_key_lock', true)} defaultChecked={grindingInput['after_key_lock'][i] == 1 ? chk : null} type="checkbox" name='after_key_lock' id={i} />
                         </td>
                         <td style={{textAlign: 'center'}}>
-                            <input  onChange={e=>changeInputHandler(i, e, 'after_cone_prob', true)} type="checkbox" name='after_cone_prob' value={1} id={i}/>
+                            <input  onChange={e=>changeInputHandler(i, e, 'after_cone_prob', true)}  type="checkbox" name='after_cone_prob' defaultChecked={grindingInput['after_cone_prob'][i] == 1 ? chk : null}  id={i}/>
                         </td>
                         <td style={{textAlign: 'center'}}>
-                            <input  onChange={e=>changeInputHandler(i, e, 'after_mark_as_complete', true)} type="checkbox" name='after_mark_as_complete' value={1} id={i} />
+                            <input  onChange={e=>changeInputHandler(i, e, 'after_mark_as_complete', true)}  type="checkbox" name='after_mark_as_complete' defaultChecked={grindingInput['after_mark_as_complete'][i] == 1 ? chk : null} id={i} />
                         </td>
                         {/* After Grinding Check End */}
 
                         {/* Plating Order Remarks Start */}
                         <td>
-                            <input onChange={e=>changeInputHandler(i, e, 'plating_order')} className="form-control" name="plating_order" id="plating_order" type="number" placeholder="Plating Order" />
+                            <input onChange={e=>changeInputHandler(i, e, 'plating_order')} className="form-control" value={grindingInput['plating_order'][i] ? parseInt(grindingInput['plating_order'][i]) : null} name="plating_order" id="plating_order" type="number" placeholder="Plating Order" />
                         </td>
                         <td>
-                            <input onChange={e=>changeInputHandler(i, e, 'remarks_for_cyl')} className="form-control" name="remarks_for_cyl" id="remarks_for_cyl" type="number" placeholder="Remarks for Cylinder" />
+                            <input onChange={e=>changeInputHandler(i, e, 'remarks_for_cyl')} className="form-control" value={grindingInput['remarks_for_cyl'][i] ? parseInt(grindingInput['remarks_for_cyl'][i]) : null} name="remarks_for_cyl" id="remarks_for_cyl" type="number" placeholder="Remarks for Cylinder" />
                         </td>
                         {/* Plating Order Remarks End */}
                     </tr>
@@ -449,7 +463,8 @@ const Add = (props) => {
                                                                 ref={register({
                                                                     required: 'Machine Field Required'
                                                                 })} 
-                                                                defaultValue=''>
+                                                                onChange={(e) => changeMasterGrinder(e)}
+                                                                value = {grindingMaster?.machine ? parseInt(grindingMaster?.machine) : 0}>
                                                                 <option value=''> Select Machine </option>
                                                                     {
                                                                         jobOrderData.machines.map((machine, key)=>(
@@ -466,11 +481,12 @@ const Add = (props) => {
                                                             <label className="col-sm-5 col-form-label" htmlFor="shift">shift</label>
                                                             <div className="col-sm-7">
                                                                 <select className="form-control" id="shift" name="shift" 
-                                                                onChange={(e)=>shiftChangeHandler(e.target.value)}
+                                                                // onChange={(e)=>shiftChangeHandler(e.target.value)}
+                                                                onChange={(e) => changeMasterGrinder(e)}
                                                                 ref={register({
                                                                     required: 'Shift Field Required'
                                                                 })} 
-                                                                defaultValue=''>
+                                                                value={grindingMaster?.shift ? parseInt(grindingMaster?.shift) : ''}>
                                                                     <option value=''> Select Shift </option>
                                                                     <option value="1">Day</option>
                                                                     <option value="2">Evening</option>
@@ -486,7 +502,7 @@ const Add = (props) => {
                                                         <div className="row">
                                                             <label className="col-sm-5 col-form-label" htmlFor="start_time">Start Time</label>
                                                             <div className="col-sm-7">
-                                                                <input className="form-control" name="start_time" required id="start_time" type="text" placeholder="Start Time" ref={register({ required: true })} />
+                                                                <input className="form-control"  onChange={(e) => changeMasterGrinder(e)} type="time" name="start_time" required id="start_time"  placeholder="Start Time"  value={grindingMaster?.start_time ? grindingMaster?.start_time : ''} ref={register({ required: true })} />
                                                                 {/* <DatePicker className="form-control digits" selected={startDate} onChange={dropDownChange} showTimeSelect showTimeSelectOnly timeIntervals={15} timeCaption="Time" dateFormat="h:mm aa" /> */}
 
                                                                 <span>{errors.start_time && 'Start Time is required'}</span>
@@ -503,7 +519,8 @@ const Add = (props) => {
                                                                 ref={register({
                                                                     required: 'Polishing Field Required'
                                                                 })} 
-                                                                defaultValue=''>
+                                                                value={grindingMaster?.polishing ? parseInt(grindingMaster?.polishing) : ''}
+                                                                onChange={(e) => changeMasterGrinder(e)}>
                                                                     <option value=''> Select Polishing </option>
                                                                     {jobOrderData.polishMachines.map((item, index)=>( 
                                                                         <option value={item.id} key={index}>{item.machine_name}</option>
@@ -524,7 +541,8 @@ const Add = (props) => {
                                                                 ref={register({
                                                                     required: 'Done By Field Required'
                                                                 })} 
-                                                                defaultValue=''>
+                                                                value={grindingMaster?.done_by ? parseInt(grindingMaster?.done_by) : ''}
+                                                                onChange={(e) => changeMasterGrinder(e)}>
                                                                     <option value=''> Select One </option>
                                                                     {
                                                                         jobOrderData.employeeInfos.map((employee, key)=>(
@@ -540,7 +558,7 @@ const Add = (props) => {
                                                         <div className="row">
                                                             <label className="col-sm-5 col-form-label" htmlFor="end_time">End Time</label>
                                                             <div className="col-sm-7">
-                                                                <input className="form-control" name="end_time" required id="end_time" type="text" placeholder="End Time" ref={register({ required: true })} />
+                                                                <input className="form-control"  onChange={(e) => changeMasterGrinder(e)} name="end_time" required id="end_time" type="time" placeholder="End Time" value={grindingMaster?.end_time ? grindingMaster?.end_time : ''} ref={register({ required: true })} />
                                                                 <span>{errors.end_time && 'End Time is required'}</span>
                                                                 <div className="valid-feedback">Looks good!</div>
                                                             </div>
@@ -615,7 +633,7 @@ const Add = (props) => {
                                                             <div className="row">
                                                                 <label className="col-sm-5 col-form-label" htmlFor="final_fl">Final FL</label>
                                                                 <div className="col-sm-7">
-                                                                    <input className="form-control" name="final_fl" required id="final_fl" type="number" placeholder="Final FL" ref={register({ required: true })} />
+                                                                    <input className="form-control" name="final_fl" required id="final_fl" type="number" placeholder="Final FL" value={grindingMaster?.final_fl ? grindingMaster?.final_fl : ''} ref={register({ required: true })} />
                                                                     <span>{errors.final_fl && 'Final FL is required'}</span>
                                                                     <div className="valid-feedback">Looks good!</div>
                                                                 </div>
@@ -626,7 +644,7 @@ const Add = (props) => {
                                                             <div className="row">
                                                                 <label className="col-sm-5 col-form-label" htmlFor="final_dia">Final Dia</label>
                                                                 <div className="col-sm-7">
-                                                                    <input className="form-control" name="final_dia" required id="final_dia" type="number" placeholder="Final Dia" ref={register({ required: true })}/>
+                                                                    <input className="form-control" name="final_dia" required id="final_dia" type="number" placeholder="Final Dia" value={grindingMaster?.final_dia ? grindingMaster?.final_dia : ''} ref={register({ required: true })}/>
                                                                     <span>{errors.final_dia && 'Final Dia is required'}</span>
                                                                     <div className="valid-feedback">Looks good!</div>
                                                                 </div>
@@ -654,7 +672,7 @@ const Add = (props) => {
 
                                                     <div className="form-row">
                                                         <div className="col-md-12 mb-1">
-                                                            <textarea className='form-control' name='note' id='note' placeholder='Note' ref={register({ required: true })}></textarea>
+                                                            <textarea className='form-control' name='note' id='note' placeholder='Note' value={grindingMaster?.note ? grindingMaster?.note : ''} ref={register({ required: true })}></textarea>
                                                         </div>
                                                     </div>
                                                 </fieldset>
