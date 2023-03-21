@@ -633,7 +633,7 @@ const Add = (props) => {
                                                             <div className="row">
                                                                 <label className="col-sm-5 col-form-label" htmlFor="final_fl">Final FL</label>
                                                                 <div className="col-sm-7">
-                                                                    <input className="form-control" name="final_fl" required id="final_fl" type="number" placeholder="Final FL" value={grindingMaster?.final_fl ? grindingMaster?.final_fl : ''} ref={register({ required: true })} />
+                                                                    <input className="form-control" name="final_fl" required id="final_fl" type="number" placeholder="Final FL" onChange={(e) => changeMasterGrinder(e)} value={grindingMaster?.final_fl ? grindingMaster?.final_fl : ''} ref={register({ required: true })} />
                                                                     <span>{errors.final_fl && 'Final FL is required'}</span>
                                                                     <div className="valid-feedback">Looks good!</div>
                                                                 </div>
@@ -644,7 +644,7 @@ const Add = (props) => {
                                                             <div className="row">
                                                                 <label className="col-sm-5 col-form-label" htmlFor="final_dia">Final Dia</label>
                                                                 <div className="col-sm-7">
-                                                                    <input className="form-control" name="final_dia" required id="final_dia" type="number" placeholder="Final Dia" value={grindingMaster?.final_dia ? grindingMaster?.final_dia : ''} ref={register({ required: true })}/>
+                                                                    <input className="form-control" name="final_dia" required id="final_dia" type="number" placeholder="Final Dia" onChange={(e) => changeMasterGrinder(e)} value={grindingMaster?.final_dia ? grindingMaster?.final_dia : ''} ref={register({ required: true })}/>
                                                                     <span>{errors.final_dia && 'Final Dia is required'}</span>
                                                                     <div className="valid-feedback">Looks good!</div>
                                                                 </div>
@@ -655,7 +655,7 @@ const Add = (props) => {
                                                             <div className="row">
                                                                 <label className="col-sm-5 col-form-label" htmlFor="final_cir">Final Cir</label>
                                                                 <div className="col-sm-7">
-                                                                    <input disabled value={100} className="form-control" name="final_cir" required id="final_cir" type="number" placeholder="Final Cir" ref={register({ required: true })} />
+                                                                    <input disabled value={100} className="form-control" name="final_cir" required id="final_cir" type="number" placeholder="Final Cir" onChange={(e) => changeMasterGrinder(e)} ref={register({ required: true })} />
                                                                     <span>{errors.final_cir && 'Final Cir is required'}</span>
                                                                     <div className="valid-feedback">Looks good!</div>
                                                                 </div>
@@ -672,7 +672,7 @@ const Add = (props) => {
 
                                                     <div className="form-row">
                                                         <div className="col-md-12 mb-1">
-                                                            <textarea className='form-control' name='note' id='note' placeholder='Note' value={grindingMaster?.note ? grindingMaster?.note : ''} ref={register({ required: true })}></textarea>
+                                                            <textarea className='form-control' name='note' id='note' placeholder='Note' onChange={(e) => changeMasterGrinder(e)} value={grindingMaster?.note ? grindingMaster?.note : ''} ref={register({ required: true })}></textarea>
                                                         </div>
                                                     </div>
                                                 </fieldset>
