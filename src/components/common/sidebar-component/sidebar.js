@@ -199,7 +199,7 @@ const Sidebar = (props) => {
                                         : ''}
                                     {(menuItem.type === 'link') ?
                                         <Link
-                                            to={`${process.env.PUBLIC_URL}${menuItem.path}`}
+                                            // to={`${process.env.PUBLIC_URL}${menuItem.path}`}
                                             className={`sidebar-header ${menuItem.active ? 'active' : ''}`}
 
                                             onClick={() => toggletNavActive(menuItem)}

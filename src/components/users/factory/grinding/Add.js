@@ -194,6 +194,12 @@ const Add = (props) => {
             values.map((item,index) => 
             {
                 Object.entries(item).map(([rkey, rvalue]) => {
+                    if(rkey === 'after_pin_hole'){
+                        rkey = 'after_pinhole';
+                    }
+                    if(rkey === 'before_pin_hole'){
+                        rkey = 'before_pinhole';
+                    }
                     if(key == rkey && key != "cylinder_id" && key != "serial"){
                     Object.assign(temp_obj, {[index]: rvalue});
                     if(rkey  == 'after_mark_as_complete' && rvalue==1){
