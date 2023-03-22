@@ -130,6 +130,15 @@ const Add = (props) => {
                 );
                 setIsLoading(false);
             });
+        
+        if(props.location.state != undefined){
+            userGetMethod(`${GRINDING_DETAILS}?job_id=${props.location.state.params.job_order_id}?`)
+                .then(response => {
+                    setGrindingValues(response?.data?.grindingDetails);
+                    updateGrindingInput(response?.data?.grindingDetails);
+                    setGrindingMaster(response?.data?.grindingMaster);
+                });
+        }
     }, []);
 
     const getGrinder = () => {
