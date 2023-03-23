@@ -156,6 +156,7 @@ const Add = (props) => {
             {[event.target.name] : event.target.value},
         );
     }
+    console.log(calculationValue);
     // const jobChangeHandler = (e) => {
     //     var selectJobId = e[0]['id'];
     //     setJobId(selectJobId);
@@ -986,7 +987,7 @@ const Add = (props) => {
                                   type="text"
                                   placeholder="Total Surface Area"
                                   value={
-                                    (calculationValue.total_cylinder_qty *
+                                    (multipleDropdownData.length *
                                       (calculationValue.face_length *
                                         (calculationValue.design_height *
                                           calculationValue.rpt))) /

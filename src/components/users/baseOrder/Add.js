@@ -15,6 +15,12 @@ const Add = (props) => {
     const [dropdownData, setDropdownData] = useState({});
     const [typeheadOptions, setTypeheadOptions] = useState({});
     const [baseOrderDetails, setBaseOrderDetails] = useState([]);
+    const [refDisabled, setRefDisabled] = useState(true);
+    const [stockdel, setStockdel] = useState(false);
+    const [stockClient, setStockClient] = useState(false);
+    const [clientStockDetails, setClientStockDetails] = useState();
+    const [delStockDetails, setDelStockDetails] = useState();
+    const [addLimit, setaddLimit] = useState();
 
     let [jobOrderData, setJobOrderData] = useReducer(
         (state, newState) => ({...state, ...newState}),
@@ -68,11 +74,33 @@ const Add = (props) => {
                         supplierOptions.push(supplierObj);
                     })
                 }
+                // For delstocks
+                let delStockOptions = [];
+                if(response.data.delStocks && response.data.delStocks.length > 0) {
+                    response.data.delStocks.map((item) => {
+                        let delObj = {};
+                        Object.assign(delObj, {id: item['job_no'],name:`[${item.job_no}] ` + item['job_name']});
+                        delStockOptions.push(delObj);
+                    })
+                }
+                // For client stock
+                let clientStockOptions =[];
+                if(response.data.clientStocks && response.data.clientStocks.length > 0) {
+                    response.data.clientStocks.map((item) => {
+                        let clientObj = {};
+                        Object.assign(clientObj, {id: item['job_no'],name:`[${item.job_no}] ` +item['job_name']});
+                        clientStockOptions.push(clientObj);
+                    })
+                }
+                setClientStockDetails(response.data.clientStocks);
+                setDelStockDetails(response.data.delStocks);
                 setTypeheadOptions(
                     (prevstate) => ({
                         ...prevstate,
                         ['job_orders']: jobOrderOptions,
                         ['suppliers']: supplierOptions,
+                        ['del_stocks']: delStockOptions,
+                        ['client_stocks']: clientStockOptions
                     })
                 );
                 setBaseOrderDetails([]);
@@ -80,10 +108,21 @@ const Add = (props) => {
                 setIsLoading(false);
             });
     }
+
     // FOR Typeahead DATA INPUT
     const dropDownChange = (event, stateName) => {
         if(event.length > 0){
             const selectedValue = event[0].id;
+            if(stateName == 'supplier_id' && (selectedValue == 7 || selectedValue == 8)){
+                selectedValue == 7 ? setStockdel(true) : setStockdel(false);
+                selectedValue == 8 ? setStockClient(true) : setStockClient(false);
+                setRefDisabled(false);
+            }else if(stateName == 'supplier_id' && (selectedValue != 7 || selectedValue != 8)){
+                setRefDisabled(true);
+                setStockdel(true);
+                setStockClient(false);
+
+            }
             const selectedValueName = event[0].name;
             var obj={
                 id : selectedValue,
@@ -107,13 +146,36 @@ const Add = (props) => {
         } 
 
     }
-    console.log(dropdownData);
+    console.log(dropdownData['supplier_id']);
     // FOR ORDER DETAILS DATA INPUT
     const orderDetailsInputHander = (event) => {
+        console.log(event.target.name, event.target.value);
+        if(event.target.name == 'job_ref_id'){
+            if(stockClient){
+                clientStockDetails.map((item) => {
+                console.log(item);
+                if(event.target.value == item?.job_no){
+                    setaddLimit(item?.total_cylinder_qty);
+                    setJobOrderData({
+                        'job_order_qty_limit' : item?.total_cylinder_qty,
+                    });
+                }
+            })
+        }
+            if(stockdel){delStockDetails.map((item) => {
+                if(event.target.value == item?.job_no){
+                    setaddLimit(item?.total_cylinder_qty);
+                    setJobOrderData({
+                        'job_order_qty_limit' : item?.total_cylinder_qty,
+                    });
+                }
+            })}
+        }
         setJobOrderData(
             {[event.target.name] : event.target.value},
         );
     }
+    console.log(jobOrderData,addLimit);
     // FOR ORDER DETAILS ARRAY READY
     const addOrderDetailsHandler = (event) => {
         
@@ -196,7 +258,7 @@ const Add = (props) => {
         data.totalOrderQty = jobOrderData.orderQty;
         data.base_order_details = baseOrderDetails;
 
-        if (jobOrderData.orderQty == jobOrderData.job_order_qty_limit) {
+        // if (jobOrderData.orderQty == jobOrderData.job_order_qty_limit) {
             userPostMethod(BASE_ORDER_RSURL, data)
                 .then(response => {
                     console.log(response);
@@ -208,9 +270,9 @@ const Add = (props) => {
                     }
                 })
             .catch(error => toast.error(error))
-        } else {
-            SweetAlert.fire({title:"Warning", text:"Please order all required cylinder qty!", icon:"warning"});
-        }
+        // } else {
+        //     SweetAlert.fire({title:"Warning", text:"Please order all required cylinder qty!", icon:"warning"});
+        // }
     }
 
     var menuId = 0;
@@ -321,15 +383,22 @@ const Add = (props) => {
 
                                                         <div className="col-md-2 mb-3">
                                                             <label for="job_ref_id">Job Ref No</label>
-                                                            <input 
+                                                            <select 
                                                                 className="form-control" 
                                                                 id="job_ref_id" 
-                                                                name="job_ref_id" 
-                                                                type="text" 
+                                                                name="job_ref_id"
                                                                 placeholder="Job Ref" 
-                                                                onChange={orderDetailsInputHander}
-                                                                value={jobOrderData.job_ref_id}
-                                                            />
+                                                                onChange={orderDetailsInputHander} 
+                                                                disabled={refDisabled}
+                                                                >
+                                                                <option value="">Select one...</option>
+                                                                {
+                                                                   stockdel && typeheadOptions['del_stocks'].map((item, i) => <option key={i} value={item['id']}>{item['name']}</option>)
+                                                                }
+                                                                 {
+                                                                   stockClient && typeheadOptions['client_stocks'].map((item, i) => <option key={i} value={item['id']}>{item['name']}</option>)
+                                                                }
+                                                            </select>
                                                         </div>
 
                                                         <div className="col-md-2 mb-3">

@@ -15,7 +15,7 @@ const Add = (props) => {
     const [dropdownData, setDropdownData] = useState({});
     const [typeheadOptions, setTypeheadOptions] = useState({});
     const [clientStockDetails, setClientStockDetails] = useState([]);
-    const [selectedValue,setSelectedValue] = useState([])
+    const [selectedValue,setSelectedValue] = useState([]);
 
     let [jobOrderData, setJobOrderData] = useReducer(
         (state, newState) => ({ ...state, ...newState }),
@@ -134,12 +134,13 @@ const Add = (props) => {
             { [event.target.name]: event.target.value },
         );
     }
+    console.log(jobOrderData);
     // FOR CLIENT STOCKS ARRAY READY
     const addOrderDetailsHandler = (event) => {
 
         let { job_no, receive_date, qty, remarks, client_name, id, total_cylinder_qty, client_id, printer_id } = jobOrderData;
 
-        if (jobOrderData.job_order_qty_limit > 0) {
+        if (jobOrderData.job_order_qty_limit > 0 && receive_date && job_no != '') {
             // OBJECT CREATE & PUSH IN AN ARRAY
             let clientStockDetails_arr = [];
             let clientStockDetails_obj = {};
@@ -153,7 +154,7 @@ const Add = (props) => {
             clientStockDetails_obj.client_id = client_id;
             clientStockDetails_obj.printer_id = printer_id;
 
-            if ((parseInt(jobOrderData.orderQty) + parseInt(clientStockDetails_obj.qty)) <= parseInt(jobOrderData.job_order_qty_limit)) {
+            if ((parseInt(clientStockDetails_obj.qty)) <= parseInt(jobOrderData.job_order_qty_limit)) {
                 clientStockDetails_arr.push(clientStockDetails_obj);
 
                 // PUSH  CLIENT STOCKS MAIN ARRAY
@@ -193,7 +194,11 @@ const Add = (props) => {
                 SweetAlert.fire({ title: "Warning", text: "You can't Cross Job Order Cyl Qty Limit", icon: "warning" });
             }
         } else {
+            if(jobOrderData.job_order_qty_limit == 0){
             SweetAlert.fire({ title: "Warning", text: "Your Job Order Cyl Qty is 0, Please Select Job No first", icon: "warning" });
+            }else if(!receive_date){
+                SweetAlert.fire({ title: "Warning", text: "Please enter receieve date",icon: "warning" });
+            }
         }
     }
     // FOR REMOVE CLIENT STOCKS SINGLE DATA FROM CLIENT STOCKS ARRAY
@@ -217,7 +222,7 @@ const Add = (props) => {
         data.totalOrderQty = jobOrderData.orderQty;
         data.client_stock_details = clientStockDetails;
 
-        if (jobOrderData.orderQty <= jobOrderData.job_order_qty_limit) {
+        // if (jobOrderData.orderQty <= jobOrderData.job_order_qty_limit) {
             userPostMethod(CLIENT_STOCK_RSURL, data)
                 .then(response => {
                     console.log(response);
@@ -230,9 +235,9 @@ const Add = (props) => {
                     }
                 })
                 .catch(error => toast.error(error))
-        } else {
-            SweetAlert.fire({ title: "Warning", text: "Please order all required cylinder qty!", icon: "warning" });
-        }
+        // } else {
+        //     SweetAlert.fire({ title: "Warning", text: "Please order all required cylinder qty!", icon: "warning" });
+        // }
 
     }
     const clearFormField = (event) => {
@@ -393,7 +398,7 @@ const Add = (props) => {
                                                                     className="form-control"
                                                                     id="job_no"
                                                                     name="job_no"
-                                                                    required
+                                                                    required = {clientStockDetails.length == 0 ? true : false}
                                                                     type="text"
                                                                     placeholder="Job No."
                                                                     onChange={clientStocksInputHander}
@@ -407,7 +412,7 @@ const Add = (props) => {
                                                                     className="form-control"
                                                                     id="receive_date"
                                                                     name="receive_date"
-                                                                    required
+                                                                    required = {clientStockDetails.length == 0 ? true : false}
                                                                     type="date"
                                                                     placeholder="Receive Date"
                                                                     onChange={clientStocksInputHander}
@@ -420,7 +425,7 @@ const Add = (props) => {
                                                                     className="form-control"
                                                                     id="qty"
                                                                     name="qty"
-                                                                    required
+                                                                    required = {clientStockDetails.length == 0 ? true : false}
                                                                     type="number"
                                                                     placeholder="Qty"
                                                                     onChange={clientStocksInputHander}
