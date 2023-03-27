@@ -63,6 +63,7 @@ const Add = (props) => {
                             setJobOrderData({
                                 'job_order_qty_limit': order.total_cylinder_qty
                             })
+                            setaddLimit( order.total_cylinder_qty);
                         }
                     })
                 }
@@ -128,9 +129,10 @@ const Add = (props) => {
                 userGetMethod(`${JOB_ORDER_DETAILS}?jobOrderId=${jobId}`)
                 .then(response => {
                     let { total_cylinder_qty } = response.data.jobOrderDetails;
-                    setJobOrderData({
-                        'job_order_qty_limit' : total_cylinder_qty,
-                    });
+                    // setJobOrderData({
+                    //     'job_order_qty_limit' : total_cylinder_qty,
+                    // });
+                    setaddLimit( total_cylinder_qty);
                 });
                 setRefDisabled(true);
                 setStockdel(true);
@@ -170,18 +172,18 @@ const Add = (props) => {
                     console.log(item);
                     if (event.target.value == item?.job_no) {
                         setaddLimit(item?.total_cylinder_qty);
-                        setJobOrderData({
-                            'job_order_qty_limit': item?.total_cylinder_qty,
-                        });
+                        // setJobOrderData({
+                        //     'job_order_qty_limit': item?.total_cylinder_qty,
+                        // });
                     }
                 })
             } else if (stockdel) {
                 delStockDetails.map((item) => {
                     if (event.target.value == item?.job_no) {
                         setaddLimit(item?.total_cylinder_qty);
-                        setJobOrderData({
-                            'job_order_qty_limit': item?.total_cylinder_qty,
-                        });
+                        // setJobOrderData({
+                        //     'job_order_qty_limit': item?.total_cylinder_qty,
+                        // });
                     }
                 })
             } 
@@ -210,7 +212,7 @@ const Add = (props) => {
                 baseOrderDetails_obj.qty = qty;
                 baseOrderDetails_obj.remarks = remarks;
     
-                if ((parseInt(jobOrderData.orderQty) + parseInt(baseOrderDetails_obj.qty)) <= parseInt(jobOrderData.job_order_qty_limit)) {
+                if ((parseInt(jobOrderData.orderQty) + parseInt(baseOrderDetails_obj.qty)) <= addLimit) {
                     baseOrderDetails_arr.push(baseOrderDetails_obj);
                     // PUSH BASE ORDER DETAILS MAIN ARRAY
                     if (baseOrderDetails.length > 0) {
@@ -417,7 +419,7 @@ const Add = (props) => {
                                                         </div>
 
                                                         <div className="col-md-2 mb-3">
-                                                            <label for="qty">Qty</label>
+                                                            <label for="qty">Qty<span>(Order-limit <span className="text-danger">{addLimit}</span>)</span></label>
                                                             <input 
                                                                 className="form-control" 
                                                                 id="qty" 
