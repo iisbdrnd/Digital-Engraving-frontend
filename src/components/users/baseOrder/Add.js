@@ -135,8 +135,11 @@ const Add = (props) => {
                     setaddLimit( total_cylinder_qty);
                 });
                 setRefDisabled(true);
-                setStockdel(true);
-                setStockClient(true);
+                setStockdel(false);
+                setStockClient(false);
+                setJobOrderData({
+                    'job_ref_id' : "",
+                });
 
             }
             const selectedValueName = event[0].name;
@@ -197,8 +200,7 @@ const Add = (props) => {
     const addOrderDetailsHandler = (event) => {
         
         let {job_ref_id, delivery_date, qty, remarks} = jobOrderData;
-        
-        if (dropdownData.supplier_id === '' || delivery_date === '' || qty == '' || qty <= 0) {
+        if (dropdownData.supplier_id === '' || delivery_date === '' || qty == '' || qty <= 0 || ((stockdel == true || stockClient == true) && job_ref_id == "")) {
             SweetAlert.fire({title:"Warning", text:"Please Fill up all details", icon:"warning"});
         } else {
             if (jobOrderData.job_order_qty_limit > 0) {
@@ -243,12 +245,12 @@ const Add = (props) => {
                     }
                     // EMPTY ORDER DETAILS ALL FIELDS
                     setJobOrderData({
-                        supplier_id  : '',
-                        job_ref_id   : '',
                         delivery_date: '',
                         qty          : '',
                         remarks      : '',
                     });
+                    setJobOrderData({job_ref_id : ""})
+                    setJobOrderData({ supplier_id  : ""})
                 } else {
                     SweetAlert.fire({title:"Warning", text:"You can't Cross Job Order Cyl Qty Limit", icon:"warning"});
                 }
@@ -406,8 +408,10 @@ const Add = (props) => {
                                                                 id="job_ref_id" 
                                                                 name="job_ref_id"
                                                                 placeholder="Job Ref" 
+                                                                required={refDisabled ? false : true}
                                                                 onChange={orderDetailsInputHander} 
                                                                 disabled={refDisabled}
+                                                                value={jobOrderData?.job_ref_id}
                                                                 >
                                                                 <option value="">Select one...</option>
                                                                 {
