@@ -127,6 +127,10 @@ const Add = (props) => {
     const addOrderDetailsHandler = (event) => {
         
         let {job_no, receive_date, qty, remarks,client_name, id, total_cylinder_qty, client_id, printer_id} = jobOrderData;
+        if(!receive_date || job_no == '' || !qty){
+            toast.warn("Please enter all required field");
+            return;
+        }
         
         if (jobOrderData.job_order_qty_limit > 0) {
             // OBJECT CREATE & PUSH IN AN ARRAY
@@ -142,7 +146,7 @@ const Add = (props) => {
             delStockDetails_obj.client_id = client_id;
             delStockDetails_obj.printer_id = printer_id;
 
-            if ((parseInt(jobOrderData.orderQty) + parseInt(delStockDetails_obj.qty)) <= parseInt(jobOrderData.job_order_qty_limit)) {
+            if ((parseInt(delStockDetails_obj.qty)) <= parseInt(jobOrderData.job_order_qty_limit)) {
                 delStockDetails_arr.push(delStockDetails_obj);
 
                 // PUSH  DEL STOCKS MAIN ARRAY
@@ -201,7 +205,7 @@ const Add = (props) => {
         data.totalOrderQty = jobOrderData.orderQty;
         data.del_stock_details = delStockDetails;
 
-        if (jobOrderData.orderQty <= jobOrderData.job_order_qty_limit) {
+        // if (jobOrderData.orderQty <= jobOrderData.job_order_qty_limit) {
             userPostMethod(DEL_STOCK_RSURL, data)
                 .then(response => {
                     console.log(response);
@@ -214,9 +218,9 @@ const Add = (props) => {
                     }
                 })
             .catch(error => toast.error(error))
-        } else {
-            SweetAlert.fire({title:"Warning", text:"Please order all required cylinder qty!", icon:"warning"});
-        }
+        // } else {
+        //     SweetAlert.fire({title:"Warning", text:"Please order all required cylinder qty!", icon:"warning"});
+        // }
     }
 
     const clearFormField = (event) => {
@@ -375,7 +379,7 @@ const Add = (props) => {
                                                                 className="form-control" 
                                                                 id="job_no" 
                                                                 name="job_no"
-                                                                required 
+                                                                // required 
                                                                 type="text"
                                                                 placeholder="Job No." 
                                                                 onChange={delStocksInputHander}
@@ -389,7 +393,7 @@ const Add = (props) => {
                                                                 className="form-control" 
                                                                 id="receive_date" 
                                                                 name="receive_date" 
-                                                                required
+                                                                // required
                                                                 type="date" 
                                                                 placeholder="Receive Date" 
                                                                 onChange={delStocksInputHander}
@@ -402,7 +406,7 @@ const Add = (props) => {
                                                                 className="form-control" 
                                                                 id="qty" 
                                                                 name="qty" 
-                                                                required
+                                                                // required
                                                                 type="number" 
                                                                 placeholder="Qty" 
                                                                 onChange={delStocksInputHander}

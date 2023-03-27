@@ -200,7 +200,7 @@ const Add = (props) => {
     const addOrderDetailsHandler = (event) => {
         
         let {job_ref_id, delivery_date, qty, remarks} = jobOrderData;
-        if (dropdownData.supplier_id === '' || delivery_date === '' || qty == '' || qty <= 0 || ((stockdel == true || stockClient == true) && job_ref_id == "")) {
+        if (dropdownData.supplier_id === '' || delivery_date === '' || qty == '' || ((stockdel == true || stockClient == true) && job_ref_id == "")) {
             SweetAlert.fire({title:"Warning", text:"Please Fill up all details", icon:"warning"});
         } else {
             if (jobOrderData.job_order_qty_limit > 0) {
@@ -408,7 +408,7 @@ const Add = (props) => {
                                                                 id="job_ref_id" 
                                                                 name="job_ref_id"
                                                                 placeholder="Job Ref" 
-                                                                required={refDisabled ? false : true}
+                                                                // required={refDisabled ? false : true}
                                                                 onChange={orderDetailsInputHander} 
                                                                 disabled={refDisabled}
                                                                 value={jobOrderData?.job_ref_id}
