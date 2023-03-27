@@ -21,6 +21,8 @@ const Add = (props) => {
     const [clientStockDetails, setClientStockDetails] = useState();
     const [delStockDetails, setDelStockDetails] = useState();
     const [addLimit, setaddLimit] = useState();
+    const [jobOrderDetails, setJobOrderDetails] = useState();
+    const [jobId,setJobId] = useState();
 
     let [jobOrderData, setJobOrderData] = useReducer(
         (state, newState) => ({...state, ...newState}),
@@ -38,6 +40,7 @@ const Add = (props) => {
     let job_order_id = props.location.state.params.job_order_id ? props.location.state.params.job_order_id : null;
     useEffect(() => {
         pageRefreshHandler(job_order_id);
+        setJobId(job_order_id);
     },[]);
 
     const pageRefreshHandler = (job_order_id = null) => {
@@ -94,6 +97,7 @@ const Add = (props) => {
                 }
                 setClientStockDetails(response.data.clientStocks);
                 setDelStockDetails(response.data.delStocks);
+                setJobOrderDetails(response.data.jobOrders);
                 setTypeheadOptions(
                     (prevstate) => ({
                         ...prevstate,
@@ -113,14 +117,24 @@ const Add = (props) => {
     const dropDownChange = (event, stateName) => {
         if(event.length > 0){
             const selectedValue = event[0].id;
+            if(stateName === 'job_order_id'){
+                setJobId(selectedValue)
+            }
             if(stateName == 'supplier_id' && (selectedValue == 7 || selectedValue == 8)){
                 selectedValue == 7 ? setStockdel(true) : setStockdel(false);
                 selectedValue == 8 ? setStockClient(true) : setStockClient(false);
                 setRefDisabled(false);
-            }else if(stateName == 'supplier_id' && (selectedValue != 7 || selectedValue != 8)){
+            }else if(stateName == 'supplier_id' && (selectedValue != 7 && selectedValue != 8)){
+                userGetMethod(`${JOB_ORDER_DETAILS}?jobOrderId=${jobId}`)
+                .then(response => {
+                    let { total_cylinder_qty } = response.data.jobOrderDetails;
+                    setJobOrderData({
+                        'job_order_qty_limit' : total_cylinder_qty,
+                    });
+                });
                 setRefDisabled(true);
                 setStockdel(true);
-                setStockClient(false);
+                setStockClient(true);
 
             }
             const selectedValueName = event[0].name;
@@ -150,26 +164,27 @@ const Add = (props) => {
     // FOR ORDER DETAILS DATA INPUT
     const orderDetailsInputHander = (event) => {
         console.log(event.target.name, event.target.value);
-        if(event.target.name == 'job_ref_id'){
-            if(stockClient){
+        if (event.target.name == 'job_ref_id') {
+            if (stockClient) {
                 clientStockDetails.map((item) => {
-                console.log(item);
-                if(event.target.value == item?.job_no){
-                    setaddLimit(item?.total_cylinder_qty);
-                    setJobOrderData({
-                        'job_order_qty_limit' : item?.total_cylinder_qty,
-                    });
-                }
-            })
-        }
-            if(stockdel){delStockDetails.map((item) => {
-                if(event.target.value == item?.job_no){
-                    setaddLimit(item?.total_cylinder_qty);
-                    setJobOrderData({
-                        'job_order_qty_limit' : item?.total_cylinder_qty,
-                    });
-                }
-            })}
+                    console.log(item);
+                    if (event.target.value == item?.job_no) {
+                        setaddLimit(item?.total_cylinder_qty);
+                        setJobOrderData({
+                            'job_order_qty_limit': item?.total_cylinder_qty,
+                        });
+                    }
+                })
+            } else if (stockdel) {
+                delStockDetails.map((item) => {
+                    if (event.target.value == item?.job_no) {
+                        setaddLimit(item?.total_cylinder_qty);
+                        setJobOrderData({
+                            'job_order_qty_limit': item?.total_cylinder_qty,
+                        });
+                    }
+                })
+            } 
         }
         setJobOrderData(
             {[event.target.name] : event.target.value},
