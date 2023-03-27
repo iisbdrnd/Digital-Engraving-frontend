@@ -212,7 +212,8 @@ const Add = (props) => {
                 baseOrderDetails_obj.qty = qty;
                 baseOrderDetails_obj.remarks = remarks;
     
-                if ((parseInt(jobOrderData.orderQty) + parseInt(baseOrderDetails_obj.qty)) <= addLimit) {
+                // if((parseInt(baseOrderDetails_obj.qty) <= addLimit) && (parseInt(jobOrderData.orderQty)+(parseInt(baseOrderDetails_obj.qty) <= parseInt(jobOrderData.job_order_qty_limit))) 
+                if((parseInt(baseOrderDetails_obj.qty) <= addLimit) && (parseInt(jobOrderData.orderQty)+parseInt(baseOrderDetails_obj.qty) <= parseInt(jobOrderData.job_order_qty_limit))){
                     baseOrderDetails_arr.push(baseOrderDetails_obj);
                     // PUSH BASE ORDER DETAILS MAIN ARRAY
                     if (baseOrderDetails.length > 0) {
