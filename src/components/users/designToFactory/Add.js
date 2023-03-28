@@ -16,6 +16,7 @@ const Add = (props) => {
     const [typeHeadOptions, setTypeHeadOptions] = useState({});
     const [dropDownData, setDropdownData] = useState();
     const [file,setFile] = useState();
+    const [jobNoValue,setJobNoValue] = useState([]);
 
     let [designToFactoryInput, setDesignToFactoryInput] = useReducer(
         (state, newState) => ({...state, ...newState}),
@@ -79,6 +80,9 @@ const Add = (props) => {
     }, []);
 
     const dropDownChange = (e, fieldName) => {
+        if(fieldName === 'job_order_id'){
+            setJobNoValue(e);
+        }
         if(e.length > 0){
             const selectedValueId = e[0].id;
 
@@ -116,12 +120,24 @@ const Add = (props) => {
                 console.log("response.data", response.data);
                 if (response.data.status == 1) {
                     toast.success(response.data.message)
+                    clearForm();
                     e.target.reset();
                 } else {
                     toast.error(response.data.message)
                 }
             })
         .catch(error => toast.error(error))
+    }
+
+    const clearForm = () => {
+        setJobNoValue([]);
+        setDesignToFactoryInput({
+            job_name          : '',
+            printer_name      : '', 
+            client_name       : '',
+            printer_mark      : '',
+            total_cylinder_qty: ''
+        })
     }
     
     return (
@@ -157,7 +173,7 @@ const Add = (props) => {
                                                         options={typeHeadOptions['job_orders']}
                                                         placeholder="Select Job No..."
                                                         onChange={(e) => dropDownChange(e, 'job_order_id')}
-                                                        selected={designToFactoryInput.job_order_id}
+                                                        selected={jobNoValue}
                                                         disabled={job_order_id != null ? 'disabled' : ''}
                                                         ref={register({
                                                             required: 'Job No Field Required'

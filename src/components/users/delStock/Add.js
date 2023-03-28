@@ -2,7 +2,7 @@ import React, { Fragment, useState, useEffect, useReducer } from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import useForm from 'react-hook-form'
-import { Typeahead } from 'react-bootstrap-typeahead';
+import { Typeahead,ClearButton } from 'react-bootstrap-typeahead';
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 import { PanelRefreshIcons, SubmitButton } from '../../common/GlobalButton';
 import { userGetMethod, userPostMethod } from '../../../api/userAction';
@@ -125,7 +125,6 @@ const Add = (props) => {
     }
     // FOR DEL STOCKS ARRAY READY
     const addOrderDetailsHandler = (event) => {
-        
         let {job_no, receive_date, qty, remarks,client_name, id, total_cylinder_qty, client_id, printer_id} = jobOrderData;
         if(!receive_date || job_no == '' || !qty){
             toast.warn("Please enter all required field");
@@ -289,9 +288,10 @@ const Add = (props) => {
                                                             inputProps={{ required: true }}
                                                             selected={selectedValue}
                                                             disabled={job_order_id != null ? 'disabled' : ''}
-                                                            ref={register({
-                                                                required: 'Job No Field Required'
-                                                            })}
+                                                            // ref={register({
+                                                            //     required: 'Job No Field Required'
+                                                            // })}
+                                                            {...register('job_order_id')}
                                                         />
                                                         {errors.job_order_id && <p className='text-danger'>{errors.job_order_id.message}</p>}
                                                     </div>

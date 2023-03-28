@@ -306,9 +306,7 @@ const Add = (props) => {
                                                                 inputProps={{ required: true }}
                                                                 selected={selectedValue}
                                                                 disabled={job_order_id != null ? 'disabled' : ''}
-                                                                ref={register({
-                                                                    required: 'Job No Field Required'
-                                                                })}
+                                                                {...register('job_order_id')}
                                                             />
                                                             {errors.job_order_id && <p className='text-danger'>{errors.job_order_id.message}</p>}
                                                         </div>

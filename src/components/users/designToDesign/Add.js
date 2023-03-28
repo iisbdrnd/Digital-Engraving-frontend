@@ -15,6 +15,7 @@ const Add = (props) => {
     const [status, setStatus] = useState(true);
     const [typeHeadOptions, setTypeHeadOptions] = useState({});
     const [dropDownData, setDropdownData] = useState();
+    const [jobNoValue,setJobNoValue] = useState([]);
 
     let [jobAgreementInput, setJobAgreementInput] = useReducer(
         (state, newState) => ({...state, ...newState}),
@@ -79,6 +80,9 @@ const Add = (props) => {
     }, []);
 
     const dropDownChange = (e, fieldName) => {
+        if(fieldName === 'job_order_id'){
+            setJobNoValue(e);
+        }
         if(e.length > 0){
             const selectedValueId = e[0].id;
 
@@ -106,18 +110,28 @@ const Add = (props) => {
     
     const submitHandler = (data, e) => {
         data.job_order_id = dropDownData.job_order_id;
-        console.log("data", data);
         userPostMethod(DESIGN_TO_DESIGN_RSURL, data)
             .then(response => {
                 console.log("response.data", response.data);
                 if (response.data.status == 1) {
                     toast.success(response.data.message)
+                    clearForm();
                     e.target.reset();
                 } else {
                     toast.error(response.data.message)
                 }
             })
         .catch(error => toast.error(error))
+    }
+    const clearForm = () => {
+        setJobNoValue([]);
+        setJobAgreementInput({
+            job_name          : '',
+            printer_name      : '', 
+            client_name       : '',
+            printer_mark      : '',
+            total_cylinder_qty: ''
+        })
     }
 
     return (
@@ -154,11 +168,12 @@ const Add = (props) => {
                                                         placeholder="Select Job No..."
                                                         onChange={(e) => dropDownChange(e, 'job_order_id')}
                                                         inputProps={{ required: true }}
-                                                        selected={jobAgreementInput.job_order_id}
+                                                        selected={jobNoValue}
                                                         disabled={job_order_id != null ? 'disabled' : ''}
-                                                        ref={register({
-                                                            required: 'Job No Field Required'
-                                                        })}
+                                                        // ref={register({
+                                                        //     required: 'Job No Field Required'
+                                                        // })}
+                                                        {...register('job_order_id')}
                                                     />
                                                     {errors.job_order_id && 'Job No. is required'}
                                                 </div>

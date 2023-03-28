@@ -14,6 +14,7 @@ const CylinderInfo = (props) => {
     const [isLoading, setIsLoading] = useState(true);
     const [dropdownData, setDropdownData] = useState({});
     const [typeheadOptions, setTypeheadOptions] = useState({});
+    const [jobNoValue,setJobNoValue] = useState([]);
 
     let [baseReceiveInput, setBaseReceiveInput] = useReducer(
         (state, newState) => ({...state, ...newState}),
@@ -116,12 +117,25 @@ const CylinderInfo = (props) => {
             .then(response => {
                 if (response.data.status == 1) {
                     toast.success(response.data.message)
+                    clearForm();
                     e.target.reset();
                 } else {
                     toast.error(response.data.message)
                 }
             })
         .catch(error => toast.error(error))
+    }
+
+    const clearForm = () => {
+        setJobNoValue([]);
+        setBaseReceiveInput({
+            job_name          : '',
+            printer_name      : '', 
+            client_name       : '',
+            printer_mark      : '',
+            total_cylinder_qty: '',
+            supplier_name     : ''
+        })
     }
 
     var menuId = 0;
@@ -164,7 +178,7 @@ const CylinderInfo = (props) => {
                                                         placeholder="Select Job No..."
                                                         onChange={(e) => dropDownChange(e, 'base_detail_id')}
                                                         inputProps={{ required: true }}
-                                                        selected={baseReceiveInput.base_detail_id}
+                                                        selected={jobNoValue}
                                                         disabled={base_detail_id != null ? 'disabled' : ''}
                                                         ref={register({
                                                             required: 'Job No Field Required'

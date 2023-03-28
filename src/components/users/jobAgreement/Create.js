@@ -10,10 +10,11 @@ import { Typeahead } from 'react-bootstrap-typeahead';
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 
 const Add = (props) => {
-    const { handleSubmit, register, errors } = useForm();
+    const { handleSubmit, register, errors,reset } = useForm();
     const [isLoading, setIsLoading] = useState(true);
     const [dropdownData, setDropdownData] = useState({});
     const [typeheadOptions, setTypeheadOptions] = useState({});
+    const [jobNoValue, setJobNoValue] = useState([]);
 
     let [jobAgreementInput, setJobAgreementInput] = useReducer(
         (state, newState) => ({...state, ...newState}),
@@ -79,6 +80,9 @@ const Add = (props) => {
     }
 
     const dropDownChange = (event, stateName) => {
+        if(stateName === 'job_order_id'){
+            setJobNoValue(event);
+        }
         if(event.length > 0){
             const selectedValue = event[0].id;
             setDropdownData(
@@ -118,12 +122,23 @@ const Add = (props) => {
             .then(response => {
                 if (response.data.status == 1) {
                     toast.success(response.data.message)
+                    clearForm();
                     e.target.reset();
                 } else {
                     toast.error(response.data.message)
                 }
             })
         .catch(error => toast.error(error))
+    }
+    const clearForm = () => {
+        setJobNoValue([]);
+        setJobAgreementInput({
+            'job_name': '',
+            'printer_name': '',
+            'client_email': '',
+            'marketing_p_name': '',
+            'limit_square_cm': ''
+        });
     }
 
     var menuId = 0;
@@ -189,11 +204,9 @@ const Add = (props) => {
                                                             placeholder="Select Job No..."
                                                             onChange={(e) => dropDownChange(e, 'job_order_id')}
                                                             inputProps={{ required: true }}
-                                                            selected={jobAgreementInput.job_order_id}
+                                                            selected={jobNoValue}
                                                             disabled={job_order_id != null ? 'disabled' : ''}
-                                                            ref={register({
-                                                                required: 'Job No Field Required'
-                                                            })}
+                                                            {...register('job_order_id')}
                                                         />
                                                         {errors.job_order_id && <p className='text-danger'>{errors.job_order_id.message}</p>}
                                                     </div>

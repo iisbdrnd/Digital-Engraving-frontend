@@ -10,7 +10,7 @@ import { BASE_ORDER_RSURL, JOB_ORDER_DETAILS } from '../../../api/userUrl';
 import SweetAlert from 'sweetalert2';
 
 const Add = (props) => {
-    const { handleSubmit, register, errors } = useForm();
+    const { handleSubmit, register, errors, reset } = useForm();
     const [isLoading, setIsLoading] = useState(true);
     const [dropdownData, setDropdownData] = useState({});
     const [typeheadOptions, setTypeheadOptions] = useState({});
@@ -23,6 +23,8 @@ const Add = (props) => {
     const [addLimit, setaddLimit] = useState();
     const [jobOrderDetails, setJobOrderDetails] = useState();
     const [jobId,setJobId] = useState();
+    const [selectedValue,setSelectedValue] = useState([]);
+    const [supplierValue,setSupplierValue] = useState([]);
 
     let [jobOrderData, setJobOrderData] = useReducer(
         (state, newState) => ({...state, ...newState}),
@@ -116,6 +118,12 @@ const Add = (props) => {
 
     // FOR Typeahead DATA INPUT
     const dropDownChange = (event, stateName) => {
+        if(stateName === 'job_order_id'){
+            setSelectedValue(event);
+        }
+        if(stateName === 'supplier_id'){
+            setSupplierValue(event);
+        }
         if(event.length > 0){
             const selectedValue = event[0].id;
             if(stateName === 'job_order_id'){
@@ -249,8 +257,6 @@ const Add = (props) => {
                         qty          : '',
                         remarks      : '',
                     });
-                    setJobOrderData({job_ref_id : ""})
-                    setJobOrderData({ supplier_id  : ""})
                 } else {
                     SweetAlert.fire({title:"Warning", text:"You can't Cross Job Order Cyl Qty Limit", icon:"warning"});
                 }
@@ -277,13 +283,17 @@ const Add = (props) => {
         data.order_date = jobOrderData.order_date;
         data.totalOrderQty = jobOrderData.orderQty;
         data.base_order_details = baseOrderDetails;
-
+         
         // if (jobOrderData.orderQty == jobOrderData.job_order_qty_limit) {
             userPostMethod(BASE_ORDER_RSURL, data)
                 .then(response => {
                     console.log(response);
                     if (response.data.status == 1) {
                         toast.success(response.data.message)
+                        clearForm();
+                        reset({
+                            job_order_id: '',
+                        });
                         e.target.reset();
                     } else {
                         toast.error(response.data.message)
@@ -293,6 +303,16 @@ const Add = (props) => {
         // } else {
         //     SweetAlert.fire({title:"Warning", text:"Please order all required cylinder qty!", icon:"warning"});
         // }
+    }
+
+    const  clearForm = () => {
+        setSelectedValue([]);
+        setSupplierValue([]);
+        setBaseOrderDetails([]);
+        setJobOrderData({  delivery_date      : '',});
+        setJobOrderData({  qty      : '',})
+        setJobOrderData({job_order_qty_limit: 0,})
+        setJobOrderData({orderQty : 0})
     }
 
     var menuId = 0;
@@ -336,11 +356,9 @@ const Add = (props) => {
                                                             placeholder="Select Job No..."
                                                             onChange={(e) => dropDownChange(e, 'job_order_id')}
                                                             inputProps={{ required: true }}
-                                                            selected={dropdownData.job_order_id}
+                                                            selected={selectedValue}
                                                             disabled={job_order_id != null ? 'disabled' : ''}
-                                                            ref={register({
-                                                                required: 'Job No Field Required'
-                                                            })}
+                                                            {...register('job_order_id')}
                                                         />
                                                         {errors.job_order_id && <p className='text-danger'>{errors.job_order_id.message}</p>}
                                                     </div>
@@ -397,7 +415,9 @@ const Add = (props) => {
                                                                 placeholder="Select Issue To"
                                                                 onChange={(e) => dropDownChange(e, 'supplier_id')}
                                                                 inputProps={{ required: true }}
-                                                                defaultValue={jobOrderData.supplier_id}
+                                                                // defaultValue={jobOrderData.supplier_id}
+                                                                selected={supplierValue}
+                                                                {...register('supplier_id')}
                                                             />
                                                         </div>
 

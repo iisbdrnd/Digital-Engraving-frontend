@@ -156,7 +156,6 @@ const Add = (props) => {
             {[event.target.name] : event.target.value},
         );
     }
-    console.log(calculationValue);
     // const jobChangeHandler = (e) => {
     //     var selectJobId = e[0]['id'];
     //     setJobId(selectJobId);
@@ -173,6 +172,7 @@ const Add = (props) => {
     // }
 
     const submitHandler = (data, e) => {
+        e.preventDefault();
         console.log(data);
         data.client_id           = dropdownData.client_id;
         data.job_sub_class_id    = dropdownData.job_sub_class_id;
@@ -190,8 +190,28 @@ const Add = (props) => {
             .then(response => {
                 
                 if (response.data.status == 1) {
-                    toast.success(response.data.message)
+                  //   setDropdownData({client_id:"",
+                  //   job_sub_class_id:"",
+                  //   reference_job:"",
+                  //   marketing_person_id:"",
+                  //   printer_id:"",
+                  //   design_machine_id:""
+                  // });
+                  setCalculationValue(
+                    {
+                      design_width: 0,
+                      ups: 0,
+                      printing_width: 0,
+                      design_height: 0,
+                      rpt: 0,
+                      printing_height: 0,
+                      circumference: 0,
+                      face_length: 0,
+                      total_cylinder_qty: 0,
+                    }
+                  );
                     e.target.reset();
+                    toast.success(response.data.message)
                 } else {
                     toast.error(response.data.message)
                 }
@@ -254,19 +274,12 @@ const Add = (props) => {
                                                      <div className='form-group row'>
                                                 <label className="col-sm-8 col-form-label" htmlFor="link_job">Link Job</label>
                                                     <div className="col-sm-4 mt-2">
-                                                        <input 
-                                                            // className="form-control" 
-                                                            // id="link_job" 
+                                                        <input  
                                                             name="link_job"
-                                                            //value={jobInfo.jobName}
                                                             onChange={(e) => setLinkjob(e.target.checked)}
                                                             required={jobOrderType =='New' ? false : true}
                                                             type="checkbox" 
-                                                            // ref={register({
-                                                            //     required: 'Lik job  Field Required'
-                                                            // })}
                                                         />
-                                                        {/* {errors.job_name && <p className='text-danger'>{errors.job_name.message}</p>} */}
                                                     </div>
                                                 </div>
                                                      </div>
@@ -284,9 +297,10 @@ const Add = (props) => {
                                                             // onChange={jobChangeHandler}
                                                             value={option => `${option.id}`}
                                                             inputProps={{ required: jobOrderType == 'New' ? false : true }}
-                                                            ref={register({
-                                                                required: 'Reference Job Field Required'
-                                                            })}
+                                                            // ref={register({
+                                                            //     required: 'Reference Job Field Required'
+                                                            // })}
+                                                            // {...register('reference_job')}
                                                         />
                                                         {errors.reference_job && <p className='text-danger'>{errors.reference_job.message}</p>}
                                                     </div>
@@ -324,9 +338,10 @@ const Add = (props) => {
                                                             placeholder="Select Sub Class..."
                                                             onChange={(e) => dropDownChange(e, 'job_sub_class_id')}
                                                             inputProps={{ required: true }}
-                                                            ref={register({
-                                                                required: 'Sub Class Field Required'
-                                                            })}
+                                                            // ref={register({
+                                                            //     required: 'Sub Class Field Required'
+                                                            // })}
+                                                            {...register('job_sub_class_id')}
                                                         />
                                                         {errors.job_sub_class_id && <p className='text-danger'>{errors.job_sub_class_id.message}</p>}
                                                     </div>
@@ -350,9 +365,10 @@ const Add = (props) => {
                                     dropDownChange(e, "client_id")
                                   }
                                   inputProps={{ required: true }}
-                                  ref={register({
-                                    required: "Client Name Field Required",
-                                  })}
+                                  // ref={register({
+                                  //   required: "Client Name Field Required",
+                                  // })}
+                                  {...register('client_id')}
                                 />
                                 {errors.client_id && (
                                   <p className="text-danger">
@@ -380,9 +396,10 @@ const Add = (props) => {
                                     dropDownChange(e, "printer_id")
                                   }
                                   inputProps={{ required: true }}
-                                  ref={register({
-                                    required: "Printer Name Field Required",
-                                  })}
+                                  // ref={register({
+                                  //   required: "Printer Name Field Required",
+                                  // })}
+                                  {...register('printer_id')}
                                 />
                                 {errors.printer_id && (
                                   <p className="text-danger">
@@ -410,9 +427,10 @@ const Add = (props) => {
                                     dropDownChange(e, "marketing_person_id")
                                   }
                                   inputProps={{ required: true }}
-                                  ref={register({
-                                    required: "Marketing Person Field Required",
-                                  })}
+                                  // ref={register({
+                                  //   required: "Marketing Person Field Required",
+                                  // })}
+                                  {...register('marketing_person_id')}
                                 />
                                 {errors.marketing_person_id && (
                                   <p className="text-danger">
@@ -439,7 +457,7 @@ const Add = (props) => {
                                   onChange={(e) =>
                                     dropDownChange(e, "design_machine_id")
                                   }
-                                  ref={register({})}
+                                  {...register('design_machine_id')}
                                 />
                                 {errors.design_machine_id && (
                                   <p className="text-danger">
@@ -469,9 +487,10 @@ const Add = (props) => {
                                   options={typeheadOptions["additional_colors"]}
                                   placeholder="Select Color..."
                                   onChange={setMultipleDropdownData}
-                                  ref={register({
-                                    required: "Color Field Required",
-                                  })}
+                                  {...register('color_id')}
+                                  // ref={register({
+                                  //   required: "Color Field Required",
+                                  // })}
                                 />
                                 {errors.color_id && (
                                   <p className="text-danger">
