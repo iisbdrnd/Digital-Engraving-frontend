@@ -62,6 +62,7 @@ const Add = (props) => {
                             setDropdownData({
                                 'job_order_id': [jobOrderObj]
                             })
+                            setSelectedValue([jobOrderObj])
                             setJobOrderData({
                                 'job_order_qty_limit': order.total_cylinder_qty
                             })
