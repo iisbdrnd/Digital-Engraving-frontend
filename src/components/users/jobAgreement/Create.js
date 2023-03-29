@@ -56,6 +56,7 @@ const Add = (props) => {
                             'job_order_id': [jobOrderObj]
                         })
                     }
+                    setJobNoValue([jobOrderObj]);
                     dropDownChange([{id : response.data.jobOrder.id}], 'job_order_id');
                 }
                 if (response.data.jobOrders && response.data.jobOrders.length > 0) {
@@ -80,7 +81,7 @@ const Add = (props) => {
     }
 
     const dropDownChange = (event, stateName) => {
-        if(stateName === 'job_order_id'){
+        if(stateName === 'job_order_id' && event[0].name){
             setJobNoValue(event);
         }
         if(event.length > 0){
@@ -137,7 +138,7 @@ const Add = (props) => {
             'printer_name': '',
             'client_email': '',
             'marketing_p_name': '',
-            'limit_square_cm': ''
+            'limit_square_cm': 0
         });
     }
 

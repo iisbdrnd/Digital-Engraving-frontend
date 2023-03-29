@@ -17,6 +17,7 @@ const Add = (props) => {
     const [linkjob, setLinkjob] = useState(false)
     const [jobOrderType, setJobOrderType] = useState(null)
    // const [jobId, setJobId] = useState(0);
+   const [typeAheadValue, setTypeAheadValue] = useState([]);
 
     let [calculationValue, setCalculationValue] = useReducer(
         (state, newState) => ({...state, ...newState}),
@@ -185,7 +186,6 @@ const Add = (props) => {
             color_id_final_arr.push(item.id);
         })
         data.color_id = color_id_final_arr;
-
         userPostMethod(JOB_ORDER_RSURL, data)
             .then(response => {
                 
@@ -294,7 +294,6 @@ const Add = (props) => {
                                                             options={typeheadOptions['reference_jobs']}
                                                             placeholder="Select Reference Job..."
                                                             onChange={(e) => dropDownChange(e, 'reference_job')}
-                                                            // onChange={jobChangeHandler}
                                                             value={option => `${option.id}`}
                                                             inputProps={{ required: jobOrderType == 'New' ? false : true }}
                                                             // ref={register({

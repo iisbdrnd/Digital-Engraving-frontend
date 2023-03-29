@@ -61,6 +61,7 @@ const CylinderInfo = (props) => {
                             'base_detail_id': [BaseOrderObj]
                         })
                     }
+                    setJobNoValue([BaseOrderObj]);
                     dropDownChange([{id : response.data.baseOrderDetail.id}], 'base_detail_id');
                 }
                 
@@ -85,6 +86,9 @@ const CylinderInfo = (props) => {
     }
 
     const dropDownChange = (event, stateName) => {
+        if(stateName == 'base_detail_id' && event[0].name){
+            setJobNoValue(event);
+        }
         if(event.length > 0){
             const selectedValue = event[0].id;
             setDropdownData(

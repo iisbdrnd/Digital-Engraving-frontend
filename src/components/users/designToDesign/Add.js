@@ -57,6 +57,7 @@ const Add = (props) => {
                             'job_order_id': [jobOrderObj]
                         })
                     }
+                    setJobNoValue([jobOrderObj]);
                     dropDownChange([{id : response.data.jobOrder.id}], 'job_order_id');
                 }
                 if (response.data.jobOrders && response.data.jobOrders.length > 0) {
@@ -80,7 +81,7 @@ const Add = (props) => {
     }, []);
 
     const dropDownChange = (e, fieldName) => {
-        if(fieldName === 'job_order_id'){
+        if(fieldName === 'job_order_id' && e[0].name){
             setJobNoValue(e);
         }
         if(e.length > 0){

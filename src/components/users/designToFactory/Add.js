@@ -51,12 +51,12 @@ const Add = (props) => {
                     jobOrderObj.id = response.data.jobOrder.id;
                     jobOrderObj.name = `[${response.data.jobOrder.job_no}] ` + response.data.jobOrder.job_name;
                     jobOrderOptions.push(jobOrderObj);
-
                     if (response.data.jobOrder != null) { 
                         setDesignToFactoryInput({
                             'job_order_id': [jobOrderObj]
                         })
                     }
+                    setJobNoValue([jobOrderObj])
                     dropDownChange([{id : response.data.jobOrder.id}], 'job_order_id');
                 }
                 if (response.data.jobOrders && response.data.jobOrders.length > 0) {
@@ -78,9 +78,9 @@ const Add = (props) => {
                 setIsLoading(false);
             });
     }, []);
-
+    console.log(jobNoValue);
     const dropDownChange = (e, fieldName) => {
-        if(fieldName === 'job_order_id'){
+        if(fieldName === 'job_order_id' && e[0].name){
             setJobNoValue(e);
         }
         if(e.length > 0){
@@ -106,6 +106,7 @@ const Add = (props) => {
                 });
         }
     }
+    // console.log(jobNoValue);
 
     
     const submitHandler = (data, e) => {
