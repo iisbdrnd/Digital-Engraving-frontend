@@ -164,6 +164,7 @@ export default function TankSchedule(props) {
         data.job_order_id = dropdownData.job_order_id;
 
         if (data.cylScheduleArr.length > 0) {
+            // props.onChangeTank(props.tankId, props.modalTitle);
             userPostMethod(`${PLATING_DEPT_RSURL}`, data)
                 .then(response => {
                     if (response.data.status == 1) {
@@ -184,7 +185,7 @@ export default function TankSchedule(props) {
 
     return (
         <Modal isOpen={ props.modal && isOpenModalPrev } toggle={props.toggle} size="xlg">
-            <ModalHeader toggle={props.toggle}>Manual Cycle Plan Form {props.modalTitle} Tank</ModalHeader>
+            <ModalHeader toggle={props.toggle}>Manual Cycle Plan Form {props.modalTitle} Tank *test*</ModalHeader>
             <ModalBody>
             <div className="container-fluid">
                 <div className="row">
@@ -237,7 +238,7 @@ export default function TankSchedule(props) {
                                                         className="form-control" 
                                                         id="fl" 
                                                         name="fl"
-                                                        required
+                                                        required = {cylScheduleDetails.length > 0 ? false : true}
                                                         disabled="disabled"
                                                         value={cylScheduleFormData.fl} 
                                                         type="number" 
@@ -253,7 +254,7 @@ export default function TankSchedule(props) {
                                                         id="cir" 
                                                         name="cir"
                                                         disabled="disabled"
-                                                        required
+                                                        required = {cylScheduleDetails.length > 0 ? false : true}
                                                         value={cylScheduleFormData.cir} 
                                                         type="number" 
                                                         placeholder="Cir" 
@@ -267,7 +268,7 @@ export default function TankSchedule(props) {
                                                         className="form-control" 
                                                         id="dia" 
                                                         name="dia"
-                                                        required
+                                                        required = {cylScheduleDetails.length > 0 ? false : true}
                                                         disabled="disabled"
                                                         value={cylScheduleFormData.dia} 
                                                         type="number" 
@@ -282,7 +283,7 @@ export default function TankSchedule(props) {
                                                         className="form-control" 
                                                         id="est_plating_order" 
                                                         name="est_plating_order"
-                                                        required
+                                                        required = {cylScheduleDetails.length > 0 ? false : true}
                                                         value={cylScheduleFormData.est_plating_order} 
                                                         type="number" 
                                                         placeholder="" 
@@ -296,7 +297,7 @@ export default function TankSchedule(props) {
                                                         className="form-control" 
                                                         id="surface_area" 
                                                         name="surface_area"
-                                                        required
+                                                        required = {cylScheduleDetails.length > 0 ? false : true}
                                                         value={cylScheduleFormData.surface_area} 
                                                         type="number" 
                                                         placeholder="" 

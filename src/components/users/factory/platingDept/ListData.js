@@ -153,7 +153,7 @@ export default function ListData(props) {
         }
     }
 
-    console.log('platingDeptData', platingDeptData.tanks);
+    // console.log('platingDeptData', platingDeptData.tanks);
 
     return (
         <Fragment>
@@ -227,6 +227,7 @@ export default function ListData(props) {
                                             {platingDeptData.currentTank.id != 0 ? <button className="btn btn-warning bt-xs" onClick={()=>toggleModal('addTankSchedule')}> Add New Cycle </button> : ''}
                                             
                                             {platingDeptData.platingTankScheduleMasters.length > 0 && platingDeptData.platingTankScheduleMasters.map((platingTankMaster, key) => 
+                                            
                                             (
                                                 <div className="card m-1" key={platingTankMaster.id}>
                                                     <div className="card-header">
@@ -238,7 +239,8 @@ export default function ListData(props) {
                                                                 <span className="btn btn-info btn-sm mr-1" onClick={()=>toggleModal('editTankSchedule', platingTankMaster.id)}><i className='fa fa-pencil'></i>Edit</span>
                                                                 {
                                                                     platingTankMaster.running_status == 0 ? (
-                                                                        <span className="btn btn-primary btn-sm m-r-5" onClick={()=>toggleModal('cycleStart', platingTankMaster.id, platingTankMaster.cycle_id)}>Start Cycle</span>
+                                                                      platingTankMaster.start_time == null ?  (<span className="btn btn-primary btn-sm m-r-5" onClick={()=>toggleModal('cycleStart', platingTankMaster.id, platingTankMaster.cycle_id)}>Start Cycle</span>) :
+                                                                      (<span className="btn btn-primary btn-sm m-r-5" onClick={()=>toggleModal('cycleStart', platingTankMaster.id, platingTankMaster.cycle_id)}>Complete Cycle</span>) 
                                                                     ) : (
                                                                         <span className="btn bg-warning">Completed</span>
                                                                     )
@@ -313,7 +315,7 @@ export default function ListData(props) {
                     </div>
                 </div>
             </div>
-            {modal == true ? <TankSchedule tankId={platingDeptData.currentTank.id} modalTitle={platingDeptData.currentTank.tank_id} toggle={()=>toggleModal('addTankSchedule')} modal={modal} /> : ''} 
+            {modal == true ? <TankSchedule tankId={platingDeptData.currentTank.id} modalTitle={platingDeptData.currentTank.tank_id} toggle={()=>toggleModal('addTankSchedule')} onChangeTank={onChangeTank} modal={modal} /> : ''} 
             {cycleModal == true ? <StartCycleForm tankId={platingDeptData.currentTank.id} platingTankMasterId={platingDeptData.singlePlatingTankMasterInfo.id} modalTitle={platingDeptData.singlePlatingTankMasterInfo.platingTankMasterCycleId +' of #'+platingDeptData.currentTank.tank_id} toggle={()=>toggleModal('cycleStart')} modalName="cycleStart" modal={cycleModal} needReload={() => onChangeTank(platingDeptData.currentTank.id, platingDeptData.currentTank.tank_id)}/> : ''} 
             
             {editTankSchedule == true ? <TankScheduleEdit tankId={platingDeptData.currentTank.id} scheduleId={platingDeptData.singlePlatingTankMasterInfo.id} modalTitle={platingDeptData.currentTank.tank_id} toggle={()=>toggleModal('editTankSchedule')} modalName="cycleStart" modal={editTankSchedule} /> : ''} 

@@ -88,6 +88,7 @@ export default function StartCycleForm(props) {
                 setIsLoading(false);
             });
     },[]);
+    console.log(formData);
     // FOR CYLINDER SCHEDULE DETAILS DATA INPUT
     const inputHandler = (event) => {
         if (event.target.name == 'start_time') {
@@ -166,7 +167,7 @@ export default function StartCycleForm(props) {
 
     return (
         <Modal isOpen={ props.modal && isOpenModalPrev } toggle={props.toggle} size="lg">
-            <ModalHeader toggle={props.toggle}>Start Cycle Form {props.modalTitle} Tank</ModalHeader>
+            <ModalHeader toggle={props.toggle}>Start Cycle Form {props.modalTitle} Tank **test**</ModalHeader>
             <ModalBody>
             <div className="container-fluid">
                 <div className="row">
@@ -188,6 +189,7 @@ export default function StartCycleForm(props) {
                                                             id="cycle_id" 
                                                             name="cycle_id" 
                                                             type="text" 
+                                                            required
                                                             placeholder="Cycle #"
                                                             autoComplete="off"
                                                             value={formData.cycle_id}
@@ -209,6 +211,7 @@ export default function StartCycleForm(props) {
                                                             type="number" 
                                                             placeholder="Final Order"
                                                             autoComplete="off"
+                                                            required
                                                             value={formData.final_plating_order}
                                                             onChange={inputHandler}
                                                             ref={register({
@@ -228,6 +231,7 @@ export default function StartCycleForm(props) {
                                                             name="start_time" 
                                                             type="datetime-local" 
                                                             placeholder="Start Time"
+                                                            required
                                                             autoComplete="off"
                                                             value={formData.start_time}
                                                             onChange={e=>inputHandler(e)}
@@ -249,6 +253,7 @@ export default function StartCycleForm(props) {
                                                             placeholder="Est Duration"
                                                             autoComplete="off"
                                                             value={formData.est_cycle_duration}
+                                                            required
                                                             onChange={inputHandler}
                                                             ref={register({
                                                                 required: 'Est Duration Field Required'
@@ -268,6 +273,7 @@ export default function StartCycleForm(props) {
                                                             options={typeheadOptions['shiftOperator']}
                                                             selected={formData.shift_operator}
                                                             placeholder="Select Duty Person"
+                                                            required
                                                             onChange={(e) => dropDownChange(e, 'shift_operator')}
                                                         />
                                                         {errors.shift_operator && <p className='text-danger'>{errors.shift_operator.message}</p>}
@@ -283,6 +289,7 @@ export default function StartCycleForm(props) {
                                                             id="plating_date" 
                                                             name="plating_date" 
                                                             type="date" 
+                                                            required
                                                             placeholder="Plating Date"
                                                             autoComplete="off"
                                                             value={formData.plating_date}
@@ -301,6 +308,7 @@ export default function StartCycleForm(props) {
                                                             className="form-control" 
                                                             type="text" 
                                                             disabled="disabled"
+                                                            required
                                                             autoComplete="off"
                                                             value={formData.shift_type_id == 1 ? 'Day' : formData.shift_type_id == 2 ? 'Evening' : 'Night'}
                                                             onChange={inputHandler}
@@ -311,6 +319,7 @@ export default function StartCycleForm(props) {
                                                             name="shift_id" 
                                                             type="hidden" 
                                                             autoComplete="off"
+                                                            required
                                                             value={formData.shift_id}
                                                             onChange={inputHandler}
                                                             ref={register({
@@ -332,6 +341,7 @@ export default function StartCycleForm(props) {
                                                             disabled="disabled"
                                                             placeholder="Est End Time"
                                                             autoComplete="off"
+                                                            required
                                                             value={formData.est_end_time}
                                                             onChange={inputHandler}
                                                             ref={register({
@@ -353,6 +363,7 @@ export default function StartCycleForm(props) {
                                                             placeholder="Remarks"
                                                             autoComplete="off"
                                                             value={formData.remarks}
+                                                            required
                                                             onChange={inputHandler}
                                                             ref={register({})}
                                                         />
@@ -378,6 +389,7 @@ export default function StartCycleForm(props) {
                                                                 value={formData.actual_end_time}
                                                                 onChange={inputHandler}
                                                                 ref={register({})}
+                                                                disabled ={formData.start_time == "" ? true : false}
                                                             />
                                                             {errors.actual_end_time && <p className='text-danger'>{errors.actual_end_time.message}</p>}
                                                         </div>
@@ -394,6 +406,7 @@ export default function StartCycleForm(props) {
                                                                 value={formData.actual_cycle_duration}
                                                                 onChange={inputHandler}
                                                                 ref={register({})}
+                                                                disabled ={formData.start_time == "" ? true : false}
                                                             />
                                                             {errors.actual_cycle_duration && <p className='text-danger'>{errors.actual_cycle_duration.message}</p>}
                                                         </div>
