@@ -21,6 +21,7 @@ export default function StartCycleForm(props) {
     const [modal, setModal] = useState(false); 
     const [changeUseEffect, setChangeUseEffect] = useState(0); 
     const [jobData, setJobData] = useState({}); 
+    const [isStarted, setIsStarted] = useState(false);
 
     let [formData, setFormData] = useReducer(
         (state, newState) => ({...state, ...newState}),
@@ -46,7 +47,9 @@ export default function StartCycleForm(props) {
         userGetMethod(`${PLATING_SCHEDULE_START_CYCLE}/${props.platingTankMasterId}`)
             .then(response => {
                 let {cycle_id, shift_operator, plating_date, shift_id, start_time, final_plating_order, est_end_time, actual_end_time, est_cycle_duration, actual_cycle_duration, remarks, shift_type_id, shiftDutyPersons} = response.data.cycleData;
-
+                if(start_time != null) {
+                    setIsStarted(true)
+                }
                 setFormData({ 
                     cycle_id             : cycle_id,
                     plating_date         : plating_date === null ? '': plating_date,
@@ -167,7 +170,7 @@ export default function StartCycleForm(props) {
 
     return (
         <Modal isOpen={ props.modal && isOpenModalPrev } toggle={props.toggle} size="lg">
-            <ModalHeader toggle={props.toggle}>Start Cycle Form {props.modalTitle} Tank **test**</ModalHeader>
+            <ModalHeader toggle={props.toggle}>Start Cycle Form {props.modalTitle} Tank</ModalHeader>
             <ModalBody>
             <div className="container-fluid">
                 <div className="row">
@@ -389,7 +392,7 @@ export default function StartCycleForm(props) {
                                                                 value={formData.actual_end_time}
                                                                 onChange={inputHandler}
                                                                 ref={register({})}
-                                                                disabled ={formData.start_time == "" ? true : false}
+                                                                disabled ={isStarted == false ? true : false}
                                                             />
                                                             {errors.actual_end_time && <p className='text-danger'>{errors.actual_end_time.message}</p>}
                                                         </div>
@@ -406,7 +409,7 @@ export default function StartCycleForm(props) {
                                                                 value={formData.actual_cycle_duration}
                                                                 onChange={inputHandler}
                                                                 ref={register({})}
-                                                                disabled ={formData.start_time == "" ? true : false}
+                                                                disabled ={isStarted == false ? true : false}
                                                             />
                                                             {errors.actual_cycle_duration && <p className='text-danger'>{errors.actual_cycle_duration.message}</p>}
                                                         </div>

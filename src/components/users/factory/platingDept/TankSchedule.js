@@ -138,6 +138,10 @@ export default function TankSchedule(props) {
                             ]);
                             // EMPTY ORDER DETAILS ALL FIELDS
                             setCylScheduleFormData({
+                                job_type         : '',
+                                fl               : '',
+                                cir              : '',
+                                dia              : '',
                                 cylinder_id      : '',
                                 est_plating_order: '',
                                 surface_area     : '',
@@ -214,7 +218,7 @@ export default function TankSchedule(props) {
 
                                                 <div className="col-md-2 mb-3">
                                                     <label htmlFor="cylinder_id">Cylinder Id</label>
-                                                    <select className="form-control" onChange={inputHandler} id="cylinder_id" name="cylinder_id" defaultValue=''>
+                                                    <select className="form-control" onChange={inputHandler} id="cylinder_id" name="cylinder_id" value={cylScheduleFormData?.cylinder_id}>
                                                         <option value=''>Select One</option>
                                                         {cylScheduleFormData.job_cylinder_ids && cylScheduleFormData.job_cylinder_ids.map(cylinder => (
                                                             <option value={cylinder} key={cylinder}>{cylinder}</option> // DATA PASS FROM CONTROLLER WITH PLUCK
@@ -224,7 +228,7 @@ export default function TankSchedule(props) {
 
                                                 <div className="col-md-2 mb-3">
                                                     <label htmlFor="job_type">Job Type</label>
-                                                    <select className="form-control" onChange={inputHandler} id="job_type" name="job_type" defaultValue=''>
+                                                    <select className="form-control" onChange={inputHandler} id="job_type" name="job_type" value={cylScheduleFormData?.job_type}>
                                                         <option value=''>Select One</option>
                                                         <option value="1">Per Cylinder</option>
                                                         <option value="2">Per Sqr cm</option>
