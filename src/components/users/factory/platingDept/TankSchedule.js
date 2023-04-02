@@ -94,7 +94,6 @@ export default function TankSchedule(props) {
         }
 
     }
-	console.log('cylScheduleFormData', cylScheduleFormData);
     // FOR CYCLE SCHEDULE DETAILS ARRAY READY
     const addCylSchedulHandler = (event) => {
         let {cylinder_id, job_type, fl, cir, dia, est_plating_order, surface_area} = cylScheduleFormData;
@@ -166,6 +165,7 @@ export default function TankSchedule(props) {
         data.cylScheduleArr = cylScheduleDetails;
         data.tankId = props.tankId;
         data.job_order_id = dropdownData.job_order_id;
+        data.tank_id = props.tank_id;
 
         if (data.cylScheduleArr.length > 0) {
             // props.onChangeTank(props.tankId, props.modalTitle);

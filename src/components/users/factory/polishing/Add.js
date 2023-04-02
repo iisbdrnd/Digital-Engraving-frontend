@@ -12,6 +12,7 @@ const Add = (props) => {
     const [isLoading, setIsLoading] = useState(true);
     const [typeHeadOptions, setTypeHeadOptions] = useState({});
     const [dropDownData, setDropdownData] = useState();
+    const [chk, setChk] = useState(true);
 
     let [stateData, setStateData] = useReducer(
         (state, newState) => ({...state, ...newState}),
@@ -189,8 +190,14 @@ const Add = (props) => {
     }
 
     const inputChangeHandler = (e)=>{
-        setStateData({[e.target.name]: e.target.value});
+        console.log(e.target.value,e.target.checked);
+        if(e.target.name == 'checkbox'){
+            e.target.checked == true ? setStateData({[e.target.name] : 1}) : setStateData({[e.target.name] : 0})
+        }else{
+            setStateData({[e.target.name]: e.target.value});
+        }
     }
+    console.log(stateData);
 
     const submitHandler = (data) => {
         data.job_no = stateData.jobOrderDetailsData.job_no;
@@ -198,11 +205,48 @@ const Add = (props) => {
             .then(response => {
                 if (response.data.status == 1) {
                     toast.success(response.data.message)
+                    clearForm();
                 } else {
                     toast.error(response.data.message)
                 }
             })
         .catch(error => toast.error(error))
+    }
+
+    const clearForm = () => {
+        setStateData({
+            cylinder_id                   : '',
+            rough_cut_polishing_machine_id: '',
+            shift_id                      : '',
+            fine_cut_polishing_machine_id : '',
+            est_duration                  : '',
+            on_time                       : '',
+            est_end_time                  : '',
+            polishing_date                : '',
+            rework                        : '',
+            rework_reason                 : '',
+            production_date               : '',
+            done_by                       : '',
+            chrome_cylinder_status        : '',
+            a_duration                    : '',
+            dia_after_rough_cut           : '',
+            output_status                 : '',
+            dia_after_fine_cut            : '',
+            action_if_output_is_not_ok    : '',
+            a_off_time                    : '',
+            remarks                       : '',
+            
+            job_order_id                  : '', 
+            jobOrderDetailsData           : [], //STORE DATA FROM job_orders
+            shiftData                     : [], //STORE DATA FROM dig_shift_master
+            shiftDutyPersons              : [], //STORE DATA FROM dig_shift_details
+            reworkReasons                 : [], //STORE DATA FROM rework_reasons
+            cylindersByJobId              : [], //STORE DATA FROM factory_cylinder_supply_chains
+            // completePolishingData         : [], //STORE DATA FROM dig_polishings
+            allPolishingData              : [],
+            available_cylinders           : [],
+            polishMachines                : [],
+        })
     }
 
     var menuId = 0;
@@ -299,7 +343,7 @@ const Add = (props) => {
                                                     <label className="col-md-5 col-form-label label-form">On Time</label>
                                                     <div className="col-md-7">
                                                         <input 
-                                                            type="text" 
+                                                            type="time" 
                                                             className="form-control" 
                                                             name="on_time" 
                                                             required
@@ -345,14 +389,13 @@ const Add = (props) => {
                                                     ) : ''} */}
                                                     
                                                     <label className="col-md-5 col-form-label label-form">Est, Duration</label>
-                                                    <div className="col-md-5">
-                                                        <input type="time" className="form-control" name="est_duration" required onChange={inputChangeHandler} ref={register({ required: true })} value={stateData.est_duration ? stateData.est_duration : ''}/>
+                                                    <div className="col-md-7">
+                                                        <input type="text" className="form-control" name="est_duration" required onChange={inputChangeHandler} ref={register({ required: true })} value={stateData.est_duration ? stateData.est_duration : ''}/>
                                                     </div>
-                                                    <label className="col-form-label label-form pull-right">hh:mm</label>
                                                 
                                                     <label className="col-md-5 col-form-label label-form">Est, End Time</label>
                                                     <div className="col-md-7">
-                                                        <input type="text" className="form-control" name="est_end_time" required onChange={inputChangeHandler} ref={register({ required: true })} value={stateData.est_end_time ? stateData.est_end_time : ''}/>
+                                                        <input type="time" className="form-control" name="est_end_time" required onChange={inputChangeHandler} ref={register({ required: true })} value={stateData.est_end_time ? stateData.est_end_time : ''}/>
                                                     </div>
                                                     
                                                     {/* <label className="col-md-5 col-form-label label-form">Rework </label>
@@ -397,7 +440,9 @@ const Add = (props) => {
                                                 <div className="col-md-6 row">
                                                     <label className="col-md-5 col-form-label label-form">Chrome Cylinder? </label>
                                                     <div className="col-md-7">
-                                                        <input type="checkbox" className="mt-2" name="chrome_cylinder_status" onChange={inputChangeHandler} ref={register({})} defaultChecked={stateData.chrome_cylinder_status == 1 ? true : false} />
+                                                        <input type="checkbox" className="mt-2" name="chrome_cylinder_status" onChange={inputChangeHandler} ref={register({})}
+                                                             defaultChecked={stateData.chrome_cylinder_status == 1 ? chk : null} 
+                                                         />
                                                     </div>
                                                     
                                                     <label className="col-md-5 col-form-label label-form"> Dia after Rough Cut</label>
@@ -412,19 +457,18 @@ const Add = (props) => {
                                                 
                                                     <label className="col-md-5 col-form-label label-form">A. off Time</label>
                                                     <div className="col-md-7">
-                                                        <input type="text" className="form-control" name="a_off_time" onChange={inputChangeHandler} ref={register({})} value={stateData.a_off_time ? stateData.a_off_time : ''} />
+                                                        <input type="time" className="form-control" name="a_off_time" onChange={inputChangeHandler} ref={register({})} value={stateData.a_off_time ? stateData.a_off_time : ''} />
                                                     </div>
                                                 </div>
                                                 <div className="col-md-6 row">
                                                     <label className="col-md-5 col-form-label label-form">A. Duration</label>
-                                                    <div className="col-md-5">
-                                                        <input type="time" className="form-control" name="a_duration" onChange={inputChangeHandler} ref={register({})} value={stateData.a_duration ? stateData.a_duration : ''} />
+                                                    <div className="col-md-7">
+                                                        <input type="text" className="form-control" name="a_duration" onChange={inputChangeHandler} ref={register({})} value={stateData.a_duration ? stateData.a_duration : ''} />
                                                     </div>
-                                                    <label className="col-form-label label-form pull-right">hh:mm</label>
                                                     
                                                     <label className="col-md-5 col-form-label label-form">Output Status</label>
                                                     <div className="col-md-7">
-                                                        <select className="form-control" name="output_status" onChange={inputChangeHandler} ref={register({})} defaultValue={stateData.output_status ? stateData.output_status : ''}>
+                                                        <select className="form-control" name="output_status" onChange={inputChangeHandler} ref={register({})} value={stateData.output_status ? stateData.output_status : ''}>
                                                             <option value=''>Select One</option>
                                                             <option value="1">Ok</option>
                                                             <option value="0">Not Ok</option>
