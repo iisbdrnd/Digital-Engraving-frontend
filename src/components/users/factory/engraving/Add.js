@@ -8,7 +8,7 @@ import { SubmitButton } from '../../../common/GlobalButton';
 import { Typeahead } from 'react-bootstrap-typeahead';
 
 const Add = (props) => {
-    const { handleSubmit, register, errors } = useForm();
+    const { handleSubmit, register, errors, reset} = useForm();
     const [isLoading, setIsLoading] = useState(true);
     const [typeHeadOptions, setTypeHeadOptions] = useState({});
     const [dropDownData, setDropdownData] = useState();
@@ -85,13 +85,18 @@ const Add = (props) => {
         }
     }
 
-    const submitHandler = (data) => {
-        console.log('dropDownData', dropDownData);
+    const submitHandler = (data ,e) => {
+        console.log('dropDownData', dropDownData,data);
         data.job_order_pk_id = dropDownData.job_order_pk_id;
         userPutMethod(`${ENGRAVING_RS_URL}/${stateData.cylinder_id}`, data)
             .then(response => {
                 if (response.data.status == 1) {
                     toast.success(response.data.message)
+                    e.target.reset();
+                    setStateData({
+                        jobOrderDetails: [],
+                        engraves: [],
+                    })
                 } else {
                     toast.error(response.data.message)
                 }
@@ -145,7 +150,7 @@ const Add = (props) => {
 
                                                 <label className="col-md-3 col-form-label label-form required ">Cylinder Id</label>
                                                 <div className="col-md-9">
-                                                    <select className="form-control" name='cylinder_id' onChange={(e)=>setStateData({'cylinder_id': e.target.value})} ref={register({required: true })} defaultValue=''>
+                                                    <select className="form-control" name='cylinder_id' onChange={(e)=>setStateData({'cylinder_id': e.target.value})} {...register("cylinder_id", { required: "Please enter your first name." })} defaultValue=''>
                                                         <option value="">select one</option>
                                                         {
                                                             stateData.engraves.length > 0 ? (
@@ -170,45 +175,45 @@ const Add = (props) => {
                                                     <div className="form-row">
                                                         <label className="col-sm-3 col-form-label">Layout Id</label>
                                                         <div className="col-md-8">
-                                                            <input type="text" className="form-control" name="layout_id" />
+                                                            <input type="text" className="form-control" name="layout_id" {...register("layout_id", { required: "Please enter your first name." })}/>
                                                         </div>
                                                         <div className="col-md-6 form-row">
                                                             <label className="col-md-5 col-form-label label-form ">Color Sl</label>
                                                             <div className="col-md-7">
-                                                                <input type="text" className="form-control" name="color_sl" />
+                                                                <input type="text" className="form-control" name="color_sl" {...register("color_sl", { required: "Please enter your first name." })} />
                                                             </div>
 
                                                             <label className="col-md-5 col-form-label label-form ">Screen</label>
                                                             <div className="col-md-7">
-                                                                <input type="text" className="form-control" name="screen" />
+                                                                <input type="text" className="form-control" name="screen" {...register("screen", { required: "Please enter your first name." })} />
                                                             </div>
 
                                                             <label className="col-md-5 col-form-label label-form  ">Start Point</label>
                                                             <div className="col-md-7">
-                                                                <input type="text" className="form-control" name="start_point" />
+                                                                <input type="text" className="form-control" name="start_point" {...register("start_point", { required: "Please enter your first name." })} />
                                                             </div>
                                                         </div>
 
                                                         <div className="col-md-6 form-row">
                                                             <label className="col-md-5 col-form-label label-form ">Color</label>
                                                             <div className="col-md-7">
-                                                                <input type="text" className="form-control" name="color" />
+                                                                <input type="text" className="form-control" name="color" {...register("color", { required: "Please enter your first name." })} />
                                                             </div>
 
                                                             <label className="col-md-5 col-form-label label-form ">Angle</label>
                                                             <div className="col-md-7">
-                                                                <input type="text" className="form-control" name="angle" />
+                                                                <input type="text" className="form-control" name="angle" {...register("angle", { required: "Please enter your first name." })} />
                                                             </div>
 
                                                             <label className="col-md-5 col-form-label label-form  ">Image Area</label>
                                                             <div className="col-md-7">
-                                                                <input type="text" className="form-control" name="image_area" />
+                                                                <input type="text" className="form-control" name="image_area" {...register("image_area", { required: "Please enter your first name." })} />
                                                             </div>
                                                         </div>
 
                                                         <label className="col-md-3 col-form-label label-form">Remarks</label>
                                                         <div className="col-md-8">
-                                                            <textarea className="form-control" rows="3" name='remarks'></textarea>
+                                                            <textarea className="form-control" rows="3" name='remarks' {...register("remarks", { required: "Please enter your first name." })} ></textarea>
                                                         </div>
                                                     </div>
                                                 </fieldset>
@@ -220,12 +225,12 @@ const Add = (props) => {
                                                         <div className="col-md-6 form-row">
                                                             <label className="col-md-5 col-form-label label-form">A. off Time</label>
                                                             <div className="col-md-7">
-                                                                <input type="text" className="form-control" name="a_off_time" ref={register({})}/>
+                                                                <input type="time" className="form-control" name="a_off_time" {...register("a_off_time", { required: "Please enter your first name." })}/>
                                                             </div>
 
                                                             <label className="col-md-5 col-form-label label-form">Output Status</label>
                                                             <div className="col-md-7">
-                                                                <select className="form-control" name='output_status' ref={register({})}>
+                                                                <select className="form-control" name='output_status' {...register("output_status", { required: "Please enter your first name." })}>
                                                                     <option>select one</option>
                                                                     <option value="1">Ok</option>
                                                                     <option value="0">Not Ok</option>
@@ -234,25 +239,25 @@ const Add = (props) => {
 
                                                             <label className="col-md-6 col-form-label label-form">Stylus Broken </label>
                                                             <div className="col-md-6">
-                                                                <input type="checkbox" className="mt-2" name='stylus_broken' ref={register({})}/>
+                                                                <input type="checkbox" className="mt-2" name='stylus_broken' {...register("stylus_broken", { required: "Please enter your first name." })} />
                                                             </div>
 
                                                         </div>
                                                         <div className="col-md-6 form-row">
                                                             <label className="col-md-5 col-form-label label-form">Action</label>
                                                             <div className="col-md-7">
-                                                                <input type="text" className="form-control" name="action" ref={register({})} />
+                                                                <input type="text" className="form-control" name="action" {...register("action", { required: "Please enter your first name." })} />
                                                             </div>
                                                             
                                                             <label className="col-md-5 col-form-label label-form">A. Duration</label>
                                                             <div className="col-md-7">
-                                                                <input type="time" className="form-control" name="a_duration" ref={register({})} />
+                                                                <input type="text" placeholder='hh:mm' className="form-control" name="a_duration" {...register("a_duration", { required: "Please enter your first name." })} />
                                                             </div>
                                                             
                                                             <label className="col-md-5 col-form-label label-form">Remarks</label>
                                                             <div className="col-md-7">
                                                                 {/* <input type="text" className="form-control" name="cyls1" /> */}
-                                                                <textarea className="form-control" rows="3" name="remarks" ref={register({})} ></textarea>
+                                                                <textarea className="form-control" rows="3" name="remarks" {...register("remarks", { required: "Please enter your first name." })} ></textarea>
                                                             </div>
                                                         </div>
                                                     </div>       
@@ -267,7 +272,7 @@ const Add = (props) => {
                                                 <div className="col-md-6 row">
                                                     <label className="col-md-5 col-form-label label-form">Des. Machine</label>
                                                     <div className="col-md-7">
-                                                        <select className="form-control" name="des_machine" ref={register({})} >
+                                                        <select className="form-control" name="des_machine" {...register("des_machine", { required: "Please enter your first name." })} >
                                                             <option>select one</option>
                                                             {
                                                                 stateData.polishMachines.map((machine, key)=>(
@@ -279,14 +284,14 @@ const Add = (props) => {
                                                 
                                                     <label className="col-md-5 col-form-label label-form">Engr. Date</label>
                                                     <div className="col-md-7">
-                                                        <input type="text" className="form-control" name="engr_date" ref={register({})} />
+                                                        <input type="date" className="form-control" name="engr_date" {...register("engr_date", { required: "Please enter your first name." })} />
                                                     </div>
                                                 
                                                     <label className="col-md-5 col-form-label label-form">Est, Duration</label>
-                                                    <div className="col-md-5">
-                                                        <input type="time" className="form-control" name="est_duration" ref={register({})}  />
+                                                    <div className="col-md-7">
+                                                        <input type="text" placeholder='hh:mm' className="form-control" name="est_duration" {...register("est_duration", { required: "Please enter your first name." })}  />
                                                     </div>
-                                                    <label className="col-form-label label-form pull-right">hh:mm</label>
+                                                    {/* <label className="col-form-label label-form pull-right">hh:mm</label> */}
 
                                                     <label className="col-md-5 col-form-label label-form">Shift</label>
                                                     <div className="col-md-7">
@@ -297,7 +302,7 @@ const Add = (props) => {
                                                 
                                                     <label className="col-md-5 col-form-label label-form">Done by</label>
                                                     <div className="col-md-7">
-                                                        <select className="form-control" name="done_by" ref={register({})}>
+                                                        <select className="form-control" name="done_by" {...register("done_by", { required: "Please enter your first name." })}>
                                                             <option>select one</option>
                                                             {
                                                                 stateData.shiftDutyPersons.map((dutyPerson, key)=>(
@@ -311,7 +316,7 @@ const Add = (props) => {
                                                 <div className="col-md-6 row">
                                                     <label className="col-md-5 col-form-label label-form">A. Machine</label>
                                                     <div className="col-md-7">
-                                                        <select className="form-control" name="a_machine" ref={register({})}>
+                                                        <select className="form-control" name="a_machine" {...register("a_machine", { required: "Please enter your first name." })}>
                                                             <option>select one</option>
                                                             {
                                                                 stateData.polishMachines.map((machine, key)=>(
@@ -323,12 +328,12 @@ const Add = (props) => {
                                                 
                                                     <label className="col-md-5 col-form-label label-form">On Time</label>
                                                     <div className="col-md-7">
-                                                        <input type="time" className="form-control" name="on_time" ref={register({})} />
+                                                        <input type="time" className="form-control" name="on_time" {...register("on_time", { required: "Please enter your first name." })} />
                                                     </div>
                                                 
                                                     <label className="col-md-5 col-form-label label-form">Est, End Time</label>
                                                     <div className="col-md-7">
-                                                        <input type="text" className="form-control" name="est_end_time" ref={register({})} />
+                                                        <input type="time" className="form-control" name="est_end_time" {...register("est_end_time", { required: "Please enter your first name." })} />
                                                     </div>
                                                 </div>
                                             </div>
