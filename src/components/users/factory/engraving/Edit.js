@@ -104,7 +104,7 @@ const Edit = (props) => {
         }
     }
     
-    const submitHandler = (data) => {
+    const submitHandler = (data,e) => {
         userPutMethod(`${ENGRAVING_RS_URL}/${digEngravingCylinderId}`, data)
             .then(response => {
                 if (response.data.status == 1) {
