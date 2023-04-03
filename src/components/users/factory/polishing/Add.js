@@ -62,6 +62,7 @@ const Add = (props) => {
             cylindersByJobId              : [], //STORE DATA FROM factory_cylinder_supply_chains
             // completePolishingData         : [], //STORE DATA FROM dig_polishings
             allPolishingData              : [],
+            remainingPolishingData        : [],
             available_cylinders           : [],
             polishMachines                : [],
         }
@@ -148,10 +149,11 @@ const Add = (props) => {
 
             userGetMethod(`${POLISHING_GET_POLISHING_DATA_BY_JOB_ID}?jobOrderId=${selectedValueId}`)
                 .then(response => {
-                    let { jobOrderDetails, allPolishingData} = response.data;
+                    let { jobOrderDetails, allPolishingData, remainingCylinder} = response.data;
                     setStateData({
-                        'jobOrderDetailsData'  : jobOrderDetails, //JOB ORDER DATA FROM 'job_orders' TABLE
+                        'jobOrderDetailsData'       : jobOrderDetails, //JOB ORDER DATA FROM 'job_orders' TABLE
                         'allPolishingData'          : allPolishingData, //PLATING DATA FROM 'plating_tank_schedule_details' TABLE
+                        'remainingPolishingData'    : remainingCylinder,
                     });
                 });
         }
@@ -191,7 +193,7 @@ const Add = (props) => {
 
     const inputChangeHandler = (e)=>{
         console.log(e.target.value,e.target.checked);
-        if(e.target.name == 'checkbox'){
+        if(e.target.type == 'checkbox'){
             e.target.checked == true ? setStateData({[e.target.name] : 1}) : setStateData({[e.target.name] : 0})
         }else{
             setStateData({[e.target.name]: e.target.value});
@@ -243,6 +245,7 @@ const Add = (props) => {
             reworkReasons                 : [], //STORE DATA FROM rework_reasons
             cylindersByJobId              : [], //STORE DATA FROM factory_cylinder_supply_chains
             // completePolishingData         : [], //STORE DATA FROM dig_polishings
+            remainingPolishingData        : [],
             allPolishingData              : [],
             available_cylinders           : [],
             polishMachines                : [],
@@ -298,7 +301,7 @@ const Add = (props) => {
                                                     })} defaultValue={digPolishingCylinderId ? digPolishingCylinderId :''}>
                                                         <option value=''>Select One</option>
                                                         {
-                                                            stateData.allPolishingData.map((data, key)=>(
+                                                            stateData.remainingPolishingData.map((data, key)=>(
                                                                 <option value={data.id} key={key}>{data.cylinder_id} {data.rework == 1 ? "(Rework)" : ""} </option>
                                                             ))
                                                         }
