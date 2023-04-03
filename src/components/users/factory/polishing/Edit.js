@@ -280,7 +280,7 @@ const Edit = (props) => {
                                                     <label className="col-md-5 col-form-label label-form">On Time</label>
                                                     <div className="col-md-7">
                                                         <input 
-                                                            type="text" 
+                                                            type="time" 
                                                             className="form-control" 
                                                             name="on_time" 
                                                             ref={register({
@@ -318,14 +318,14 @@ const Edit = (props) => {
                                                     </div>
                                                 
                                                     <label className="col-md-5 col-form-label label-form">Est, Duration</label>
-                                                    <div className="col-md-5">
-                                                        <input type="time" className="form-control" name="est_duration" ref={register({ required: true })} value={stateData.est_duration ? stateData.est_duration : ''} onChange={onChangeHandler}/>
+                                                    <div className="col-md-7">
+                                                        <input type="text" placeholder='hh:mm' className="form-control" name="est_duration" ref={register({ required: true })} value={stateData.est_duration ? stateData.est_duration : ''} onChange={onChangeHandler}/>
                                                     </div>
-                                                    <label className="col-form-label label-form pull-right">hh:mm</label>
+                                                    {/* <label className="col-form-label label-form pull-right">hh:mm</label> */}
                                                 
                                                     <label className="col-md-5 col-form-label label-form">Est, End Time</label>
                                                     <div className="col-md-7">
-                                                        <input type="text" className="form-control" name="est_end_time" ref={register({ required: true })} value={stateData.est_end_time ? stateData.est_end_time : ''} onChange={onChangeHandler}/>
+                                                        <input type="time" className="form-control" name="est_end_time" ref={register({ required: true })} value={stateData.est_end_time ? stateData.est_end_time : ''} onChange={onChangeHandler}/>
                                                     </div>
                                                 
                                                 </div>
@@ -353,15 +353,15 @@ const Edit = (props) => {
                                                 
                                                     <label className="col-md-5 col-form-label label-form">A. off Time</label>
                                                     <div className="col-md-7">
-                                                        <input type="text" className="form-control" name="a_off_time" ref={register({})} value={stateData.a_off_time ? stateData.a_off_time : ''} onChange={onChangeHandler} />
+                                                        <input type="time" className="form-control" name="a_off_time" ref={register({})} value={stateData.a_off_time ? stateData.a_off_time : ''} onChange={onChangeHandler} />
                                                     </div>
                                                 </div>
                                                 <div className="col-md-6 row">
                                                     <label className="col-md-5 col-form-label label-form">A. Duration</label>
-                                                    <div className="col-md-5">
-                                                        <input type="time" className="form-control" name="a_duration" ref={register({})} value={stateData.a_duration ? stateData.a_duration : ''} onChange={onChangeHandler} />
+                                                    <div className="col-md-7">
+                                                        <input type="text"  placeholder="hh:mm" className="form-control" name="a_duration" ref={register({})} value={stateData.a_duration ? stateData.a_duration : ''} onChange={onChangeHandler} />
                                                     </div>
-                                                    <label className="col-form-label label-form pull-right">hh:mm</label>
+                                                    {/* <label className="col-form-label label-form pull-right">hh:mm</label> */}
                                                     
                                                     <label className="col-md-5 col-form-label label-form">Output Status</label>
                                                     <div className="col-md-7">
