@@ -8,7 +8,7 @@ import { SubmitButton } from '../../../common/GlobalButton';
 import { Typeahead } from 'react-bootstrap-typeahead';
 
 const Add = (props) => {
-    const { handleSubmit, register, errors } = useForm();
+    const { handleSubmit, register, errors ,reset} = useForm();
     const [isLoading, setIsLoading] = useState(true);
     const [typeHeadOptions, setTypeHeadOptions] = useState({});
     const [dropDownData, setDropdownData] = useState();
@@ -201,12 +201,13 @@ const Add = (props) => {
     }
     console.log(stateData);
 
-    const submitHandler = (data) => {
+    const submitHandler = (data,e) => {
         data.job_no = stateData.jobOrderDetailsData.job_no;
         userPutMethod(`${POLISHING_RS_URL}/${digPolishingCylinderId ? digPolishingCylinderId : stateData.selectCylinderId}`, data)
             .then(response => {
                 if (response.data.status == 1) {
                     toast.success(response.data.message)
+                    e.target.reset();
                     clearForm();
                 } else {
                     toast.error(response.data.message)
@@ -298,11 +299,11 @@ const Add = (props) => {
                                                 <div className="col-md-9">
                                                     <select className="form-control" name="polishing_pk_id" onChange={cylinderOnChange} ref={register({
                                                         required: 'Cylinder Id Field Required'
-                                                    })} defaultValue={digPolishingCylinderId ? digPolishingCylinderId :''}>
-                                                        <option value=''>Select One</option>
+                                                    })} defaultValue={digPolishingCylinderId != null ? digPolishingCylinderId :''}>
+                                                        <option value=''>Select One ...</option>
                                                         {
                                                             stateData.remainingPolishingData.map((data, key)=>(
-                                                                <option value={data.id} key={key}>{data.cylinder_id} {data.rework == 1 ? "(Rework)" : ""} </option>
+                                                                <option value={data?.id} key={key}>{data?.cylinder_id} {data.rework == 1 ? "(Rework)" : ""} </option>
                                                             ))
                                                         }
                                                     </select>
@@ -444,7 +445,7 @@ const Add = (props) => {
                                                     <label className="col-md-5 col-form-label label-form">Chrome Cylinder? </label>
                                                     <div className="col-md-7">
                                                         <input type="checkbox" className="mt-2" name="chrome_cylinder_status" onChange={inputChangeHandler} ref={register({})}
-                                                             defaultChecked={stateData.chrome_cylinder_status == 1 ? chk : null} 
+                                                             {...register("chrome_cylinder_status", { required: "Please enter your first name." })}
                                                          />
                                                     </div>
                                                     

@@ -8,7 +8,7 @@ import { SubmitButton } from '../../../common/GlobalButton';
 import { Typeahead } from 'react-bootstrap-typeahead';
 
 const Edit = (props) => {
-    const { handleSubmit, register, errors } = useForm();
+    const { handleSubmit, register, errors, reset } = useForm();
     const [isLoading, setIsLoading] = useState(true);
     const [typeHeadOptions, setTypeHeadOptions] = useState({});
     const [dropDownData, setDropdownData] = useState();
@@ -148,16 +148,55 @@ const Edit = (props) => {
         // })
     }
     
-    const submitHandler = (data) => {
+    const submitHandler = (data,e) => {
         userPutMethod(`${POLISHING_RS_URL}/${digPolishingCylinderId}`, data)
             .then(response => {
                 if (response.data.status == 1) {
                     toast.success(response.data.message)
+                    e.target.reset();
+                    clearForm();
                 } else {
                     toast.error(response.data.message)
                 }
             })
         .catch(error => toast.error(error))
+    }
+
+    const clearForm = () => {
+        setStateData({
+            cylinder_id                   : '',
+            rough_cut_polishing_machine_id: '',
+            shift_id                      : '',
+            fine_cut_polishing_machine_id : '',
+            est_duration                  : '',
+            on_time                       : '',
+            est_end_time                  : '',
+            polishing_date                : '',
+            rework                        : '',
+            rework_reason                 : '',
+            production_date               : '',
+            done_by                       : '',
+            chrome_cylinder_status        : '',
+            a_duration                    : '',
+            dia_after_rough_cut           : '',
+            output_status                 : '',
+            dia_after_fine_cut            : '',
+            action_if_output_is_not_ok    : '',
+            a_off_time                    : '',
+            remarks                       : '',
+            
+            job_order_id                  : '', 
+            jobOrderDetailsData           : [], //STORE DATA FROM job_orders
+            shiftData                     : [], //STORE DATA FROM dig_shift_master
+            shiftDutyPersons              : [], //STORE DATA FROM dig_shift_details
+            reworkReasons                 : [], //STORE DATA FROM rework_reasons
+            cylindersByJobId              : [], //STORE DATA FROM factory_cylinder_supply_chains
+            // completePolishingData         : [], //STORE DATA FROM dig_polishings
+            remainingPolishingData        : [],
+            allPolishingData              : [],
+            available_cylinders           : [],
+            polishMachines                : [],
+        })
     }
 
     var menuId = 0;
@@ -338,7 +377,7 @@ const Edit = (props) => {
                                                 <div className="col-md-6 row">
                                                     <label className="col-md-5 col-form-label label-form">Chrome Cylinder? </label>
                                                     <div className="col-md-7">
-                                                        <input type="checkbox" className="mt-2" name="chrome_cylinder_status" ref={register({})} defaultChecked={stateData.chrome_cylinder_status ? true : false} onChange={onChangeHandler} />
+                                                        <input type="checkbox" className="mt-2" name="chrome_cylinder_status" {...register("chrome_cylinder_status", { required: "Please enter your first name." })}  onChange={onChangeHandler} />
                                                     </div>
                                                     
                                                     <label className="col-md-5 col-form-label label-form"> Dia after Rough Cut</label>

@@ -110,14 +110,46 @@ const Edit = (props) => {
                 if (response.data.status == 1) {
                     toast.success(response.data.message)
                     e.target.reset();
-                    setStateData({
-                        jobOrderDetailsData: [],
-                    })
+                    clearForm();
+                    setStateData({ jobOrderDetailsData: [],})
                 } else {
                     toast.error(response.data.message)
                 }
             })
         .catch(error => toast.error(error))
+    }
+
+    const  clearForm = () => {
+        setStateData({
+            job_order_id                  : '',
+            cylinder_id                   : '',
+            //Output, QC and Remarks
+            a_off_time                    : '',
+            output_status                 : '',
+            stylus_broken                 : '',
+            action                        : '',
+            a_duration                    : '',
+            remarks                       : '',
+            //ENGRAVING
+            des_machine                   : '',
+            engr_date                     : '',
+            est_duration                  : '',
+            shift_id                      : '',
+            done_by                       : '',
+            a_machine                     : '',
+            on_time                       : '',
+            est_end_time                  : '',
+
+            job_order_pk_id               : '', 
+            jobOrderDetailsData           : [], //STORE DATA FROM job_orders
+            shiftData                     : [], //STORE DATA FROM dig_shift_master
+            shiftDutyPersons              : [], //STORE DATA FROM dig_shift_details
+            cylindersByJobId              : [], //STORE DATA FROM factory_cylinder_supply_chains
+            completeEngraveData           : [], //STORE DATA FROM dig_engravings
+            platingData                   : [],
+            available_cylinders           : [],
+            polishMachines                : [],
+        })
     }
 
     var menuId = 0;
@@ -280,7 +312,7 @@ const Edit = (props) => {
                                                             <label className="col-md-5 col-form-label label-form">Output Status</label>
                                                             <div className="col-md-7">
                                                                 <select className="form-control" name='output_status' {...register("output_status", {required: 'error message'})} defaultValue={stateData.output_status ? stateData.output_status : ''} onChange={onChangeHandler}>
-                                                                    <option>select one</option>
+                                                                    <option value=''>select one</option>
                                                                     <option value="1">Ok</option>
                                                                     <option value="0">Not Ok</option>
                                                                 </select>
