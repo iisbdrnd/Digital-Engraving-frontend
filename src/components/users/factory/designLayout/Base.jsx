@@ -312,7 +312,7 @@ const Base = () => {
                             </div>
                         </div>
                         <div className="col-md-1 mb-3">
-                            <label for="qty">Start Pount</label>
+                            <label for="qty">Start Point</label>
                             <div className="d-flex">
                                 <div className="col-md-12 pl-0">
                                     <input

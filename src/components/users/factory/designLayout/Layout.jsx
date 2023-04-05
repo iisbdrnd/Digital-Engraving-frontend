@@ -9,7 +9,7 @@ const Layout = () => {
                     <legend className="w-auto text-left">Layout</legend>
                     <div className="form-row">
                         <div className="col-md-6 row">
-                            <label className="col-sm-5 col-form-label required">BCO</label>
+                            <label className="col-sm-5 col-form-label required">Job No</label>
                             <div className="col-md-7">
                                 <input
                                     type="text"
@@ -214,7 +214,7 @@ const Layout = () => {
                             <thead>
                                 <tr>
                                     <th scope="col" width="15%">Sl</th>
-                                    <th scope="col" width="20%">BCO.</th>
+                                    <th scope="col" width="20%">Job No.</th>
                                     <th scope="col" width="10%">Date.</th>
                                     <th scope="col" width="20%">Remarks</th>
                                 </tr>
@@ -353,7 +353,7 @@ const Layout = () => {
                             </div>
                         </div>
                         <div className="col-md-1 mb-3">
-                            <label for="qty">Start Pount</label>
+                            <label for="qty">Start Point</label>
                             <div className="d-flex">
                                 <div className="col-md-12 pl-0">
                                     <input

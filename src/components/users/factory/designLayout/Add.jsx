@@ -7,7 +7,7 @@ import Layout from "./Layout";
 import Base from "./Base";
 const Add = () => {
     const { handleSubmit, register, errors, reset } = useForm();
-    const [isLayout, setIsLayout] = useState(false);
+    const [isLayout, setIsLayout] = useState(true);
     const [isBase, setIsBase] = useState(false);
     const toogleLtoB = (val) => {
         if (val == "layout") {
@@ -34,7 +34,7 @@ const Add = () => {
                                             <legend className="w-auto text-left">Job Info</legend>
                                             <div className="form-row">
                                                 <div className="col-md-6 row">
-                                                    <label className="col-sm-5 col-form-label required">BCO</label>
+                                                    <label className="col-sm-5 col-form-label required">Job No</label>
                                                     <div className="col-md-7">
                                                         <input
                                                             type="text"
@@ -62,7 +62,7 @@ const Add = () => {
                                                         // value={stateData.on_text ? stateData.on_text : ''}
                                                         />
                                                     </div>
-                                                    <label className="col-sm-5 col-form-label required">HO Remarks</label>
+                                                    <label className="col-sm-5 col-form-label required">Remarks</label>
                                                     <div className="col-md-7">
                                                         <input
                                                             type="text"
@@ -90,7 +90,7 @@ const Add = () => {
                                                         // value={stateData.on_text ? stateData.on_text : ''}
                                                         />
                                                     </div>
-                                                    <label className="col-sm-5 col-form-label required">Referrence</label>
+                                                    <label className="col-sm-5 col-form-label required">Reference</label>
                                                     <div className="col-md-7">
                                                         <input
                                                             type="text"
@@ -160,15 +160,27 @@ const Add = () => {
                                         </fieldset>
                                     </div>
                                     <div className="col-md-12 d-flex">
-                                        <div className="span-layout col-md-6 text-center"
+                                    <div className="span-base col-md-6 text-center"
                                             style={{
-                                                background: isLayout == true ? "green" : "",}}>
-                                            <span><a href="javascript:void(0)" onClick={() => toogleLtoB("layout")} class="pe-auto">Layout</a></span>
+                                                background: isLayout == true ? "#4466f2" : "",
+                                                color:"white",
+                                                height:"30px"}}>
+                                            <span className="text-center"><a href="javascript:void(0)" onClick={() => toogleLtoB("layout")} class="pe-auto text-center f-20">
+                                                    <div className="col-md-6 text-center">
+                                                        <p style={{color: 'Black',fontSize:'20px', textAlign:'center'}}>Layout</p>
+                                                    </div>
+                                                </a></span>
                                         </div>
                                         <div className="span-base col-md-6 text-center"
                                             style={{
-                                                background: isBase == true ? "green" : "",}}>
-                                            <span><a href="javascript:void(0)" onClick={() => toogleLtoB("base")} class="pe-auto">Base</a></span>
+                                                background: isBase == true ? "#4466f2" : "",
+                                                color:"white",
+                                                height:"30px"}}>
+                                            <span className="text-center"><a href="javascript:void(0)" onClick={() => toogleLtoB("base")} class="pe-auto text-center f-20">
+                                                    <div className="col-md-6 text-center">
+                                                        <p style={{color: 'Black',fontSize:'20px', textAlign:'center'}}>Base</p>
+                                                    </div>
+                                                </a></span>
                                         </div>
                                     </div>
                                     {isLayout == true ? (<Layout />) : ("")

@@ -52,9 +52,7 @@ const ListData = (props) =>  {
                                     <label className="mt-3">
                                         <span>
                                             <select className="form-control pagi-select" name="polishing_status" >
-                                                <option value="2">All Polishing</option>
-                                                <option value="0">Pending Polishing</option>
-                                                <option value="1">Done Polishing</option>
+                                                <option value="0">Layout Status</option>
                                             </select>
                                         </span>
                                     </label>
@@ -74,19 +72,13 @@ const ListData = (props) =>  {
                                         <thead>
                                             <tr>
                                                 <th scope="col" width="5%"  ><i className="fa fa-sort"></i> SL.</th>
-                                                <th scope="col" width="10%"  ><i className="fa fa-sort"></i> Cyl Id.</th>
+                                                <th scope="col" width="10%"  ><i className="fa fa-sort"></i> Job No.</th>
                                                 <th scope="col" width="15%"  ><i className="fa fa-sort"></i> Job Name</th>
-                                                <th scope="col" width="5%"> FL</th>
-                                                <th scope="col" width="5%"> Cir</th>
-                                                <th scope="col" width="5%"> Dia</th>
-                                                <th scope="col" width="15%"> Printer Name</th>                              
-                                                <th scope="col" width="10%"> Plating Order</th>
-                                                <th scope="col" width="10%"> FL</th>
-                                                <th scope="col" width="15%"> Client</th>   
-                                                <th scope="col" width="10%"> Polishing</th>
+                                                <th scope="col" width="5%"><i className="fa fa-sort"></i> Type</th>
+                                                <th scope="col" width="15%"><i className="fa fa-sort"></i> Client</th>   
+                                                <th scope="col" width="10%"><i className="fa fa-sort"></i> Approve</th>
                                                 {/* <th scope="col" width="15%" onClick={() => sortHandler(6)} ><i className="fa fa-sort"></i> Printer</th>
                                                 <th scope="col" width="10%" ><i className="fa fa-sort"></i> Per Sqr Amount</th> */}
-                                                <th scope="col" width="7%">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
