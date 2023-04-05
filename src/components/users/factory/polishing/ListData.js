@@ -25,7 +25,7 @@ export default function ListData(props) {
     } else {
         menuId = props.location.state.params.menuId;
     }
-    
+    console.log(props);
     useEffect(() => {
         // ADD,EDIT,DELETE,SHOW ACCESS CHECK
         userGetMethod(`${userHasAccess}/${menuId}`)
@@ -157,7 +157,7 @@ export default function ListData(props) {
                                     </div>
                                 </div>
                                 <div className="col-md-4 col-lg-4">
-                                    <AddButton link="polishing/add" menuId={menuId} />
+                                    <AddButton link="polishing/add" menuId={menuId} />                        
                                     <PerPageBox pageBoxChange={perPageBoxChange} perPage={perPage} setPerPage={setPerPage}/>
                                 </div>
                             </div>
