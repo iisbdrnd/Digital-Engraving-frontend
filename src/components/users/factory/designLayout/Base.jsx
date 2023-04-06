@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import useForm from "react-hook-form";
-const Base = () => {
+const Base = (props) => {
     const { handleSubmit, register, errors ,reset} = useForm();
+    const [designColor, setDesignColor] = useState(['1','2','3']);
+    const {inputChangeHandler} = props;
     return (
         <>
             <div className="d-flex col-md-12">
@@ -15,12 +17,12 @@ const Base = () => {
                                 <input
                                     type="text"
                                     className="form-control"
-                                    name="on_text"
+                                    name="fl"
                                     required
                                     ref={register({
                                         required: 'On text Field Required'
                                     })}
-                                // onChange={inputChangeHandler}
+                                    onChange={inputChangeHandler}
                                 // value={stateData.on_text ? stateData.on_text : ''}
                                 />
                             </div>
@@ -152,7 +154,7 @@ const Base = () => {
                     </div>
                 </fieldset>
                 </div>
-                <div className="col-md-6 pr-0" style={{ paddingLeft: '0px !important' }}>
+                <div className="col-md-6 pr-0 pl-0" style={{ paddingLeft: '0px !important' }}>
                 <fieldset className="border p-2">
                     <legend className="w-auto text-left">Engravers Order</legend>
                     <div className="col-md-12">
@@ -167,25 +169,31 @@ const Base = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                <td><input className="form-control" type="text"/></td>
-                                    <td>
-                                        <select className="form-control">
-                                            <option>opt 1</option>
-                                            <option>opt 2</option>
-                                            <option>opt 3</option>
-                                        </select>
-                                    </td>
-                                    <td><input className="form-control" type="text"/></td>
-                                    <td><input className="form-control" type="text"/></td>
-                                    <td>
-                                    <select className="form-control">
-                                            <option>opt 1</option>
-                                            <option>opt 2</option>
-                                            <option>opt 3</option>
-                                        </select>
-                                    </td>
-                                </tr>
+                                {
+                                    designColor.map((item) => {
+                                        return (
+                                            <tr>
+                                                <td><input className="form-control" type="text" /></td>
+                                                <td>
+                                                    <select className="form-control">
+                                                        <option>opt 1</option>
+                                                        <option>opt 2</option>
+                                                        <option>opt 3</option>
+                                                    </select>
+                                                </td>
+                                                <td><input className="form-control" type="text" /></td>
+                                                <td><input className="form-control" type="text" /></td>
+                                                <td>
+                                                    <select className="form-control">
+                                                        <option>opt 1</option>
+                                                        <option>opt 2</option>
+                                                        <option>opt 3</option>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                        )
+                                    })
+                                }
 
                             </tbody>
                         </table>

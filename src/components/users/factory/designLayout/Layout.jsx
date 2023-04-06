@@ -1,7 +1,8 @@
 import React from "react";
 import useForm from "react-hook-form";
-const Layout = () => {
+const Layout = (props) => {
     const { handleSubmit, register, errors ,reset} = useForm();
+    const {inputChangeHandler} = props;
     return (
         <><div className="d-flex col-md-12">
             <div className="col-md-6 pl-0 pr-0" style={{ paddingLeft: '0px !important' }}>
@@ -14,7 +15,7 @@ const Layout = () => {
                                 <input
                                     type="text"
                                     className="form-control"
-                                    name="on_text"
+                                    name="job_no"
                                     required
                                     ref={register({
                                         required: 'On text Field Required'
@@ -28,12 +29,12 @@ const Layout = () => {
                                 <input
                                     type="text"
                                     className="form-control"
-                                    name="on_text"
+                                    name="id"
                                     required
                                     ref={register({
                                         required: 'On text Field Required'
                                     })}
-                                // onChange={inputChangeHandler}
+                                    onChange={inputChangeHandler}
                                 // value={stateData.on_text ? stateData.on_text : ''}
                                 />
                             </div>
@@ -42,7 +43,7 @@ const Layout = () => {
                                 <input
                                     type="text"
                                     className="form-control"
-                                    name="on_text"
+                                    name="remarks"
                                     required
                                     ref={register({
                                         required: 'On text Field Required'
@@ -70,7 +71,7 @@ const Layout = () => {
                                 <input
                                     type="text"
                                     className="form-control"
-                                    name="on_text"
+                                    name="ups"
                                     required
                                     ref={register({
                                         required: 'On text Field Required'
@@ -84,7 +85,7 @@ const Layout = () => {
                                 <input
                                     type="text"
                                     className="form-control"
-                                    name="on_text"
+                                    name="eye_mark_color"
                                     required
                                     ref={register({
                                         required: 'On text Field Required'
@@ -98,7 +99,7 @@ const Layout = () => {
                                 <input
                                     type="text"
                                     className="form-control"
-                                    name="on_text"
+                                    name="entry_date"
                                     required
                                     ref={register({
                                         required: 'On text Field Required'
@@ -143,7 +144,7 @@ const Layout = () => {
                                 <input
                                     type="text"
                                     className="form-control"
-                                    name="on_text"
+                                    name="dia"
                                     required
                                     ref={register({
                                         required: 'On text Field Required'
@@ -157,7 +158,7 @@ const Layout = () => {
                                 <input
                                     type="text"
                                     className="form-control"
-                                    name="on_text"
+                                    name="rpt"
                                     required
                                     ref={register({
                                         required: 'On text Field Required'
@@ -171,7 +172,7 @@ const Layout = () => {
                                 <input
                                     type="checkbox"
                                     className="form-control"
-                                    name="on_text"
+                                    name="printer_mark"
                                     required
                                     ref={register({
                                         required: 'On text Field Required'
@@ -222,9 +223,9 @@ const Layout = () => {
                             <tbody>
                                 <tr>
                                 <td><input class="form-control" type="text"/></td>
-                                    <td><input class="form-control" type="text"/></td>
-                                    <td><input class="form-control" type="text"/></td>
-                                    <td><input class="form-control" type="text"/></td>
+                                    <td><input class="form-control" type="text" name="job_no"/></td>
+                                    <td><input class="form-control" type="text" name="entry_date"/></td>
+                                    <td><input class="form-control" type="text" name="remarks"/></td>
                                 </tr>
 
                             </tbody>
