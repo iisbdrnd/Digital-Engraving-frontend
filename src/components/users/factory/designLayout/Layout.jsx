@@ -178,7 +178,7 @@ const Layout = (props) => {
                                         required: 'On text Field Required'
                                     })}
                                 // onChange={inputChangeHandler}
-                                value={formData.printer_mark ? formData.printer_mark : ''}
+                               value={formData.dia ? formData.dia : ''}
                                 />
                             </div>
                             <label className="col-sm-5 col-form-label required">Mark as Complete</label>
