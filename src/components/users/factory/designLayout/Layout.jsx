@@ -2,7 +2,7 @@ import React from "react";
 import useForm from "react-hook-form";
 const Layout = (props) => {
     const { handleSubmit, register, errors ,reset} = useForm();
-    const {inputChangeHandler} = props;
+    const {inputChangeHandler,formData} = props;
     return (
         <><div className="d-flex col-md-12">
             <div className="col-md-6 pl-0 pr-0" style={{ paddingLeft: '0px !important' }}>
@@ -21,7 +21,7 @@ const Layout = (props) => {
                                         required: 'On text Field Required'
                                     })}
                                 // onChange={inputChangeHandler}
-                                // value={stateData.on_text ? stateData.on_text : ''}
+                                value={formData.job_no ? formData.job_no : ''}
                                 />
                             </div>
                             <label className="col-sm-5 col-form-label required">ID</label>
@@ -35,7 +35,7 @@ const Layout = (props) => {
                                         required: 'On text Field Required'
                                     })}
                                     onChange={inputChangeHandler}
-                                // value={stateData.on_text ? stateData.on_text : ''}
+                                    value={formData.id ? formData.id : ''}
                                 />
                             </div>
                             <label className="col-sm-5 col-form-label required">Remarks</label>
@@ -105,7 +105,7 @@ const Layout = (props) => {
                                         required: 'On text Field Required'
                                     })}
                                 // onChange={inputChangeHandler}
-                                // value={stateData.on_text ? stateData.on_text : ''}
+                                value={formData.agreement_date ? formData. agreement_date : ''}
                                 />
                             </div>
                             <label className="col-sm-5 col-form-label required">Station</label>
@@ -150,7 +150,7 @@ const Layout = (props) => {
                                         required: 'On text Field Required'
                                     })}
                                 // onChange={inputChangeHandler}
-                                // value={stateData.on_text ? stateData.on_text : ''}
+                               value={formData.dia ? formData.dia : ''}
                                 />
                             </div>
                             <label className="col-sm-5 col-form-label required">Rpt</label>
@@ -178,7 +178,7 @@ const Layout = (props) => {
                                         required: 'On text Field Required'
                                     })}
                                 // onChange={inputChangeHandler}
-                                // value={stateData.on_text ? stateData.on_text : ''}
+                                value={formData.printer_mark ? formData.printer_mark : ''}
                                 />
                             </div>
                             <label className="col-sm-5 col-form-label required">Mark as Complete</label>

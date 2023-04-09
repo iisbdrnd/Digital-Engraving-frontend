@@ -7,7 +7,7 @@ import Layout from "./Layout";
 import Base from "./Base";
 import { PanelRefreshIcons, SubmitButton } from "../../../common/GlobalButton";
 import { Typeahead } from 'react-bootstrap-typeahead';
-import { JOB_AGREEMENT_RSURL, JOB_ORDER_DETAILS } from "../../../../api/userUrl";
+import { JOB_AGREEMENT_RSURL, JOB_ORDER_DETAILS,DESIGN_LAYOUT_RSURL } from "../../../../api/userUrl";
 import { userGetMethod } from "../../../../api/userAction";
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 const Add = (props) => {
@@ -16,29 +16,31 @@ const Add = (props) => {
     const [isBase, setIsBase] = useState(false);
     const [typeheadOptions, setTypeheadOptions] = useState({ job_orders : [], });
     const [formData, setFormData] = useState({
-        agreement_date   : new Date().toLocaleDateString(),
-            job_name         : '',
-            printer_name     : '',
-            client_email     : '',
-            bill_config_type : '',
-            printer_mark     : '',
-            marketing_p_name : '',
-            cyl_rate_status  : '',
-            limit_square_cm  : 0,
-            vat_status       : '',
-            job_order_id     : ''
+        agreement_date: new Date().toLocaleDateString(),
+        bill_config_status: '',
+        cir: '',
+        client_email: '',
+        client_id: '',
+        client_name: '',
+        cyl_rate_status: '',
+        dia: '',
+        entry_date: '',
+        fl: '',
+        id: '',
+        job_name: '',
+        job_no: '',
+        job_type: '',
+        limit_square_cm: '',
+        marketing_p_name: '',
+        printer_id: '',
+        printer_mark: '',
+        printer_name: '',
+        total_cylinder_qty: '',
+        total_surface_area: '',
+        vat_status: ''
     });
     const [dropdownData, setDropdownData] = useState({});
-    const [typeOptions,setTypeOptions] = useState([
-        {
-            id: 1,
-            name: 'black',
-        },
-        {
-            id: 2,
-            name: 'white',
-        },
-]);
+    const [typeColorOptions,setTypeColorOptions] = useState([]);
     
     let job_order_id = props.location.state.params.job_order_id ? props.location.state.params.job_order_id : null;
     console.log(props);
@@ -48,7 +50,7 @@ const Add = (props) => {
     const  pageRefreshHandler = (job_order_id = null) => {
         console.log("clicked");
         // setIsLoading(true);
-        userGetMethod(`${JOB_AGREEMENT_RSURL}/create?job_order_id=${job_order_id}`)
+        userGetMethod(`${DESIGN_LAYOUT_RSURL}/create?job_order_id=${job_order_id}`)
             .then(response => {
                 // FOR JOB ORDER
                 let jobOrderOptions = [];
@@ -107,23 +109,68 @@ const Add = (props) => {
             );
             userGetMethod(`${JOB_ORDER_DETAILS}?jobOrderId=${selectedValue}`)
                 .then(response => {
-                    let { job_name, printer_name, client_email, bill_config_type, printer_mark, marketing_p_name, cyl_rate_status, limit_square_cm, vat_status} = response.data.jobOrderDetails;
+                    let { agreement_date,
+                        bill_config_status,
+                        cir,
+                        client_email,
+                        client_id,
+                        client_name,
+                        cyl_rate_status,
+                        dia,
+                        entry_date,
+                        fl,
+                        id,
+                        job_name,
+                        job_no,
+                        job_type,
+                        limit_square_cm,
+                        marketing_p_name,
+                        printer_id,
+                        printer_mark,
+                        printer_name,
+                        total_cylinder_qty,
+                        total_surface_area,
+                        vat_status } = response.data.jobOrderDetails;
                     setFormData({
-                        'job_name'         : job_name,
-                        'printer_name'     : printer_name,
-                        'client_email'     : client_email,
-                        'bill_config_type' : bill_config_type,
-                        'printer_mark'     : printer_mark,
-                        'marketing_p_name' : marketing_p_name,
-                        'cyl_rate_status'  : cyl_rate_status,
-                        'limit_square_cm'  : limit_square_cm,
-                        'vat_status'       : vat_status,
+                        'agreement_date': agreement_date,
+                        'bill_config_status': bill_config_status,
+                        'cir': cir,
+                        'client_email': client_email,
+                        'client_id': client_id,
+                        'client_name': client_name,
+                        'cyl_rate_status': cyl_rate_status,
+                        'dia': dia,
+                        'entry_date': entry_date,
+                        'fl': fl,
+                        'id': id,
+                        'job_name': job_name,
+                        'job_no': job_no,
+                        'job_type': job_type,
+                        'limit_square_cm': limit_square_cm,
+                        'marketing_p_name': marketing_p_name,
+                        'printer_id': printer_id,
+                        'printer_mark': printer_mark,
+                        'printer_name': printer_name,
+                        'total_cylinder_qty': total_cylinder_qty,
+                        'total_surface_area': total_surface_area,
+                        'vat_status': vat_status
                     });
+                    setTypeColorOptions(response.data.colors);
+                    if(response.data.colors.length > 0) {
+                        let colorOptions = [];
+                        response.data.colors.map((item, index) => {
+                            let colorObj = {};
+                            colorObj.id = index;
+                            colorObj.name = item.color_name;
+                            colorOptions.push(colorObj);
+                        })
+                        setTypeColorOptions(colorOptions);
+                    }
                 });
         } 
     }
     console.log(formData);
-
+    console.log(typeColorOptions);
 
     var menuId = 0;
     if (props.location.state === undefined) {
@@ -214,7 +261,7 @@ const Add = (props) => {
                                                                 required: 'On text Field Required'
                                                             })}
                                                         // onChange={inputChangeHandler}
-                                                        // value={stateData.on_text ? stateData.on_text : ''}
+                                                            value={formData.printer_name ? formData.printer_name : ''}
                                                         />
                                                     </div>
                                                     <label className="col-sm-5 col-form-label required">Reference</label>
@@ -244,7 +291,7 @@ const Add = (props) => {
                                                                 required: 'On text Field Required'
                                                             })}
                                                         // onChange={inputChangeHandler}
-                                                        // value={stateData.on_text ? stateData.on_text : ''}
+                                                        value = {formData.job_type ? formData.job_type : ''}
                                                         />
                                                     </div>
                                                     <label className="col-sm-5 col-form-label required">Printing Type</label>
@@ -272,7 +319,7 @@ const Add = (props) => {
                                                                 required: 'On text Field Required'
                                                             })}
                                                         // onChange={inputChangeHandler}
-                                                        // value={stateData.on_text ? stateData.on_text : ''}
+                                                        value={formData.total_cylinder_qty ? formData.total_cylinder_qty : ''}
                                                         />
                                                     </div>
                                                     <label className="col-sm-5 col-form-label required">Color</label>
@@ -282,9 +329,10 @@ const Add = (props) => {
                                                             multiple
                                                             name="color"
                                                             labelKey={option => `${option.name}`}
-                                                            options={typeOptions}
+                                                            options={typeColorOptions}
                                                             placeholder="Select Color..."
                                                             // onChange={(e) => dropDownChange(e, 'color')}
+                                                            selected={typeColorOptions}
                                                             ref={register({
                                                                 required: 'On text Field Required'
                                                             })}
@@ -321,9 +369,9 @@ const Add = (props) => {
                                             </a>
                                         </div>
                                     </div>
-                                    {isLayout == true ? (<Layout inputChangeHandler={inputChangeHandler}/>) : ("")
+                                    {isLayout == true ? (<Layout inputChangeHandler={inputChangeHandler} formData={formData}/>) : ("")
                                     }
-                                    {isBase == true ? (<Base inputChangeHandler={inputChangeHandler} />) : ("")
+                                    {isBase == true ? (<Base inputChangeHandler={inputChangeHandler} formData={formData} typeColorOptions = {typeColorOptions}/>) : ("")
                                     }
                                     <SubmitButton link="designLayout/index" menuId={ menuId }/>
                                 </form>

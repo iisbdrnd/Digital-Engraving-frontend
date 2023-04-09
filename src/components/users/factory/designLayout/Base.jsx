@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import useForm from "react-hook-form";
 const Base = (props) => {
+    const {inputChangeHandler, formData,typeColorOptions} = props;
     const { handleSubmit, register, errors ,reset} = useForm();
-    const [designColor, setDesignColor] = useState(['1','2','3']);
-    const {inputChangeHandler} = props;
+
     return (
         <>
             <div className="d-flex col-md-12">
@@ -23,7 +23,7 @@ const Base = (props) => {
                                         required: 'On text Field Required'
                                     })}
                                     onChange={inputChangeHandler}
-                                // value={stateData.on_text ? stateData.on_text : ''}
+                                    value={formData.fl ? formData.fl : ''}
                                 />
                             </div>
                             <label className="col-sm-5 col-form-label required">Desire Dia</label>
@@ -170,26 +170,14 @@ const Base = (props) => {
                             </thead>
                             <tbody>
                                 {
-                                    designColor.map((item) => {
+                                    typeColorOptions.map((item) => {
                                         return (
                                             <tr>
-                                                <td><input className="form-control" type="text" /></td>
-                                                <td>
-                                                    <select className="form-control">
-                                                        <option>opt 1</option>
-                                                        <option>opt 2</option>
-                                                        <option>opt 3</option>
-                                                    </select>
-                                                </td>
+                                                <td><input className="form-control" type="text" value={item.id+1}/></td>
+                                                <td><input className="form-control" type="text" value={item.name}/></td>
                                                 <td><input className="form-control" type="text" /></td>
                                                 <td><input className="form-control" type="text" /></td>
-                                                <td>
-                                                    <select className="form-control">
-                                                        <option>opt 1</option>
-                                                        <option>opt 2</option>
-                                                        <option>opt 3</option>
-                                                    </select>
-                                                </td>
+                                                <td><input className="form-control" type="text" /></td>
                                             </tr>
                                         )
                                     })
