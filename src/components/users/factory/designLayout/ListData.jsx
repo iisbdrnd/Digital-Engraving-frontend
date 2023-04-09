@@ -103,7 +103,7 @@ const ListData = (props) =>  {
             })
             .catch(error => console.log(error))
     }
-
+    console.log(layoutData);
     const sortHandler = (params) => {
         setAscDesc(!ascDesc);
         let ascUrl = '';
@@ -120,7 +120,7 @@ const ListData = (props) =>  {
                 setCurrentPage(response.data.pendingGrindings.current_page)
                 setPerPage(response.data.pendingGrindings.per_page)
                 setTotalData(response.data.pendingGrindings.total)
-                // setLayoutData(response.data.pendingGrindings.data)
+                setLayoutData(response.data.pendingGrindings.data)
                 setIsLoading(false)
             })
             .catch(error => console.log(error))
@@ -210,7 +210,7 @@ const ListData = (props) =>  {
                                                                     <td>
                                                                         <Link 
                                                                             to={{
-                                                                                pathname: `${process.env.PUBLIC_URL}/polishing/edit/${item.cylinder_id}`, 
+                                                                                pathname: `${process.env.PUBLIC_URL}/designLayout/edit/${item.id}`, 
                                                                                 state: { params: {menuId: menuId} }
                                                                             }}
                                                                         className="btn btn-secondary btn-xs">

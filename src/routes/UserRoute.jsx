@@ -341,6 +341,7 @@ import PlatingRemainingJobsReport from './../components/users/factoryReport/plat
 //DESIGN LAYOUT
 import DesignLayoutList from './../components/users/factory/designLayout/ListData';
 import DesignLayoutAdd from  './../components/users/factory/designLayout/Add'
+import DesignLayoutEdit from '../components/users/factory/designLayout/Edit/Edit'
 //GRINDING
 import GrindingList from './../components/users/factory/grinding/ListData';
 import GrindingAdd from './../components/users/factory/grinding/Add';
@@ -1396,6 +1397,10 @@ class UserRoute extends Component {
                 <UserAuthRoute
                    path={`${process.env.PUBLIC_URL}/designLayout/add`} 
                    component={DesignLayoutAdd}/>
+                <UserAuthRoute 
+                  path={`${process.env.PUBLIC_URL}/designLayout/edit/:job_no`}
+                  component={DesignLayoutEdit} 
+                />
                  {/* GRINDING */}
                 <UserAuthRoute
                   path={`${process.env.PUBLIC_URL}/grinding/index`}

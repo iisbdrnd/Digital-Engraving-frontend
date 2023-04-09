@@ -1,43 +1,47 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { Fragment } from "react";
-import { Plus } from "react-feather";
 import useForm from "react-hook-form";
+import 'react-bootstrap-typeahead/css/Typeahead.css';
+
 import Layout from "./Layout";
 import Base from "./Base";
+
 import { PanelRefreshIcons, SubmitButton } from "../../../common/GlobalButton";
 import { Typeahead } from 'react-bootstrap-typeahead';
-import { JOB_AGREEMENT_RSURL, JOB_ORDER_DETAILS,DESIGN_LAYOUT_RSURL } from "../../../../api/userUrl";
+import { JOB_ORDER_DETAILS,DESIGN_LAYOUT_RSURL } from "../../../../api/userUrl";
 import { userGetMethod } from "../../../../api/userAction";
-import 'react-bootstrap-typeahead/css/Typeahead.css';
+
 const Add = (props) => {
     const { handleSubmit, register, errors, reset } = useForm();
     const [isLayout, setIsLayout] = useState(true);
     const [isBase, setIsBase] = useState(false);
     const [typeheadOptions, setTypeheadOptions] = useState({ job_orders : [], });
     const [formData, setFormData] = useState({
-        agreement_date: new Date().toLocaleDateString(),
-        bill_config_status: '',
-        cir: '',
-        client_email: '',
-        client_id: '',
-        client_name: '',
-        cyl_rate_status: '',
-        dia: '',
-        entry_date: '',
-        fl: '',
-        id: '',
-        job_name: '',
-        job_no: '',
-        job_type: '',
-        limit_square_cm: '',
-        marketing_p_name: '',
-        printer_id: '',
-        printer_mark: '',
-        printer_name: '',
-        total_cylinder_qty: '',
-        total_surface_area: '',
-        vat_status: ''
+        agreement_date      : new Date().toLocaleDateString(),
+        bill_config_status  : '',
+        cir                 : '',
+        client_email        : '',
+        client_id           : '',
+        client_name         : '',
+        cyl_rate_status     : '',
+        dia                 : '',
+        entry_date          : '',
+        fl                  : '',
+        id                  : '',
+        job_name            : '',
+        job_no              : '',
+        job_type            : '',
+        limit_square_cm     : '',
+        marketing_p_name    : '',
+        printer_id          : '',
+        printer_mark        : '',
+        printer_name        : '',
+        total_cylinder_qty  : '',
+        total_surface_area  : '',
+        vat_status          : '',
+        remarks             : '',
+        ups                 : ''
     });
     const [dropdownData, setDropdownData] = useState({});
     const [typeColorOptions,setTypeColorOptions] = useState([]);
@@ -96,6 +100,18 @@ const Add = (props) => {
     const inputChangeHandler = (e) => {
         setFormData({...formData,[e.target.name] : e.target.value});
     }
+    useEffect(() => {
+        if (formData.l_reg_mark && formData.l_fl_cut && formData.design_width && formData.ups && formData.r_reg_mark && formData.r_fl_cut) {
+            setFormData({ ...formData, "start_point": (+formData.l_reg_mark) + (+formData.l_fl_cut) + ((+formData.design_width) * (+formData.ups)) + (+formData.r_reg_mark) + (+formData.r_fl_cut) })
+        }
+    }, [
+        formData?.l_reg_mark,
+        formData?.l_fl_cut,
+        formData?.design_width,
+        formData?.ups,
+        formData?.r_reg_mark,
+        formData?.r_fl_cut
+    ])
     console.log(formData);
 
     const dropDownChange = (event, stateName) => {
@@ -130,30 +146,34 @@ const Add = (props) => {
                         printer_name,
                         total_cylinder_qty,
                         total_surface_area,
-                        vat_status } = response.data.jobOrderDetails;
+                        vat_status,
+                        remarks,
+                        ups} = response.data.jobOrderDetails;
                     setFormData({
-                        'agreement_date': agreement_date,
+                        'agreement_date'    : agreement_date,
                         'bill_config_status': bill_config_status,
-                        'cir': cir,
-                        'client_email': client_email,
-                        'client_id': client_id,
-                        'client_name': client_name,
-                        'cyl_rate_status': cyl_rate_status,
-                        'dia': dia,
-                        'entry_date': entry_date,
-                        'fl': fl,
-                        'id': id,
-                        'job_name': job_name,
-                        'job_no': job_no,
-                        'job_type': job_type,
-                        'limit_square_cm': limit_square_cm,
-                        'marketing_p_name': marketing_p_name,
-                        'printer_id': printer_id,
-                        'printer_mark': printer_mark,
-                        'printer_name': printer_name,
+                        'cir'               : cir,
+                        'client_email'      : client_email,
+                        'client_id'         : client_id,
+                        'client_name'       : client_name,
+                        'cyl_rate_status'   : cyl_rate_status,
+                        'dia'               : dia,
+                        'entry_date'        : entry_date,
+                        'fl'                : fl,
+                        'id'                : id,
+                        'job_name'          : job_name,
+                        'job_no'            : job_no,
+                        'job_type'          : job_type,
+                        'limit_square_cm'   : limit_square_cm,
+                        'marketing_p_name'  : marketing_p_name,
+                        'printer_id'        : printer_id,
+                        'printer_mark'      : printer_mark,
+                        'printer_name'      : printer_name,
                         'total_cylinder_qty': total_cylinder_qty,
                         'total_surface_area': total_surface_area,
-                        'vat_status': vat_status
+                        'vat_status'        : vat_status,
+                        'remarks'           : remarks,
+                        'ups'               : ups
                     });
                     setTypeColorOptions(response.data.colors);
                     if(response.data.colors.length > 0) {
@@ -247,7 +267,7 @@ const Add = (props) => {
                                                                 required: 'On text Field Required'
                                                             })}
                                                         // onChange={inputChangeHandler}
-                                                        // value={stateData.on_text ? stateData.on_text : ''}
+                                                         value={formData.remarks ? formData.remarks : ''}
                                                         />
                                                     </div>
                                                     <label className="col-sm-5 col-form-label required">Printer</label>

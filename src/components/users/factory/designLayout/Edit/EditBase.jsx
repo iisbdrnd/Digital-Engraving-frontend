@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import useForm from "react-hook-form";
-const Base = (props) => {
+const EditBase = (props) => {
     const {inputChangeHandler, formData,typeColorOptions} = props;
     const { handleSubmit, register, errors ,reset} = useForm();
 
@@ -346,4 +346,4 @@ const Base = (props) => {
         </>
     )
 }
-export default Base;
+export default EditBase;

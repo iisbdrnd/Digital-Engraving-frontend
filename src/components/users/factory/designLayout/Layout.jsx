@@ -49,7 +49,7 @@ const Layout = (props) => {
                                         required: 'On text Field Required'
                                     })}
                                 // onChange={inputChangeHandler}
-                                // value={stateData.on_text ? stateData.on_text : ''}
+                                 value={formData.remarks ? formData.remarks : ''}
                                 />
                             </div>
                             <label className="col-sm-5 col-form-label required">Layout ID</label>
@@ -77,7 +77,7 @@ const Layout = (props) => {
                                         required: 'On text Field Required'
                                     })}
                                 // onChange={inputChangeHandler}
-                                // value={stateData.on_text ? stateData.on_text : ''}
+                                value={formData.ups ? formData.ups : ''}
                                 />
                             </div>
                             <label className="col-sm-5 col-form-label required">Eye MC</label>
@@ -240,17 +240,16 @@ const Layout = (props) => {
                     <legend className="w-auto text-left">Axial</legend>
                     <div className="form-row">
                         <div className="col-md-2 mb-3">
-                            <label for="qty">L.Reg.Mark</label>
+                            <label>L.Reg.Mark</label>
                             <div className="d-flex">
                                 <div className="col-md-9 pl-0">
                                     <input
                                         className="form-control"
-                                        id="qty"
-                                        name="qty"
+                                        id="l_reg_mark"
+                                        name="l_reg_mark"
                                         // required
                                         type="number"
-                                        placeholder="Qty"
-
+                                        onChange={inputChangeHandler}
                                     />
                                 </div>
                                 <div className="col-md-3 pl-0">
@@ -259,17 +258,16 @@ const Layout = (props) => {
                             </div>
                         </div>
                         <div className="col-md-2 mb-3">
-                            <label for="qty">L.FL.Cut</label>
+                            <label>L.FL.Cut</label>
                             <div className="d-flex">
                                 <div className="col-md-9 pl-0">
                                     <input
                                         className="form-control"
-                                        id="qty"
-                                        name="qty"
+                                        id="l_fl_cut"
+                                        name="l_fl_cut"
                                         // required
                                         type="number"
-                                        placeholder="Qty"
-
+                                        onChange={inputChangeHandler}
                                     />
                                 </div>
                                 <div className="col-md-3 pl-0">
@@ -278,17 +276,16 @@ const Layout = (props) => {
                             </div>
                         </div>
                         <div className="col-md-1 mb-3">
-                            <label for="qty">Design W.</label>
+                            <label>Design W.</label>
                             <div className="d-flex">
                                 <div className="col-md-9 pl-0">
                                     <input
                                         className="form-control"
-                                        id="qty"
-                                        name="qty"
+                                        id="design_width"
+                                        name="design_width"
                                         // required
                                         type="number"
-                                        placeholder="Qty"
-
+                                        onChange={inputChangeHandler}
                                     />
                                 </div>
                                 <div className="col-md-3 pl-0">
@@ -297,17 +294,16 @@ const Layout = (props) => {
                             </div>
                         </div>
                         <div className="col-md-1 mb-3">
-                            <label for="qty">UPS</label>
+                            <label>UPS</label>
                             <div className="d-flex">
                                 <div className="col-md-9 pl-0">
                                     <input
                                         className="form-control"
-                                        id="qty"
-                                        name="qty"
+                                        id="ups"
+                                        name="ups"
                                         // required
                                         type="number"
-                                        placeholder="Qty"
-
+                                        onChange={inputChangeHandler}
                                     />
                                 </div>
                                 <div className="col-md-3 pl-0">
@@ -316,17 +312,16 @@ const Layout = (props) => {
                             </div>
                         </div>
                         <div className="col-md-2 mb-3">
-                            <label for="qty">R.Reg.Mark</label>
+                            <label>R.Reg.Mark</label>
                             <div className="d-flex">
                                 <div className="col-md-9 pl-0">
                                     <input
                                         className="form-control"
-                                        id="qty"
-                                        name="qty"
+                                        id="r_reg_mark"
+                                        name="r_reg_mark"
                                         // required
                                         type="number"
-                                        placeholder="Qty"
-
+                                        onChange={inputChangeHandler}
                                     />
                                 </div>
                                 <div className="col-md-3 pl-0">
@@ -335,17 +330,16 @@ const Layout = (props) => {
                             </div>
                         </div>
                         <div className="col-md-2 mb-3">
-                            <label for="qty">R.FL.Cut</label>
+                            <label for="r_fl_cut">R.FL.Cut</label>
                             <div className="d-flex">
                                 <div className="col-md-9 pl-0">
                                     <input
                                         className="form-control"
-                                        id="qty"
-                                        name="qty"
+                                        id="r_fl_cut"
+                                        name="r_fl_cut"
                                         // required
                                         type="number"
-                                        placeholder="Qty"
-
+                                        onChange={inputChangeHandler}
                                     />
                                 </div>
                                 <div className="col-md-3 pl-0">
@@ -354,33 +348,32 @@ const Layout = (props) => {
                             </div>
                         </div>
                         <div className="col-md-1 mb-3">
-                            <label for="qty">Start Point</label>
+                            <label for="start_point">Start Point</label>
                             <div className="d-flex">
                                 <div className="col-md-12 pl-0">
                                     <input
                                         className="form-control"
-                                        id="qty"
-                                        name="qty"
+                                        id="start_point"
+                                        name="start_point"
                                         // required
                                         type="number"
-                                        placeholder="Qty"
-
+                                        // onChange={inputChangeHandler}
+                                        value={formData.start_point}
                                     />
                                 </div>
                             </div>
                         </div>
                         <div className="col-md-1 mb-3">
-                            <label for="qty">Image Area</label>
+                            <label for="image_area">Image Area</label>
                             <div className="d-flex">
                                 <div className="col-md-12 pl-0">
                                     <input
                                         className="form-control"
-                                        id="qty"
-                                        name="qty"
+                                        id="image_area"
+                                        name="image_area"
                                         // required
                                         type="number"
-                                        placeholder="Qty"
-
+                                        onChange={inputChangeHandler}
                                     />
                                 </div>
                             </div>
