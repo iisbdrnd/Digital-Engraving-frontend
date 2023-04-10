@@ -18,6 +18,7 @@ const Edit = (props) => {
     const [isLayout, setIsLayout] = useState(true);
     const [isBase, setIsBase] = useState(false);
     const [typeheadOptions, setTypeheadOptions] = useState({ job_orders : [], });
+    const [selectedJobOrder, setSelectedJobOrder] = useState([]);
     const [formData, setFormData] = useState({
         agreement_date      : new Date().toLocaleDateString(),
         bill_config_status  : '',
@@ -68,6 +69,9 @@ const Edit = (props) => {
                         setFormData({
                             'job_order_id': [jobOrderObj]
                         })
+                    }
+                    if(job_order_id != null) {
+                        setSelectedJobOrder([...selectedJobOrder,jobOrderObj])
                     }
                     dropDownChange([{id : response.data.jobOrder.id}], 'job_order_id');
                 }
@@ -161,6 +165,7 @@ const Edit = (props) => {
                 });
         } 
     }
+    console.log(dropdownData);
 
     const toogleLtoB = (val) => {
         if (val == "layout") {
@@ -212,17 +217,16 @@ const Edit = (props) => {
                                                 <label className="col-sm-5 col-form-label required" htmlFor="job_order_id">Job No</label>
                                                 <div className="col-md-7">
                                                     <Typeahead
-                                                        // className="form-control"
                                                         id="job_order_id"
                                                         name="job_order_id"
                                                         labelKey={option => `${option.name}`}
                                                         options={typeheadOptions['job_orders']}
                                                         placeholder="Select Job No..."
-                                                        // onChange={(e) => dropDownChange(e, 'job_order_id')}
                                                         ref={register({
                                                             required: 'On text Field Required'
                                                         })}
-                                                    // disabled={stateData.job_order_id != '' ? 'disabled' : ''}
+                                                        selected={selectedJobOrder}
+                                                        disabled={selectedJobOrder.length > 0}
                                                     />
                                                 </div>
                                                 <label className="col-sm-5 col-form-label required">Job Name</label>
