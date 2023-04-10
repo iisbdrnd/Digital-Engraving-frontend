@@ -118,6 +118,43 @@ export default function StartCycleForm(props) {
             {[event.target.name] : event.target.value},
         );
     }
+    console.log(formData);
+    // actual_cycle_duration
+    //     :
+    //     ""
+    // actual_end_time
+    //     :
+    //     ""
+    // chrome_date
+    //     :
+    //     ""
+    // cycle_id
+    //     :
+    //     "CR1-230403-001"
+    // est_cycle_duration
+    //     :
+    //     "2.00"
+    // est_end_time
+    //     :
+    //     "2023/4/10 16:49:00"
+    // final_chrome_order
+    //     :
+    //     "2"
+    // remarks
+    //     :
+    //     "okk"
+    // shift_id
+    //     :
+    //     1
+    // shift_operator
+    //     :
+    //     ""
+    // shift_type_id
+    //     :
+    //     2
+    // start_time
+    //     :
+    //     "2023-04-10T14:49"
 
     function formatAm_Pm(date) {
         var hours = date.getHours();
@@ -380,6 +417,7 @@ export default function StartCycleForm(props) {
                                                                 value={formData.actual_end_time}
                                                                 onChange={inputHandler}
                                                                 ref={register({})}
+                                                                disabled={formData.chrome_date == ""}
                                                             />
                                                             {errors.actual_end_time && <p className='text-danger'>{errors.actual_end_time.message}</p>}
                                                         </div>
@@ -396,6 +434,7 @@ export default function StartCycleForm(props) {
                                                                 value={formData.actual_cycle_duration}
                                                                 onChange={inputHandler}
                                                                 ref={register({})}
+                                                                disabled={formData.chrome_date == ""}
                                                             />
                                                             {errors.actual_cycle_duration && <p className='text-danger'>{errors.actual_cycle_duration.message}</p>}
                                                         </div>

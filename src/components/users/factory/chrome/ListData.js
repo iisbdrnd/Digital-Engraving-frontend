@@ -239,7 +239,7 @@ export default function ListData(props) {
                                                                 <span className="btn btn-info btn-sm mr-1" onClick={()=>toggleModal('editTankSchedule', schedule.id)}><i className='fa fa-pencil'></i>Edit</span>
                                                                 {
                                                                     schedule.running_status == 0 ? (
-                                                                        <span className="btn btn-primary btn-sm m-r-5" onClick={()=>toggleModal('cycleStart', schedule.id, schedule.cycle_id)}>Start Cycle</span>
+                                                                         <span className="btn btn-primary btn-sm m-r-5" onClick={()=>toggleModal('cycleStart', schedule.id, schedule.cycle_id)}>{schedule.start_time == null ?  "Start Cycle" : "Edit Cycle"}</span>
                                                                     ) : (
                                                                         <span className="btn bg-warning">Completed</span>
                                                                     )
@@ -315,7 +315,7 @@ export default function ListData(props) {
                     </div>
                 </div>
             </div>
-            {modal == true ? <TankSchedule tankId={stateData.currentTank.id} modalTitle={stateData.currentTank.tank_id} toggle={()=>toggleModal('addTankSchedule')} modal={modal} /> : ''} 
+            {modal == true ? <TankSchedule tankId={stateData.currentTank.id} modalTitle={stateData.currentTank.tank_id} toggle={()=>toggleModal('addTankSchedule')} modal={modal} onChangeTank={onChangeTank} /> : ''} 
             {cycleModal == true ? <StartCycleForm tankId={stateData.currentTank.id} chromeScheduleMasterId={stateData.singleScheduleInfo.id} modalTitle={stateData.singleScheduleInfo.scheduleCycleId +' of #'+stateData.currentTank.tank_id} toggle={()=>toggleModal('cycleStart')} modalName="cycleStart" modal={cycleModal} needReload={() => onChangeTank(stateData.currentTank.id, stateData.currentTank.tank_id)}/> : ''} 
             
             {editTankSchedule == true ? <TankScheduleEdit tankId={stateData.currentTank.id} chromeScheduleMasterId={stateData.singleScheduleInfo.id} modalTitle={stateData.currentTank.tank_id} toggle={()=>toggleModal('editTankSchedule')} modalName="cycleStart" modal={editTankSchedule} /> : ''} 

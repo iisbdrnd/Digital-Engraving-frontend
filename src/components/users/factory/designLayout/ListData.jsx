@@ -208,14 +208,14 @@ const ListData = (props) =>  {
                                                                     <td>{item.job_type}</td>
                                                                     <td>{item.client_name}</td>
                                                                     <td>
-                                                                        <Link 
-                                                                            to={{
-                                                                                pathname: `${process.env.PUBLIC_URL}/designLayout/add`, 
-                                                                                state: { params: {menuId: menuId,jobNo: item.id} }
-                                                                            }}
+                                                                    <Link
+                                                                        to={{
+                                                                            pathname: `${process.env.PUBLIC_URL}/designLayout/add`,
+                                                                            state: { params: { menuId: menuId, jobNo: item.id } }
+                                                                        }}
                                                                         className="btn btn-secondary btn-xs">
-                                                                            Layout
-                                                                        </Link>
+                                                                        Layout
+                                                                    </Link>
                                                                     </td>
                                                                 </tr>
                                                             )                
