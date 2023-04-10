@@ -235,11 +235,11 @@ export default function ListData(props) {
                                                             <div className="col-md-2">
                                                                 <h5>{++scheduleIndex}. {schedule.cycle_id}</h5>
                                                             </div>
-                                                            <div className="col-md-6">
+                                                            <div className="col-md-8">
                                                                 <span className="btn btn-info btn-sm mr-1" onClick={()=>toggleModal('editTankSchedule', schedule.id)}><i className='fa fa-pencil'></i>Edit</span>
                                                                 {
                                                                     schedule.running_status == 0 ? (
-                                                                         <span className="btn btn-primary btn-sm m-r-5" onClick={()=>toggleModal('cycleStart', schedule.id, schedule.cycle_id)}>{schedule.start_time == null ?  "Start Cycle" : "Edit Cycle"}</span>
+                                                                         <span className="btn btn-primary btn-sm m-r-5" onClick={()=>toggleModal('cycleStart', schedule.id, schedule.cycle_id)}>{schedule.start_time == null ?  "Start Cycle" : "Complete Cycle"}</span>
                                                                     ) : (
                                                                         <span className="btn bg-warning">Completed</span>
                                                                     )
@@ -258,7 +258,7 @@ export default function ListData(props) {
                                                                     </>
                                                                 : ''}
                                                             </div>
-                                                            <div className="col-md-4">
+                                                            <div className="col-md-2">
                                                                 <ul className="d-flex pull-right">
                                                                     <li className="p-r-10 cursor-pointer" onClick={() => toggle(scheduleIndex, schedule.id)}><i className={isOpen == scheduleIndex ? 'fa fa-minus' : 'fa fa-plus'}></i></li>
                                                                 </ul>

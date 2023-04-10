@@ -21,6 +21,7 @@ export default function StartCycleForm(props) {
     const [modal, setModal] = useState(false); 
     const [changeUseEffect, setChangeUseEffect] = useState(0); 
     const [jobData, setJobData] = useState({}); 
+    const [isStarted,setIsStarted] = useState(false);
 
     let [formData, setFormData] = useReducer(
         (state, newState) => ({...state, ...newState}),
@@ -46,7 +47,9 @@ export default function StartCycleForm(props) {
         userGetMethod(`${CHROME_SCHEDULE_START_CYCLE}/${props.chromeScheduleMasterId}`)
             .then(response => {
                 let {cycle_id, shift_operator, chrome_date, shift_id, start_time, final_chrome_order, est_end_time, actual_end_time, est_cycle_duration, actual_cycle_duration, remarks, shift_type_id, shiftDutyPersons} = response.data.cycleData;
-
+                if(start_time != null) {
+                    setIsStarted(true)
+                }
                 setFormData({ 
                     cycle_id             : cycle_id,
                     chrome_date         : chrome_date === null ? '': chrome_date,
@@ -119,42 +122,6 @@ export default function StartCycleForm(props) {
         );
     }
     console.log(formData);
-    // actual_cycle_duration
-    //     :
-    //     ""
-    // actual_end_time
-    //     :
-    //     ""
-    // chrome_date
-    //     :
-    //     ""
-    // cycle_id
-    //     :
-    //     "CR1-230403-001"
-    // est_cycle_duration
-    //     :
-    //     "2.00"
-    // est_end_time
-    //     :
-    //     "2023/4/10 16:49:00"
-    // final_chrome_order
-    //     :
-    //     "2"
-    // remarks
-    //     :
-    //     "okk"
-    // shift_id
-    //     :
-    //     1
-    // shift_operator
-    //     :
-    //     ""
-    // shift_type_id
-    //     :
-    //     2
-    // start_time
-    //     :
-    //     "2023-04-10T14:49"
 
     function formatAm_Pm(date) {
         var hours = date.getHours();
@@ -417,7 +384,7 @@ export default function StartCycleForm(props) {
                                                                 value={formData.actual_end_time}
                                                                 onChange={inputHandler}
                                                                 ref={register({})}
-                                                                disabled={formData.chrome_date == ""}
+                                                                disabled ={isStarted == false ? true : false}
                                                             />
                                                             {errors.actual_end_time && <p className='text-danger'>{errors.actual_end_time.message}</p>}
                                                         </div>
@@ -434,7 +401,7 @@ export default function StartCycleForm(props) {
                                                                 value={formData.actual_cycle_duration}
                                                                 onChange={inputHandler}
                                                                 ref={register({})}
-                                                                disabled={formData.chrome_date == ""}
+                                                                disabled ={isStarted == false ? true : false}
                                                             />
                                                             {errors.actual_cycle_duration && <p className='text-danger'>{errors.actual_cycle_duration.message}</p>}
                                                         </div>
