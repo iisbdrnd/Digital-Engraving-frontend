@@ -164,7 +164,7 @@ const Layout = (props) => {
                                         required: 'On text Field Required'
                                     })}
                                 // onChange={inputChangeHandler}
-                                // value={stateData.on_text ? stateData.on_text : ''}
+                                value={formData.rpt  ? formData.rpt : ''}
                                 />
                             </div>
                             <label className="col-sm-5 col-form-label required">Printer M</label>
@@ -357,7 +357,7 @@ const Layout = (props) => {
                                         name="start_point"
                                         // required
                                         type="number"
-                                        // onChange={inputChangeHandler}
+                                        onChange={inputChangeHandler}
                                         value={formData.start_point}
                                     />
                                 </div>
@@ -373,7 +373,8 @@ const Layout = (props) => {
                                         name="image_area"
                                         // required
                                         type="number"
-                                        onChange={inputChangeHandler}
+                                        // onChange={inputChangeHandler}
+                                        value={formData.image_area}
                                     />
                                 </div>
                             </div>

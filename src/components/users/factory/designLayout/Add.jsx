@@ -17,6 +17,7 @@ const Add = (props) => {
     const [isLayout, setIsLayout] = useState(true);
     const [isBase, setIsBase] = useState(false);
     const [typeheadOptions, setTypeheadOptions] = useState({ job_orders : [], });
+    const [selectedJobOrder, setSelectedJobOrder] = useState([]);
     const [formData, setFormData] = useState({
         agreement_date      : new Date().toLocaleDateString(),
         bill_config_status  : '',
@@ -37,16 +38,19 @@ const Add = (props) => {
         printer_id          : '',
         printer_mark        : '',
         printer_name        : '',
+        printing_status     : '',
         total_cylinder_qty  : '',
         total_surface_area  : '',
         vat_status          : '',
         remarks             : '',
-        ups                 : ''
+        ups                 : '',
+        rpt                 : ''
+
     });
     const [dropdownData, setDropdownData] = useState({});
     const [typeColorOptions,setTypeColorOptions] = useState([]);
     
-    let job_order_id = props.location.state.params.job_order_id ? props.location.state.params.job_order_id : null;
+    let job_order_id = props.location.state.params.jobNo ? props.location.state.params.jobNo : null;
     console.log(props);
     useEffect(() => {
         pageRefreshHandler(job_order_id);
@@ -68,6 +72,9 @@ const Add = (props) => {
                         setFormData({
                             'job_order_id': [jobOrderObj]
                         })
+                    }
+                    if(job_order_id != null) {
+                        setSelectedJobOrder([jobOrderObj])
                     }
                     dropDownChange([{id : response.data.jobOrder.id}], 'job_order_id');
                 }
@@ -102,7 +109,12 @@ const Add = (props) => {
     }
     useEffect(() => {
         if (formData.l_reg_mark && formData.l_fl_cut && formData.design_width && formData.ups && formData.r_reg_mark && formData.r_fl_cut) {
-            setFormData({ ...formData, "start_point": (+formData.l_reg_mark) + (+formData.l_fl_cut) + ((+formData.design_width) * (+formData.ups)) + (+formData.r_reg_mark) + (+formData.r_fl_cut) })
+            setFormData({ ...formData, "image_area": (+formData.l_reg_mark) + (+formData.l_fl_cut) + ((+formData.design_width) * (+formData.ups)) + (+formData.r_reg_mark) + (+formData.r_fl_cut) })
+
+        }
+        if (formData.l_reg_mark && formData.l_fl_cut && formData.design_width && formData.ups && formData.r_reg_mark && formData.r_fl_cut &&  formData?.image_area && formData?.fl) {
+            setFormData({ ...formData, "start_point": ((+formData.fl) - (+formData?.image_area))/2})
+
         }
     }, [
         formData?.l_reg_mark,
@@ -110,11 +122,17 @@ const Add = (props) => {
         formData?.design_width,
         formData?.ups,
         formData?.r_reg_mark,
-        formData?.r_fl_cut
+        formData?.r_fl_cut,
+        formData?.fl,
+        formData?.image_area
     ])
     console.log(formData);
 
     const dropDownChange = (event, stateName) => {
+        console.log(event);
+        if(stateName === 'job_order_id' && event[0].name){
+            setSelectedJobOrder(event);
+        }
         if(event.length > 0){
             const selectedValue = event[0].id;
             setDropdownData(
@@ -148,7 +166,9 @@ const Add = (props) => {
                         total_surface_area,
                         vat_status,
                         remarks,
-                        ups} = response.data.jobOrderDetails;
+                        ups,
+                        rpt,
+                        printing_status } = response.data.jobOrderDetails;
                     setFormData({
                         'agreement_date'    : agreement_date,
                         'bill_config_status': bill_config_status,
@@ -173,7 +193,9 @@ const Add = (props) => {
                         'total_surface_area': total_surface_area,
                         'vat_status'        : vat_status,
                         'remarks'           : remarks,
-                        'ups'               : ups
+                        'ups'               : ups,
+                        'rpt'               : rpt,
+                        'printing_status'   : printing_status,
                     });
                     setTypeColorOptions(response.data.colors);
                     if(response.data.colors.length > 0) {
@@ -236,6 +258,7 @@ const Add = (props) => {
                                                             options={typeheadOptions['job_orders']}
                                                             placeholder="Select Job No..."
                                                             onChange={(e) => dropDownChange(e, 'job_order_id')}
+                                                            selected={selectedJobOrder}
                                                             ref={register({
                                                                 required: 'On text Field Required'
                                                             })}
@@ -284,7 +307,7 @@ const Add = (props) => {
                                                             value={formData.printer_name ? formData.printer_name : ''}
                                                         />
                                                     </div>
-                                                    <label className="col-sm-5 col-form-label required">Reference</label>
+                                                    {/* <label className="col-sm-5 col-form-label required">Reference</label>
                                                     <div className="col-md-7">
                                                         <input
                                                             type="text"
@@ -297,7 +320,7 @@ const Add = (props) => {
                                                         // onChange={inputChangeHandler}
                                                         // value={stateData.on_text ? stateData.on_text : ''}
                                                         />
-                                                    </div>
+                                                    </div> */}
                                                 </div>
                                                 <div className="col-md-6 row">
                                                     <label className="col-sm-5 col-form-label required">Job Type</label>
@@ -325,7 +348,7 @@ const Add = (props) => {
                                                                 required: 'On text Field Required'
                                                             })}
                                                         // onChange={inputChangeHandler}
-                                                        // value={stateData.on_text ? stateData.on_text : ''}
+                                                         value={formData.printing_status ? formData.printing_status : ''}
                                                         />
                                                     </div>
                                                     <label className="col-sm-5 col-form-label required">No of Cyl</label>
