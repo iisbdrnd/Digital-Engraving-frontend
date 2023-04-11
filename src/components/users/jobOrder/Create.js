@@ -17,7 +17,15 @@ const Add = (props) => {
     const [linkjob, setLinkjob] = useState(false)
     const [jobOrderType, setJobOrderType] = useState(null)
    // const [jobId, setJobId] = useState(0);
-   const [typeAheadValue, setTypeAheadValue] = useState([]);
+   const [typeAheadValue, setTypeAheadValue] = useState({
+    'reference_job' : [],
+    'job_sub_class_id' : [],
+    'client_id' : [],
+    'printer_id' : [],
+    'marketing_person_id' : [],
+    'design_machine_id' : []
+
+   });
 
     let [calculationValue, setCalculationValue] = useReducer(
         (state, newState) => ({...state, ...newState}),
@@ -140,6 +148,9 @@ const Add = (props) => {
     },[]);
 
     const dropDownChange = (event, stateName) => {
+      if(stateName == 'reference_job' || stateName=='job_sub_class_id' || stateName== 'client_id' ||stateName== 'printer_id' || stateName== 'marketing_person_id' ||stateName== 'design_machine_id'){
+        setTypeAheadValue({[stateName] : event})
+      }
         if(event.length > 0){
             const selectedValue = event[0].id;
             setDropdownData(
@@ -173,50 +184,55 @@ const Add = (props) => {
     // }
 
     const submitHandler = (data, e) => {
-        e.preventDefault();
-        console.log(data);
-        data.client_id           = dropdownData.client_id;
-        data.job_sub_class_id    = dropdownData.job_sub_class_id;
-        data.reference_job       = dropdownData.reference_job;
-        data.marketing_person_id = dropdownData.marketing_person_id;
-        data.printer_id          = dropdownData.printer_id;
-        data.design_machine_id   = dropdownData.design_machine_id;
-        let color_id_final_arr = [];
-        multipleDropdownData.map(item => {
-            color_id_final_arr.push(item.id);
+      e.preventDefault();
+      console.log(data);
+      data.client_id = dropdownData.client_id;
+      data.job_sub_class_id = dropdownData.job_sub_class_id;
+      data.reference_job = dropdownData.reference_job;
+      data.marketing_person_id = dropdownData.marketing_person_id;
+      data.printer_id = dropdownData.printer_id;
+      data.design_machine_id = dropdownData.design_machine_id;
+      let color_id_final_arr = [];
+      multipleDropdownData.map(item => {
+        color_id_final_arr.push(item.id);
+      })
+      data.color_id = color_id_final_arr;
+
+      userPostMethod(JOB_ORDER_RSURL, data)
+        .then(response => {
+          if (response.data.status == 1) {
+            e.target.reset();
+            clearForm();
+            toast.success(response.data.message)
+          } else {
+            toast.error(response.data.message)
+          }
         })
-        data.color_id = color_id_final_arr;
-        userPostMethod(JOB_ORDER_RSURL, data)
-            .then(response => {
-                
-                if (response.data.status == 1) {
-                  //   setDropdownData({client_id:"",
-                  //   job_sub_class_id:"",
-                  //   reference_job:"",
-                  //   marketing_person_id:"",
-                  //   printer_id:"",
-                  //   design_machine_id:""
-                  // });
-                  setCalculationValue(
-                    {
-                      design_width: 0,
-                      ups: 0,
-                      printing_width: 0,
-                      design_height: 0,
-                      rpt: 0,
-                      printing_height: 0,
-                      circumference: 0,
-                      face_length: 0,
-                      total_cylinder_qty: 0,
-                    }
-                  );
-                    e.target.reset();
-                    toast.success(response.data.message)
-                } else {
-                    toast.error(response.data.message)
-                }
-            })
         .catch(error => toast.error(error))
+    }
+
+    const clearForm = () => {
+      setTypeAheadValue({
+        'reference_job': [],
+        'job_sub_class_id': [],
+        'client_id': [],
+        'printer_id': [],
+        'marketing_person_id': [],
+        'design_machine_id': []
+      })
+      setCalculationValue({
+        design_width: 0,
+        ups: 0,
+        printing_width: 0,
+        design_height: 0,
+        rpt: 0,
+        printing_height: 0,
+        circumference: 0,
+        face_length: 0,
+        total_cylinder_qty: 0,
+      });
+      setMultipleDropdownData([]);
+      
     }
 
     var menuId = 0;
@@ -299,7 +315,8 @@ const Add = (props) => {
                                                             // ref={register({
                                                             //     required: 'Reference Job Field Required'
                                                             // })}
-                                                            // {...register('reference_job')}
+                                                            selected={typeAheadValue['reference_job']}
+                                                            {...register('reference_job')}
                                                         />
                                                         {errors.reference_job && <p className='text-danger'>{errors.reference_job.message}</p>}
                                                     </div>
@@ -337,6 +354,7 @@ const Add = (props) => {
                                                             placeholder="Select Sub Class..."
                                                             onChange={(e) => dropDownChange(e, 'job_sub_class_id')}
                                                             inputProps={{ required: true }}
+                                                            selected={typeAheadValue['job_sub_class_id']}
                                                             // ref={register({
                                                             //     required: 'Sub Class Field Required'
                                                             // })}
@@ -364,6 +382,7 @@ const Add = (props) => {
                                     dropDownChange(e, "client_id")
                                   }
                                   inputProps={{ required: true }}
+                                  selected={typeAheadValue['client_id']}
                                   // ref={register({
                                   //   required: "Client Name Field Required",
                                   // })}
@@ -395,6 +414,7 @@ const Add = (props) => {
                                     dropDownChange(e, "printer_id")
                                   }
                                   inputProps={{ required: true }}
+                                  selected={typeAheadValue['printer_id']}
                                   // ref={register({
                                   //   required: "Printer Name Field Required",
                                   // })}
@@ -426,6 +446,7 @@ const Add = (props) => {
                                     dropDownChange(e, "marketing_person_id")
                                   }
                                   inputProps={{ required: true }}
+                                  selected={typeAheadValue['marketing_person_id']}
                                   // ref={register({
                                   //   required: "Marketing Person Field Required",
                                   // })}
@@ -456,6 +477,7 @@ const Add = (props) => {
                                   onChange={(e) =>
                                     dropDownChange(e, "design_machine_id")
                                   }
+                                  selected={typeAheadValue['design_machine_id']}
                                   {...register('design_machine_id')}
                                 />
                                 {errors.design_machine_id && (
@@ -486,6 +508,7 @@ const Add = (props) => {
                                   options={typeheadOptions["additional_colors"]}
                                   placeholder="Select Color..."
                                   onChange={setMultipleDropdownData}
+                                  selected={multipleDropdownData}
                                   {...register('color_id')}
                                   // ref={register({
                                   //   required: "Color Field Required",
