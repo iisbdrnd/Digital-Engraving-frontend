@@ -10,32 +10,15 @@ const Layout = (props) => {
                     <legend className="w-auto text-left">Layout</legend>
                     <div className="form-row">
                         <div className="col-md-6 row">
-                            <label className="col-sm-5 col-form-label required">Job No</label>
+                            <label className="col-sm-5 col-form-label">Ref. Job No</label>
                             <div className="col-md-7">
                                 <input
                                     type="text"
                                     className="form-control"
                                     name="job_no"
-                                    required
-                                    ref={register({
-                                        required: 'On text Field Required'
-                                    })}
+                                    {...register("job_no")}
                                 // onChange={inputChangeHandler}
                                 value={formData.job_no ? formData.job_no : ''}
-                                />
-                            </div>
-                            <label className="col-sm-5 col-form-label required">ID</label>
-                            <div className="col-md-7">
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    name="id"
-                                    required
-                                    ref={register({
-                                        required: 'On text Field Required'
-                                    })}
-                                    onChange={inputChangeHandler}
-                                    value={formData.id ? formData.id : ''}
                                 />
                             </div>
                             <label className="col-sm-5 col-form-label required">Remarks</label>
@@ -139,6 +122,17 @@ const Layout = (props) => {
                           
                         </div>
                         <div className="col-md-6 row">
+                        <label className="col-sm-5 col-form-label">Ref.Layout ID</label>
+                            <div className="col-md-7">
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    name="id"
+                                    {...register("id")}
+                                    onChange={inputChangeHandler}
+                                    value={formData.id ? formData.id : ''}
+                                />
+                            </div> 
                             <label className="col-sm-5 col-form-label required">Dia</label>
                             <div className="col-md-7">
                                 <input

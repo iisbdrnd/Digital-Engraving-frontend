@@ -74,7 +74,7 @@ const Add = (props) => {
                         })
                     }
                     if(job_order_id != null) {
-                        setSelectedJobOrder([jobOrderObj])
+                        setSelectedJobOrder([...selectedJobOrder,jobOrderObj])
                     }
                     dropDownChange([{id : response.data.jobOrder.id}], 'job_order_id');
                 }
@@ -129,10 +129,10 @@ const Add = (props) => {
     console.log(formData);
 
     const dropDownChange = (event, stateName) => {
-        console.log(event);
-        if(stateName === 'job_order_id' && event[0].name){
+        if(stateName == 'job_order_id' && event[0]?.name){
             setSelectedJobOrder(event);
         }
+        console.log(event);
         if(event.length > 0){
             const selectedValue = event[0].id;
             setDropdownData(
@@ -211,8 +211,6 @@ const Add = (props) => {
                 });
         } 
     }
-    console.log(formData);
-    console.log(typeColorOptions);
 
     var menuId = 0;
     if (props.location.state === undefined) {
@@ -262,6 +260,7 @@ const Add = (props) => {
                                                             ref={register({
                                                                 required: 'On text Field Required'
                                                             })}
+                                                            maxHeight={100}
                                                         // disabled={stateData.job_order_id != '' ? 'disabled' : ''}
                                                         />
                                                     </div>
