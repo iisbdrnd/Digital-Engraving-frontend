@@ -189,7 +189,7 @@ const Base = (props) => {
                 </fieldset>
                 </div>
             </div>
-            <div className="col-md-12">
+            {/* <div className="col-md-12">
             <fieldset className="border p-2">
                     <legend className="w-auto text-left">Axial</legend>
                     <div className="form-row">
@@ -336,7 +336,7 @@ const Base = (props) => {
 
                     </div>
                 </fieldset>
-            </div>
+            </div> */}
         </>
     )
 }

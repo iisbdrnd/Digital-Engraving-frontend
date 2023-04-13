@@ -4,7 +4,7 @@ const Layout = (props) => {
     const { handleSubmit, register, errors ,reset} = useForm();
     const {inputChangeHandler,formData} = props;
     return (
-        <><div className="d-flex col-md-12">
+        <><div className="d-flex col-md-12" style={{ paddingLeft: '0px !important' }}>
             <div className="col-md-6 pl-0 pr-0" style={{ paddingLeft: '0px !important' }}>
                 <fieldset className="border p-2">
                     <legend className="w-auto text-left">Layout</legend>
@@ -208,9 +208,8 @@ const Layout = (props) => {
                         <table className="table table-bordered" style={{ width: '100%' }}>
                             <thead>
                                 <tr>
-                                    <th scope="col" width="15%">Sl</th>
-                                    <th scope="col" width="20%">Job No.</th>
-                                    <th scope="col" width="10%">Date.</th>
+                                    <th scope="col" width="15%">Date</th>
+                                    <th scope="col" width="20%">BCO</th>
                                     <th scope="col" width="20%">Remarks</th>
                                 </tr>
                             </thead>
@@ -218,7 +217,6 @@ const Layout = (props) => {
                                 <tr>
                                 <td><input class="form-control" type="text"/></td>
                                     <td><input class="form-control" type="text" name="job_no"/></td>
-                                    <td><input class="form-control" type="text" name="entry_date"/></td>
                                     <td><input class="form-control" type="text" name="remarks"/></td>
                                 </tr>
 
@@ -229,7 +227,7 @@ const Layout = (props) => {
                 </fieldset>
             </div>
         </div>
-            <div className="col-md-12">
+            {/* <div className="col-md-12">
                 <fieldset className="border p-2">
                     <legend className="w-auto text-left">Axial</legend>
                     <div className="form-row">
@@ -376,7 +374,7 @@ const Layout = (props) => {
 
                     </div>
                 </fieldset>
-            </div>
+            </div> */}
         </>
     )
 }
