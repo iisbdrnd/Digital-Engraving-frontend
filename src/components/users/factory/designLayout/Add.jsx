@@ -19,8 +19,10 @@ const Add = (props) => {
     const [isBase, setIsBase] = useState(false);
     const [typeheadOptions, setTypeheadOptions] = useState({ job_orders: [], });
     const [selectedJobOrder, setSelectedJobOrder] = useState([]);
+    const [engraveOrder, setEngraveOrder] = useState([]);
+    const [uploadImage, setUploadImage] = useState();
     const [formData, setFormData] = useState({
-        agreement_date: new Date().toLocaleDateString(),
+        layout_date:  new Date().toLocaleDateString(),
         bill_config_status: '',
         cir: '',
         client_email: '',
@@ -105,11 +107,23 @@ const Add = (props) => {
     }
 
     const inputChangeHandler = (e) => {
+        if(e.target.name == 'history_image'){
+            setUploadImage({[e.target.name] : URL.createObjectURL(e.target.files[0])});
+        }
         setFormData({ ...formData, [e.target.name]: e.target.value });
     }
+
+    const engOrderHandler = (e, index) => {
+        setEngraveOrder(
+            engraveOrder.map((item, i) =>
+                i == index ? { ...item, [e.target.name]: e.target.value } : item)
+        );
+    };
+    console.log(engraveOrder);
+
     useEffect(() => {
         if (formData.l_reg_mark && formData.l_fl_cut && formData.design_w && formData.axial_ups && formData.r_reg_mark && formData.r_fl_cut) {
-            setFormData({ ...formData, "axl_image_area": (+formData.l_reg_mark) + (+formData.l_fl_cut) + ((+formData.design_w) * (+formData.ups)) + (+formData.r_reg_mark) + (+formData.r_fl_cut) })
+            setFormData({ ...formData, "axl_image_area": (+formData.l_reg_mark) + (+formData.l_fl_cut) + ((+formData.design_w) * (+formData.axial_ups)) + (+formData.r_reg_mark) + (+formData.r_fl_cut) })
 
         }
         if (formData.l_reg_mark && formData.l_fl_cut && formData.design_w && formData.axial_ups && formData.r_reg_mark && formData.r_fl_cut && formData?.axl_image_area && formData?.fl) {
@@ -143,7 +157,8 @@ const Add = (props) => {
             );
             userGetMethod(`${JOB_ORDER_DETAILS}?jobOrderId=${selectedValue}`)
                 .then(response => {
-                    let { agreement_date,
+                    let { 
+                        // layout_date,
                         bill_config_status,
                         cir,
                         client_email,
@@ -170,7 +185,7 @@ const Add = (props) => {
                         rpt,
                         printing_status } = response.data.jobOrderDetails;
                     setFormData({
-                        'agreement_date': agreement_date,
+                        // 'layout_date': layout_date,
                         'bill_config_status': bill_config_status,
                         'cir': cir,
                         'client_email': client_email,
@@ -206,6 +221,7 @@ const Add = (props) => {
                             colorObj.name = item.color_name;
                             colorOptions.push(colorObj);
                         })
+                        setEngraveOrder(colorOptions);
                         setTypeColorOptions(colorOptions);
                     }
                 });
@@ -266,7 +282,7 @@ const Add = (props) => {
                                                                 required: 'On text Field Required'
                                                             })}
                                                             maxHeight={100}
-                                                        // disabled={stateData.job_order_id != '' ? 'disabled' : ''}
+                                                            disabled={formData.job_id != null ? true : false}
                                                         />
                                                     </div>
                                                     <label className="col-sm-5 col-form-label required">Job Name</label>
@@ -281,6 +297,7 @@ const Add = (props) => {
                                                             })}
                                                             onChange={inputChangeHandler}
                                                             value={formData.job_name ? formData.job_name : ''}
+                                                            disabled={formData.job_name != '' ? true : false}
                                                         />
                                                     </div>
                                                     <label className="col-sm-5 col-form-label required">Remarks</label>
@@ -295,6 +312,7 @@ const Add = (props) => {
                                                             })}
                                                             onChange={inputChangeHandler}
                                                             value={formData.remarks ? formData.remarks : ''}
+                                                            disabled={formData.remarks != '' ? true : false}
                                                         />
                                                     </div>
                                                     <label className="col-sm-5 col-form-label required">Printer</label>
@@ -309,6 +327,8 @@ const Add = (props) => {
                                                             })}
                                                             onChange={inputChangeHandler}
                                                             value={formData.printer_name ? formData.printer_name : ''}
+                                                            disabled={formData.printer_id != '' ? true : false}
+                                                            
                                                         />
                                                     </div>
                                                 </div>
@@ -325,6 +345,7 @@ const Add = (props) => {
                                                             })}
                                                             onChange={inputChangeHandler}
                                                             value={formData.job_type ? formData.job_type : ''}
+                                                            disabled={formData.job_type != '' ? true : false}
                                                         />
                                                     </div>
                                                     <label className="col-sm-5 col-form-label required">Printing Type</label>
@@ -339,6 +360,7 @@ const Add = (props) => {
                                                             })}
                                                             onChange={inputChangeHandler}
                                                             value={formData.printing_status ? formData.printing_status : ''}
+                                                            disabled={formData.printing_status != '' ? true : false}
                                                         />
                                                     </div>
                                                     <label className="col-sm-5 col-form-label required">No of Cyl</label>
@@ -353,6 +375,7 @@ const Add = (props) => {
                                                             })}
                                                             // onChange={inputChangeHandler}
                                                             value={formData.total_cylinder_qty ? formData.total_cylinder_qty : ''}
+                                                            disabled={formData.total_cylinder_qty != '' ? true : false}
                                                         />
                                                     </div>
                                                     <label className="col-sm-5 col-form-label required">Color</label>
@@ -370,6 +393,7 @@ const Add = (props) => {
                                                                 required: 'On text Field Required'
                                                             })}
                                                         // disabled={stateData.job_order_id != '' ? 'disabled' : ''}
+                                                        disabled={formData.color != '' ? true : false}
                                                         />
                                                     </div>
                                                 </div>
@@ -384,28 +408,24 @@ const Add = (props) => {
                                                     <div className="col-md-12 row">
                                                     <label className="col-sm-5 col-form-label">Ref. Job No</label>
                                                         <div className="col-md-7">
-                                                            <input
+                                                            {/* <input
                                                                 type="text"
                                                                 className="form-control"
                                                                 name="job_no"
                                                                 {...register("job_no")}
                                                                 onChange={inputChangeHandler}
                                                                 value={formData.job_no ? formData.job_no : ''}
-                                                            />
-                                                        </div>
-                                                        <label className="col-sm-5 col-form-label required">Remarks</label>
-                                                        <div className="col-md-7">
-                                                            <input
-                                                                type="text"
+                                                            /> */}
+                                                            <select type="text"
                                                                 className="form-control"
-                                                                name="remarks"
-                                                                required
-                                                                ref={register({
-                                                                    required: 'On text Field Required'
-                                                                })}
+                                                                name="job_no"
+                                                                {...register("job_no")}
                                                                 onChange={inputChangeHandler}
-                                                                value={formData.remarks ? formData.remarks : ''}
-                                                            />
+                                                                value={formData.job_no ? formData.job_no : ''}>
+                                                                    <option value='1'>JOB NO 1</option>
+                                                                    <option value='2'>JOB NO 2</option>
+                                                                    <option value='3'>JOB NO 3</option>
+                                                            </select>
                                                         </div>
                                                         <label className="col-sm-5 col-form-label required">Layout ID</label>
                                                         <div className="col-md-7">
@@ -435,6 +455,7 @@ const Add = (props) => {
                                                                 })}
                                                                 onChange={inputChangeHandler}
                                                                 value={formData.ups ? formData.ups : ''}
+                                                                disabled={formData.ups != '' ?    true : false}
                                                             />
                                                         </div>
                                                         <label className="col-sm-5 col-form-label" style={{whiteSpace: 'nowrap'}}>Dia</label>
@@ -465,20 +486,6 @@ const Add = (props) => {
                                                                 value={formData.eye_mark ? formData.eye_mark : ''}
                                                             />
                                                         </div>
-                                                        <label className="col-sm-5 col-form-label" style={{whiteSpace: 'nowrap'}}>Date</label>
-                                                        <div className="col-md-7">
-                                                            <input
-                                                                type="date"
-                                                                className="form-control"
-                                                                name="layout_date"
-                                                                required
-                                                                ref={register({
-                                                                    required: 'On text Field Required'
-                                                                })}
-                                                                onChange={inputChangeHandler}
-                                                                value={formData.layout_date ? formData.layout_date : ''}
-                                                            />
-                                                        </div>
                                                         
                                                     </div>
                                                     <div className="col-md-6 row">
@@ -494,13 +501,13 @@ const Add = (props) => {
                                                                 })}
                                                                 onChange={inputChangeHandler}
                                                                 value={formData.rpt ? formData.rpt : ''}
+                                                                disabled={formData.rpt != '' ?    true : false}
                                                             />
                                                         </div>
-                                                        <label className="col-sm-7 col-form-label" style={{whiteSpace: 'nowrap'}}>Printer mark</label>
-                                                        <div className="col-md-5">
+                                                        <label className="col-md-9" style={{whiteSpace: 'nowrap'}}>Printer mark</label>
+                                                        <div className="col-md-3">
                                                             <input
                                                                 type="checkbox"
-                                                                className="form-control"
                                                                 name="printer_mark"
                                                                 required
                                                                 ref={register({
@@ -510,12 +517,13 @@ const Add = (props) => {
                                                                 value={formData.printer_mark ? formData.printer_mark : ''}
                                                             />
                                                         </div>
-                                                        <label className="col-sm-7 col-form-label" style={{whiteSpace: 'nowrap'}}>Complete</label>
-                                                        <div className="col-md-5">
+                                                        <label className="col-md-9" style={{whiteSpace: 'nowrap'}}>Complete</label>
+                                                        <div className="col-md-3">
                                                             <input
                                                                 type="checkbox"
-                                                                className="form-control"
+                                                                className=""
                                                                 name="mark_as_complete"
+                                                                
                                                                 required
                                                                 ref={register({
                                                                     required: 'On text Field Required'
@@ -528,7 +536,21 @@ const Add = (props) => {
                                                        
                                                     </div>
                                                     <div className="col-md-12 row">
-                                                        <label className="col-sm-5 col-form-label">Layout</label>
+                                                    <label className="col-md-5 col-form-label" style={{whiteSpace: 'nowrap'}}>Date time</label>
+                                                        <div className="col-md-7">
+                                                            <input
+                                                                type="text"
+                                                                className="form-control"
+                                                                name="layout_date"
+                                                                required
+                                                                ref={register({
+                                                                    required: 'On text Field Required'
+                                                                })}
+                                                                onChange={inputChangeHandler}
+                                                                value={formData.layout_date}
+                                                            />
+                                                        </div>
+                                                        <label className="col-md-5 col-form-label">Layout</label>
                                                         <div className="col-md-7">
                                                             <select className="form-control" name="	layout_id" id="	layout_id">
                                                                 <option>opt 1</option>
@@ -551,6 +573,19 @@ const Add = (props) => {
                                                                 <option>opt 2</option>
                                                                 <option>opt 3</option>
                                                             </select>
+                                                        </div>
+                                                        <label className="col-sm-5 col-form-label required">Remarks</label>
+                                                        <div className="col-md-7">
+                                                            <input
+                                                                type="text"
+                                                                className="form-control"
+                                                                name="remarks"
+                                                                required
+                                                                ref={register({
+                                                                    required: 'On text Field Required'
+                                                                })}
+                                                                onChange={inputChangeHandler}
+                                                            />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -577,7 +612,8 @@ const Add = (props) => {
 
                                                         </tbody>
                                                     </table>
-                                                    <input type="file" className="form-control w-100" />
+                                                    <input type="file" className="form-control w-100" onChange={inputChangeHandler} name="history_image" id="history_image" />
+                                                    <img src={uploadImage?.history_image} style={{width: '100%', height: '100%'}}/>
                                                 </div>
                                             </fieldset>
                                         </div>
@@ -744,14 +780,14 @@ const Add = (props) => {
                                                         </thead>
                                                         <tbody>
                                                             {
-                                                                typeColorOptions.map((item) => {
+                                                                typeColorOptions.map((item,index) => {
                                                                     return (
                                                                         <tr>
                                                                             <td><input className="form-control" type="text" value={item.id + 1} /></td>
-                                                                            <td><input className="form-control" type="text" value={item.name} /></td>
-                                                                            <td><input className="form-control" type="text" /></td>
-                                                                            <td><input className="form-control" type="text" /></td>
-                                                                            <td><input className="form-control" type="text" /></td>
+                                                                            <td><input className="form-control" type="text" value={item.name} name="er_color_id" id="er_color_id" onChange={(e) => engOrderHandler(e, index)}/></td>
+                                                                            <td><input className="form-control" type="text"  name="er_desired_screen" id="er_desired_screen" onChange={(e) =>engOrderHandler(e, index)} /></td>
+                                                                            <td><input className="form-control" type="text"  name="er_desired_angle" id="er_desired_angle" onChange={(e) =>engOrderHandler(e, index)} /></td>
+                                                                            <td><input className="form-control" type="text"  name="er_engraving_machine" id="er_engraving_machine" onChange={(e) =>engOrderHandler(e, index)} /></td>
                                                                         </tr>
                                                                     )
                                                                 })
