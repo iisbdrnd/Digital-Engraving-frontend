@@ -10,7 +10,8 @@ import Base from "./Base";
 import { PanelRefreshIcons, SubmitButton } from "../../../common/GlobalButton";
 import { Typeahead } from 'react-bootstrap-typeahead';
 import { JOB_ORDER_DETAILS, DESIGN_LAYOUT_RSURL } from "../../../../api/userUrl";
-import { userGetMethod } from "../../../../api/userAction";
+import { userGetMethod, userPostMethod } from "../../../../api/userAction";
+import { toast } from "react-toastify";
 
 const Add = (props) => {
     const { handleSubmit, register, errors, reset } = useForm();
@@ -50,15 +51,15 @@ const Add = (props) => {
     const [dropdownData, setDropdownData] = useState({});
     const [typeColorOptions, setTypeColorOptions] = useState([]);
 
-    let job_order_id = props.location.state.params.jobNo ? props.location.state.params.jobNo : null;
+    let job_id = props.location.state.params.jobNo ? props.location.state.params.jobNo : null;
     console.log(props);
     useEffect(() => {
-        pageRefreshHandler(job_order_id);
+        pageRefreshHandler(job_id);
     }, [])
-    const pageRefreshHandler = (job_order_id = null) => {
+    const pageRefreshHandler = (job_id = null) => {
         console.log("clicked");
         // setIsLoading(true);
-        userGetMethod(`${DESIGN_LAYOUT_RSURL}/create?job_order_id=${job_order_id}`)
+        userGetMethod(`${DESIGN_LAYOUT_RSURL}/create?job_order_id=${job_id}`)
             .then(response => {
                 // FOR JOB ORDER
                 let jobOrderOptions = [];
@@ -70,13 +71,13 @@ const Add = (props) => {
 
                     if (response.data.jobOrder != null) {
                         setFormData({
-                            'job_order_id': [jobOrderObj]
+                            'job_id': [jobOrderObj]
                         })
                     }
-                    if (job_order_id != null) {
+                    if (job_id != null) {
                         setSelectedJobOrder([...selectedJobOrder, jobOrderObj])
                     }
-                    dropDownChange([{ id: response.data.jobOrder.id }], 'job_order_id');
+                    dropDownChange([{ id: response.data.jobOrder.id }], 'job_id');
                 }
                 if (response.data.jobOrders && response.data.jobOrders.length > 0) {
                     response.data.jobOrders.map(order => {
@@ -107,28 +108,28 @@ const Add = (props) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     }
     useEffect(() => {
-        if (formData.l_reg_mark && formData.l_fl_cut && formData.design_width && formData.ups && formData.r_reg_mark && formData.r_fl_cut) {
-            setFormData({ ...formData, "image_area": (+formData.l_reg_mark) + (+formData.l_fl_cut) + ((+formData.design_width) * (+formData.ups)) + (+formData.r_reg_mark) + (+formData.r_fl_cut) })
+        if (formData.l_reg_mark && formData.l_fl_cut && formData.design_w && formData.axial_ups && formData.r_reg_mark && formData.r_fl_cut) {
+            setFormData({ ...formData, "axl_image_area": (+formData.l_reg_mark) + (+formData.l_fl_cut) + ((+formData.design_w) * (+formData.ups)) + (+formData.r_reg_mark) + (+formData.r_fl_cut) })
 
         }
-        if (formData.l_reg_mark && formData.l_fl_cut && formData.design_width && formData.ups && formData.r_reg_mark && formData.r_fl_cut && formData?.image_area && formData?.fl) {
-            setFormData({ ...formData, "start_point": ((+formData.fl) - (+formData?.image_area)) / 2 })
+        if (formData.l_reg_mark && formData.l_fl_cut && formData.design_w && formData.axial_ups && formData.r_reg_mark && formData.r_fl_cut && formData?.axl_image_area && formData?.fl) {
+            setFormData({ ...formData, "axl_start_point": ((+formData.fl) - (+formData?.axl_image_area)) / 2 })
 
         }
     }, [
         formData?.l_reg_mark,
         formData?.l_fl_cut,
-        formData?.design_width,
-        formData?.ups,
+        formData?.design_w,
+        formData?.axial_ups,
         formData?.r_reg_mark,
         formData?.r_fl_cut,
         formData?.fl,
-        formData?.image_area
+        formData?.axl_image_area
     ])
     console.log(formData);
 
     const dropDownChange = (event, stateName) => {
-        if (stateName == 'job_order_id' && event[0]?.name) {
+        if (stateName == 'job_id' && event[0]?.name) {
             setSelectedJobOrder(event);
         }
         console.log(event);
@@ -219,7 +220,12 @@ const Add = (props) => {
     }
 
     const onSubmit = (data, e) => {
-        console.log(data);
+        userPostMethod(`${DESIGN_LAYOUT_RSURL}`,data)
+        .then((response) => {
+            console.log(response);
+            toast.success(response.data.message);
+            e.target.reset();
+        })
     }
 
     return (
@@ -245,16 +251,16 @@ const Add = (props) => {
                                             <legend className="w-auto text-left">Job Info</legend>
                                             <div className="form-row">
                                                 <div className="col-md-6 row">
-                                                    <label className="col-sm-5 col-form-label required" htmlFor="job_order_id">Job No</label>
+                                                    <label className="col-sm-5 col-form-label required" htmlFor="job_id">Job No</label>
                                                     <div className="col-md-7">
                                                         <Typeahead
                                                             // className="form-control"
-                                                            id="job_order_id"
-                                                            name="job_order_id"
+                                                            id="job_id"
+                                                            name="job_id"
                                                             labelKey={option => `${option.name}`}
                                                             options={typeheadOptions['job_orders']}
                                                             placeholder="Select Job No..."
-                                                            onChange={(e) => dropDownChange(e, 'job_order_id')}
+                                                            onChange={(e) => dropDownChange(e, 'job_id')}
                                                             selected={selectedJobOrder}
                                                             ref={register({
                                                                 required: 'On text Field Required'
@@ -287,7 +293,7 @@ const Add = (props) => {
                                                             ref={register({
                                                                 required: 'On text Field Required'
                                                             })}
-                                                            // onChange={inputChangeHandler}
+                                                            onChange={inputChangeHandler}
                                                             value={formData.remarks ? formData.remarks : ''}
                                                         />
                                                     </div>
@@ -301,24 +307,10 @@ const Add = (props) => {
                                                             ref={register({
                                                                 required: 'On text Field Required'
                                                             })}
-                                                            // onChange={inputChangeHandler}
+                                                            onChange={inputChangeHandler}
                                                             value={formData.printer_name ? formData.printer_name : ''}
                                                         />
                                                     </div>
-                                                    {/* <label className="col-sm-5 col-form-label required">Reference</label>
-                                                    <div className="col-md-7">
-                                                        <input
-                                                            type="text"
-                                                            className="form-control"
-                                                            name="reference_job"
-                                                            required
-                                                            ref={register({
-                                                                required: 'On text Field Required'
-                                                            })}
-                                                        // onChange={inputChangeHandler}
-                                                        // value={stateData.on_text ? stateData.on_text : ''}
-                                                        />
-                                                    </div> */}
                                                 </div>
                                                 <div className="col-md-6 row">
                                                     <label className="col-sm-5 col-form-label required">Job Type</label>
@@ -331,7 +323,7 @@ const Add = (props) => {
                                                             ref={register({
                                                                 required: 'On text Field Required'
                                                             })}
-                                                            // onChange={inputChangeHandler}
+                                                            onChange={inputChangeHandler}
                                                             value={formData.job_type ? formData.job_type : ''}
                                                         />
                                                     </div>
@@ -345,7 +337,7 @@ const Add = (props) => {
                                                             ref={register({
                                                                 required: 'On text Field Required'
                                                             })}
-                                                            // onChange={inputChangeHandler}
+                                                            onChange={inputChangeHandler}
                                                             value={formData.printing_status ? formData.printing_status : ''}
                                                         />
                                                     </div>
@@ -372,7 +364,7 @@ const Add = (props) => {
                                                             labelKey={option => `${option.name}`}
                                                             options={typeColorOptions}
                                                             placeholder="Select Color..."
-                                                            // onChange={(e) => dropDownChange(e, 'color')}
+                                                            onChange={(e) => dropDownChange(e, 'color')}
                                                             selected={typeColorOptions}
                                                             ref={register({
                                                                 required: 'On text Field Required'
@@ -397,7 +389,7 @@ const Add = (props) => {
                                                                 className="form-control"
                                                                 name="job_no"
                                                                 {...register("job_no")}
-                                                                // onChange={inputChangeHandler}
+                                                                onChange={inputChangeHandler}
                                                                 value={formData.job_no ? formData.job_no : ''}
                                                             />
                                                         </div>
@@ -411,7 +403,7 @@ const Add = (props) => {
                                                                 ref={register({
                                                                     required: 'On text Field Required'
                                                                 })}
-                                                                // onChange={inputChangeHandler}
+                                                                onChange={inputChangeHandler}
                                                                 value={formData.remarks ? formData.remarks : ''}
                                                             />
                                                         </div>
@@ -420,13 +412,13 @@ const Add = (props) => {
                                                             <input
                                                                 type="text"
                                                                 className="form-control"
-                                                                name="on_text"
+                                                                name="layout_id"
                                                                 required
                                                                 ref={register({
                                                                     required: 'On text Field Required'
                                                                 })}
-                                                            // onChange={inputChangeHandler}
-                                                            // value={stateData.on_text ? stateData.on_text : ''}
+                                                                onChange={inputChangeHandler}
+                                                                value={formData.layout_id ? formData.layout_id : ''}
                                                             />
                                                         </div>
                                                     </div>
@@ -441,7 +433,7 @@ const Add = (props) => {
                                                                 ref={register({
                                                                     required: 'On text Field Required'
                                                                 })}
-                                                                // onChange={inputChangeHandler}
+                                                                onChange={inputChangeHandler}
                                                                 value={formData.ups ? formData.ups : ''}
                                                             />
                                                         </div>
@@ -450,13 +442,13 @@ const Add = (props) => {
                                                             <input
                                                                 type="text"
                                                                 className="form-control"
-                                                                name="ups"
+                                                                name="dia"
                                                                 required
                                                                 ref={register({
                                                                     required: 'On text Field Required'
                                                                 })}
-                                                                // onChange={inputChangeHandler}
-                                                                value={formData.ups ? formData.ups : ''}
+                                                                onChange={inputChangeHandler}
+                                                                value={formData.dia ? formData.dia : ''}
                                                             />
                                                         </div>
                                                         <label className="col-sm-5 col-form-label" style={{whiteSpace: 'nowrap'}}>Eye mark</label>
@@ -464,27 +456,27 @@ const Add = (props) => {
                                                             <input
                                                                 type="text"
                                                                 className="form-control"
-                                                                name="ups"
+                                                                name="eye_mark"
                                                                 required
                                                                 ref={register({
                                                                     required: 'On text Field Required'
                                                                 })}
-                                                                // onChange={inputChangeHandler}
-                                                                value={formData.ups ? formData.ups : ''}
+                                                                onChange={inputChangeHandler}
+                                                                value={formData.eye_mark ? formData.eye_mark : ''}
                                                             />
                                                         </div>
                                                         <label className="col-sm-5 col-form-label" style={{whiteSpace: 'nowrap'}}>Date</label>
                                                         <div className="col-md-7">
                                                             <input
-                                                                type="text"
+                                                                type="date"
                                                                 className="form-control"
-                                                                name="entry_date"
+                                                                name="layout_date"
                                                                 required
                                                                 ref={register({
                                                                     required: 'On text Field Required'
                                                                 })}
-                                                                // onChange={inputChangeHandler}
-                                                                value={formData.agreement_date ? formData.agreement_date : ''}
+                                                                onChange={inputChangeHandler}
+                                                                value={formData.layout_date ? formData.layout_date : ''}
                                                             />
                                                         </div>
                                                         
@@ -495,13 +487,13 @@ const Add = (props) => {
                                                             <input
                                                                 type="text"
                                                                 className="form-control"
-                                                                name="ups"
+                                                                name="rpt"
                                                                 required
                                                                 ref={register({
                                                                     required: 'On text Field Required'
                                                                 })}
-                                                                // onChange={inputChangeHandler}
-                                                                value={formData.ups ? formData.ups : ''}
+                                                                onChange={inputChangeHandler}
+                                                                value={formData.rpt ? formData.rpt : ''}
                                                             />
                                                         </div>
                                                         <label className="col-sm-7 col-form-label" style={{whiteSpace: 'nowrap'}}>Printer mark</label>
@@ -509,13 +501,13 @@ const Add = (props) => {
                                                             <input
                                                                 type="checkbox"
                                                                 className="form-control"
-                                                                name="ups"
+                                                                name="printer_mark"
                                                                 required
                                                                 ref={register({
                                                                     required: 'On text Field Required'
                                                                 })}
-                                                                // onChange={inputChangeHandler}
-                                                                value={formData.ups ? formData.ups : ''}
+                                                                onChange={inputChangeHandler}
+                                                                value={formData.printer_mark ? formData.printer_mark : ''}
                                                             />
                                                         </div>
                                                         <label className="col-sm-7 col-form-label" style={{whiteSpace: 'nowrap'}}>Complete</label>
@@ -523,13 +515,13 @@ const Add = (props) => {
                                                             <input
                                                                 type="checkbox"
                                                                 className="form-control"
-                                                                name="ups"
+                                                                name="mark_as_complete"
                                                                 required
                                                                 ref={register({
                                                                     required: 'On text Field Required'
                                                                 })}
-                                                                // onChange={inputChangeHandler}
-                                                                value={formData.ups ? formData.ups : ''}
+                                                                onChange={inputChangeHandler}
+                                                                value={formData.mark_as_complete ? formData.mark_as_complete : ''}
                                                             />
                                                         </div>
                                                         
@@ -538,7 +530,7 @@ const Add = (props) => {
                                                     <div className="col-md-12 row">
                                                         <label className="col-sm-5 col-form-label">Layout</label>
                                                         <div className="col-md-7">
-                                                            <select className="form-control">
+                                                            <select className="form-control" name="	layout_id" id="	layout_id">
                                                                 <option>opt 1</option>
                                                                 <option>opt 2</option>
                                                                 <option>opt 3</option>
@@ -546,7 +538,7 @@ const Add = (props) => {
                                                         </div>
                                                         <label className="col-sm-5 col-form-label">info</label>
                                                         <div className="col-md-7">
-                                                            <select className="form-control">
+                                                            <select className="form-control" name="operator_info" id="operator_info" onChange={inputChangeHandler}>
                                                                 <option>opt 1</option>
                                                                 <option>opt 2</option>
                                                                 <option>opt 3</option>
@@ -554,7 +546,7 @@ const Add = (props) => {
                                                         </div>
                                                         <label className="col-sm-5 col-form-label">Station</label>
                                                         <div className="col-md-7">
-                                                            <select className="form-control">
+                                                            <select className="form-control" name="station" id="station" onChange={inputChangeHandler}>
                                                                 <option>opt 1</option>
                                                                 <option>opt 2</option>
                                                                 <option>opt 3</option>
@@ -613,7 +605,7 @@ const Add = (props) => {
                                                             <input
                                                                 type="text"
                                                                 className="form-control"
-                                                                name="on_text"
+                                                                name="dia"
                                                                 required
                                                                 ref={register({
                                                                     required: 'On text Field Required'
@@ -627,13 +619,13 @@ const Add = (props) => {
                                                             <input
                                                                 type="text"
                                                                 className="form-control"
-                                                                name="on_text"
+                                                                name="final_dia"
                                                                 required
                                                                 ref={register({
                                                                     required: 'On text Field Required'
                                                                 })}
-                                                            // onChange={inputChangeHandler}
-                                                            // value={stateData.on_text ? stateData.on_text : ''}
+                                                                onChange={inputChangeHandler}
+                                                                value={formData.final_dia ? formData.final_dia : ''}
                                                             />
                                                         </div>
 
@@ -658,13 +650,13 @@ const Add = (props) => {
                                                             <input
                                                                 type="text"
                                                                 className="form-control"
-                                                                name="on_text"
+                                                                name="final_cir"
                                                                 required
                                                                 ref={register({
                                                                     required: 'On text Field Required'
                                                                 })}
-                                                            // onChange={inputChangeHandler}
-                                                            // value={stateData.on_text ? stateData.on_text : ''}
+                                                            onChange={inputChangeHandler}
+                                                            value={formData.final_cir ? formData.final_cir : ''}
                                                             />
                                                         </div>
                                                     </div>
@@ -709,13 +701,13 @@ const Add = (props) => {
                                                             <input
                                                                 type="text"
                                                                 className="form-control"
-                                                                name="on_text"
+                                                                name="final_height"
                                                                 required
                                                                 ref={register({
                                                                     required: 'On text Field Required'
                                                                 })}
-                                                            // onChange={inputChangeHandler}
-                                                            // value={stateData.on_text ? stateData.on_text : ''}
+                                                            onChange={inputChangeHandler}
+                                                            value={formData.final_height ? formData.final_height : ''}
                                                             />
                                                         </div>
                                                         <label className="col-sm-5 col-form-label required">W</label>
@@ -723,13 +715,13 @@ const Add = (props) => {
                                                             <input
                                                                 type="text"
                                                                 className="form-control"
-                                                                name="on_text"
+                                                                name="final_width"
                                                                 required
                                                                 ref={register({
                                                                     required: 'On text Field Required'
                                                                 })}
-                                                            // onChange={inputChangeHandler}
-                                                            // value={stateData.on_text ? stateData.on_text : ''}
+                                                            onChange={inputChangeHandler}
+                                                            value={formData.final_width ? formData.final_width : ''}
                                                             />
                                                         </div>
                                                     </div>
@@ -785,7 +777,11 @@ const Add = (props) => {
                                                                 name="l_reg_mark"
                                                                 // required
                                                                 type="number"
+                                                                ref={register({
+                                                                    required: 'On text Field Required'
+                                                                })}
                                                                 onChange={inputChangeHandler}
+                                                                value={formData.l_reg_mark ? formData.l_reg_mark : ''}
                                                             />
                                                         </div>
                                                         <div className="col-md-3 pl-0">
@@ -803,7 +799,11 @@ const Add = (props) => {
                                                                 name="l_fl_cut"
                                                                 // required
                                                                 type="number"
+                                                                ref={register({
+                                                                    required: 'On text Field Required'
+                                                                })}
                                                                 onChange={inputChangeHandler}
+                                                                value={formData.l_fl_cut ? formData.l_fl_cut : ''}
                                                             />
                                                         </div>
                                                         <div className="col-md-3 pl-0">
@@ -817,11 +817,15 @@ const Add = (props) => {
                                                         <div className="col-md-9 pl-0">
                                                             <input
                                                                 className="form-control"
-                                                                id="design_width"
-                                                                name="design_width"
+                                                                id="design_w"
+                                                                name="design_w"
                                                                 // required
                                                                 type="number"
+                                                                ref={register({
+                                                                    required: 'On text Field Required'
+                                                                })}
                                                                 onChange={inputChangeHandler}
+                                                                value={formData.design_w ? formData.design_w : ''}
                                                             />
                                                         </div>
                                                         <div className="col-md-3 pl-0">
@@ -835,11 +839,15 @@ const Add = (props) => {
                                                         <div className="col-md-9 pl-0">
                                                             <input
                                                                 className="form-control"
-                                                                id="ups"
-                                                                name="ups"
+                                                                id="axial_ups"
+                                                                name="axial_ups"
                                                                 // required
                                                                 type="number"
+                                                                ref={register({
+                                                                    required: 'On text Field Required'
+                                                                })}
                                                                 onChange={inputChangeHandler}
+                                                                value={formData.axial_ups ? formData.axial_ups : ''}
                                                             />
                                                         </div>
                                                         <div className="col-md-3 pl-0">
@@ -857,7 +865,11 @@ const Add = (props) => {
                                                                 name="r_reg_mark"
                                                                 // required
                                                                 type="number"
+                                                                ref={register({
+                                                                    required: 'On text Field Required'
+                                                                })}
                                                                 onChange={inputChangeHandler}
+                                                                value={formData.r_reg_mark ? formData.r_reg_mark : ''}
                                                             />
                                                         </div>
                                                         <div className="col-md-3 pl-0">
@@ -874,8 +886,12 @@ const Add = (props) => {
                                                                 id="r_fl_cut"
                                                                 name="r_fl_cut"
                                                                 // required
+                                                                ref={register({
+                                                                    required: 'On text Field Required'
+                                                                })}
                                                                 type="number"
                                                                 onChange={inputChangeHandler}
+                                                                value={formData.r_fl_cut ? formData.r_fl_cut : ''}
                                                             />
                                                         </div>
                                                         <div className="col-md-3 pl-0">
@@ -889,12 +905,15 @@ const Add = (props) => {
                                                         <div className="col-md-12 pl-0">
                                                             <input
                                                                 className="form-control"
-                                                                id="start_point"
-                                                                name="start_point"
+                                                                id="axl_start_point"
+                                                                name="axl_start_point"
                                                                 // required
+                                                                ref={register({
+                                                                    required: 'On text Field Required'
+                                                                })}
                                                                 type="number"
                                                                 onChange={inputChangeHandler}
-                                                                value={formData.start_point}
+                                                                value={formData.axl_start_point}
                                                             />
                                                         </div>
                                                     </div>
@@ -905,12 +924,14 @@ const Add = (props) => {
                                                         <div className="col-md-12 pl-0">
                                                             <input
                                                                 className="form-control"
-                                                                id="image_area"
-                                                                name="image_area"
-                                                                // required
+                                                                id="axl_image_area"
+                                                                name="axl_image_area"
+                                                                ref={register({
+                                                                    required: 'On text Field Required'
+                                                                })}
                                                                 type="number"
-                                                                // onChange={inputChangeHandler}
-                                                                value={formData.image_area}
+                                                                onChange={inputChangeHandler}
+                                                                value={formData.axl_image_area}
                                                             />
                                                         </div>
                                                     </div>
