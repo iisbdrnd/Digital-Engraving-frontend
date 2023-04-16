@@ -17,12 +17,13 @@ const Add = (props) => {
     const { handleSubmit, register, errors, reset } = useForm();
     const [isLayout, setIsLayout] = useState(true);
     const [isBase, setIsBase] = useState(false);
-    const [typeheadOptions, setTypeheadOptions] = useState({ job_orders: [], });
+    const [typeheadOptions, setTypeheadOptions] = useState({ job_orders: [],layout_references:[] });
     const [selectedJobOrder, setSelectedJobOrder] = useState([]);
     const [engraveOrder, setEngraveOrder] = useState([]);
     const [uploadImage, setUploadImage] = useState();
     const [formData, setFormData] = useState({
         layout_date:  new Date().toLocaleDateString(),
+        layout_time : '',
         bill_config_status: '',
         cir: '',
         client_email: '',
@@ -50,6 +51,8 @@ const Add = (props) => {
         remarks: '',
         ups: '',
         rpt: '',
+        operator_info : '',
+        station : '',
         l_reg_mark: 0,
         l_fl_cut: 0,
         design_w : 0,
@@ -63,12 +66,10 @@ const Add = (props) => {
     const [typeColorOptions, setTypeColorOptions] = useState([]);
 
     let job_id = props.location.state.params.jobNo ? props.location.state.params.jobNo : null;
-    console.log(props);
     useEffect(() => {
         pageRefreshHandler(job_id);
     }, [])
     const pageRefreshHandler = (job_id = null) => {
-        console.log("clicked");
         // setIsLoading(true);
         userGetMethod(`${DESIGN_LAYOUT_RSURL}/create?job_order_id=${job_id}`)
             .then(response => {
@@ -99,11 +100,11 @@ const Add = (props) => {
 
                     })
                 }
-                setTypeheadOptions({ ...typeheadOptions, ['job_orders']: jobOrderOptions, })
-
+                setTypeheadOptions({ ...typeheadOptions, ['job_orders']: jobOrderOptions,['layout_references']:response?.data?.layout_references});
                 // setIsLoading(false);
             });
     }
+    console.log(typeheadOptions);
 
     const toogleLtoB = (val) => {
         if (val == "layout") {
@@ -122,7 +123,6 @@ const Add = (props) => {
         setFormData({ ...formData, [e.target.name]: e.target.type == 'checkbox' ? (e.target.checked ? 1 : 0) : e.target.value });
     }
 
-    console.log(formData);
 
     const engOrderHandler = (e, index) => {
         setEngraveOrder(
@@ -135,13 +135,13 @@ const Add = (props) => {
         var img;
         if (formData?.l_reg_mark && formData?.l_fl_cut && formData?.design_w && formData?.axial_ups && formData?.r_reg_mark && formData?.r_fl_cut) {
              img = (+formData?.l_reg_mark) + (+formData?.l_fl_cut) + ((+formData?.design_w) * (+formData?.axial_ups)) + (+formData?.r_reg_mark) + (+formData?.r_fl_cut);
-            console.log('image',img);
+            // console.log('image',img);
             // setFormData({...formData,"axl_image_area": img });
 
         }
         if (img && formData?.fl) {
             var start = ((+formData?.fl) - (+img)) / 2
-            console.log('changed -start point',start);
+            // console.log('changed -start point',start);
             setFormData({...formData,"axl_start_point": start,"axl_image_area": img});
 
         }
@@ -160,7 +160,7 @@ const Add = (props) => {
         if (stateName == 'job_id' && event[0]?.name) {
             setSelectedJobOrder(event);
         }
-        console.log(event);
+        // console.log(event);
         if (event.length > 0) {
             const selectedValue = event[0].id;
             setDropdownData(
@@ -199,7 +199,9 @@ const Add = (props) => {
                         remarks,
                         ups,
                         rpt,
-                        printing_status, } = response.data.jobOrderDetails;
+                        printing_status,
+                        operator_info,
+                        station, } = response.data.jobOrderDetails;
                     setFormData({
                         // 'layout_date': layout_date,
                         'bill_config_status': bill_config_status,
@@ -228,7 +230,9 @@ const Add = (props) => {
                         'rpt': rpt,
                         'printing_status': printing_status,
                         'ref_layout_id' : ref_layout_id,
-                        'mark_as_complete' :  mark_as_complete
+                        'mark_as_complete' :  mark_as_complete,
+                        'operator_info' : operator_info ,
+                        'station' : station,
                     });
                     setTypeColorOptions(response.data.colors);
                     if (response.data.colors.length > 0) {
@@ -257,7 +261,6 @@ const Add = (props) => {
     const onSubmit = (data, e) => {
         data.engraveOrder = engraveOrder;
         data.job_id = dropdownData.job_id;
-
         userPostMethod(`${DESIGN_LAYOUT_RSURL}`,data)
         .then((response) => {
             console.log(response);
@@ -430,23 +433,19 @@ const Add = (props) => {
                                                     <div className="col-md-12 row">
                                                     <label className="col-sm-5 col-form-label">Ref. Layout No</label>
                                                         <div className="col-md-7">
-                                                            {/* <input
-                                                                type="text"
-                                                                className="form-control"
-                                                                name="job_no"
-                                                                {...register("job_no")}
-                                                                onChange={inputChangeHandler}
-                                                                value={formData.job_no ? formData.job_no : ''}
-                                                            /> */}
                                                             <select type="text"
                                                                 className="form-control"
                                                                 name="ref_layout_id"
-                                                                {...register("	ref_layout_id")}
+                                                                {...register("ref_layout_id")}
                                                                 onChange={inputChangeHandler}
-                                                                value={formData.ref_layout_id ? formData.ref_layout_id : ''}>
-                                                                    <option value='1'>JOB NO 1</option>
-                                                                    <option value='2'>JOB NO 2</option>
-                                                                    <option value='3'>JOB NO 3</option>
+                                                                value={formData.ref_layout_id ? formData.ref_layout_id : ''}
+                                                            >
+                                                                <option value=''>Select a option...</option>
+                                                                {typeheadOptions['layout_references'].map((item,index) => (
+                                                                    <option key={index} value={item?.layout_id}>
+                                                                        {item?.layout_id}
+                                                                    </option>
+                                                                ))}
                                                             </select>
                                                         </div>
                                                         <label className="col-sm-5 col-form-label required">Layout ID</label>
@@ -559,7 +558,7 @@ const Add = (props) => {
                                                        
                                                     </div>
                                                     <div className="col-md-12 row">
-                                                    <label className="col-md-5 col-form-label" style={{whiteSpace: 'nowrap'}}>Date time</label>
+                                                    <label className="col-md-5 col-form-label" style={{whiteSpace: 'nowrap'}}>Date</label>
                                                         <div className="col-md-7">
                                                             <input
                                                                 type="text"
@@ -573,28 +572,42 @@ const Add = (props) => {
                                                                 value={formData.layout_date}
                                                             />
                                                         </div>
+                                                        <label className="col-md-5 col-form-label" style={{whiteSpace: 'nowrap'}}>On time</label>
+                                                        <div className="col-md-7">
+                                                            <input
+                                                                type="time"
+                                                                className="form-control"
+                                                                name="layout_time"
+                                                                required
+                                                                ref={register({
+                                                                    required: 'On text Field Required'
+                                                                })}
+                                                                onChange={inputChangeHandler}
+                                                                value={formData.layout_time}
+                                                            />
+                                                        </div>
                                                         <label className="col-md-5 col-form-label">Layout</label>
                                                         <div className="col-md-7">
                                                             <select className="form-control" name="	layout_id" id="	layout_id">
-                                                                <option>opt 1</option>
-                                                                <option>opt 2</option>
-                                                                <option>opt 3</option>
+                                                                <option value="1">opt 1</option>
+                                                                <option value="2">opt 2</option>
+                                                                <option value="3">opt 3</option>
                                                             </select>
                                                         </div>
                                                         <label className="col-sm-5 col-form-label">info</label>
                                                         <div className="col-md-7">
                                                             <select className="form-control" name="operator_info" id="operator_info" onChange={inputChangeHandler}>
-                                                                <option>opt 1</option>
-                                                                <option>opt 2</option>
-                                                                <option>opt 3</option>
+                                                                <option value="1">opt 1</option>
+                                                                <option value="2">opt 2</option>
+                                                                <option value="3">opt 3</option>
                                                             </select>
                                                         </div>
                                                         <label className="col-sm-5 col-form-label">Station</label>
                                                         <div className="col-md-7">
                                                             <select className="form-control" name="station" id="station" onChange={inputChangeHandler}>
-                                                                <option>opt 1</option>
-                                                                <option>opt 2</option>
-                                                                <option>opt 3</option>
+                                                                <option value="1">opt 1</option>
+                                                                <option value="2">opt 2</option>
+                                                                <option value="3">opt 3</option>
                                                             </select>
                                                         </div>
                                                         <label className="col-sm-5 col-form-label required">Remarks</label>
