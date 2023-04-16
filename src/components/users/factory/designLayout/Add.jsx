@@ -35,11 +35,13 @@ const Add = (props) => {
         id: '',
         job_name: '',
         job_no: '',
+        ref_layout_id : '',
         job_type: '',
         limit_square_cm: '',
         marketing_p_name: '',
         printer_id: '',
-        printer_mark: '',
+        printer_mark: 0,
+        mark_as_complete: 0,
         printer_name: '',
         printing_status: '',
         total_cylinder_qty: '',
@@ -110,8 +112,10 @@ const Add = (props) => {
         if(e.target.name == 'history_image'){
             setUploadImage({[e.target.name] : URL.createObjectURL(e.target.files[0])});
         }
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+        setFormData({ ...formData, [e.target.name]: e.target.type == 'checkbox' ? (e.target.checked ? 1 : 0) : e.target.value });
     }
+
+    console.log(formData);
 
     const engOrderHandler = (e, index) => {
         setEngraveOrder(
@@ -119,7 +123,6 @@ const Add = (props) => {
                 i == index ? { ...item, [e.target.name]: e.target.value } : item)
         );
     };
-    console.log(engraveOrder);
 
     useEffect(() => {
         if (formData.l_reg_mark && formData.l_fl_cut && formData.design_w && formData.axial_ups && formData.r_reg_mark && formData.r_fl_cut) {
@@ -140,7 +143,6 @@ const Add = (props) => {
         formData?.fl,
         formData?.axl_image_area
     ])
-    console.log(formData);
 
     const dropDownChange = (event, stateName) => {
         if (stateName == 'job_id' && event[0]?.name) {
@@ -159,6 +161,7 @@ const Add = (props) => {
                 .then(response => {
                     let { 
                         // layout_date,
+                        ref_layout_id,
                         bill_config_status,
                         cir,
                         client_email,
@@ -176,6 +179,7 @@ const Add = (props) => {
                         marketing_p_name,
                         printer_id,
                         printer_mark,
+                        mark_as_complete,
                         printer_name,
                         total_cylinder_qty,
                         total_surface_area,
@@ -211,6 +215,8 @@ const Add = (props) => {
                         'ups': ups,
                         'rpt': rpt,
                         'printing_status': printing_status,
+                        'ref_layout_id' : ref_layout_id,
+                        'mark_as_complete' :  mark_as_complete
                     });
                     setTypeColorOptions(response.data.colors);
                     if (response.data.colors.length > 0) {
@@ -237,7 +243,8 @@ const Add = (props) => {
 
     const onSubmit = (data, e) => {
         data.engraveOrder = engraveOrder;
-        console.log(data);
+        data.job_id = dropdownData.job_id;
+
         userPostMethod(`${DESIGN_LAYOUT_RSURL}`,data)
         .then((response) => {
             console.log(response);
@@ -284,7 +291,7 @@ const Add = (props) => {
                                                                 required: 'On text Field Required'
                                                             })}
                                                             maxHeight={100}
-                                                            disabled={formData.job_id != null ? true : false}
+                                                            disabled={job_id != null ? true : false}
                                                         />
                                                     </div>
                                                     <label className="col-sm-5 col-form-label required">Job Name</label>
@@ -408,7 +415,7 @@ const Add = (props) => {
                                                 <legend className="w-auto text-left">Layout</legend>
                                                 <div className="form-row">
                                                     <div className="col-md-12 row">
-                                                    <label className="col-sm-5 col-form-label">Ref. Job No</label>
+                                                    <label className="col-sm-5 col-form-label">Ref. Layout No</label>
                                                         <div className="col-md-7">
                                                             {/* <input
                                                                 type="text"
@@ -420,10 +427,10 @@ const Add = (props) => {
                                                             /> */}
                                                             <select type="text"
                                                                 className="form-control"
-                                                                name="job_no"
-                                                                {...register("job_no")}
+                                                                name="ref_layout_id"
+                                                                {...register("	ref_layout_id")}
                                                                 onChange={inputChangeHandler}
-                                                                value={formData.job_no ? formData.job_no : ''}>
+                                                                value={formData.ref_layout_id ? formData.ref_layout_id : ''}>
                                                                     <option value='1'>JOB NO 1</option>
                                                                     <option value='2'>JOB NO 2</option>
                                                                     <option value='3'>JOB NO 3</option>
@@ -472,6 +479,7 @@ const Add = (props) => {
                                                                 })}
                                                                 onChange={inputChangeHandler}
                                                                 value={formData.dia ? formData.dia : ''}
+                                                                disabled={formData.dia != '' ?    true : false}
                                                             />
                                                         </div>
                                                         <label className="col-sm-5 col-form-label" style={{whiteSpace: 'nowrap'}}>Eye mark</label>
