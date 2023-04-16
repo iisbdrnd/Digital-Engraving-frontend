@@ -122,7 +122,7 @@ const Add = (props) => {
         }
         setFormData({ ...formData, [e.target.name]: e.target.type == 'checkbox' ? (e.target.checked ? 1 : 0) : e.target.value });
     }
-
+    console.log(formData);
 
     const engOrderHandler = (e, index) => {
         setEngraveOrder(
@@ -596,7 +596,10 @@ const Add = (props) => {
                                                         </div>
                                                         <label className="col-sm-5 col-form-label">info</label>
                                                         <div className="col-md-7">
-                                                            <select className="form-control" name="operator_info" id="operator_info" onChange={inputChangeHandler}>
+                                                            <select className="form-control" name="operator_info" id="operator_info" onChange={inputChangeHandler} 
+                                                            ref={register({
+                                                                required: 'On text Field Required'
+                                                            })}>
                                                                 <option value="1">opt 1</option>
                                                                 <option value="2">opt 2</option>
                                                                 <option value="3">opt 3</option>
@@ -604,7 +607,9 @@ const Add = (props) => {
                                                         </div>
                                                         <label className="col-sm-5 col-form-label">Station</label>
                                                         <div className="col-md-7">
-                                                            <select className="form-control" name="station" id="station" onChange={inputChangeHandler}>
+                                                            <select className="form-control" name="station" id="station" onChange={inputChangeHandler} ref={register({
+                                                                required: 'On text Field Required'
+                                                            })}>
                                                                 <option value="1">opt 1</option>
                                                                 <option value="2">opt 2</option>
                                                                 <option value="3">opt 3</option>
