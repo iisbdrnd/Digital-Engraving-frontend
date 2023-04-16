@@ -49,8 +49,15 @@ const Add = (props) => {
         vat_status: '',
         remarks: '',
         ups: '',
-        rpt: ''
-
+        rpt: '',
+        l_reg_mark: 0,
+        l_fl_cut: 0,
+        design_w : 0,
+        axial_ups : 0,
+        r_reg_mark : 0,
+        r_fl_cut : 0,
+        axl_image_area : 0,
+        axl_start_point : 0,
     });
     const [dropdownData, setDropdownData] = useState({});
     const [typeColorOptions, setTypeColorOptions] = useState([]);
@@ -125,12 +132,17 @@ const Add = (props) => {
     };
 
     useEffect(() => {
-        if (formData.l_reg_mark && formData.l_fl_cut && formData.design_w && formData.axial_ups && formData.r_reg_mark && formData.r_fl_cut) {
-            setFormData({ ...formData, "axl_image_area": (+formData.l_reg_mark) + (+formData.l_fl_cut) + ((+formData.design_w) * (+formData.axial_ups)) + (+formData.r_reg_mark) + (+formData.r_fl_cut) })
+        var img;
+        if (formData?.l_reg_mark && formData?.l_fl_cut && formData?.design_w && formData?.axial_ups && formData?.r_reg_mark && formData?.r_fl_cut) {
+             img = (+formData?.l_reg_mark) + (+formData?.l_fl_cut) + ((+formData?.design_w) * (+formData?.axial_ups)) + (+formData?.r_reg_mark) + (+formData?.r_fl_cut);
+            console.log('image',img);
+            // setFormData({...formData,"axl_image_area": img });
 
         }
-        if (formData.l_reg_mark && formData.l_fl_cut && formData.design_w && formData.axial_ups && formData.r_reg_mark && formData.r_fl_cut && formData?.axl_image_area && formData?.fl) {
-            setFormData({ ...formData, "axl_start_point": ((+formData.fl) - (+formData?.axl_image_area)) / 2 })
+        if (img && formData?.fl) {
+            var start = ((+formData?.fl) - (+img)) / 2
+            console.log('changed -start point',start);
+            setFormData({...formData,"axl_start_point": start,"axl_image_area": img});
 
         }
     }, [
@@ -141,8 +153,8 @@ const Add = (props) => {
         formData?.r_reg_mark,
         formData?.r_fl_cut,
         formData?.fl,
-        formData?.axl_image_area
-    ])
+        formData?.axl_image_area,
+    ]);
 
     const dropDownChange = (event, stateName) => {
         if (stateName == 'job_id' && event[0]?.name) {
@@ -187,7 +199,7 @@ const Add = (props) => {
                         remarks,
                         ups,
                         rpt,
-                        printing_status } = response.data.jobOrderDetails;
+                        printing_status, } = response.data.jobOrderDetails;
                     setFormData({
                         // 'layout_date': layout_date,
                         'bill_config_status': bill_config_status,
@@ -225,6 +237,7 @@ const Add = (props) => {
                             let colorObj = {};
                             colorObj.id = index;
                             colorObj.name = item.color_name;
+                            colorObj.er_color_id = item.id;
                             colorOptions.push(colorObj);
                         })
                         setEngraveOrder(colorOptions);
@@ -827,7 +840,7 @@ const Add = (props) => {
                                                                     required: 'On text Field Required'
                                                                 })}
                                                                 onChange={inputChangeHandler}
-                                                                value={formData.l_reg_mark ? formData.l_reg_mark : ''}
+                                                                value={formData.l_reg_mark}
                                                             />
                                                         </div>
                                                         <div className="col-md-3 pl-0">
@@ -849,7 +862,7 @@ const Add = (props) => {
                                                                     required: 'On text Field Required'
                                                                 })}
                                                                 onChange={inputChangeHandler}
-                                                                value={formData.l_fl_cut ? formData.l_fl_cut : ''}
+                                                                value={formData.l_fl_cut}
                                                             />
                                                         </div>
                                                         <div className="col-md-3 pl-0">
@@ -871,7 +884,7 @@ const Add = (props) => {
                                                                     required: 'On text Field Required'
                                                                 })}
                                                                 onChange={inputChangeHandler}
-                                                                value={formData.design_w ? formData.design_w : ''}
+                                                                value={formData.design_w}
                                                             />
                                                         </div>
                                                         <div className="col-md-3 pl-0">
@@ -893,7 +906,7 @@ const Add = (props) => {
                                                                     required: 'On text Field Required'
                                                                 })}
                                                                 onChange={inputChangeHandler}
-                                                                value={formData.axial_ups ? formData.axial_ups : ''}
+                                                                value={formData.axial_ups}
                                                             />
                                                         </div>
                                                         <div className="col-md-3 pl-0">
@@ -915,7 +928,7 @@ const Add = (props) => {
                                                                     required: 'On text Field Required'
                                                                 })}
                                                                 onChange={inputChangeHandler}
-                                                                value={formData.r_reg_mark ? formData.r_reg_mark : ''}
+                                                                value={formData.r_reg_mark}
                                                             />
                                                         </div>
                                                         <div className="col-md-3 pl-0">
@@ -937,7 +950,7 @@ const Add = (props) => {
                                                                 })}
                                                                 type="number"
                                                                 onChange={inputChangeHandler}
-                                                                value={formData.r_fl_cut ? formData.r_fl_cut : ''}
+                                                                value={formData.r_fl_cut}
                                                             />
                                                         </div>
                                                         <div className="col-md-3 pl-0">
@@ -959,7 +972,7 @@ const Add = (props) => {
                                                                 })}
                                                                 type="number"
                                                                 onChange={inputChangeHandler}
-                                                                value={formData.axl_start_point}
+                                                                value={formData?.axl_start_point}
                                                             />
                                                         </div>
                                                     </div>
@@ -977,7 +990,7 @@ const Add = (props) => {
                                                                 })}
                                                                 type="number"
                                                                 onChange={inputChangeHandler}
-                                                                value={formData.axl_image_area}
+                                                                value={formData?.axl_image_area}
                                                             />
                                                         </div>
                                                     </div>
