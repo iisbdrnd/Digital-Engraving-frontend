@@ -436,7 +436,9 @@ const Add = (props) => {
                                                             <select type="text"
                                                                 className="form-control"
                                                                 name="ref_layout_id"
-                                                                {...register("ref_layout_id")}
+                                                                ref={register({
+                                                                    required: 'On text Field Required'
+                                                                })}
                                                                 onChange={inputChangeHandler}
                                                                 value={formData.ref_layout_id ? formData.ref_layout_id : ''}
                                                             >
@@ -531,7 +533,6 @@ const Add = (props) => {
                                                             <input
                                                                 type="checkbox"
                                                                 name="printer_mark"
-                                                                required
                                                                 ref={register({
                                                                     required: 'On text Field Required'
                                                                 })}
@@ -675,6 +676,7 @@ const Add = (props) => {
                                                                 })}
                                                                 onChange={inputChangeHandler}
                                                                 value={formData.fl ? formData.fl : ''}
+                                                                disabled={formData?.fl != '' ? true : false}
                                                             />
                                                         </div>
                                                         <label className="col-sm-5 col-form-label" style={{whiteSpace:'nowrap'}}>D. Dia</label>
@@ -688,6 +690,7 @@ const Add = (props) => {
                                                                     required: 'On text Field Required'
                                                                 })}
                                                                 // onChange={inputChangeHandler}
+                                                                disabled={formData?.fl != '' ? true : false}
                                                                 value={formData.dia ? formData.dia : ''}
                                                             />
                                                         </div>
@@ -713,13 +716,14 @@ const Add = (props) => {
                                                             <input
                                                                 type="text"
                                                                 className="form-control"
-                                                                name="on_text"
+                                                                name="d_cir"
                                                                 required
                                                                 ref={register({
                                                                     required: 'On text Field Required'
                                                                 })}
                                                                 // onChange={inputChangeHandler}
-                                                                value={formData.cir ? formData.cir : ''}
+                                                                // disabled={formData?.d_cir != '' ? true : false}
+                                                                value={formData.d_cir ? formData.d_cir : ''}
                                                             />
                                                         </div>
                                                         <label className="col-sm-5 col-form-label" style={{whiteSpace:'nowrap'}}>F. Cir</label>
