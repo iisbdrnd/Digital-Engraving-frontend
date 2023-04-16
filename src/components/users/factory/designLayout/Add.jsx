@@ -236,6 +236,8 @@ const Add = (props) => {
     }
 
     const onSubmit = (data, e) => {
+        data.engraveOrder = engraveOrder;
+        console.log(data);
         userPostMethod(`${DESIGN_LAYOUT_RSURL}`,data)
         .then((response) => {
             console.log(response);
