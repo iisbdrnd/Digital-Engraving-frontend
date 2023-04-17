@@ -188,13 +188,13 @@ const Edit = (props) => {
             })
         } 
     }
-    // const multipleDropDownChange = (event) => {
-    //     if(event.length > 0){
-    //         setJobOrderInput({
-    //             'color_id': event
-    //         })
-    //     } 
-    // }
+    const multipleDropDownChange = (event) => {
+        if(event.length > 0){
+            setJobOrderInput({
+                'color_id': event
+            })
+        } 
+    }
 
     const onChangeHandler = (event) => {
         setJobOrderInput({
@@ -440,7 +440,7 @@ const Edit = (props) => {
                                                             multiple
                                                             options={typeheadOptions['additional_colors']}
                                                             placeholder="Select Color..."
-                                                            onChange={setMultipleDropdownData}
+                                                            onChange={(e) => multipleDropDownChange(e)}
                                                             selected={jobOrderInput.color_id}
                                                             ref={register({
                                                                 required: 'Color Field Required'
@@ -719,7 +719,7 @@ const Edit = (props) => {
                                                             name="total_cylinder_qty" 
                                                             type="text" 
                                                             placeholder="Cylinder Qty" 
-                                                            value={jobOrderInput.total_cylinder_qty}
+                                                            value={jobOrderInput.color_id.length}
                                                             onChange={onChangeHandler}
                                                             ref={register({
                                                                 required: 'Cylinder Qty Field Required'
