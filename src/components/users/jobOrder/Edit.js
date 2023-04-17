@@ -14,6 +14,8 @@ const Edit = (props) => {
     const [dropdownData, setDropdownData] = useState({});
     const [multipleDropdownData, setMultipleDropdownData] = useState([]);
     const [typeheadOptions, setTypeheadOptions] = useState({});
+    const [linkjob, setLinkjob] = useState(false)
+    const [jobOrderType, setJobOrderType] = useState(null)
 
     let [jobOrderInput, setJobOrderInput] = useReducer(
         (state, newState) => ({...state, ...newState}),
@@ -189,13 +191,13 @@ const Edit = (props) => {
         } 
     }
     const multipleDropDownChange = (event) => {
-        if(event.length > 0){
+        // if(event.length > 0){
             setJobOrderInput({
                 'color_id': event
             })
-        } 
+        // } 
     }
-
+    
     const onChangeHandler = (event) => {
         setJobOrderInput({
             [event.target.name]: event.target.value
@@ -258,6 +260,7 @@ const Edit = (props) => {
                                                     <label className="col-sm-4 col-form-label required" htmlFor="job_type">Job Order Type</label>
                                                     <div className="col-sm-8">
                                                         <select className="form-control" required id="job_type" name="job_type"
+                                                            onChange={onChangeHandler}
                                                             ref={register({
                                                                 required: 'Job Order Type Field Required'
                                                             })} >
@@ -279,7 +282,7 @@ const Edit = (props) => {
                                                         <input 
                                                             name="link_job"
                                                             // onChange={(e) => setLinkjob(e.target.checked)}
-                                                            // required={jobType =='New' ? false : true}
+                                                            required={jobOrderInput.job_type == 'New' ? false : true}
                                                             type="checkbox" 
                                                             ref={register({
                                                                 required: 'Lik job  Field Required'
@@ -290,7 +293,7 @@ const Edit = (props) => {
                                                 </div>
                                                      </div>
                                                      <div className='col-md-6'>
-                                                     <div className="form-group row">
+                                                     {jobOrderInput.job_type != 'New' &&  <div className="form-group row">
                                                     <label className="col-sm-4 col-form-label required" htmlFor="reference_job">Ref Job</label>
                                                     <div className="col-sm-8">
                                                     <Typeahead
@@ -308,7 +311,7 @@ const Edit = (props) => {
                                                         
                                                         {errors.reference_job && <p className='text-danger'>{errors.reference_job.message}</p>}
                                                     </div>
-                                                </div>
+                                                </div> }
                                                      </div>
                                                 </div>
 
@@ -438,6 +441,7 @@ const Edit = (props) => {
                                                             name="color_id"
                                                             labelKey={option => `${option.name}`}
                                                             multiple
+                                                            required
                                                             options={typeheadOptions['additional_colors']}
                                                             placeholder="Select Color..."
                                                             onChange={(e) => multipleDropDownChange(e)}
@@ -721,6 +725,7 @@ const Edit = (props) => {
                                                             placeholder="Cylinder Qty" 
                                                             value={jobOrderInput.color_id.length}
                                                             onChange={onChangeHandler}
+                                                            disabled = {jobOrderInput.color_id.length > 0 ? true : false}
                                                             ref={register({
                                                                 required: 'Cylinder Qty Field Required'
                                                             })}
