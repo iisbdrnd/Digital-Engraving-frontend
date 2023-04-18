@@ -172,7 +172,7 @@ const Edit = (props) => {
                         referenceJobObj.id = referenceJob.id;
                         referenceJobObj.name = referenceJob.job_name;
                         referenceJobsOptions.push(referenceJobObj);
-                        if (response.data.jobOrder.reference_job === referenceJob.id) {
+                        if (response.data.jobOrder.reference_job == referenceJob.id) {
                             setJobOrderInput({
                                 'reference_job': [referenceJobObj]
                             })
@@ -200,7 +200,7 @@ const Edit = (props) => {
                 setIsLoading(false);
             });
     },[]);
-
+    console.log(jobOrderInput);
     const dropDownChange = (event, stateName) => {
         if(event.length > 0){
             setJobOrderInput({
@@ -304,6 +304,7 @@ const Edit = (props) => {
                                                             // onChange={(e) => setLinkjob(e.target.checked)}
                                                             required={jobOrderInput.job_type == 'New' ? false : true}
                                                             type="checkbox" 
+                                                            checked={jobOrderInput.reference_job.length != 0 ? true : false}
                                                             ref={register({
                                                                 required: 'Lik job  Field Required'
                                                             })}
