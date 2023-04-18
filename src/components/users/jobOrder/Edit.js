@@ -32,6 +32,7 @@ const Edit = (props) => {
             fl                 : "",
             job_name           : "",
             job_sub_class_id   : [],
+            reference_job      : [],
             job_type           : "",
             marketing_person_id: [],
             design_machine_id  : [],
@@ -162,6 +163,22 @@ const Edit = (props) => {
                         }
                     })
                 }
+                //For reference job
+                let referenceJobsOptions = [];
+                if (response.data.referenceJobs && response.data.referenceJobs.length > 0) {
+                    response.data.referenceJobs.map(referenceJob => 
+                    {
+                        let referenceJobObj = {};
+                        referenceJobObj.id = referenceJob.id;
+                        referenceJobObj.name = referenceJob.job_name;
+                        referenceJobsOptions.push(referenceJobObj);
+                        if (response.data.jobOrder.reference_job === referenceJob.id) {
+                            setJobOrderInput({
+                                'reference_job': [referenceJobObj]
+                            })
+                        }
+                    })
+                }
                 
                 setTypeheadOptions(
                     (prevstate) => ({
@@ -170,6 +187,7 @@ const Edit = (props) => {
                         ['printers']: printerOptions,
                         ['clients']: clientOptions,
                         ['job_sub_classes']: subClassOptions,
+                        ['reference_jobs']: referenceJobsOptions,
                         ['additional_colors']: additionalColorOptions,
                         ['design_machines']: designMachineOptions,
                     })
@@ -190,6 +208,7 @@ const Edit = (props) => {
             })
         } 
     }
+    
     const multipleDropDownChange = (event) => {
         // if(event.length > 0){
             setJobOrderInput({
@@ -203,13 +222,14 @@ const Edit = (props) => {
             [event.target.name]: event.target.value
         })
     }
-
+  
     const submitHandler = (e) => {
         jobOrderInput.client_id = jobOrderInput.client_id[0].id;
         jobOrderInput.job_sub_class_id = jobOrderInput.job_sub_class_id[0].id;
         jobOrderInput.marketing_person_id = jobOrderInput.marketing_person_id[0].id;
         jobOrderInput.printer_id = jobOrderInput.printer_id[0].id;
         jobOrderInput.design_machine_id = jobOrderInput.design_machine_id[0].id;
+        jobOrderInput.reference_job = jobOrderInput.reference_job[0].id;
 
         let color_id_final_arr = [];
         jobOrderInput.color_id.map(item => {
@@ -297,13 +317,13 @@ const Edit = (props) => {
                                                     <label className="col-sm-4 col-form-label required" htmlFor="reference_job">Ref Job</label>
                                                     <div className="col-sm-8">
                                                     <Typeahead
-                                                            id="job_sub_class_id"
-                                                            name="job_sub_class_id"
+                                                            id="reference_job"
+                                                            name="reference_job"
                                                             labelKey={option => `${option.name}`}
-                                                            options={typeheadOptions['job_sub_classes']}
-                                                            placeholder="Select Sub Class..."
-                                                            onChange={(e) => dropDownChange(e, 'job_sub_class_id')}
-                                                            selected={jobOrderInput.job_sub_class_id}
+                                                            options={typeheadOptions['reference_jobs']}
+                                                            placeholder="Select Reff jobs..."
+                                                            onChange={(e) => dropDownChange(e, 'reference_job')}
+                                                            selected={jobOrderInput.reference_job}
                                                             ref={register({
                                                                 required: 'Sub Class Field Required'
                                                             })}
@@ -460,7 +480,7 @@ const Edit = (props) => {
                                                         <select className="form-control" required id="eye_mark_color" name="eye_mark_color"
                                                             ref={register({
                                                                 required: 'Eye Mark Color Type Field Required'
-                                                            })} >
+                                                            })}>
                                                             <option>Select One</option>
                                                             <option selected={jobOrderInput.eye_mark_color == 'White' ? true : false} value="White">White</option>
                                                             <option selected={jobOrderInput.eye_mark_color == 'Black' ? true : false} value="Black">Black</option>
@@ -482,6 +502,7 @@ const Edit = (props) => {
                                                                 placeholder="Eye Mark Size" 
                                                                 value={jobOrderInput.eye_mark_size_one}
                                                                 onChange={onChangeHandler}
+                                                                required
                                                                 ref={register({
                                                                     required: 'Eye Mark Size Field Required'
                                                                 })}
@@ -777,7 +798,7 @@ const Edit = (props) => {
                                                             name="total_surface_area" 
                                                             type="text" 
                                                             placeholder="Total Surface Area" 
-                                                            value={(jobOrderInput.total_cylinder_qty * (jobOrderInput.face_length * (jobOrderInput.design_height * jobOrderInput.rpt)))/100}
+                                                            value={(jobOrderInput.color_id.length  * (jobOrderInput.face_length * (jobOrderInput.design_height * jobOrderInput.rpt)))/100}
                                                             ref={register({
                                                                 required: 'Total Surface Area Field Required'
                                                             })}

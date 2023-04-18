@@ -510,6 +510,7 @@ const Add = (props) => {
                                   onChange={setMultipleDropdownData}
                                   selected={multipleDropdownData}
                                   {...register('color_id')}
+                                  required
                                   // ref={register({
                                   //   required: "Color Field Required",
                                   // })}
@@ -572,6 +573,7 @@ const Add = (props) => {
                                     name="eye_mark_size_one"
                                     type="text"
                                     placeholder="Eye Mark Size"
+                                    required
                                     ref={register({
                                       required: "Eye Mark Size Field Required",
                                     })}
@@ -936,12 +938,13 @@ const Add = (props) => {
                                                             name="total_cylinder_qty"
                                                             required 
                                                             type="text" 
-                                                            placeholder="Cylinder Qty"
+                                                            placeholder="Please enter color"
                                                             value={multipleDropdownData.length>0 ? multipleDropdownData.length : ''}
                                                             onChange={e=>calculateFormValue(e)} 
                                                             ref={register({
                                                                 required: 'Cylinder Qty Field Required'
                                                             })}
+                                                            disabled
                                                         />
                                                         {errors.total_cylinder_qty && <p className='text-danger'>{errors.total_cylinder_qty.message}</p>}
                                                     </div>
