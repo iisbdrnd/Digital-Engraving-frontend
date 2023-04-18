@@ -207,7 +207,7 @@ export default function ListData(props) {
                                                                     <tr key={index}>
                                                                         <td scope="row">{ ((index+1) + (currentPage == 1 ? 0 : (currentPage*perPage - perPage))) }</td>
                                                                         <td>[{item.tank_id}]{item.tank_name}</td>
-                                                                        <td>{item.tank_type}</td>
+                                                                        <td>{item.tank_type == 1 ?'Vertical':'Horizontal'}</td>
                                                                         <td>{item.capacity_fl}</td>
                                                                         <td>{item.capacity_fl_tolerance}</td>
                                                                         <td>{item.capacity_sq_cm}</td>
@@ -217,7 +217,7 @@ export default function ListData(props) {
                                                                         <td>{item.plating_order_tolerance_without_copper}</td>
                                                                         <td>{item.plating_order_tolerance_with_copper}</td>
                                                                         <td>{item.cir_tolerance}</td>
-                                                                        <td>{item.can_take_thin_plating_tank}</td>
+                                                                        <td>{item.can_take_thin_plating_tank == 1 ? 'Yes' : 'No' }</td>
                                                                         <td>{item.max_cyl_cycle}</td>
                                                                         <td className="">
                                                                             {
