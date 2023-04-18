@@ -24,30 +24,21 @@ const Add = (props) => {
     const [formData, setFormData] = useState({
         layout_date:  new Date().toLocaleDateString(),
         layout_time : '',
-        bill_config_status: '',
         cir: '',
         client_email: '',
-        client_id: '',
-        client_name: '',
-        cyl_rate_status: '',
         dia: '',
-        entry_date: '',
         fl: '',
         id: '',
         job_name: '',
         job_no: '',
         ref_layout_id : '',
         job_type: '',
-        limit_square_cm: '',
-        marketing_p_name: '',
         printer_id: '',
+        printer_name :'',
+        printing_status : '',
         printer_mark: 0,
         mark_as_complete: 0,
-        printer_name: '',
-        printing_status: '',
         total_cylinder_qty: '',
-        total_surface_area: '',
-        vat_status: '',
         remarks: '',
         ups: '',
         rpt: '',
@@ -119,8 +110,10 @@ const Add = (props) => {
     const inputChangeHandler = (e) => {
         if(e.target.name == 'history_image'){
             setUploadImage({[e.target.name] : URL.createObjectURL(e.target.files[0])});
+            setFormData({ ...formData, [e.target.name]: e.target.files[0]});
+        }else{
+            setFormData({ ...formData, [e.target.name]: e.target.type == 'checkbox' ? (e.target.checked ? 1 : 0) : e.target.value });
         }
-        setFormData({ ...formData, [e.target.name]: e.target.type == 'checkbox' ? (e.target.checked ? 1 : 0) : e.target.value });
     }
     console.log(formData);
 
@@ -173,62 +166,25 @@ const Add = (props) => {
                 .then(response => {
                     let { 
                         // layout_date,
-                        ref_layout_id,
-                        bill_config_status,
-                        cir,
-                        client_email,
-                        client_id,
-                        client_name,
-                        cyl_rate_status,
-                        dia,
-                        entry_date,
-                        fl,
-                        id,
-                        job_name,
-                        job_no,
-                        job_type,
-                        limit_square_cm,
-                        marketing_p_name,
-                        printer_id,
-                        printer_mark,
-                        mark_as_complete,
-                        printer_name,
-                        total_cylinder_qty,
-                        total_surface_area,
-                        vat_status,
-                        remarks,
-                        ups,
-                        rpt,
-                        printing_status,
-                        operator_info,
-                        station, } = response.data.jobOrderDetails;
+                        ref_layout_id,cir,client_email,dia,fl,id,job_name,job_no,job_type,printer_id,printer_mark,mark_as_complete,total_cylinder_qty,remarks,ups,rpt,operator_info,station,printer_name,printing_status } = response.data.jobOrderDetails;
                     setFormData({
                         // 'layout_date': layout_date,
-                        'bill_config_status': bill_config_status,
                         'cir': cir,
                         'client_email': client_email,
-                        'client_id': client_id,
-                        'client_name': client_name,
-                        'cyl_rate_status': cyl_rate_status,
                         'dia': dia,
-                        'entry_date': entry_date,
                         'fl': fl,
                         'id': id,
                         'job_name': job_name,
                         'job_no': job_no,
                         'job_type': job_type,
-                        'limit_square_cm': limit_square_cm,
-                        'marketing_p_name': marketing_p_name,
                         'printer_id': printer_id,
-                        'printer_mark': printer_mark,
                         'printer_name': printer_name,
+                        'printing_status': printing_status,
+                        'printer_mark': printer_mark,
                         'total_cylinder_qty': total_cylinder_qty,
-                        'total_surface_area': total_surface_area,
-                        'vat_status': vat_status,
                         'remarks': remarks,
                         'ups': ups,
                         'rpt': rpt,
-                        'printing_status': printing_status,
                         'ref_layout_id' : ref_layout_id,
                         'mark_as_complete' :  mark_as_complete,
                         'operator_info' : operator_info ,
@@ -259,14 +215,57 @@ const Add = (props) => {
     }
 
     const onSubmit = (data, e) => {
-        data.engraveOrder = engraveOrder;
-        data.job_id = dropdownData.job_id;
-        userPostMethod(`${DESIGN_LAYOUT_RSURL}`,data)
-        .then((response) => {
-            console.log(response);
-            toast.success(response.data.message);
-            e.target.reset();
+        const formValue = new FormData();
+        Object.entries(formData).forEach(([key, value]) => {
+            formValue.append(`${key}`, `${value}`)
         })
+
+        formValue.append("job_id", dropdownData.job_id);
+        formValue.append("engraveOrder", JSON.stringify(engraveOrder));
+        userPostMethod(`${DESIGN_LAYOUT_RSURL}`, formValue)
+            .then((response) => {
+                toast.success(response.data.message);
+                clearForm();
+                e.target.reset();
+            })
+    }
+    const clearForm = () => {
+        console.log('clear');
+        setSelectedJobOrder([]);
+        setTypeColorOptions([]);
+        setEngraveOrder([]);
+        setFormData({
+            'layout_date': new Date().toLocaleDateString(),
+            'layout_time': '',
+            'cir': '',
+            'client_email': '',
+            'dia': '',
+            'fl': '',
+            'id': '',
+            'job_name': '',
+            'job_no': '',
+            'ref_layout_id' : '',
+            'job_type': '',
+            'printing_status': '',
+            'printer_id': '',
+            'printer_name': '',
+            'printer_mark': 0,
+            'mark_as_complete': 0,
+            'total_cylinder_qty': '',
+            'remarks': '',
+            'ups': '',
+            'rpt': '',
+            'operator_info' : '',
+            'station' : '',
+            'l_reg_mark': 0,
+            'l_fl_cut': 0,
+            'design_w' : 0,
+            'axial_ups' : 0,
+            'r_reg_mark' : 0,
+            'r_fl_cut' : 0,
+            'axl_image_area' : 0,
+            'axl_start_point' : 0,
+        });
     }
 
     return (
@@ -546,8 +545,6 @@ const Add = (props) => {
                                                                 type="checkbox"
                                                                 className=""
                                                                 name="mark_as_complete"
-                                                                
-                                                                required
                                                                 ref={register({
                                                                     required: 'On text Field Required'
                                                                 })}
@@ -654,7 +651,9 @@ const Add = (props) => {
 
                                                         </tbody>
                                                     </table>
-                                                    <input type="file" className="form-control w-100" onChange={inputChangeHandler} name="history_image" id="history_image" />
+                                                    <input type="file" className="form-control w-100" onChange={inputChangeHandler} name="history_image" id="history_image" ref={register({
+                                                                    required: 'On text Field Required'
+                                                                })}/>
                                                     <img src={uploadImage?.history_image} style={{width: '100%', height: '100%'}}/>
                                                 </div>
                                             </fieldset>
@@ -721,9 +720,9 @@ const Add = (props) => {
                                                                 ref={register({
                                                                     required: 'On text Field Required'
                                                                 })}
-                                                                // onChange={inputChangeHandler}
+                                                                onChange={inputChangeHandler}
                                                                 // disabled={formData?.d_cir != '' ? true : false}
-                                                                value={formData.d_cir ? formData.d_cir : ''}
+                                                                // value={formData.d_cir ? formData.d_cir : ''}
                                                             />
                                                         </div>
                                                         <label className="col-sm-5 col-form-label" style={{whiteSpace:'nowrap'}}>F. Cir</label>
