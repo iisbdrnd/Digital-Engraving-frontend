@@ -86,7 +86,7 @@ const Add = (props) => {
                 if(response.data.delStocks && response.data.delStocks.length > 0) {
                     response.data.delStocks.map((item) => {
                         let delObj = {};
-                        Object.assign(delObj, {id: item['job_no'],name:`[${item.job_no}] ` + item['job_name']});
+                        Object.assign(delObj, {item_id:item['id'],id: item['job_no'],name:`[${item.job_no}] ` + item['job_name']});
                         delStockOptions.push(delObj);
                     })
                 }
@@ -95,7 +95,7 @@ const Add = (props) => {
                 if(response.data.clientStocks && response.data.clientStocks.length > 0) {
                     response.data.clientStocks.map((item) => {
                         let clientObj = {};
-                        Object.assign(clientObj, {id: item['job_no'],name:`[${item.job_no}] ` +item['job_name']});
+                        Object.assign(clientObj, {item_id:item['id'],id: item['job_no'],name:`[${item.job_no}] ` +item['job_name']});
                         clientStockOptions.push(clientObj);
                     })
                 }
@@ -205,6 +205,7 @@ const Add = (props) => {
         );
     }
     console.log(jobOrderData,addLimit);
+    console.log(typeheadOptions['del_stocks']);
     // FOR ORDER DETAILS ARRAY READY
     const addOrderDetailsHandler = (event) => {
         
@@ -257,7 +258,9 @@ const Add = (props) => {
                         delivery_date: '',
                         qty          : '',
                         remarks      : '',
+                        job_ref_id   : ''
                     });
+                    setSupplierValue([]);
                 } else {
                     SweetAlert.fire({title:"Warning", text:"You can't Cross Job Order Cyl Qty Limit", icon:"warning"});
                 }
@@ -436,10 +439,10 @@ const Add = (props) => {
                                                                 >
                                                                 <option value="">Select one...</option>
                                                                 {
-                                                                   stockdel && typeheadOptions['del_stocks'].map((item, i) => <option key={i} value={item['id']}>{item['name']}</option>)
+                                                                   stockdel && typeheadOptions['del_stocks'].map((item, i) => <option key={i} value={item['item_id']}>{item['name']}</option>)
                                                                 }
                                                                  {
-                                                                   stockClient && typeheadOptions['client_stocks'].map((item, i) => <option key={i} value={item['id']}>{item['name']}</option>)
+                                                                   stockClient && typeheadOptions['client_stocks'].map((item, i) => <option key={i} value={item['item_id']}>{item['name']}</option>)
                                                                 }
                                                             </select>
                                                         </div>

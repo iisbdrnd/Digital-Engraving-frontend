@@ -219,10 +219,10 @@ const Edit = (props) => {
     
     const onChangeHandler = (event) => {
         setJobOrderInput({
-            [event.target.name]: event.target.value
+            [event.target.name]: event?.target?.type =='checkbox' ? (event.target.checked == true ? 1 : 0) : event.target.value
         })
     }
-  
+   
     const submitHandler = (e) => {
         jobOrderInput.client_id = jobOrderInput.client_id[0].id;
         jobOrderInput.job_sub_class_id = jobOrderInput.job_sub_class_id[0].id;
@@ -302,9 +302,11 @@ const Edit = (props) => {
                                                         <input 
                                                             name="link_job"
                                                             // onChange={(e) => setLinkjob(e.target.checked)}
+                                                            onChange={onChangeHandler}
                                                             required={jobOrderInput.job_type == 'New' ? false : true}
+                                                            value={jobOrderInput.link_job}
                                                             type="checkbox" 
-                                                            checked={jobOrderInput.reference_job.length != 0 ? true : false}
+                                                            defaultChecked={(jobOrderInput.reference_job.length != 0 &&  jobOrderInput.job_type != 'New') ? true : false}
                                                             ref={register({
                                                                 required: 'Lik job  Field Required'
                                                             })}
