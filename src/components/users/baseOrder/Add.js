@@ -52,6 +52,7 @@ const Add = (props) => {
                 // FOR JOB ORDER
                 let jobOrderOptions = [];
                 if (response.data.jobOrders && response.data.jobOrders.length > 0) {
+                    console.log(response.data.jobOrders);
                     response.data.jobOrders.map(order => 
                     {
                         let jobOrderObj = {};
@@ -66,7 +67,7 @@ const Add = (props) => {
                             setJobOrderData({
                                 'job_order_qty_limit': order.total_cylinder_qty
                             })
-                            setaddLimit( order.total_cylinder_qty);
+                            setaddLimit(order?.total_cylinder_qty);
                         }
                     })
                 }
@@ -141,7 +142,7 @@ const Add = (props) => {
                     // setJobOrderData({
                     //     'job_order_qty_limit' : total_cylinder_qty,
                     // });
-                    setaddLimit( total_cylinder_qty);
+                    setaddLimit(total_cylinder_qty);
                 });
                 setRefDisabled(true);
                 setStockdel(false);
@@ -169,6 +170,7 @@ const Add = (props) => {
                         setJobOrderData({
                             'job_order_qty_limit' : total_cylinder_qty,
                         });
+                        setaddLimit(total_cylinder_qty);
                     });
             }
         } 
@@ -418,7 +420,7 @@ const Add = (props) => {
                                                                 options={typeheadOptions['suppliers']}
                                                                 placeholder="Select Issue To"
                                                                 onChange={(e) => dropDownChange(e, 'supplier_id')}
-                                                                inputProps={{ required: true }}
+                                                                // inputProps={{ required: true }}
                                                                 // defaultValue={jobOrderData.supplier_id}
                                                                 selected={supplierValue}
                                                                 {...register('supplier_id')}
@@ -438,12 +440,12 @@ const Add = (props) => {
                                                                 value={jobOrderData?.job_ref_id}
                                                                 >
                                                                 <option value="">Select one...</option>
-                                                                {
-                                                                   stockdel && typeheadOptions['del_stocks'].map((item, i) => <option key={i} value={item['item_id']}>{item['name']}</option>)
-                                                                }
-                                                                 {
-                                                                   stockClient && typeheadOptions['client_stocks'].map((item, i) => <option key={i} value={item['item_id']}>{item['name']}</option>)
-                                                                }
+                                                                    {
+                                                                        stockdel && typeheadOptions['del_stocks'].map((item, i) => <option key={i} value={item['item_id']}>{item['name']}</option>)
+                                                                    }
+                                                                    {
+                                                                        stockClient && typeheadOptions['client_stocks'].map((item, i) => <option key={i} value={item['item_id']}>{item['name']}</option>)
+                                                                    }
                                                             </select>
                                                         </div>
 
