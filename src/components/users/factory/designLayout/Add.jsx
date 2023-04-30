@@ -4,9 +4,6 @@ import { Fragment } from "react";
 import useForm from "react-hook-form";
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 
-import Layout from "./Layout";
-import Base from "./Base";
-
 import { PanelRefreshIcons, SubmitButton } from "../../../common/GlobalButton";
 import { Typeahead } from 'react-bootstrap-typeahead';
 import { JOB_ORDER_DETAILS, DESIGN_LAYOUT_RSURL } from "../../../../api/userUrl";
@@ -746,6 +743,7 @@ const Add = (props) => {
                                                 <legend className="w-auto text-left">Design</legend>
                                                 <div className="form-row">
                                                     <div className="col-md-6 row">
+                                                        <p className="text-center col-md-12">Desire Size</p>
                                                         <label className="col-sm-5 col-form-label required">H</label>
                                                         <div className="col-md-7">
                                                             <input
@@ -776,6 +774,7 @@ const Add = (props) => {
                                                         </div>
                                                     </div>
                                                     <div className="col-md-6 row">
+                                                    <p className="text-center col-md-12">Final</p>
                                                         <label className="col-sm-5 col-form-label required">H</label>
                                                         <div className="col-md-7">
                                                             <input
@@ -809,10 +808,10 @@ const Add = (props) => {
                                             </fieldset>
                                         </div>
                                         <div className="col-md-3 pl-0 pr-0">
-                                            <fieldset className="border p-1">
+                                            <fieldset className="border p-1" style={{overflow:'auto'}}>
                                                 <legend className="w-auto text-left">Engravers Order</legend>
                                                 <div className="col-md-12 pl-0 pr-0">
-                                                    <table className="table table-bordered pl-0 pr-0" style={{ width: '100%' }}>
+                                                    <table className="table table-bordered pl-0 pr-0" style={{ width: '100%', }}>
                                                         <thead>
                                                             <tr>
                                                                 <th scope="col" width="10%">Sl</th>

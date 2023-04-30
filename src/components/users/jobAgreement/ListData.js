@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import { toast } from 'react-toastify';
 import { JOB_AGREEMENT_RSURL, userHasAccess } from '../../../api/userUrl';
 import { userGetMethod, userDeleteMethod } from '../../../api/userAction';
-import { AddButton, EditButton, DeleteButton, PerPageBox, PanelRefreshIcons } from '../../common/GlobalButton';
+import { AddButton, PerPageBox, PanelRefreshIcons } from '../../common/GlobalButton';
 import Pagination from "react-js-pagination";
 
 export default function ListData(props) {
@@ -195,7 +195,6 @@ export default function ListData(props) {
                                                     <th scope="col" width="10%" ><i className="fa fa-sort"></i> Qty</th>
                                                     <th scope="col" width="10%" ><i className="fa fa-sort"></i> Per Sqr Amount</th>
                                                     <th scope="col" width="10%" ><i className="fa fa-sort"></i> Agreement</th>
-                                                    {/* <th scope="col" width="7%">Action</th> */}
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -225,14 +224,6 @@ export default function ListData(props) {
                                                                             </Link>
                                                                             : 'Done'}
                                                                         </td>
-                                                                        {/* <td className="">
-                                                                            {
-                                                                                accLoad === false ? <>
-                                                                                    {hasAccess.edit === true ? <EditButton link={`/jobAgreement/edit/${item.id}`} menuId={ menuId } /> : ''} 
-                                                                                    {hasAccess.destroy === true ? <DeleteButton deleteLink={JOB_AGREEMENT_RSURL} deleteHandler={ deleteHandler } menuId={ menuId } dataId={item.id} /> : ''} 
-                                                                                </> : ''
-                                                                            }
-                                                                        </td> */}
                                                                     </tr>
                                                                 )                
                                                             )}
