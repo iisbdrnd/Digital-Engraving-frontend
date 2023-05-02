@@ -204,7 +204,7 @@ export default function ListData(props) {
                                                                         <td scope="row">{ ((index+1) + (currentPage == 1 ? 0 : (currentPage*perPage - perPage))) }</td>
                                                                         <td>{item.job_no}</td>
                                                                         <td>{item.job_name}</td>
-                                                                        <td>{item.total_cylinder}</td>
+                                                                        <td>{Math.abs(item.total_cylinder)}</td>
                                                                         <td>{item.client_name}</td>
                                                                         <td>{item.status==1?'stock in':'stock out'}</td>
                                                                         {/* <td>
