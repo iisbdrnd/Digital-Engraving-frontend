@@ -223,21 +223,25 @@ const Edit = (props) => {
         })
     }
    
-    const submitHandler = (e) => {
-        jobOrderInput.client_id = jobOrderInput.client_id[0].id;
-        jobOrderInput.job_sub_class_id = jobOrderInput.job_sub_class_id[0].id;
-        jobOrderInput.marketing_person_id = jobOrderInput.marketing_person_id[0].id;
-        jobOrderInput.printer_id = jobOrderInput.printer_id[0].id;
-        jobOrderInput.design_machine_id = jobOrderInput.design_machine_id[0].id;
-        jobOrderInput.reference_job = jobOrderInput.reference_job[0].id;
-
+    const submitHandler = (data,e) => {
+        data.client_id = jobOrderInput.client_id[0].id;
+        data.job_sub_class_id = jobOrderInput.job_sub_class_id[0].id;
+        data.marketing_person_id = jobOrderInput.marketing_person_id[0].id;
+        data.printer_id = jobOrderInput.printer_id[0].id;
+        data.design_machine_id = jobOrderInput.design_machine_id[0].id;
+        if(  jobOrderInput.reference_job.length > 0){
+            data.reference_job = jobOrderInput.reference_job[0].id;
+        }else{
+            delete jobOrderInput.reference_job;
+        }
+        console.log(data);
         let color_id_final_arr = [];
         jobOrderInput.color_id.map(item => {
             color_id_final_arr.push(item.id);
         })
-        jobOrderInput.color_id = color_id_final_arr;
+        data.color_id = color_id_final_arr;
         
-        userPutMethod(`${JOB_ORDER_RSURL}/${jobOrderId}`, jobOrderInput)
+        userPutMethod(`${JOB_ORDER_RSURL}/${jobOrderId}`, data)
             .then(response => {
                 console.log("response data", response);
                 if (response.data.status == 1) {
@@ -306,10 +310,8 @@ const Edit = (props) => {
                                                             required={jobOrderInput.job_type == 'New' ? false : true}
                                                             value={jobOrderInput.link_job}
                                                             type="checkbox" 
-                                                            defaultChecked={(jobOrderInput.reference_job.length != 0 &&  jobOrderInput.job_type != 'New') ? true : false}
-                                                            ref={register({
-                                                                required: 'Lik job  Field Required'
-                                                            })}
+                                                            defaultChecked={(jobOrderInput?.reference_job?.length != 0 &&  jobOrderInput?.job_type != 'New') ? true : false}
+                                                            
                                                         />
                                                         {errors.job_name && <p className='text-danger'>{errors.job_name.message}</p>}
                                                     </div>
@@ -327,9 +329,6 @@ const Edit = (props) => {
                                                             placeholder="Select Reff jobs..."
                                                             onChange={(e) => dropDownChange(e, 'reference_job')}
                                                             selected={jobOrderInput.reference_job}
-                                                            ref={register({
-                                                                required: 'Sub Class Field Required'
-                                                            })}
                                                         />
                                                         
                                                         {errors.reference_job && <p className='text-danger'>{errors.reference_job.message}</p>}
