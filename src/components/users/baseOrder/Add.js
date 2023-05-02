@@ -150,6 +150,7 @@ const Add = (props) => {
                 setStockClient(false);
                 setJobOrderData({
                     'job_ref_id' : "",
+                    'ref_job_no' : ""
                 });
 
             }
@@ -258,7 +259,8 @@ const Add = (props) => {
                         delivery_date: '',
                         qty          : '',
                         remarks      : '',
-                        job_ref_id   : ''
+                        job_ref_id   : '',
+                        ref_job_no   : ''
                     });
                     setSupplierValue([]);
                 } else {
