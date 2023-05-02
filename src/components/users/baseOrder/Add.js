@@ -32,6 +32,7 @@ const Add = (props) => {
             order_date         : new Date().toLocaleDateString(),
             supplier_id        : '',
             job_ref_id         : '',
+            ref_job_no         : '',
             delivery_date      : '',
             qty                : '',
             remarks            : '',
@@ -176,38 +177,35 @@ const Add = (props) => {
         } 
 
     }
-    console.log(dropdownData['supplier_id']);
+    // console.log(stockdel, stockClient);
+    // console.log(dropdownData['supplier_id']);
     // FOR ORDER DETAILS DATA INPUT
     const orderDetailsInputHander = (event) => {
-        console.log(event.target.name, event.target.value);
+            
         if (event.target.name == 'job_ref_id') {
             if (stockClient) {
                 clientStockDetails.map((item) => {
-                    console.log(item);
-                    if (event.target.value == item?.job_no) {
+                    if (event.target.value == item?.id) {
                         setaddLimit(item?.total_cylinder_qty);
-                        // setJobOrderData({
-                        //     'job_order_qty_limit': item?.total_cylinder_qty,
-                        // });
-                    }
-                })
-            } else if (stockdel) {
-                delStockDetails.map((item) => {
-                    if (event.target.value == item?.job_no) {
-                        setaddLimit(item?.total_cylinder_qty);
-                        // setJobOrderData({
-                        //     'job_order_qty_limit': item?.total_cylinder_qty,
-                        // });
+                        setJobOrderData({ 'ref_job_no': item?.job_no ,[event.target.name] : event.target.value});
                     }
                 })
             } 
-        }
+            if (stockdel) {
+                delStockDetails.map((item) => {
+                    if (event.target.value == item?.id) {
+                        setaddLimit(item?.total_cylinder_qty);
+                        setJobOrderData({ 'ref_job_no': item?.job_no ,[event.target.name] : event.target.value});
+                    }
+                })
+            } 
+        }else{
         setJobOrderData(
             {[event.target.name] : event.target.value},
         );
+        }
     }
-    console.log(jobOrderData,addLimit);
-    console.log(typeheadOptions['del_stocks']);
+    console.log(jobOrderData);
     // FOR ORDER DETAILS ARRAY READY
     const addOrderDetailsHandler = (event) => {
         
