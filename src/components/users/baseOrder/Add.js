@@ -290,24 +290,24 @@ const Add = (props) => {
         data.order_date = jobOrderData.order_date;
         data.totalOrderQty = jobOrderData.orderQty;
         data.base_order_details = baseOrderDetails;
-        console.log(data);
+
          
         // if (jobOrderData.orderQty == jobOrderData.job_order_qty_limit) {
-            // userPostMethod(BASE_ORDER_RSURL, data)
-            //     .then(response => {
-            //         console.log(response);
-            //         if (response.data.status == 1) {
-            //             toast.success(response.data.message)
-            //             clearForm();
-            //             reset({
-            //                 job_order_id: '',
-            //             });
-            //             e.target.reset();
-            //         } else {
-            //             toast.error(response.data.message)
-            //         }
-            //     })
-            // .catch(error => toast.error(error))
+            userPostMethod(BASE_ORDER_RSURL, data)
+                .then(response => {
+                    console.log(response);
+                    if (response.data.status == 1) {
+                        toast.success(response.data.message)
+                        clearForm();
+                        reset({
+                            job_order_id: '',
+                        });
+                        e.target.reset();
+                    } else {
+                        toast.error(response.data.message)
+                    }
+                })
+            .catch(error => toast.error(error))
         // } else {
         //     SweetAlert.fire({title:"Warning", text:"Please order all required cylinder qty!", icon:"warning"});
         // }
