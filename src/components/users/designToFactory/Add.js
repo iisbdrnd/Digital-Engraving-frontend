@@ -17,6 +17,7 @@ const Add = (props) => {
     const [dropDownData, setDropdownData] = useState();
     const [file,setFile] = useState();
     const [jobNoValue,setJobNoValue] = useState([]);
+    const [uploadImg ,setUploadImg] = useState('');
 
     let [designToFactoryInput, setDesignToFactoryInput] = useReducer(
         (state, newState) => ({...state, ...newState}),
@@ -108,7 +109,11 @@ const Add = (props) => {
     }
     // console.log(jobNoValue);
 
-    
+    const onImgChange = (e) => {
+        setFile(e.target.files[0]);
+        setUploadImg(URL.createObjectURL(e.target.files[0]));
+    }
+  
     const submitHandler = (data, e) => {
         data.job_order_id = dropDownData.job_order_id;
         const formData = new FormData();
@@ -202,7 +207,17 @@ const Add = (props) => {
                                             <div className='form-group row'>
                                                 <label className='col-sm-3 col-form-label' htmlFor='upload_file'>Upload File</label>
                                                 <div className='col-sm-9'>
-                                                    <input className='form-control' id='upload_file' name='upload_file' type='file' onChange={(e) => setFile(e.target.files[0])} />
+                                                    <input className='form-control' id='upload_file' name='upload_file' type='file'
+                                                     onChange={onImgChange }
+                                                      />
+                                                </div>
+                                            </div>
+                                            <div className="form-group row">
+                                                <div className="col-md-3">
+
+                                                </div>
+                                                <div className="col-md-9">
+                                                {uploadImg != '' &&  <img src={uploadImg ? uploadImg : ""} style={{height: '100%', width: '100%',marginBottom : '20px'}} />}
                                                 </div>
                                             </div>
                                         </div>
