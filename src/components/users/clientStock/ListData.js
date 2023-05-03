@@ -188,9 +188,10 @@ export default function ListData(props) {
                                                     <th scope="col" width="5%" onClick={() => sortHandler(1)}><i className="fa fa-sort"></i> SL.</th>
                                                     <th scope="col" width="15%" onClick={() => sortHandler(2)}><i className="fa fa-sort"></i> Job No</th>
                                                     <th scope="col" width="15%" onClick={() => sortHandler(3)}><i className="fa fa-sort"></i> Job Name</th>
-                                                    <th scope="col" width="10%" onClick={() => sortHandler(4)}><i className="fa fa-sort"></i> Quantity</th>                                                        
+                                                    <th scope="col" width="10%" onClick={() => sortHandler(4)}><i className="fa fa-sort"></i>Available Qnty</th>                                                        
                                                     <th scope="col" width="15%" onClick={() => sortHandler(5)}><i className="fa fa-sort"></i> Client</th>
-                                                    <th scope="col" width="10%" onClick={() => sortHandler(6)}><i className="fa fa-sort"></i> Status</th>
+                                                    <th scope="col" width="10%" onClick={() => sortHandler(6)}><i className="fa fa-sort"></i> Circumference</th>
+                                                    <th scope="col" width="10%" onClick={() => sortHandler(7)}><i className="fa fa-sort"></i> Face Length</th>
                                                     {/* <th scope="col" width="7%">Action</th> */}
                                                 </tr>
                                             </thead>
@@ -206,8 +207,10 @@ export default function ListData(props) {
                                                                         <td>{item.job_name}</td>
                                                                         <td>{Math.abs(item.total_cylinder)}</td>
                                                                         <td>{item.client_name}</td>
-                                                                        <td>{item.status==1?'stock in':'stock out'}</td>
-                                                                        {/* <td>
+                                                                        <td>{item.circumference}</td>
+                                                                        <td>{item.face_length}</td>
+                                                                        {/* 
+                                                                        <td>
                                                                             {item.design_to_design_status == 0 ? 
                                                                             <Link 
                                                                                 to={{
