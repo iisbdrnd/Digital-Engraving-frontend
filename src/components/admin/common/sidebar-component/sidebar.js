@@ -188,7 +188,7 @@ const Sidebar = (props) => {
                                         <div className="sidebar-title">{menuItem.sidebartitle}</div>
                                         : ''}
                                     {(menuItem.type === 'sub') ?
-                                        <a className="sidebar-header" href="#" onClick={() => toggletNavActive(menuItem)}>
+                                        <a className="sidebar-header" href="javascript:void(0)" onClick={() => toggletNavActive(menuItem)}>
                                             <menuItem.icon />
                                             <span>{props.t(menuItem.title)}</span>
                                             <i className="fa fa-angle-right pull-right"></i>
@@ -214,7 +214,7 @@ const Sidebar = (props) => {
                                             {menuItem.children.map((childrenItem, index) =>
                                                 <li key={index} className={childrenItem.children ? childrenItem.active ? 'active' : '' : ''}>
                                                     {(childrenItem.type === 'sub') ?
-                                                        <a href="#javascript" onClick={() => toggletNavActive(childrenItem)} >
+                                                        <a href="javascript:void(0)" onClick={() => toggletNavActive(childrenItem)} >
                                                             <i className="fa fa-circle"></i>{props.t(childrenItem.title)} <i className="fa fa-angle-right pull-right"></i></a>
                                                         : ''}
 
@@ -242,7 +242,7 @@ const Sidebar = (props) => {
                                                                     
                                                                     {/* Customs Start */}
                                                                     {(childrenSubItem.type === 'sub') ?
-                                                                    <a href="#javascript" onClick={() => toggletNavActive(childrenSubItem)} >
+                                                                    <a href="javascript:void(0)" onClick={() => toggletNavActive(childrenSubItem)} >
                                                                         <i className="fa fa-circle"></i>{props.t(childrenSubItem.title)} <i className="fa fa-angle-right pull-right"></i></a>
                                                                     : ''}
 

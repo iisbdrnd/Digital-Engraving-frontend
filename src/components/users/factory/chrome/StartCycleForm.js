@@ -21,6 +21,7 @@ export default function StartCycleForm(props) {
     const [modal, setModal] = useState(false); 
     const [changeUseEffect, setChangeUseEffect] = useState(0); 
     const [jobData, setJobData] = useState({}); 
+    const [isStarted,setIsStarted] = useState(false);
 
     let [formData, setFormData] = useReducer(
         (state, newState) => ({...state, ...newState}),
@@ -46,7 +47,9 @@ export default function StartCycleForm(props) {
         userGetMethod(`${CHROME_SCHEDULE_START_CYCLE}/${props.chromeScheduleMasterId}`)
             .then(response => {
                 let {cycle_id, shift_operator, chrome_date, shift_id, start_time, final_chrome_order, est_end_time, actual_end_time, est_cycle_duration, actual_cycle_duration, remarks, shift_type_id, shiftDutyPersons} = response.data.cycleData;
-
+                if(start_time != null) {
+                    setIsStarted(true)
+                }
                 setFormData({ 
                     cycle_id             : cycle_id,
                     chrome_date         : chrome_date === null ? '': chrome_date,
@@ -118,6 +121,7 @@ export default function StartCycleForm(props) {
             {[event.target.name] : event.target.value},
         );
     }
+    console.log(formData);
 
     function formatAm_Pm(date) {
         var hours = date.getHours();
@@ -380,6 +384,7 @@ export default function StartCycleForm(props) {
                                                                 value={formData.actual_end_time}
                                                                 onChange={inputHandler}
                                                                 ref={register({})}
+                                                                disabled ={isStarted == false ? true : false}
                                                             />
                                                             {errors.actual_end_time && <p className='text-danger'>{errors.actual_end_time.message}</p>}
                                                         </div>
@@ -396,6 +401,7 @@ export default function StartCycleForm(props) {
                                                                 value={formData.actual_cycle_duration}
                                                                 onChange={inputHandler}
                                                                 ref={register({})}
+                                                                disabled ={isStarted == false ? true : false}
                                                             />
                                                             {errors.actual_cycle_duration && <p className='text-danger'>{errors.actual_cycle_duration.message}</p>}
                                                         </div>

@@ -171,6 +171,16 @@ export default function TankSchedule(props) {
                     if (response.data.status == 1) {
                         toast.success(response.data.message);
                         e.target.reset();
+                        setCylScheduleFormData({
+                            cylinder_id           : '',
+                            job_type              : '',
+                            fl                    : '',
+                            cir                   : '',
+                            dia                   : '',
+                            est_plating_order     :'',
+                            surface_area          : '',
+                        });
+                        props.onChangeTank(props.tankId,props.modalTitle);
                         setModal(false);
                     } else {
                         toast.error(response.data.message);

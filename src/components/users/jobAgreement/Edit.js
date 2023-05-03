@@ -205,10 +205,11 @@ const Edit = (props) => {
                                                 <div className="form-group row">
                                                     <label className="col-sm-4 col-form-label required" htmlFor="cyl_rate_status">Cyl Rate Status</label>
                                                     <div className="col-sm-8">
-                                                        <select className="form-control" required ref={register}  id="cyl_rate_status" name="cyl_rate_status"
-                                                            ref={register({
-                                                                required: 'Cyl Rate Status Field Required'
-                                                            })} >
+                                                        <select className="form-control" required   id="cyl_rate_status" name="cyl_rate_status"
+                                                              ref={register({
+                                                                required: 'Cylinder Field Required'
+                                                            })} 
+                                                            >
                                                             <option value=""> Select One </option>
                                                             <option selected={jobAgreementInput.cyl_rate_status == 1 ? true : false} value="1">Per Cylinder</option>
                                                             <option selected={jobAgreementInput.cyl_rate_status == 2 ? true : false} value="2">Per Sqr cm</option>
@@ -265,7 +266,7 @@ const Edit = (props) => {
                                                 <div className="form-group row">
                                                     <label className="col-sm-4 col-form-label required" htmlFor="printer_mark">Printer Mark</label>
                                                     <div className="col-sm-8">
-                                                        <select className="form-control" required ref={register}  id="printer_mark" name="printer_mark"
+                                                        <select className="form-control" required   id="printer_mark" name="printer_mark"
                                                             ref={register({
                                                                 required: 'Printer Mark Field Required'
                                                             })} >

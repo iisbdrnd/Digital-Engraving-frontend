@@ -1,9 +1,11 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom'
-import { userGetMethod } from '../../api/userAction';
-import { userHasAccess, userMenuList } from '../../api/userUrl';
+// import { userGetMethod } from '../../api/userAction';
+// import { userHasAccess, userMenuList } from '../../api/userUrl';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { userGetMethod } from '../../../api/userAction';
+import { userHasAccess } from '../../../api/userUrl';
 
 export const SubmitButton = props => {
     return (

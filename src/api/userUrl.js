@@ -140,7 +140,8 @@ export const AccountsReceivableReportActionApi = 'api/user/AccountsReceivableRep
 
 
 //------ FACTORY START------//
-
+//DESIGN LAYOUT
+export const DESIGN_LAYOUT_RSURL = 'api/user/layoutDesign';
 //GRINDING
 export const GRINDING_RSURL = 'api/user/grinding';
 export const GRINDING_JOB_ORDER_DETAILS = 'api/user/jobOrderDetailsFromGrinding';

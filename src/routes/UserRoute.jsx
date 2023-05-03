@@ -338,6 +338,10 @@ import PolishingRemainingJobsReport from './../components/users/factoryReport/po
 import PlatingRemainingJobsForm from './../components/users/factoryReport/platingRemainingJobs/Form';
 import PlatingRemainingJobsReport from './../components/users/factoryReport/platingRemainingJobs/Report';
 //END FACTORY REPORT
+//DESIGN LAYOUT
+import DesignLayoutList from './../components/users/factory/designLayout/ListData';
+import DesignLayoutAdd from  './../components/users/factory/designLayout/Add'
+import DesignLayoutEdit from '../components/users/factory/designLayout/Edit/Edit'
 //GRINDING
 import GrindingList from './../components/users/factory/grinding/ListData';
 import GrindingAdd from './../components/users/factory/grinding/Add';
@@ -650,7 +654,8 @@ class UserRoute extends Component {
               path={`${process.env.PUBLIC_URL}/accounts-receivable-report-action`}
               component={AccountsReceivableReportAction}
             />
-
+            {/* <UserAuthRoute
+            /> */}
             <UserAuthRoute
               path={`${process.env.PUBLIC_URL}/factoryProduction/:fromDate/:toDate`}
               component={FactoryProductionReport}
@@ -1384,7 +1389,19 @@ class UserRoute extends Component {
                   component={AccountsReceivable}
                 />
                 {/* ------- SCHEDULE START ------- */}
-                {/* GRINDING */}
+                 {/* Design Layout */}
+                <UserAuthRoute 
+                  path={`${process.env.PUBLIC_URL}/designLayout/index`}
+                  component={DesignLayoutList}
+                />
+                <UserAuthRoute
+                   path={`${process.env.PUBLIC_URL}/designLayout/add`} 
+                   component={DesignLayoutAdd}/>
+                <UserAuthRoute 
+                  path={`${process.env.PUBLIC_URL}/designLayout/edit/:job_no`}
+                  component={DesignLayoutEdit} 
+                />
+                 {/* GRINDING */}
                 <UserAuthRoute
                   path={`${process.env.PUBLIC_URL}/grinding/index`}
                   component={GrindingList}

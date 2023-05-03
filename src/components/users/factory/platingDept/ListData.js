@@ -130,6 +130,7 @@ export default function ListData(props) {
                 }
             })
     };
+    // console.log(platingDeptData);
     const toggle = (i, platingTankMasterId) => {
         if (isOpen == i) {
             return setIsOpen(null)
@@ -152,7 +153,7 @@ export default function ListData(props) {
             setCycleModal(!cycleModal);
         }
     }
-
+   console.log(platingDeptData);
     // console.log('platingDeptData', platingDeptData.tanks);
 
     return (
@@ -315,7 +316,7 @@ export default function ListData(props) {
                     </div>
                 </div>
             </div>
-            {modal == true ? <TankSchedule tankId={platingDeptData.currentTank.id} modalTitle={platingDeptData.currentTank.tank_id} toggle={()=>toggleModal('addTankSchedule')} onChangeTank={onChangeTank} modal={modal} /> : ''} 
+            {modal == true ? <TankSchedule tank_id={platingDeptData.currentTank.tank_id} tankId={platingDeptData.currentTank.id} modalTitle={platingDeptData.currentTank.tank_id} toggle={()=>toggleModal('addTankSchedule')} onChangeTank={onChangeTank} modal={modal} /> : ''} 
             {cycleModal == true ? <StartCycleForm tankId={platingDeptData.currentTank.id} platingTankMasterId={platingDeptData.singlePlatingTankMasterInfo.id} modalTitle={platingDeptData.singlePlatingTankMasterInfo.platingTankMasterCycleId +' of #'+platingDeptData.currentTank.tank_id} toggle={()=>toggleModal('cycleStart')} modalName="cycleStart" modal={cycleModal} needReload={() => onChangeTank(platingDeptData.currentTank.id, platingDeptData.currentTank.tank_id)}/> : ''} 
             
             {editTankSchedule == true ? <TankScheduleEdit tankId={platingDeptData.currentTank.id} scheduleId={platingDeptData.singlePlatingTankMasterInfo.id} modalTitle={platingDeptData.currentTank.tank_id} toggle={()=>toggleModal('editTankSchedule')} modalName="cycleStart" modal={editTankSchedule} /> : ''} 

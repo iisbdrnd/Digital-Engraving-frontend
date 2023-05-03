@@ -32,6 +32,7 @@ const Add = (props) => {
             order_date         : new Date().toLocaleDateString(),
             supplier_id        : '',
             job_ref_id         : '',
+            ref_job_no         : '',
             delivery_date      : '',
             qty                : '',
             remarks            : '',
@@ -52,6 +53,7 @@ const Add = (props) => {
                 // FOR JOB ORDER
                 let jobOrderOptions = [];
                 if (response.data.jobOrders && response.data.jobOrders.length > 0) {
+                    console.log(response.data.jobOrders);
                     response.data.jobOrders.map(order => 
                     {
                         let jobOrderObj = {};
@@ -66,7 +68,7 @@ const Add = (props) => {
                             setJobOrderData({
                                 'job_order_qty_limit': order.total_cylinder_qty
                             })
-                            setaddLimit( order.total_cylinder_qty);
+                            setaddLimit(order?.total_cylinder_qty);
                         }
                     })
                 }
@@ -86,7 +88,7 @@ const Add = (props) => {
                 if(response.data.delStocks && response.data.delStocks.length > 0) {
                     response.data.delStocks.map((item) => {
                         let delObj = {};
-                        Object.assign(delObj, {id: item['job_no'],name:`[${item.job_no}] ` + item['job_name']});
+                        Object.assign(delObj, {item_id:item['id'],id: item['job_no'],name:`[${item.job_no}] ` + item['job_name']});
                         delStockOptions.push(delObj);
                     })
                 }
@@ -95,7 +97,7 @@ const Add = (props) => {
                 if(response.data.clientStocks && response.data.clientStocks.length > 0) {
                     response.data.clientStocks.map((item) => {
                         let clientObj = {};
-                        Object.assign(clientObj, {id: item['job_no'],name:`[${item.job_no}] ` +item['job_name']});
+                        Object.assign(clientObj, {item_id:item['id'],id: item['job_no'],name:`[${item.job_no}] ` +item['job_name']});
                         clientStockOptions.push(clientObj);
                     })
                 }
@@ -141,13 +143,14 @@ const Add = (props) => {
                     // setJobOrderData({
                     //     'job_order_qty_limit' : total_cylinder_qty,
                     // });
-                    setaddLimit( total_cylinder_qty);
+                    setaddLimit(total_cylinder_qty);
                 });
                 setRefDisabled(true);
                 setStockdel(false);
                 setStockClient(false);
                 setJobOrderData({
                     'job_ref_id' : "",
+                    'ref_job_no' : ""
                 });
 
             }
@@ -169,42 +172,41 @@ const Add = (props) => {
                         setJobOrderData({
                             'job_order_qty_limit' : total_cylinder_qty,
                         });
+                        setaddLimit(total_cylinder_qty);
                     });
             }
         } 
 
     }
-    console.log(dropdownData['supplier_id']);
+    // console.log(stockdel, stockClient);
+    // console.log(dropdownData['supplier_id']);
     // FOR ORDER DETAILS DATA INPUT
     const orderDetailsInputHander = (event) => {
-        console.log(event.target.name, event.target.value);
+            
         if (event.target.name == 'job_ref_id') {
             if (stockClient) {
                 clientStockDetails.map((item) => {
-                    console.log(item);
-                    if (event.target.value == item?.job_no) {
+                    if (event.target.value == item?.id) {
                         setaddLimit(item?.total_cylinder_qty);
-                        // setJobOrderData({
-                        //     'job_order_qty_limit': item?.total_cylinder_qty,
-                        // });
-                    }
-                })
-            } else if (stockdel) {
-                delStockDetails.map((item) => {
-                    if (event.target.value == item?.job_no) {
-                        setaddLimit(item?.total_cylinder_qty);
-                        // setJobOrderData({
-                        //     'job_order_qty_limit': item?.total_cylinder_qty,
-                        // });
+                        setJobOrderData({ 'ref_job_no': item?.job_no ,[event.target.name] : event.target.value});
                     }
                 })
             } 
-        }
+            if (stockdel) {
+                delStockDetails.map((item) => {
+                    if (event.target.value == item?.id) {
+                        setaddLimit(item?.total_cylinder_qty);
+                        setJobOrderData({ 'ref_job_no': item?.job_no ,[event.target.name] : event.target.value});
+                    }
+                })
+            } 
+        }else{
         setJobOrderData(
             {[event.target.name] : event.target.value},
         );
+        }
     }
-    console.log(jobOrderData,addLimit);
+    console.log(jobOrderData);
     // FOR ORDER DETAILS ARRAY READY
     const addOrderDetailsHandler = (event) => {
         
@@ -216,6 +218,7 @@ const Add = (props) => {
                 // OBJECT CREATE & PUSH IN AN ARRAY
                 let baseOrderDetails_arr = [];
                 let baseOrderDetails_obj = {};
+                baseOrderDetails_obj.ref_job_no = jobOrderData.ref_job_no;
                 baseOrderDetails_obj.supplier_id = dropdownData.supplier_id[0].id;
                 baseOrderDetails_obj.supplier_id_name = dropdownData.supplier_id[0].name;
                 baseOrderDetails_obj.job_ref_id = job_ref_id;
@@ -257,7 +260,10 @@ const Add = (props) => {
                         delivery_date: '',
                         qty          : '',
                         remarks      : '',
+                        job_ref_id   : '',
+                        ref_job_no   : ''
                     });
+                    setSupplierValue([]);
                 } else {
                     SweetAlert.fire({title:"Warning", text:"You can't Cross Job Order Cyl Qty Limit", icon:"warning"});
                 }
@@ -284,6 +290,7 @@ const Add = (props) => {
         data.order_date = jobOrderData.order_date;
         data.totalOrderQty = jobOrderData.orderQty;
         data.base_order_details = baseOrderDetails;
+
          
         // if (jobOrderData.orderQty == jobOrderData.job_order_qty_limit) {
             userPostMethod(BASE_ORDER_RSURL, data)
@@ -415,7 +422,7 @@ const Add = (props) => {
                                                                 options={typeheadOptions['suppliers']}
                                                                 placeholder="Select Issue To"
                                                                 onChange={(e) => dropDownChange(e, 'supplier_id')}
-                                                                inputProps={{ required: true }}
+                                                                // inputProps={{ required: true }}
                                                                 // defaultValue={jobOrderData.supplier_id}
                                                                 selected={supplierValue}
                                                                 {...register('supplier_id')}
@@ -435,12 +442,12 @@ const Add = (props) => {
                                                                 value={jobOrderData?.job_ref_id}
                                                                 >
                                                                 <option value="">Select one...</option>
-                                                                {
-                                                                   stockdel && typeheadOptions['del_stocks'].map((item, i) => <option key={i} value={item['id']}>{item['name']}</option>)
-                                                                }
-                                                                 {
-                                                                   stockClient && typeheadOptions['client_stocks'].map((item, i) => <option key={i} value={item['id']}>{item['name']}</option>)
-                                                                }
+                                                                    {
+                                                                        stockdel && typeheadOptions['del_stocks'].map((item, i) => <option key={i} value={item['item_id']}>{item['name']}</option>)
+                                                                    }
+                                                                    {
+                                                                        stockClient && typeheadOptions['client_stocks'].map((item, i) => <option key={i} value={item['item_id']}>{item['name']}</option>)
+                                                                    }
                                                             </select>
                                                         </div>
 
@@ -517,7 +524,7 @@ const Add = (props) => {
                                                                         (
                                                                         <tr key={index}>
                                                                             <th scope="row">{item.supplier_id_name}</th>
-                                                                            <td>{item.job_ref_id}</td>
+                                                                            <td>{item.ref_job_no}</td>
                                                                             <td>{item.qty}</td>
                                                                             <td>{item.delivery_date}</td>
                                                                             <td>{item.remarks}</td>

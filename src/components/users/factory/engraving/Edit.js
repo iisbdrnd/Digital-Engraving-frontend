@@ -7,7 +7,7 @@ import useForm from "react-hook-form";
 import { SubmitButton } from '../../../common/GlobalButton';
 
 const Edit = (props) => {
-    const { handleSubmit, register, errors } = useForm();
+    const { handleSubmit, register, errors, reset } = useForm();
     const [isLoading, setIsLoading] = useState(true);
 
     let [stateData, setStateData] = useReducer(
@@ -104,16 +104,52 @@ const Edit = (props) => {
         }
     }
     
-    const submitHandler = (data) => {
+    const submitHandler = (data,e) => {
         userPutMethod(`${ENGRAVING_RS_URL}/${digEngravingCylinderId}`, data)
             .then(response => {
                 if (response.data.status == 1) {
                     toast.success(response.data.message)
+                    e.target.reset();
+                    clearForm();
+                    setStateData({ jobOrderDetailsData: [],})
                 } else {
                     toast.error(response.data.message)
                 }
             })
         .catch(error => toast.error(error))
+    }
+
+    const  clearForm = () => {
+        setStateData({
+            job_order_id                  : '',
+            cylinder_id                   : '',
+            //Output, QC and Remarks
+            a_off_time                    : '',
+            output_status                 : '',
+            stylus_broken                 : '',
+            action                        : '',
+            a_duration                    : '',
+            remarks                       : '',
+            //ENGRAVING
+            des_machine                   : '',
+            engr_date                     : '',
+            est_duration                  : '',
+            shift_id                      : '',
+            done_by                       : '',
+            a_machine                     : '',
+            on_time                       : '',
+            est_end_time                  : '',
+
+            job_order_pk_id               : '', 
+            jobOrderDetailsData           : [], //STORE DATA FROM job_orders
+            shiftData                     : [], //STORE DATA FROM dig_shift_master
+            shiftDutyPersons              : [], //STORE DATA FROM dig_shift_details
+            cylindersByJobId              : [], //STORE DATA FROM factory_cylinder_supply_chains
+            completeEngraveData           : [], //STORE DATA FROM dig_engravings
+            platingData                   : [],
+            available_cylinders           : [],
+            polishMachines                : [],
+        })
     }
 
     var menuId = 0;
@@ -217,6 +253,7 @@ const Edit = (props) => {
                                                                 className="form-control" 
                                                                 name="job_no"
                                                                 placeholder="Layout ID"
+                                                                {...register("job_no", {required: 'error message'})}
                                                                 // value='20211116-001'
                                                                 disabled={'disabled'}
                                                             />
@@ -224,40 +261,40 @@ const Edit = (props) => {
                                                         <div className="col-md-6 form-row">
                                                             <label className="col-md-5 col-form-label label-form required ">Color Sl</label>
                                                             <div className="col-md-7">
-                                                                <input type="text" className="form-control" name="color_sl" />
+                                                                <input type="text" className="form-control" name="color_sl" {...register("color_sl", {required: 'error message'})} />
                                                             </div>
 
                                                             <label className="col-md-5 col-form-label label-form required ">Screen</label>
                                                             <div className="col-md-7">
-                                                                <input type="text" className="form-control" name="screen" />
+                                                                <input type="text" className="form-control" name="screen" {...register("screen", {required: 'error message'})} />
                                                             </div>
 
                                                             <label className="col-md-5 col-form-label label-form  ">Start Point</label>
                                                             <div className="col-md-7">
-                                                                <input type="text" className="form-control" name="start_point" />
+                                                                <input type="text" className="form-control" name="start_point" {...register("start_point", {required: 'error message'})} />
                                                             </div>
                                                         </div>
 
                                                         <div className="col-md-6 form-row">
                                                             <label className="col-md-5 col-form-label label-form required ">Color</label>
                                                             <div className="col-md-7">
-                                                                <input type="text" className="form-control" name="color" />
+                                                                <input type="text" className="form-control" name="color" {...register("color", {required: 'error message'})} />
                                                             </div>
 
                                                             <label className="col-md-5 col-form-label label-form required ">Angle</label>
                                                             <div className="col-md-7">
-                                                                <input type="text" className="form-control" name="angle" />
+                                                                <input type="text" className="form-control" name="angle" {...register("angle", {required: 'error message'})} />
                                                             </div>
 
                                                             <label className="col-md-5 col-form-label label-form  ">Image Area</label>
                                                             <div className="col-md-7">
-                                                                <input type="text" className="form-control" name="image_area" />
+                                                                <input type="text" className="form-control" name="image_area" {...register("image_area", {required: 'error message'})} />
                                                             </div>
                                                         </div>
 
                                                         <label className="col-md-3 col-form-label label-form">Remarks</label>
                                                         <div className="col-md-8">
-                                                            <textarea className="form-control" rows="3" name='remarks'></textarea>
+                                                            <textarea className="form-control" rows="3" name='remarks' {...register("remarks", {required: 'error message'})}></textarea>
                                                         </div>
                                                     </div>
                                                 </fieldset>
@@ -269,13 +306,13 @@ const Edit = (props) => {
                                                         <div className="col-md-6 form-row">
                                                             <label className="col-md-5 col-form-label label-form">A. off Time</label>
                                                             <div className="col-md-7">
-                                                                <input type="text" className="form-control" name="a_off_time" ref={register({})}value={stateData.a_off_time ? stateData.a_off_time : ''}  onChange={onChangeHandler}/>
+                                                                <input type="time" className="form-control" name="a_off_time" {...register("a_off_time", {required: 'error message'})} value={stateData.a_off_time ? stateData.a_off_time : ''}  onChange={onChangeHandler}/>
                                                             </div>
 
                                                             <label className="col-md-5 col-form-label label-form">Output Status</label>
                                                             <div className="col-md-7">
-                                                                <select className="form-control" name='output_status' ref={register({})} defaultValue={stateData.output_status ? stateData.output_status : ''} onChange={onChangeHandler}>
-                                                                    <option>select one</option>
+                                                                <select className="form-control" name='output_status' {...register("output_status", {required: 'error message'})} defaultValue={stateData.output_status ? stateData.output_status : ''} onChange={onChangeHandler}>
+                                                                    <option value=''>select one</option>
                                                                     <option value="1">Ok</option>
                                                                     <option value="0">Not Ok</option>
                                                                 </select>
@@ -283,25 +320,25 @@ const Edit = (props) => {
 
                                                             <label className="col-md-6 col-form-label label-form">Stylus Broken </label>
                                                             <div className="col-md-6">
-                                                                <input type="checkbox" className="mt-2" name='stylus_broken' ref={register({})} defaultChecked={stateData.stylus_broken ? true : false} onChange={onChangeHandler}/>
+                                                                <input type="checkbox" className="mt-2" name='stylus_broken' {...register("stylus_broken", {required: 'error message'})} defaultChecked={stateData.stylus_broken ? true : false} onChange={onChangeHandler}/>
                                                             </div>
 
                                                         </div>
                                                         <div className="col-md-6 form-row">
                                                             <label className="col-md-5 col-form-label label-form">Action</label>
                                                             <div className="col-md-7">
-                                                                <input type="text" className="form-control" name="action" ref={register({})} value={stateData.action ? stateData.action : ''} onChange={onChangeHandler}/>
+                                                                <input type="text" className="form-control" name="action" {...register("action", {required: 'error message'})} value={stateData.action ? stateData.action : ''} onChange={onChangeHandler}/>
                                                             </div>
                                                             
                                                             <label className="col-md-5 col-form-label label-form">A. Duration</label>
                                                             <div className="col-md-7">
-                                                                <input type="time" className="form-control" name="a_duration" ref={register({})} value={stateData.a_duration ? stateData.a_duration : ''} onChange={onChangeHandler}/>
+                                                                <input type="text" placeholder="hh:mm" className="form-control" name="a_duration" {...register("a_duration", {required: 'error message'})} value={stateData.a_duration ? stateData.a_duration : ''} onChange={onChangeHandler}/>
                                                             </div>
                                                             
                                                             <label className="col-md-5 col-form-label label-form">Remarks</label>
                                                             <div className="col-md-7">
                                                                 {/* <input type="text" className="form-control" name="cyls1" /> */}
-                                                                <textarea className="form-control" rows="3" name="remarks" ref={register({})} defaultValue={ stateData.remarks ? stateData.remarks : '' }></textarea>
+                                                                <textarea className="form-control" rows="3" name="remarks" {...register("remarks", {required: 'error message'})} defaultValue={ stateData.remarks ? stateData.remarks : '' }></textarea>
                                                             </div>
                                                         </div>
                                                     </div>       
@@ -318,7 +355,7 @@ const Edit = (props) => {
                                                     <div className="col-md-7">
                                                         {/* <input type="text" className="form-control" name="des_machine" ref={register({})} value={stateData.des_machine ? stateData.des_machine : ''} onChange={onChangeHandler}/> */}
                                                         
-                                                        <select className="form-control" name="des_machine" ref={register({})} value={stateData.des_machine ? stateData.des_machine : ''} onChange={onChangeHandler}>
+                                                        <select className="form-control" name="des_machine" {...register("des_machine", {required: 'error message'})} value={stateData.des_machine ? stateData.des_machine : ''} onChange={onChangeHandler}>
                                                             <option>select one</option>
                                                             {
                                                                 stateData.polishMachines.map((machine, key)=>(
@@ -330,14 +367,14 @@ const Edit = (props) => {
                                                 
                                                     <label className="col-md-5 col-form-label label-form">Engr. Date</label>
                                                     <div className="col-md-7">
-                                                        <input type="text" className="form-control" name="engr_date" ref={register({})} value={stateData.engr_date ? stateData.engr_date : ''} onChange={onChangeHandler}/>
+                                                        <input type="date" className="form-control" name="engr_date" {...register("engr_date", {required: 'error message'})} value={stateData.engr_date ? stateData.engr_date : ''} onChange={onChangeHandler}/>
                                                     </div>
                                                 
                                                     <label className="col-md-5 col-form-label label-form">Est, Duration</label>
-                                                    <div className="col-md-5">
-                                                        <input type="time" className="form-control" name="est_duration" ref={register({})} value={stateData.est_duration ? stateData.est_duration : ''} onChange={onChangeHandler}/>
+                                                    <div className="col-md-7">
+                                                        <input type="text" placeholder='hh:mm' className="form-control" name="est_duration" {...register("est_duration", {required: 'error message'})} value={stateData.est_duration ? stateData.est_duration : ''} onChange={onChangeHandler}/>
                                                     </div>
-                                                    <label className="col-form-label label-form pull-right">hh:mm</label>
+                                                    {/* <label className="col-form-label label-form pull-right">hh:mm</label> */}
 
                                                     <label className="col-md-5 col-form-label label-form">Shift</label>
                                                     <div className="col-md-7">
@@ -350,7 +387,7 @@ const Edit = (props) => {
                                                 <div className="col-md-6 row">
                                                     <label className="col-md-5 col-form-label label-form">Done by</label>
                                                     <div className="col-md-7">
-                                                        <select className="form-control" name="done_by" ref={register({})} defaultValue={stateData.done_by ? stateData.done_by : ''} onChange={onChangeHandler}>
+                                                        <select className="form-control" name="done_by" {...register("done_by", {required: 'error message'})} defaultValue={stateData.done_by ? stateData.done_by : ''} onChange={onChangeHandler}>
                                                             <option>select one</option>
                                                             {
                                                                 stateData.shiftDutyPersons.map((dutyPerson, key)=>(
@@ -362,7 +399,7 @@ const Edit = (props) => {
                                                     
                                                     <label className="col-md-5 col-form-label label-form">A. Machine</label>
                                                     <div className="col-md-7">
-                                                        <select className="form-control" name="a_machine" ref={register({})} value={stateData.a_machine ? stateData.a_machine : ''} onChange={onChangeHandler}>
+                                                        <select className="form-control" name="a_machine" {...register("a_machine", {required: 'error message'})} value={stateData.a_machine ? stateData.a_machine : ''} onChange={onChangeHandler}>
                                                             <option>select one</option>
                                                             {
                                                                 stateData.polishMachines.map((machine, key)=>(
@@ -374,12 +411,12 @@ const Edit = (props) => {
                                                 
                                                     <label className="col-md-5 col-form-label label-form">On Time</label>
                                                     <div className="col-md-7">
-                                                        <input type="time" className="form-control" name="on_time" ref={register({})} value={stateData.on_time ? stateData.on_time : ''} onChange={onChangeHandler}/>
+                                                        <input type="time" className="form-control" name="on_time" {...register("on_time", {required: 'error message'})} value={stateData.on_time ? stateData.on_time : ''} onChange={onChangeHandler}/>
                                                     </div>
                                                 
                                                     <label className="col-md-5 col-form-label label-form">Est, End Time</label>
                                                     <div className="col-md-7">
-                                                        <input type="text" className="form-control" name="est_end_time" ref={register({})} value={stateData.est_end_time ? stateData.est_end_time : ''} onChange={onChangeHandler}/>
+                                                        <input type="time" className="form-control" name="est_end_time" {...register("est_end_time", {required: 'error message'})} value={stateData.est_end_time ? stateData.est_end_time : ''} onChange={onChangeHandler}/>
                                                     </div>
                                                 </div>
                                             </div>

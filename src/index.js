@@ -51,13 +51,13 @@ function Root() {
             <Provider store={store}>
                 {urlArray[1] == 'admin' ? 
                     (
-                        <BrowserRouter basename={"/"}>
+                        <BrowserRouter basename={"/admin"}>
                             <ScrollContext>                        
                                 <AdminRoute />                        
                             </ScrollContext>
                         </BrowserRouter>
                     ) : (
-                        <BrowserRouter basename={"/"}>
+                        <BrowserRouter basename={"/user"}>
                             <ScrollContext>
                                 <UserRoute />
                             </ScrollContext>

@@ -14,6 +14,8 @@ const Edit = (props) => {
     const [dropdownData, setDropdownData] = useState({});
     const [multipleDropdownData, setMultipleDropdownData] = useState([]);
     const [typeheadOptions, setTypeheadOptions] = useState({});
+    const [linkjob, setLinkjob] = useState(false)
+    const [jobOrderType, setJobOrderType] = useState(null)
 
     let [jobOrderInput, setJobOrderInput] = useReducer(
         (state, newState) => ({...state, ...newState}),
@@ -30,6 +32,7 @@ const Edit = (props) => {
             fl                 : "",
             job_name           : "",
             job_sub_class_id   : [],
+            reference_job      : [],
             job_type           : "",
             marketing_person_id: [],
             design_machine_id  : [],
@@ -160,6 +163,22 @@ const Edit = (props) => {
                         }
                     })
                 }
+                //For reference job
+                let referenceJobsOptions = [];
+                if (response.data.referenceJobs && response.data.referenceJobs.length > 0) {
+                    response.data.referenceJobs.map(referenceJob => 
+                    {
+                        let referenceJobObj = {};
+                        referenceJobObj.id = referenceJob.id;
+                        referenceJobObj.name = referenceJob.job_name;
+                        referenceJobsOptions.push(referenceJobObj);
+                        if (response.data.jobOrder.reference_job == referenceJob.id) {
+                            setJobOrderInput({
+                                'reference_job': [referenceJobObj]
+                            })
+                        }
+                    })
+                }
                 
                 setTypeheadOptions(
                     (prevstate) => ({
@@ -168,6 +187,7 @@ const Edit = (props) => {
                         ['printers']: printerOptions,
                         ['clients']: clientOptions,
                         ['job_sub_classes']: subClassOptions,
+                        ['reference_jobs']: referenceJobsOptions,
                         ['additional_colors']: additionalColorOptions,
                         ['design_machines']: designMachineOptions,
                     })
@@ -180,7 +200,7 @@ const Edit = (props) => {
                 setIsLoading(false);
             });
     },[]);
-
+    console.log(jobOrderInput);
     const dropDownChange = (event, stateName) => {
         if(event.length > 0){
             setJobOrderInput({
@@ -188,34 +208,40 @@ const Edit = (props) => {
             })
         } 
     }
-    // const multipleDropDownChange = (event) => {
-    //     if(event.length > 0){
-    //         setJobOrderInput({
-    //             'color_id': event
-    //         })
-    //     } 
-    // }
-
+    
+    const multipleDropDownChange = (event) => {
+        // if(event.length > 0){
+            setJobOrderInput({
+                'color_id': event
+            })
+        // } 
+    }
+    
     const onChangeHandler = (event) => {
         setJobOrderInput({
-            [event.target.name]: event.target.value
+            [event.target.name]: event?.target?.type =='checkbox' ? (event.target.checked == true ? 1 : 0) : event.target.value
         })
     }
-
-    const submitHandler = (e) => {
-        jobOrderInput.client_id = jobOrderInput.client_id[0].id;
-        jobOrderInput.job_sub_class_id = jobOrderInput.job_sub_class_id[0].id;
-        jobOrderInput.marketing_person_id = jobOrderInput.marketing_person_id[0].id;
-        jobOrderInput.printer_id = jobOrderInput.printer_id[0].id;
-        jobOrderInput.design_machine_id = jobOrderInput.design_machine_id[0].id;
-
+   
+    const submitHandler = (data,e) => {
+        data.client_id = jobOrderInput.client_id[0].id;
+        data.job_sub_class_id = jobOrderInput.job_sub_class_id[0].id;
+        data.marketing_person_id = jobOrderInput.marketing_person_id[0].id;
+        data.printer_id = jobOrderInput.printer_id[0].id;
+        data.design_machine_id = jobOrderInput.design_machine_id[0].id;
+        if(  jobOrderInput.reference_job.length > 0){
+            data.reference_job = jobOrderInput.reference_job[0].id;
+        }else{
+            delete jobOrderInput.reference_job;
+        }
+        console.log(data);
         let color_id_final_arr = [];
         jobOrderInput.color_id.map(item => {
             color_id_final_arr.push(item.id);
         })
-        jobOrderInput.color_id = color_id_final_arr;
+        data.color_id = color_id_final_arr;
         
-        userPutMethod(`${JOB_ORDER_RSURL}/${jobOrderId}`, jobOrderInput)
+        userPutMethod(`${JOB_ORDER_RSURL}/${jobOrderId}`, data)
             .then(response => {
                 console.log("response data", response);
                 if (response.data.status == 1) {
@@ -258,6 +284,7 @@ const Edit = (props) => {
                                                     <label className="col-sm-4 col-form-label required" htmlFor="job_type">Job Order Type</label>
                                                     <div className="col-sm-8">
                                                         <select className="form-control" required id="job_type" name="job_type"
+                                                            onChange={onChangeHandler}
                                                             ref={register({
                                                                 required: 'Job Order Type Field Required'
                                                             })} >
@@ -279,36 +306,34 @@ const Edit = (props) => {
                                                         <input 
                                                             name="link_job"
                                                             // onChange={(e) => setLinkjob(e.target.checked)}
-                                                            // required={jobType =='New' ? false : true}
+                                                            onChange={onChangeHandler}
+                                                            required={jobOrderInput.job_type == 'New' ? false : true}
+                                                            value={jobOrderInput.link_job}
                                                             type="checkbox" 
-                                                            ref={register({
-                                                                required: 'Lik job  Field Required'
-                                                            })}
+                                                            defaultChecked={(jobOrderInput?.reference_job?.length != 0 &&  jobOrderInput?.job_type != 'New') ? true : false}
+                                                            
                                                         />
                                                         {errors.job_name && <p className='text-danger'>{errors.job_name.message}</p>}
                                                     </div>
                                                 </div>
                                                      </div>
                                                      <div className='col-md-6'>
-                                                     <div className="form-group row">
+                                                     {jobOrderInput.job_type != 'New' &&  <div className="form-group row">
                                                     <label className="col-sm-4 col-form-label required" htmlFor="reference_job">Ref Job</label>
                                                     <div className="col-sm-8">
                                                     <Typeahead
-                                                            id="job_sub_class_id"
-                                                            name="job_sub_class_id"
+                                                            id="reference_job"
+                                                            name="reference_job"
                                                             labelKey={option => `${option.name}`}
-                                                            options={typeheadOptions['job_sub_classes']}
-                                                            placeholder="Select Sub Class..."
-                                                            onChange={(e) => dropDownChange(e, 'job_sub_class_id')}
-                                                            selected={jobOrderInput.job_sub_class_id}
-                                                            ref={register({
-                                                                required: 'Sub Class Field Required'
-                                                            })}
+                                                            options={typeheadOptions['reference_jobs']}
+                                                            placeholder="Select Reff jobs..."
+                                                            onChange={(e) => dropDownChange(e, 'reference_job')}
+                                                            selected={jobOrderInput.reference_job}
                                                         />
                                                         
                                                         {errors.reference_job && <p className='text-danger'>{errors.reference_job.message}</p>}
                                                     </div>
-                                                </div>
+                                                </div> }
                                                      </div>
                                                 </div>
 
@@ -438,9 +463,10 @@ const Edit = (props) => {
                                                             name="color_id"
                                                             labelKey={option => `${option.name}`}
                                                             multiple
+                                                            required
                                                             options={typeheadOptions['additional_colors']}
                                                             placeholder="Select Color..."
-                                                            onChange={setMultipleDropdownData}
+                                                            onChange={(e) => multipleDropDownChange(e)}
                                                             selected={jobOrderInput.color_id}
                                                             ref={register({
                                                                 required: 'Color Field Required'
@@ -456,7 +482,7 @@ const Edit = (props) => {
                                                         <select className="form-control" required id="eye_mark_color" name="eye_mark_color"
                                                             ref={register({
                                                                 required: 'Eye Mark Color Type Field Required'
-                                                            })} >
+                                                            })}>
                                                             <option>Select One</option>
                                                             <option selected={jobOrderInput.eye_mark_color == 'White' ? true : false} value="White">White</option>
                                                             <option selected={jobOrderInput.eye_mark_color == 'Black' ? true : false} value="Black">Black</option>
@@ -478,6 +504,7 @@ const Edit = (props) => {
                                                                 placeholder="Eye Mark Size" 
                                                                 value={jobOrderInput.eye_mark_size_one}
                                                                 onChange={onChangeHandler}
+                                                                required
                                                                 ref={register({
                                                                     required: 'Eye Mark Size Field Required'
                                                                 })}
@@ -719,8 +746,9 @@ const Edit = (props) => {
                                                             name="total_cylinder_qty" 
                                                             type="text" 
                                                             placeholder="Cylinder Qty" 
-                                                            value={jobOrderInput.total_cylinder_qty}
+                                                            value={jobOrderInput.color_id.length}
                                                             onChange={onChangeHandler}
+                                                            disabled = {jobOrderInput.color_id.length > 0 ? true : false}
                                                             ref={register({
                                                                 required: 'Cylinder Qty Field Required'
                                                             })}
@@ -772,7 +800,7 @@ const Edit = (props) => {
                                                             name="total_surface_area" 
                                                             type="text" 
                                                             placeholder="Total Surface Area" 
-                                                            value={(jobOrderInput.total_cylinder_qty * (jobOrderInput.face_length * (jobOrderInput.design_height * jobOrderInput.rpt)))/100}
+                                                            value={(jobOrderInput.color_id.length  * (jobOrderInput.face_length * (jobOrderInput.design_height * jobOrderInput.rpt)))/100}
                                                             ref={register({
                                                                 required: 'Total Surface Area Field Required'
                                                             })}

@@ -301,9 +301,10 @@ const CylinderInfo = (props) => {
 
                                                     <div className="col-sm-9">
                                                         <select className="form-control" required ref={register}  id="station" name="station"
-                                                        ref={register({
-                                                            required: 'Station Field Required'
-                                                        })} >
+                                                        // ref={register({
+                                                        //     required: 'Station Field Required'
+                                                        // })} 
+                                                        >
                                                             <option> Select One </option>
                                                             
                                                         </select>
@@ -317,9 +318,10 @@ const CylinderInfo = (props) => {
                                                     <label className="col-sm-6 col-form-label" htmlFor="info">Info</label>
                                                     <div className="col-sm-5 pl-2">
                                                         <select className="form-control" required ref={register}  id="info" name="info"
-                                                        ref={register({
-                                                            required: 'Info Field Required'
-                                                        })} >
+                                                        // ref={register({
+                                                        //     required: 'Info Field Required'
+                                                        // })} 
+                                                        >
                                                             <option> Select One </option>
                                                             
                                                         </select>
