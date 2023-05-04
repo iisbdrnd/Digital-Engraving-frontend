@@ -446,7 +446,7 @@ const Add = (props) => {
                                                                 ))}
                                                             </select>
                                                         </div>
-                                                        <label className="col-sm-5 col-form-label required">Layout ID</label>
+                                                        <label className="col-sm-5 text-left col-form-label required">Layout ID</label>
                                                         <div className="col-md-7">
                                                             <input
                                                                 type="text"
@@ -461,8 +461,8 @@ const Add = (props) => {
                                                             />
                                                         </div>
                                                     </div>
-                                                    <div className="col-md-6 row pl-0 pr-0">
-                                                        <label className="col-sm-5 col-form-label" style={{whiteSpace: 'nowrap'}}>UPS</label>
+                                                    <div className="col-md-6 row text-left m-l-0 m-r-0" style={{marginLeft:"0px !important",paddingLeft:"0px !important"}}>
+                                                        <label className="col-md-5 text-left col-form-label p-l-0" style={{whiteSpace: 'nowrap'}}>UPS</label>
                                                         <div className="col-md-7">
                                                             <input
                                                                 type="text"
@@ -477,7 +477,7 @@ const Add = (props) => {
                                                                 disabled={formData.ups != '' ?    true : false}
                                                             />
                                                         </div>
-                                                        <label className="col-sm-5 col-form-label" style={{whiteSpace: 'nowrap'}}>Dia</label>
+                                                        <label className="col-sm-5 text-left col-form-label p-l-0" style={{whiteSpace: 'nowrap'}}>Dia</label>
                                                         <div className="col-md-7">
                                                             <input
                                                                 type="text"
@@ -492,7 +492,7 @@ const Add = (props) => {
                                                                 disabled={formData.dia != '' ?    true : false}
                                                             />
                                                         </div>
-                                                        <label className="col-sm-5 col-form-label" style={{whiteSpace: 'nowrap'}}>Eye mark</label>
+                                                        <label className="col-sm-5 text-left col-form-label p-l-0" style={{whiteSpace: 'nowrap'}}>Eye mrk</label>
                                                         <div className="col-md-7">
                                                             <input
                                                                 type="text"
@@ -524,8 +524,8 @@ const Add = (props) => {
                                                                 disabled={formData.rpt != '' ?    true : false}
                                                             />
                                                         </div>
-                                                        <label className="col-md-9" style={{whiteSpace: 'nowrap'}}>Printer mark</label>
-                                                        <div className="col-md-3">
+                                                        <label className="col-md-8" style={{whiteSpace: 'nowrap'}}>Prntr mark</label>
+                                                        <div className="col-md-4">
                                                             <input
                                                                 type="checkbox"
                                                                 name="printer_mark"
@@ -536,11 +536,10 @@ const Add = (props) => {
                                                                 value={formData.printer_mark ? formData.printer_mark : ''}
                                                             />
                                                         </div>
-                                                        <label className="col-md-9" style={{whiteSpace: 'nowrap'}}>Complete</label>
-                                                        <div className="col-md-3">
+                                                        <label className="col-md-8" style={{whiteSpace: 'nowrap'}}>Done</label>
+                                                        <div className="col-md-4">
                                                             <input
                                                                 type="checkbox"
-                                                                className=""
                                                                 name="mark_as_complete"
                                                                 ref={register({
                                                                     required: 'On text Field Required'
@@ -553,7 +552,7 @@ const Add = (props) => {
                                                        
                                                     </div>
                                                     <div className="col-md-12 row">
-                                                    <label className="col-md-5 col-form-label" style={{whiteSpace: 'nowrap'}}>Date</label>
+                                                    <label className="col-md-5 text-left col-form-label" style={{whiteSpace: 'nowrap'}}>Date</label>
                                                         <div className="col-md-7">
                                                             <input
                                                                 type="text"
@@ -567,7 +566,7 @@ const Add = (props) => {
                                                                 value={formData.layout_date}
                                                             />
                                                         </div>
-                                                        <label className="col-md-5 col-form-label" style={{whiteSpace: 'nowrap'}}>On time</label>
+                                                        <label className="col-md-5 text-left col-form-label" style={{whiteSpace: 'nowrap'}}>On time</label>
                                                         <div className="col-md-7">
                                                             <input
                                                                 type="time"
@@ -581,7 +580,7 @@ const Add = (props) => {
                                                                 value={formData.layout_time}
                                                             />
                                                         </div>
-                                                        <label className="col-md-5 col-form-label">Layout</label>
+                                                        <label className="col-md-5 text-left col-form-label">Layout</label>
                                                         <div className="col-md-7">
                                                             <select className="form-control" name="	layout_id" id="	layout_id">
                                                                 <option value="1">opt 1</option>
@@ -589,7 +588,7 @@ const Add = (props) => {
                                                                 <option value="3">opt 3</option>
                                                             </select>
                                                         </div>
-                                                        <label className="col-sm-5 col-form-label">info</label>
+                                                        <label className="col-sm-5 text-left col-form-label">info</label>
                                                         <div className="col-md-7">
                                                             <select className="form-control" name="operator_info" id="operator_info" onChange={inputChangeHandler} 
                                                             ref={register({
@@ -600,7 +599,7 @@ const Add = (props) => {
                                                                 <option value="3">opt 3</option>
                                                             </select>
                                                         </div>
-                                                        <label className="col-sm-5 col-form-label">Station</label>
+                                                        <label className="col-sm-5 text-left col-form-label">Station</label>
                                                         <div className="col-md-7">
                                                             <select className="form-control" name="station" id="station" onChange={inputChangeHandler} ref={register({
                                                                 required: 'On text Field Required'
@@ -610,7 +609,7 @@ const Add = (props) => {
                                                                 <option value="3">opt 3</option>
                                                             </select>
                                                         </div>
-                                                        <label className="col-sm-5 col-form-label required">Remarks</label>
+                                                        <label className="col-sm-5 text-left col-form-label required">Remarks</label>
                                                         <div className="col-md-7">
                                                             <input
                                                                 type="text"
@@ -659,8 +658,8 @@ const Add = (props) => {
                                             <fieldset className="border p-2">
                                                 <legend className="w-auto text-left">Base</legend>
                                                 <div className="form-row">
-                                                    <div className="col-md-6 row">
-                                                        <label className="col-sm-5 col-form-label">FL</label>
+                                                    <div className="col-md-12 row">
+                                                    <label className="col-md-5 col-form-label text-left">FL</label>
                                                         <div className="col-md-7">
                                                             <input
                                                                 type="text"
@@ -675,6 +674,8 @@ const Add = (props) => {
                                                                 disabled={formData?.fl != '' ? true : false}
                                                             />
                                                         </div>
+                                                    </div>
+                                                    <div className="col-md-6 row m-l-0 m-r-0">
                                                         <label className="col-sm-5 col-form-label" style={{whiteSpace:'nowrap'}}>D. Dia</label>
                                                         <div className="col-md-7">
                                                             <input
@@ -742,7 +743,7 @@ const Add = (props) => {
                                             <fieldset className="border p-2">
                                                 <legend className="w-auto text-left">Design</legend>
                                                 <div className="form-row">
-                                                    <div className="col-md-6 row">
+                                                    <div className="col-md-6 row m-l-0 m-r-0">
                                                         <p className="text-center col-md-12">Desire Size</p>
                                                         <label className="col-sm-5 col-form-label required">H</label>
                                                         <div className="col-md-7">
@@ -806,6 +807,75 @@ const Add = (props) => {
                                                     </div>
                                                 </div>
                                             </fieldset>
+                                            <fieldset className="border p-2">
+                                                <legend className="w-auto text-left">Additional Info</legend>
+                                                <div className="form-row">
+                                                    <div className="col-md-6 row m-l-0 m-r-0">
+                                                        <label className="col-sm-5 col-form-label text-left" style={{whiteSpace:'nowrap'}}>Client</label>
+                                                        <div className="col-md-7">
+                                                            <input
+                                                                type="text"
+                                                                className="form-control"
+                                                                name="dia"
+                                                                required
+                                                                ref={register({
+                                                                    required: 'On text Field Required'
+                                                                })}
+                                                                // onChange={inputChangeHandler}
+                                                                disabled={formData?.fl != '' ? true : false}
+                                                                value={formData.dia ? formData.dia : ''}
+                                                            />
+                                                        </div>
+                                                        <label className="col-sm-5 col-form-label text-left" style={{whiteSpace:'nowrap'}}>Mkt Prsn</label>
+                                                        <div className="col-md-7">
+                                                            <input
+                                                                type="text"
+                                                                className="form-control"
+                                                                name="final_dia"
+                                                                required
+                                                                ref={register({
+                                                                    required: 'On text Field Required'
+                                                                })}
+                                                                onChange={inputChangeHandler}
+                                                                value={formData.final_dia ? formData.final_dia : ''}
+                                                            />
+                                                        </div>
+
+                                                    </div>
+                                                    <div className="col-md-6 row">
+                                                        <label className="col-sm-5 col-form-label" style={{whiteSpace:'nowrap'}}>B. Src</label>
+                                                        <div className="col-md-7">
+                                                            <input
+                                                                type="text"
+                                                                className="form-control"
+                                                                name="d_cir"
+                                                                required
+                                                                ref={register({
+                                                                    required: 'On text Field Required'
+                                                                })}
+                                                                onChange={inputChangeHandler}
+                                                                // disabled={formData?.d_cir != '' ? true : false}
+                                                                // value={formData.d_cir ? formData.d_cir : ''}
+                                                            />
+                                                        </div>
+                                                        <label className="col-sm-5 col-form-label" style={{whiteSpace:'nowrap'}}>Dsigner</label>
+                                                        <div className="col-md-7">
+                                                            <input
+                                                                type="text"
+                                                                className="form-control"
+                                                                name="final_cir"
+                                                                required
+                                                                ref={register({
+                                                                    required: 'On text Field Required'
+                                                                })}
+                                                            onChange={inputChangeHandler}
+                                                            value={formData.final_cir ? formData.final_cir : ''}
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </fieldset>
+                                            
                                         </div>
                                         <div className="col-md-3 pl-0 pr-0">
                                             <fieldset className="border p-1" style={{overflow:'auto'}}>
@@ -840,6 +910,7 @@ const Add = (props) => {
                                                     </table>
                                                 </div>
                                             </fieldset>
+                                            
                                         </div>
                                     </div>
                                     <div className="col-md-12">
