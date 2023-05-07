@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Fragment } from "react";
 import useForm from "react-hook-form";
 import 'react-bootstrap-typeahead/css/Typeahead.css';
+import moment from 'moment';
 
 import { PanelRefreshIcons, SubmitButton } from "../../../common/GlobalButton";
 import { Typeahead } from 'react-bootstrap-typeahead';
@@ -20,6 +21,7 @@ const Add = (props) => {
     const [uploadImage, setUploadImage] = useState();
     const [formData, setFormData] = useState({
         layout_date:  new Date().toLocaleDateString(),
+        layout_date: '',
         layout_time : '',
         cir: '',
         client_email: '',
@@ -617,7 +619,7 @@ const Add = (props) => {
                                                     <label className="col-md-5 text-left col-form-label" style={{whiteSpace: 'nowrap'}}>Date</label>
                                                         <div className="col-md-7">
                                                             <input
-                                                                type="text"
+                                                                type="date"
                                                                 className="form-control"
                                                                 name="layout_date"
                                                                 required
@@ -625,7 +627,8 @@ const Add = (props) => {
                                                                     required: 'On text Field Required'
                                                                 })}
                                                                 onChange={inputChangeHandler}
-                                                                value={formData.layout_date}
+                                                                defaultValue={moment().format("ll")}
+                                                                
                                                             />
                                                         </div>
                                                         <label className="col-md-5 text-left col-form-label" style={{whiteSpace: 'nowrap'}}>On time</label>
