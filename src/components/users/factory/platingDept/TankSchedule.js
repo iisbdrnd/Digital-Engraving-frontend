@@ -21,6 +21,7 @@ export default function TankSchedule(props) {
     const [modal, setModal] = useState(false); 
     const [changeUseEffect, setChangeUseEffect] = useState(0); 
     const [jobData, setJobData] = useState({}); 
+    const [jobOrderObj, setJobOrderObj] = useState([]);
 
     let [cylScheduleFormData, setCylScheduleFormData] = useReducer(
         (state, newState) => ({...state, ...newState}),
@@ -70,6 +71,7 @@ export default function TankSchedule(props) {
     // FOR Typeahead DATA INPUT
     const dropDownChange = (event, stateName) => {
         if(event.length > 0){
+            setJobOrderObj(event);
             const selectedValueId = event[0].id;
             const selectedValueName = event[0].name;
             setDropdownData(
@@ -94,6 +96,7 @@ export default function TankSchedule(props) {
         }
 
     }
+    console.log(dropdownData);
     // FOR CYCLE SCHEDULE DETAILS ARRAY READY
     const addCylSchedulHandler = (event) => {
         let {cylinder_id, job_type, fl, cir, dia, est_plating_order, surface_area} = cylScheduleFormData;
@@ -145,6 +148,8 @@ export default function TankSchedule(props) {
                                 est_plating_order: '',
                                 surface_area     : '',
                             });
+                            //Empty the job order typeahead
+                            setJobOrderObj([]);
                         }
                     });
                 
@@ -213,6 +218,10 @@ export default function TankSchedule(props) {
                                                         placeholder="Select Job No"
                                                         inputProps={{ required: true }}
                                                         onChange={(e) => dropDownChange(e, 'job_order_id')}
+                                                        ref={register({
+                                                            required: 'Job Order Type Field Required'
+                                                          })}
+                                                        selected={jobOrderObj}
                                                     />
                                                 </div>
 
