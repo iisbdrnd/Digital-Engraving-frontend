@@ -262,7 +262,7 @@ export default function StartCycleForm(props) {
                                                             type="text" 
                                                             placeholder="Est Duration"
                                                             autoComplete="off"
-                                                            value={formData.est_cycle_duration}
+                                                            value={(formData.est_cycle_duration/60).toFixed(2)}
                                                             required
                                                             onChange={inputHandler}
                                                             ref={register({
