@@ -34,7 +34,7 @@ export default function StartCycleForm(props) {
             final_plating_order   : '',
             est_end_time          : '',
             actual_end_time       : '',
-            est_cycle_duration    : '2.00',
+            est_cycle_duration    : 0,
             actual_cycle_duration : '',
             remarks               : '',
             shift_id              : '',
@@ -46,7 +46,8 @@ export default function StartCycleForm(props) {
         // ADD,EDIT,DELETE,SHOW ACCESS CHECK
         userGetMethod(`${PLATING_SCHEDULE_START_CYCLE}/${props.platingTankMasterId}`)
             .then(response => {
-                let {cycle_id, shift_operator, plating_date, shift_id, start_time, final_plating_order, est_end_time, actual_end_time, est_cycle_duration, actual_cycle_duration, remarks, shift_type_id, shiftDutyPersons} = response.data.cycleData;
+                let {cycle_id, shift_operator, plating_date, shift_id, start_time, final_plating_order, est_end_time, actual_end_time, actual_cycle_duration, remarks, shift_type_id, shiftDutyPersons} = response.data.cycleData;
+                console.log(response.data.plating_time); 
                 if(start_time != null) {
                     setIsStarted(true)
                 }
@@ -58,7 +59,7 @@ export default function StartCycleForm(props) {
                     final_plating_order  : final_plating_order === null ? '': final_plating_order,
                     est_end_time         : est_end_time === null ? '': est_end_time,
                     actual_end_time      : actual_end_time === null ? '': actual_end_time.replace(" ", "T"),
-                    est_cycle_duration   : est_cycle_duration === null ? '2.00': est_cycle_duration,
+                    est_cycle_duration   : (+response.data.plating_time),
                     actual_cycle_duration: actual_cycle_duration === null ? '': actual_cycle_duration,
                     remarks              : remarks === null ? '' : remarks,
                     shift_type_id        : shift_type_id != null ? shift_type_id : '',
@@ -95,11 +96,17 @@ export default function StartCycleForm(props) {
     // FOR CYLINDER SCHEDULE DETAILS DATA INPUT
     const inputHandler = (event) => {
         if (event.target.name == 'start_time') {
-            let inputTime = new Date(event.target.value );
-            let addTwoHour = new Date(new Date().setHours(inputTime.getHours() + 2)); 
-            let update_est_end_time = formatAm_Pm(addTwoHour);
+            let inputTime = new Date(event.target.value);
+            // let addTwoHour = new Date(new Date().setHours(inputTime.getHours() + 2));
+            let hours = parseInt(formData?.est_cycle_duration /60);
+            let minutes = parseInt(formData?.est_cycle_duration) - (+hours*60);
+            inputTime.setHours((inputTime.getHours() + hours));
+            inputTime.setMinutes((inputTime.getMinutes() + (+minutes)));
+            // addTwoHour = new Date(new Date().setMinutes(inputTime.getMinutes() + 30));  
+            let update_est_end_time = formatAm_Pm(inputTime);
+            
             setFormData({ 
-                est_end_time: update_est_end_time 
+                est_end_time: update_est_end_time
             });
         }else if (event.target.name == 'actual_end_time') {
             let inputTime = new Date(event.target.value);
@@ -170,7 +177,7 @@ export default function StartCycleForm(props) {
 
     return (
         <Modal isOpen={ props.modal && isOpenModalPrev } toggle={props.toggle} size="lg">
-            <ModalHeader toggle={props.toggle}>Start Cycle Form {props.modalTitle} Tank</ModalHeader>
+            <ModalHeader toggle={props.toggle}>Start Cycle Form {props.modalTitle} Tank#test</ModalHeader>
             <ModalBody>
             <div className="container-fluid">
                 <div className="row">

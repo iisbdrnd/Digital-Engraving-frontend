@@ -520,7 +520,6 @@ const Add = (props) => {
                                                                 })}
                                                                 onChange={inputChangeHandler}
                                                                 value={formData.ref_layout_id ? formData.ref_layout_id : ''}
-                                                                disabled
                                                             />
                                                         </div>
                                                     </div>
