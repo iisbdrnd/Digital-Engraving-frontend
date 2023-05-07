@@ -167,7 +167,8 @@ const Add = (props) => {
                     ...formData,
                     history_name: res.data.layoutHistory.job_name,
                     history_remarks: res.data.layoutHistory.remarks,
-                    layout_history_date: res.data.layoutHistory.layout_date
+                    layout_history_date: res.data.layoutHistory.layout_date,
+                    layout_id : formData?.ref_layout_id
                 })
             })
             .catch(err => { console.log(err) })
@@ -521,7 +522,7 @@ const Add = (props) => {
                                                                     required: 'On text Field Required'
                                                                 })}
                                                                 onChange={inputChangeHandler}
-                                                                value={formData.ref_layout_id ? formData.ref_layout_id : ''}
+                                                                value={formData.layout_id ? formData.layout_id : ''}
                                                             />
                                                         </div>
                                                     </div>
