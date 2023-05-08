@@ -164,6 +164,7 @@ export const CHECK_PLATING_CYL_EXIST_OR_NOT = 'api/user/checkPlatingCylExistOrNo
 export const JOB_DATA_FROM_PLATING_DEPT = 'api/user/jobDataFromPlatingDept';
 export const TANK_SCHEDULE_DETAILS = 'api/user/tankScheduleDetails';
 export const PLATING_SCHEDULE_START_CYCLE = 'api/user/platingScheduleStartCycle';
+export const EST_PLATING_ORDER_RSURL = 'api/user/getEstPlatingOrder';
 // ENGRAVING MENU
 // export const ENGRAVING_RSURL = 'api/user/engraving';
 export const JOB_WISE_ENGRAVE_CYLINDERS = 'api/user/getJobWiseEngraveCylinders';

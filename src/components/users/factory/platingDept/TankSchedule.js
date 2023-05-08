@@ -5,7 +5,7 @@ import useForm from "react-hook-form";
 import { Typeahead } from 'react-bootstrap-typeahead';
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 import { toast } from 'react-toastify';
-import { PLATING_DEPT_RSURL, CHECK_PLATING_CYL_EXIST_OR_NOT, JOB_DATA_FROM_PLATING_DEPT } from '../../../../api/userUrl';
+import { PLATING_DEPT_RSURL, CHECK_PLATING_CYL_EXIST_OR_NOT, JOB_DATA_FROM_PLATING_DEPT, EST_PLATING_ORDER_RSURL } from '../../../../api/userUrl';
 import { userGetMethod, userPostMethod } from '../../../../api/userAction';
 import { ValidationAlerts } from '../../../common/GlobalButton';
 import SweetAlert from 'sweetalert2';
@@ -67,6 +67,20 @@ export default function TankSchedule(props) {
         setCylScheduleFormData(
             {[event.target.name] : event.target.value},
         );
+        if(event.target.name == 'cylinder_id') {
+            getPlatingOrder(event.target.value);
+        }
+    }
+    const  getPlatingOrder = async(cylinder_id) => {
+        userGetMethod(`${EST_PLATING_ORDER_RSURL}?cylinder_id=${cylinder_id}`)
+        .then((response) => {
+            setCylScheduleFormData(
+                {'est_plating_order' : response?.data},
+            );
+        })
+        .catch((error) => {
+            console.log(error);
+        })
     }
     // FOR Typeahead DATA INPUT
     const dropDownChange = (event, stateName) => {
@@ -85,12 +99,14 @@ export default function TankSchedule(props) {
                 .then(response => {
                     console.log(response.data.job_cylinder_ids);
                     // console.log("jahid");
-                    let {fl, cir, dia} = response.data.jobData;
+                    let {fl, cir, dia, surface_area,job_type} = response.data.jobData;
                     setCylScheduleFormData({
                         'job_cylinder_ids': response.data.job_cylinder_ids,
                         'fl'              : fl,
                         'cir'             : cir,
-                        'dia'             : dia
+                        'dia'             : dia,
+                        'surface_area'    : surface_area,
+                        'job_type'        : job_type,
                     })
                 });
         }
@@ -239,9 +255,10 @@ export default function TankSchedule(props) {
                                                     <label htmlFor="job_type">Job Type</label>
                                                     <select className="form-control" onChange={inputHandler} id="job_type" name="job_type" value={cylScheduleFormData?.job_type}>
                                                         <option value=''>Select One</option>
-                                                        <option value="1">Per Cylinder</option>
-                                                        <option value="2">Per Sqr cm</option>
-                                                        <option value="3">Per Sqr inch</option>
+                                                        <option value="New">New</option>
+                                                        <option value="Remake">Remake</option>
+                                                        <option value="Redo">Redo</option>
+                                                        <option value="DC/RC">DC/RC</option>
                                                     </select>
                                                 </div>
 
