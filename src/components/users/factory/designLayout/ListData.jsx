@@ -5,7 +5,7 @@ import Pagination from "react-js-pagination";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { userGetMethod, userDeleteMethod } from "../../../../api/userAction";
-import {  DESIGN_LAYOUT_RSURL,GRINDING_RSURL,userHasAccess } from "../../../../api/userUrl";
+import { DESIGN_LAYOUT_RSURL,userHasAccess } from "../../../../api/userUrl";
 import { Link } from "react-router-dom";
 const ListData = (props) =>  {
     const [isLoading, setIsLoading] =useState(false);
@@ -108,9 +108,9 @@ const ListData = (props) =>  {
         setAscDesc(!ascDesc);
         let ascUrl = '';
         if (ascDesc === true) {
-            ascUrl = `${GRINDING_RSURL}?asc=${params}&desc=`;
+            ascUrl = `${ DESIGN_LAYOUT_RSURL}?asc=${params}&desc=`;
         } else {
-            ascUrl = `${GRINDING_RSURL}?asc=&desc=${params}`;
+            ascUrl = `${ DESIGN_LAYOUT_RSURL}?asc=&desc=${params}`;
         }
         
         setIsLoading(true);
@@ -166,9 +166,9 @@ const ListData = (props) =>  {
                                     <label className="mt-3">
                                         <span>
                                             <select className="form-control pagi-select" name="layout_status" onChange={(e) => setJobActiveStatus(e.target.value)} >
-                                            <option value="2">All Grinding</option>
-                                                    <option value="0">Pending Grinding</option>
-                                                    <option value="1">Done Grinding</option>
+                                            <option value="2">All Layout</option>
+                                                    <option value="0">Pending Layout</option>
+                                                    <option value="1">Done Layout</option>
                                             </select>
                                         </span>
                                     </label>

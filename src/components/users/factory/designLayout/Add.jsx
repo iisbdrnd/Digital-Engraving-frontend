@@ -966,7 +966,7 @@ const Add = (props) => {
                                                                 typeColorOptions.map((item,index) => {
                                                                     return (
                                                                         <tr>
-                                                                            <td><input className="form-control" type="text" value={item.id + 1} /></td>
+                                                                            <td><input className="form-control" type="text" value={item.id + 1}  name="er_id" id="er_id" onChange={(e) => engOrderHandler(e, index)}/></td>
                                                                             <td><input className="form-control" type="text" value={item.name} name="er_color_id" id="er_color_id" onChange={(e) => engOrderHandler(e, index)}/></td>
                                                                             <td><input className="form-control" type="text"  name="er_desired_screen" id="er_desired_screen" onChange={(e) =>engOrderHandler(e, index)} /></td>
                                                                             <td><input className="form-control" type="text"  name="er_desired_angle" id="er_desired_angle" onChange={(e) =>engOrderHandler(e, index)} /></td>

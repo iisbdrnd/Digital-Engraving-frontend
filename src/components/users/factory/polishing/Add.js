@@ -6,6 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import useForm from "react-hook-form";
 import { SubmitButton } from '../../../common/GlobalButton';
 import { Typeahead } from 'react-bootstrap-typeahead';
+import moment from 'moment';
 
 const Add = (props) => {
     const { handleSubmit, register, errors ,reset} = useForm();
@@ -192,14 +193,33 @@ const Add = (props) => {
     }
 
     const inputChangeHandler = (e)=>{
-        console.log(e.target.value,e.target.checked);
+        var inputDate;
+        if(e.target.name == 'on_time'){
+            inputDate = moment(e.target.value,"HH:mm").format("HH:mm:ss");
+        }
+        if(e.target.name == 'est_duration'){
+            let est_inputDate = moment(e.target.value,"HH:mm").format("HH:mm:ss");
+            // var t1 = moment(inputDate, 'HH:mm:ss');
+            // var t2 = moment(est_inputDate, 'HH:mm:ss');
+            // var parsed_t2 = String(t2).split(':');
+
+            // var r = t1.add(t2);
+            // console.log(r);
+        }
         if(e.target.type == 'checkbox'){
             e.target.checked == true ? setStateData({[e.target.name] : 1}) : setStateData({[e.target.name] : 0})
         }else{
             setStateData({[e.target.name]: e.target.value});
         }
     }
-    console.log(stateData);
+    
+    // useEffect(() => {
+    //     if(stateData?.on_time != '' && stateData?.est_duration != '' ){
+    //        let inputTime = new Date(stateData?.on_time );
+    //        console.log(inputTime.getHours());
+    //     }
+
+    // },[stateData?.on_time,stateData?.est_duration]);
 
     const submitHandler = (data,e) => {
         data.job_no = stateData.jobOrderDetailsData.job_no;
