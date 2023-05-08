@@ -193,19 +193,6 @@ const Add = (props) => {
     }
 
     const inputChangeHandler = (e)=>{
-        var inputDate;
-        if(e.target.name == 'on_time'){
-            inputDate = moment(e.target.value,"HH:mm").format("HH:mm:ss");
-        }
-        if(e.target.name == 'est_duration'){
-            let est_inputDate = moment(e.target.value,"HH:mm").format("HH:mm:ss");
-            // var t1 = moment(inputDate, 'HH:mm:ss');
-            // var t2 = moment(est_inputDate, 'HH:mm:ss');
-            // var parsed_t2 = String(t2).split(':');
-
-            // var r = t1.add(t2);
-            // console.log(r);
-        }
         if(e.target.type == 'checkbox'){
             e.target.checked == true ? setStateData({[e.target.name] : 1}) : setStateData({[e.target.name] : 0})
         }else{
@@ -213,13 +200,22 @@ const Add = (props) => {
         }
     }
     
-    // useEffect(() => {
-    //     if(stateData?.on_time != '' && stateData?.est_duration != '' ){
-    //        let inputTime = new Date(stateData?.on_time );
-    //        console.log(inputTime.getHours());
-    //     }
+    useEffect(() => {
+        if(stateData?.on_time != '' && stateData?.est_duration != '' ){
+            let inputDate = moment(stateData?.on_time,"HH:mm").format("HH:mm:ss");
+            var t1 =new Date (moment(inputDate, 'HH:mm:ss').toString());
+            let est_inputDate = moment(stateData?.est_duration,"HH:mm").format("HH:mm:ss");
+           
+            var t2 =new Date (moment(est_inputDate, 'HH:mm:ss').toString());
 
-    // },[stateData?.on_time,stateData?.est_duration]);
+            t1.setHours((t1.getHours() + t2.getHours()));
+            t1.setMinutes((t1.getMinutes() + (t2.getMinutes())));
+
+            // console.log(moment(t1).format("HH:mm:ss"));
+            setStateData({"est_end_time": moment(t1).format("HH:mm:ss")})
+        }
+
+    },[stateData?.on_time,stateData?.est_duration]);
 
     const submitHandler = (data,e) => {
         data.job_no = stateData.jobOrderDetailsData.job_no;

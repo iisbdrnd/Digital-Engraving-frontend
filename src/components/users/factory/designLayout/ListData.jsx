@@ -165,7 +165,7 @@ const ListData = (props) =>  {
                                 <div className="custom-table-pagination m-r-10">
                                     <label className="mt-3">
                                         <span>
-                                            <select className="form-control pagi-select" name="layout_status" onChange={(e) => setJobActiveStatus(e.target.value)} >
+                                            <select className="form-control pagi-select" name="layout_status" onChange={(e) => setJobActiveStatus(e.target.value)} value={jobActiveStatus} >
                                             <option value="2">All Layout</option>
                                                     <option value="0">Pending Layout</option>
                                                     <option value="1">Done Layout</option>
