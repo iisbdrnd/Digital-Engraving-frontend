@@ -6,6 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import useForm from "react-hook-form";
 import { SubmitButton } from '../../../common/GlobalButton';
 import { Typeahead } from 'react-bootstrap-typeahead';
+import moment from 'moment';
 
 const Edit = (props) => {
     const { handleSubmit, register, errors, reset } = useForm();
@@ -112,6 +113,23 @@ const Edit = (props) => {
     const onChangeHandler = (event) => {
         setStateData({[event.target.name]: event.target.value});
     }
+
+    useEffect(() => {
+        if(stateData?.on_time != '' && stateData?.est_duration != '' ){
+            let inputDate = moment(stateData?.on_time,"HH:mm").format("HH:mm:ss");
+            var t1 =new Date (moment(inputDate, 'HH:mm:ss').toString());
+            let est_inputDate = moment(stateData?.est_duration,"HH:mm").format("HH:mm:ss");
+           
+            var t2 =new Date (moment(est_inputDate, 'HH:mm:ss').toString());
+
+            t1.setHours((t1.getHours() + t2.getHours()));
+            t1.setMinutes((t1.getMinutes() + (t2.getMinutes())));
+
+            // console.log(moment(t1).format("HH:mm:ss"));
+            setStateData({"est_end_time": moment(t1).format("HH:mm:ss")})
+        }
+
+    },[stateData?.on_time,stateData?.est_duration]);
 
     const dropDownChange = (e, fieldName) => {
         if(e.length > 0){
