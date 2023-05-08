@@ -214,8 +214,21 @@ const Add = (props) => {
             // console.log(moment(t1).format("HH:mm:ss"));
             setStateData({"est_end_time": moment(t1).format("HH:mm:ss")})
         }
+        if(stateData?.on_time != '' && stateData?.a_off_time != ''){
+            let inputDate = moment(stateData?.on_time, "HH:mm").format("HH:mm:ss");
+            let endDate = moment(stateData?.a_off_time, "HH:mm").format("HH:mm:ss");
 
-    },[stateData?.on_time,stateData?.est_duration]);
+            var ts = new Date(moment(inputDate, "HH:mm:ss").toString());
+            var te = new Date(moment(endDate, "HH:mm:ss").toString());
+
+            te.setHours((te.getHours() - ts.getHours()));
+            te.setMinutes((te.getMinutes() - (ts.getMinutes())));
+            console.log(moment(te).format("HH:mm:ss"));
+            setStateData({'a_duration': moment(te).format("HH:mm:ss")})
+
+        }
+
+    },[stateData?.on_time,stateData?.est_duration,stateData?.a_off_time]);
 
     const submitHandler = (data,e) => {
         data.job_no = stateData.jobOrderDetailsData.job_no;
@@ -410,7 +423,7 @@ const Add = (props) => {
                                                     
                                                     <label className="col-md-5 col-form-label label-form">Est, Duration</label>
                                                     <div className="col-md-7">
-                                                        <input type="text" className="form-control" name="est_duration" required onChange={inputChangeHandler} ref={register({ required: true })} value={stateData.est_duration ? stateData.est_duration : ''}/>
+                                                        <input type="text" className="form-control" name="est_duration" placeholder='HH:MM' required onChange={inputChangeHandler} ref={register({ required: true })} value={stateData.est_duration ? stateData.est_duration : ''}/>
                                                     </div>
                                                 
                                                     <label className="col-md-5 col-form-label label-form">Est, End Time</label>
