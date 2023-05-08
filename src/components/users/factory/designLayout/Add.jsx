@@ -497,9 +497,7 @@ const Add = (props) => {
                                                             <select type="text"
                                                                 className="form-control"
                                                                 name="ref_layout_id"
-                                                                ref={register({
-                                                                    required: 'On text Field Required'
-                                                                })}
+    
                                                                 onChange={inputChangeHandler}
                                                                 value={formData.ref_layout_id ? formData.ref_layout_id : ''}
                                                             >

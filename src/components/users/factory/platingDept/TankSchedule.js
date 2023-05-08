@@ -253,7 +253,7 @@ export default function TankSchedule(props) {
 
                                                 <div className="col-md-2 mb-3">
                                                     <label htmlFor="job_type">Job Type</label>
-                                                    <select className="form-control" onChange={inputHandler} id="job_type" name="job_type" value={cylScheduleFormData?.job_type}>
+                                                    <select className="form-control" onChange={inputHandler} id="job_type" name="job_type" value={cylScheduleFormData?.job_type} disabled>
                                                         <option value=''>Select One</option>
                                                         <option value="New">New</option>
                                                         <option value="Remake">Remake</option>
@@ -318,6 +318,7 @@ export default function TankSchedule(props) {
                                                         type="number" 
                                                         placeholder="" 
                                                         onChange={inputHandler}
+                                                        disabled
                                                     />
                                                 </div>
 
@@ -332,6 +333,7 @@ export default function TankSchedule(props) {
                                                         type="number" 
                                                         placeholder="" 
                                                         onChange={inputHandler}
+                                                        disabled
                                                     />
                                                 </div>
 
