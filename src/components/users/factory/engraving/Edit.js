@@ -113,7 +113,7 @@ const Edit = (props) => {
             stateData?.job_no != ""
         ) {
             userGetMethod(
-                `${DESIGN_LAYOUT_DETAILS}?layout_id=${stateData?.layout_id}&color_id=${stateData?.color}&job_id=${stateData?.job_no}`
+                `${DESIGN_LAYOUT_DETAILS}?layout_id=${stateData?.layout_id}&color_id=${stateData?.color}&job_id=${stateData?.job_order_pk_id}`
             )
                 .then((response) => {
                     console.log(response?.data);

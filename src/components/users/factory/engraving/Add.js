@@ -115,7 +115,7 @@ const Add = (props) => {
             console.log(error);
            })
         }
-    },[stateData?.color,stateData?.layout_id,dropDownData?.job_order_pk_id])
+    },[stateData?.color,stateData?.jobOrderDetails?.job_no,dropDownData?.job_order_pk_id])
    
     const dropDownChange = (e, fieldName) => {
         console.log('e', e);
