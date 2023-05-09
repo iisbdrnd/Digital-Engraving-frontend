@@ -6,6 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import useForm from "react-hook-form";
 import { SubmitButton } from '../../../common/GlobalButton';
 import { Typeahead } from 'react-bootstrap-typeahead';
+import moment from 'moment';
 
 const Add = (props) => {
     const { handleSubmit, register, errors, reset} = useForm();
@@ -69,7 +70,33 @@ const Add = (props) => {
         setStateData({...stateData,[event.target.name] : event.target.value});
        
     }
-    // console.log(stateData,dropDownData?.job_order_pk_id);
+
+    if(stateData?.on_time && stateData?.est_duration){
+        let inputDate = moment(stateData?.on_time,"HH:mm").format("HH:mm:ss");
+            var t1 =new Date (moment(inputDate, 'HH:mm:ss').toString());
+            let est_inputDate = moment(stateData?.est_duration,"HH:mm").format("HH:mm:ss");
+           
+            var t2 =new Date (moment(est_inputDate, 'HH:mm:ss').toString());
+
+            t1.setHours((t1.getHours() + t2.getHours()));
+            t1.setMinutes((t1.getMinutes() + (t2.getMinutes())));
+
+            stateData.est_end_time =  moment(t1).format("HH:mm:ss");
+    }
+    if(stateData?.on_time && stateData?.a_off_time){
+        let inputDate = moment(stateData?.on_time, "HH:mm").format("HH:mm:ss");
+        let endDate = moment(stateData?.a_off_time, "HH:mm").format("HH:mm:ss");
+
+        var ts = new Date(moment(inputDate, "HH:mm:ss").toString());
+        var te = new Date(moment(endDate, "HH:mm:ss").toString());
+
+        te.setHours((te.getHours() - ts.getHours()));
+        te.setMinutes((te.getMinutes() - (ts.getMinutes())));
+        // console.log(moment(te).format("HH:mm:ss"));
+        // setStateData({'a_duration': moment(te).format("HH:mm:ss")})
+        stateData.a_duration = moment(te).format("HH:mm:ss");
+    }
+    
 
     useEffect(() =>{
         if(stateData?.color != '' && stateData?.layout_id != '' && dropDownData?.job_order_pk_id != ''){
@@ -117,21 +144,21 @@ const Add = (props) => {
 
     const submitHandler = (data ,e) => {
         console.log('dropDownData', dropDownData,data);
-        // data.job_order_pk_id = dropDownData.job_order_pk_id;
-        // userPutMethod(`${ENGRAVING_RS_URL}/${stateData.cylinder_id}`, data)
-        //     .then(response => {
-        //         if (response.data.status == 1) {
-        //             toast.success(response.data.message)
-        //             e.target.reset();
-        //             setStateData({
-        //                 jobOrderDetails: [],
-        //                 engraves: [],
-        //             })
-        //         } else {
-        //             toast.error(response.data.message)
-        //         }
-        //     })
-        // .catch(error => toast.error(error))
+        data.job_order_pk_id = dropDownData.job_order_pk_id;
+        userPutMethod(`${ENGRAVING_RS_URL}/${stateData.cylinder_id}`, data)
+            .then(response => {
+                if (response.data.status == 1) {
+                    toast.success(response.data.message)
+                    e.target.reset();
+                    setStateData({
+                        jobOrderDetails: [],
+                        engraves: [],
+                    })
+                } else {
+                    toast.error(response.data.message)
+                }
+            })
+        .catch(error => toast.error(error))
     }
 
     var menuId = 0;
@@ -275,7 +302,7 @@ const Add = (props) => {
                                                         <legend className="w-auto text-left">Engraving</legend>
 
                                                         <div className="form-row">
-                                                            <div className="col-md-6 row">
+                                                            <div className="col-md-6 form-row">
                                                                 <label className="col-md-5 col-form-label label-form">Des. Machine</label>
                                                                 <div className="col-md-7">
                                                                     <select className="form-control" name="des_machine" defaultValue={stateData.des_machine}  ref={register({})} >
@@ -295,7 +322,7 @@ const Add = (props) => {
 
                                                                 <label className="col-md-5 col-form-label label-form">Est, Duration</label>
                                                                 <div className="col-md-7">
-                                                                    <input type="text" placeholder='hh:mm' className="form-control" name="est_duration"  ref={register({})} />
+                                                                    <input type="text" placeholder='hh:mm' className="form-control" name="est_duration" onChange={handleChange} ref={register({})} />
                                                                 </div>
                                                                 {/* <label className="col-form-label label-form pull-right">hh:mm</label> */}
 
@@ -319,7 +346,7 @@ const Add = (props) => {
                                                                 </div>
                                                             </div>
 
-                                                            <div className="col-md-6 row">
+                                                            <div className="col-md-6 form-row">
                                                                 <label className="col-md-5 col-form-label label-form">A. Machine</label>
                                                                 <div className="col-md-7">
                                                                     <select className="form-control" name="a_machine"  ref={register({})}>
@@ -334,12 +361,12 @@ const Add = (props) => {
 
                                                                 <label className="col-md-5 col-form-label label-form">On Time</label>
                                                                 <div className="col-md-7">
-                                                                    <input type="time" className="form-control" name="on_time"  ref={register({})} />
+                                                                    <input type="time" className="form-control" name="on_time" onChange={handleChange} ref={register({})} />
                                                                 </div>
 
                                                                 <label className="col-md-5 col-form-label label-form">Est, End Time</label>
                                                                 <div className="col-md-7">
-                                                                    <input type="time" className="form-control" name="est_end_time"  ref={register({})} />
+                                                                    <input type="time" className="form-control" name="est_end_time" value={stateData?.est_end_time} ref={register({})} />
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -352,22 +379,36 @@ const Add = (props) => {
                                                             <div className="col-md-6 form-row">
                                                                 <label className="col-md-5 col-form-label label-form">A. off Time</label>
                                                                 <div className="col-md-7">
-                                                                    <input type="time" className="form-control" name="a_off_time"  ref={register({})} />
+                                                                    <input type="time" className="form-control" name="a_off_time" onChange={handleChange}  ref={register({})} />
                                                                 </div>
 
                                                                 <label className="col-md-5 col-form-label label-form">Output Status</label>
                                                                 <div className="col-md-7">
-                                                                    <select className="form-control" name='output_status'  ref={register({})}>
+                                                                    <select className="form-control" onChange={handleChange} name='output_status'  ref={register({})}>
                                                                         <option>select one</option>
                                                                         <option value="1">Ok</option>
                                                                         <option value="0">Not Ok</option>
                                                                     </select>
                                                                 </div>
+                                                            {
+                                                                stateData?.output_status == "0" ? (<>
+                                                                    <label className="col-md-5 col-form-label label-form">Comment</label>
+                                                                    <div className="col-md-7">
+                                                                        <input type="text" className="form-control" name="comment" onChange={handleChange}  ref={register({})} />
+                                                                    </div>
+                                                                </>) : ""
+                                                            }
 
-                                                                <label className="col-md-6 col-form-label label-form">Stylus Broken </label>
-                                                                <div className="col-md-6">
-                                                                    <input type="checkbox" className="mt-2" name='stylus_broken'  ref={register({})} />
-                                                                </div>
+                                                            <label className="col-md-5 col-form-label label-form">Stylus Condition </label>
+                                                            <div className="col-md-7">
+                                                                {/* <input type="checkbox" className="mt-2" name='stylus_broken'  ref={register({})} /> */}
+                                                                <select className="form-control" onChange={handleChange} name='stylus_condition' ref={register({})}>
+                                                                    <option>select one</option>
+                                                                    <option value="A">A</option>
+                                                                    <option value="B">B</option>
+                                                                    <option value="C">C</option>
+                                                                </select>
+                                                            </div>
 
                                                             </div>
                                                             <div className="col-md-6 form-row">
@@ -378,13 +419,18 @@ const Add = (props) => {
 
                                                                 <label className="col-md-5 col-form-label label-form">A. Duration</label>
                                                                 <div className="col-md-7">
-                                                                    <input type="text" placeholder='hh:mm' className="form-control" name="a_duration"  ref={register({})} />
+                                                                    <input type="text" placeholder='hh:mm' className="form-control" name="a_duration" value={stateData?.a_duration}  ref={register({})} />
                                                                 </div>
 
                                                                 <label className="col-md-5 col-form-label label-form">Remarks</label>
                                                                 <div className="col-md-7">
                                                                     {/* <input type="text" className="form-control" name="cyls1" /> */}
-                                                                    <textarea className="form-control" rows="3" name="remarks"  ref={register({})} ></textarea>
+                                                                    {/* <textarea className="form-control" rows="3" name="remarks"  ref={register({})} ></textarea> */}
+                                                                    <select className="form-control" onChange={handleChange} name='remarks'  ref={register({})}>
+                                                                        <option>select one</option>
+                                                                        <option value="stylus_broken">Stylas Broken</option>
+                                                                        <option value="machine_hang">Machine Hang</option>
+                                                                    </select>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -439,6 +485,9 @@ const Add = (props) => {
                                                 </div>
                                             </div>
                                         </pre>
+                                        <div>
+                                            <img style={{width: '100%', height: '100%'}} src="https://www.bravensinc.com/wp-content/uploads/2019/04/erp-software-770x450-300x175.jpeg" />
+                                        </div>
                                     </div>
                                     <SubmitButton link="engraving/index" menuId={ menuId } />
                                 </form>
