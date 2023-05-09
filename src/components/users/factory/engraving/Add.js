@@ -100,7 +100,7 @@ const Add = (props) => {
 
     useEffect(() =>{
         if(stateData?.color != '' && stateData?.layout_id != '' && dropDownData?.job_order_pk_id != ''){
-           userGetMethod(`${DESIGN_LAYOUT_DETAILS}?layout_id=${1234}&color_id=${1}&job_id=${14}`)
+           userGetMethod(`${DESIGN_LAYOUT_DETAILS}?layout_id=${stateData?.layout_id}&color_id=${stateData?.color}&job_id=${dropDownData?.job_order_pk_id}`)
            .then((response) =>{
             console.log(response?.data);
             setStateData({...stateData,
@@ -115,7 +115,7 @@ const Add = (props) => {
             console.log(error);
            })
         }
-    },[stateData?.color,stateData?.jobOrderDetails?.job_no,dropDownData?.job_order_pk_id])
+    },[stateData?.color,stateData?.layout_id,dropDownData?.job_order_pk_id])
    
     const dropDownChange = (e, fieldName) => {
         console.log('e', e);
