@@ -223,8 +223,7 @@ const Add = (props) => {
                                                 </div>
                                             </div>
                                         </fieldset>
-
-                                      
+                                    
                                             {/* <div className="col-md-6"> */}
                                                 <fieldset className="border p-2">
                                                     <legend className="w-auto text-left">Layout</legend>
@@ -295,9 +294,6 @@ const Add = (props) => {
                                             {/* <div className="col-md-6">
                                             
                                             </div> */}
-                                        
-
-                                               
                                                     <fieldset className="border p-2" >
                                                         <legend className="w-auto text-left">Engraving</legend>
 
@@ -435,9 +431,6 @@ const Add = (props) => {
                                                             </div>
                                                         </div>
                                                     </fieldset>
-
-                                               
-
                                     </div>
                                     <div className="col-md-3">
                                         <pre className="helper-classes m-t-10">
@@ -486,7 +479,7 @@ const Add = (props) => {
                                             </div>
                                         </pre>
                                         <div>
-                                            <img style={{width: '100%', height: '100%'}} src="https://www.bravensinc.com/wp-content/uploads/2019/04/erp-software-770x450-300x175.jpeg" />
+                                            <img style={{width: '100%', height: '100%'}} src="https://img.wallscloud.net/uploads/thumb/114182468/chelsea-football-club-soccer-7DYA-1024x576-MM-80.webp" />
                                         </div>
                                     </div>
                                     <SubmitButton link="engraving/index" menuId={ menuId } />
