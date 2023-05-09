@@ -291,6 +291,7 @@ const Add = (props) => {
                 e.target.reset();
             })
     }
+    
     const clearForm = () => {
         console.log('clear');
         setSelectedJobOrder([]);
