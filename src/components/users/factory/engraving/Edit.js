@@ -126,6 +126,7 @@ const Edit = (props) => {
                     "des_machine": response?.data?.layoutDetails[0]?.er_engraving_machine,
                     "start_point": response?.data?.layoutMaster?.axl_start_point,
                     "image_area": response?.data?.layoutMaster?.axl_image_area,
+                    "remarks": response?.data?.layoutMaster?.remarks
                 })
             })
             .catch((error) => {
@@ -386,6 +387,7 @@ const Edit = (props) => {
                                                                         className="form-control"
                                                                         name="screen"
                                                                         ref={register({})}
+                                                                        defaultValue={stateData?.screen}
                                                                     />
                                                                 </div>
 
@@ -397,6 +399,7 @@ const Edit = (props) => {
                                                                         type="text"
                                                                         className="form-control"
                                                                         name="start_point"
+                                                                        defaultValue={stateData?.start_point}
                                                                         ref={register({})}
                                                                     />
                                                                 </div>
@@ -431,6 +434,7 @@ const Edit = (props) => {
                                                                         type="text"
                                                                         className="form-control"
                                                                         name="angle"
+                                                                        defaultValue={stateData?.angle}
                                                                         ref={register({})}
                                                                     />
                                                                 </div>
@@ -443,6 +447,7 @@ const Edit = (props) => {
                                                                         type="text"
                                                                         className="form-control"
                                                                         name="image_area"
+                                                                        defaultValue={stateData?.image_area}
                                                                         ref={register({})}
                                                                     />
                                                                 </div>
@@ -456,6 +461,7 @@ const Edit = (props) => {
                                                                     className="form-control"
                                                                     rows="3"
                                                                     name="remarks"
+                                                                    defaultValue={stateData?.remarks}
                                                                     ref={register({})}
                                                                 ></textarea>
                                                             </div>
@@ -482,11 +488,11 @@ const Edit = (props) => {
                                                                         className="form-control"
                                                                         name="des_machine"
                                                                         ref={register({})}
-                                                                        value={
-                                                                            stateData.des_machine
-                                                                                ? stateData.des_machine
-                                                                                : ""
-                                                                        }
+                                                                        defaultValue={
+                                                                                stateData.des_machine ?
+                                                                                    stateData.des_machine :
+                                                                                    ""
+                                                                            }
                                                                         onChange={onChangeHandler}
                                                                     >
                                                                         <option>select one</option>

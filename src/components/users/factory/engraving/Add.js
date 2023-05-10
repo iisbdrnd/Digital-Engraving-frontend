@@ -110,6 +110,7 @@ const Add = (props) => {
                     "des_machine": response?.data?.layoutDetails[0]?.er_engraving_machine,
                     "start_point": response?.data?.layoutMaster?.axl_start_point,
                     "image_area": response?.data?.layoutMaster?.axl_image_area,
+                    "remarks": response?.data?.layoutMaster?.remarks
                 })
             })
             .catch((error) => {
