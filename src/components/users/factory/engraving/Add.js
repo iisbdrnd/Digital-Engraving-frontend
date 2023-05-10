@@ -29,6 +29,8 @@ const Add = (props) => {
             available_cylinders: [],
             polishMachines     : [],
             engraves           : [],
+            layout_id          : '',
+            color              : ''
         }
     );
 
@@ -97,25 +99,30 @@ const Add = (props) => {
         stateData.a_duration = moment(te).format("HH:mm:ss");
     }
     
-
-    useEffect(() =>{
-        if(stateData?.color != '' && stateData?.layout_id != '' && dropDownData?.job_order_pk_id != ''){
-           userGetMethod(`${DESIGN_LAYOUT_DETAILS}?layout_id=${stateData?.layout_id}&color_id=${stateData?.color}&job_id=${dropDownData?.job_order_pk_id}`)
-           .then((response) =>{
-            console.log(response?.data);
-            setStateData({...stateData,
-                "angle" : response?.data?.layoutDetails[0]?.er_desired_angle,
-                "screen": response?.data?.layoutDetails[0]?.er_desired_screen,
-                "des_machine" : response?.data?.layoutDetails[0]?.er_engraving_machine,
-                "start_point" : response?.data?.layoutMaster?.axl_start_point,
-                "image_area" :  response?.data?.layoutMaster?.axl_image_area,
+    const getLayoutDetails = async() => {
+        await userGetMethod(`${DESIGN_LAYOUT_DETAILS}?layout_id=${stateData?.layout_id}&color_id=${stateData?.color}&job_id=${dropDownData?.job_order_pk_id}`)
+            .then((response) => {
+                console.log(response?.data);
+                setStateData({
+                    ...stateData,
+                    "angle": response?.data?.layoutDetails[0]?.er_desired_angle,
+                    "screen": response?.data?.layoutDetails[0]?.er_desired_screen,
+                    "des_machine": response?.data?.layoutDetails[0]?.er_engraving_machine,
+                    "start_point": response?.data?.layoutMaster?.axl_start_point,
+                    "image_area": response?.data?.layoutMaster?.axl_image_area,
+                })
             })
-           })
-           .catch((error) => {
-            console.log(error);
-           })
+            .catch((error) => {
+                console.log(error);
+            })
+    }
+   
+    useEffect(() => {
+        if (stateData?.color !== '' && stateData?.layout_id !== '' && dropDownData?.job_order_pk_id) {
+            getLayoutDetails();
         }
-    },[stateData?.color,stateData?.jobOrderDetails?.job_no,dropDownData?.job_order_pk_id])
+       
+    }, [stateData?.color, stateData?.layout_id, dropDownData?.job_order_pk_id])
    
     const dropDownChange = (e, fieldName) => {
         console.log('e', e);

@@ -52,6 +52,9 @@ const Edit = (props) => {
             platingData: [],
             available_cylinders: [],
             polishMachines: [],
+            layout_id          : '',
+            color              : '',
+
         }
     );
     let digEngravingCylinderId = props.match.params.dig_engravings_cylinder_id
@@ -107,30 +110,28 @@ const Edit = (props) => {
     };
 
     useEffect(() => {
-        if (
-            stateData?.color != "" &&
-            stateData?.layout_id != "" &&
-            stateData?.job_no != ""
-        ) {
-            userGetMethod(
-                `${DESIGN_LAYOUT_DETAILS}?layout_id=${stateData?.layout_id}&color_id=${stateData?.color}&job_id=${stateData?.job_order_pk_id}`
-            )
-                .then((response) => {
-                    console.log(response?.data);
-                    setStateData({
-                        ...stateData,
-                        angle: response?.data?.layoutDetails[0]?.er_desired_angle,
-                        screen: response?.data?.layoutDetails[0]?.er_desired_screen,
-                        des_machine: response?.data?.layoutDetails[0]?.er_engraving_machine,
-                        start_point: response?.data?.layoutMaster?.axl_start_point,
-                        image_area: response?.data?.layoutMaster?.axl_image_area,
-                    });
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
+        if (stateData?.color !== '' && stateData?.layout_id !== '' && stateData?.job_order_pk_id) {
+            getLayoutDetails();
         }
     }, [stateData?.color, stateData?.layout_id, stateData?.job_no]);
+
+    const getLayoutDetails = async() => {
+        await userGetMethod(`${DESIGN_LAYOUT_DETAILS}?layout_id=${stateData?.layout_id}&color_id=${stateData?.color}&job_id=${stateData?.job_order_pk_id}`)
+            .then((response) => {
+                console.log(response?.data);
+                setStateData({
+                    ...stateData,
+                    "angle": response?.data?.layoutDetails[0]?.er_desired_angle,
+                    "screen": response?.data?.layoutDetails[0]?.er_desired_screen,
+                    "des_machine": response?.data?.layoutDetails[0]?.er_engraving_machine,
+                    "start_point": response?.data?.layoutMaster?.axl_start_point,
+                    "image_area": response?.data?.layoutMaster?.axl_image_area,
+                })
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+    }
 
     const dropDownChange = (e, fieldName) => {
         if (e.length > 0) {
