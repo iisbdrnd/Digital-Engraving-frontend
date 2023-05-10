@@ -31,7 +31,7 @@ export default function TankSchedule(props) {
             fl                    : '',
             cir                   : '',
             dia                   : '',
-            est_plating_order: '',
+            est_plating_order     : '',
             surface_area          : '',
         }
     );
