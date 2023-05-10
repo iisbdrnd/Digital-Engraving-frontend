@@ -294,7 +294,7 @@ const Add = (props) => {
 
                                                         <label className="col-md-3 col-form-label label-form">Remarks</label>
                                                         <div className="col-md-8">
-                                                            <textarea className="form-control" rows="3" name='remarks'  ref={register({})} ></textarea>
+                                                            <textarea className="form-control" rows="3" name='remarks' defaultValue={stateData?.remarks}  ref={register({})} ></textarea>
                                                         </div>
                                                     </div>
                                                 </fieldset>
@@ -432,7 +432,7 @@ const Add = (props) => {
                                                                     {/* <textarea className="form-control" rows="3" name="remarks"  ref={register({})} ></textarea> */}
                                                                     <select className="form-control" onChange={handleChange} name='remarks'  ref={register({})}>
                                                                         <option>select one</option>
-                                                                        <option value="stylus_broken">Stylas Broken</option>
+                                                                        <option value="stylus_broken">Stylus Broken</option>
                                                                         <option value="machine_hang">Machine Hang</option>
                                                                     </select>
                                                                 </div>

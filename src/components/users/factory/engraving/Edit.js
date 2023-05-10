@@ -796,7 +796,7 @@ const Edit = (props) => {
                                                                     >
                                                                         <option>select one</option>
                                                                         <option value="stylus_broken">
-                                                                            Stylas Broken
+                                                                            Stylus Broken
                                                                         </option>
                                                                         <option value="machine_hang">
                                                                             Machine Hang
