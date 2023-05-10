@@ -184,6 +184,7 @@ export default function TankSchedule(props) {
     const submitHandler = (data, e) => {
         data.cylScheduleArr = cylScheduleDetails;
         data.tank_id = props.modalTitle;
+        data.tankId = props.tankId;
         data.job_order_id = dropdownData.job_order_id;
         if (data.cylScheduleArr.length > 0) {
             userPostMethod(CHROME_RS_URL, data)
