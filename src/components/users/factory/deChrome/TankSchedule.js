@@ -30,7 +30,7 @@ export default function TankSchedule(props) {
             fl                    : '',
             cir                   : '',
             dia                   : '',
-            est_plating_order: '',
+            est_plating_order     : '',
             surface_area          : '',
         }
     );
@@ -246,7 +246,7 @@ export default function TankSchedule(props) {
 
                                                 <div className="col-md-1 mb-3">
                                                     <label htmlFor="job_type">Job Type</label>
-                                                    <select className="form-control" onChange={inputHandler} value={cylScheduleFormData.job_type} id="job_type" name="job_type">
+                                                    <select className="form-control" onChange={inputHandler} value={cylScheduleFormData.job_type} id="job_type" name="job_type" disabled>
                                                         <option value=''>Select One</option>
                                                         <option value="New">New</option>
                                                         <option value="Remake">Remake</option>
@@ -301,6 +301,7 @@ export default function TankSchedule(props) {
                                                     <label htmlFor="est_plating_order">Est Plt. Order</label>
                                                     <input 
                                                         className="form-control" 
+                                                        disabled
                                                         id="est_plating_order" 
                                                         name="est_plating_order"
                                                         value={cylScheduleFormData.est_plating_order} 
@@ -314,6 +315,7 @@ export default function TankSchedule(props) {
                                                     <label htmlFor="surface_area">Surface Area</label>
                                                     <input 
                                                         className="form-control" 
+                                                        disabled
                                                         id="surface_area" 
                                                         name="surface_area"
                                                         value={cylScheduleFormData.surface_area} 

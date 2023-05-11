@@ -38,6 +38,7 @@ export default function StartCycleForm(props) {
             remarks              : '',
             shift_id             : '',
             shift_type_id        : '',
+            plating_time         : '', 
         }
     );
         
@@ -60,6 +61,7 @@ export default function StartCycleForm(props) {
                     remarks              : remarks === null ? '' : remarks,
                     shift_type_id        : shift_type_id != null ? shift_type_id : '',
                     shift_id             : shift_id != null ? shift_id : '',
+                    plating_time         : response?.data?.plating_time,
                 });
                 console.log(response.data.formData);
                 // FOR DUTY PERSON START
@@ -92,8 +94,12 @@ export default function StartCycleForm(props) {
     const inputHandler = (event) => {
         if (event.target.name == 'start_time') {
             let inputTime = new Date(event.target.value );
-            let addTwoHour = new Date(new Date().setHours(inputTime.getHours() + 2)); 
-            let update_est_end_time = formatAm_Pm(addTwoHour);
+            var hours = parseInt(parseInt(formData?.plating_time)/60);
+            var minutes = formData?.plating_time - (hours * 60);
+            inputTime.setHours(inputTime.getHours() + hours);
+            inputTime.setMinutes(inputTime.getMinutes() + minutes);
+            // let addTwoHour = new Date(new Date().setHours(inputTime.getHours() + 2)); 
+            let update_est_end_time = formatAm_Pm(inputTime);
             setFormData({ 
                 est_end_time: update_est_end_time 
             });
@@ -168,7 +174,7 @@ export default function StartCycleForm(props) {
 
     return (
         <Modal isOpen={ props.modal && isOpenModalPrev } toggle={props.toggle} size="lg">
-            <ModalHeader toggle={props.toggle}>Start Cycle Forms {props.modalTitle} Tank</ModalHeader>
+            <ModalHeader toggle={props.toggle}>Start Cycle Forms {props.modalTitle} Tank#test</ModalHeader>
             <ModalBody>
             <div className="container-fluid">
                 <div className="row">
@@ -250,7 +256,7 @@ export default function StartCycleForm(props) {
                                                             type="text" 
                                                             placeholder="Est Duration"
                                                             autoComplete="off"
-                                                            value={formData.est_cycle_duration}
+                                                            value={formData.plating_time}
                                                             onChange={inputHandler}
                                                             ref={register({
                                                                 required: 'Est Duration Field Required'

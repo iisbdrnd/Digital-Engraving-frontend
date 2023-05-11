@@ -315,6 +315,7 @@ export default function TankSchedule(props) {
                                                         value={cylScheduleFormData.est_plating_order} 
                                                         type="number" 
                                                         placeholder="" 
+                                                        disabled
                                                         onChange={inputHandler}
                                                     />
                                                 </div>
@@ -328,6 +329,7 @@ export default function TankSchedule(props) {
                                                         value={cylScheduleFormData.surface_area} 
                                                         type="number" 
                                                         placeholder="" 
+                                                        disabled
                                                         onChange={inputHandler}
                                                     />
                                                 </div>
