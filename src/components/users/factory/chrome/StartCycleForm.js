@@ -9,6 +9,7 @@ import { PLATING_DEPT_RSURL, CHROME_SCHEDULE_START_CYCLE, CHECK_CYL_EXIST_OR_NOT
 import { userGetMethod, userPutMethod, userPostMethod } from '../../../../api/userAction';
 import { ValidationAlerts } from '../../../common/GlobalButton';
 import SweetAlert from 'sweetalert2';
+import moment from 'moment';
 
 export default function StartCycleForm(props) {
     const { handleSubmit, register, errors } = useForm();
@@ -95,8 +96,13 @@ export default function StartCycleForm(props) {
     const inputHandler = (event) => {
         if (event.target.name == 'start_time') {
             let inputTime = new Date(event.target.value );
-            let addTwoHour = new Date(new Date().setHours(inputTime.getHours() + 2)); 
-            let update_est_end_time = formatAm_Pm(addTwoHour);
+            // var est_duration = new Date(moment(formData?.est_cycle_duration).format("ll"));
+            const myArray = formData?.est_cycle_duration.split(".");
+            inputTime.setHours(inputTime.getHours() +  (+myArray[0]));
+            inputTime.setMinutes(inputTime.getMinutes() + (+myArray[1]));
+
+            // let addTwoHour = new Date(new Date().setHours(inputTime.getHours() + 2)); 
+            let update_est_end_time = formatAm_Pm(inputTime);
             setFormData({ 
                 est_end_time: update_est_end_time 
             });
