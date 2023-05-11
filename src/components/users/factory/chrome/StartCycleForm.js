@@ -40,6 +40,7 @@ export default function StartCycleForm(props) {
             remarks               : '',
             shift_id              : '',
             shift_type_id         : '',
+            plating_time          : '',
         }
     );
 
@@ -53,10 +54,10 @@ export default function StartCycleForm(props) {
                 }
                 setFormData({ 
                     cycle_id             : cycle_id,
-                    chrome_date         : chrome_date === null ? '': chrome_date,
+                    chrome_date          : chrome_date === null ? '': chrome_date,
                     shift_operator       : shift_operator === null ? '': shift_operator,
                     start_time           : start_time === null ? '': start_time.replace(" ", "T"),
-                    final_chrome_order  : final_chrome_order === null ? '': final_chrome_order,
+                    final_chrome_order   : final_chrome_order === null ? '': final_chrome_order,
                     est_end_time         : est_end_time === null ? '': est_end_time,
                     actual_end_time      : actual_end_time === null ? '': actual_end_time.replace(" ", "T"),
                     est_cycle_duration   : est_cycle_duration === null ? '2.00': est_cycle_duration,
@@ -64,8 +65,8 @@ export default function StartCycleForm(props) {
                     remarks              : remarks === null ? '' : remarks,
                     shift_type_id        : shift_type_id != null ? shift_type_id : '',
                     shift_id             : shift_id != null ? shift_id : '',
+                    plating_time         : response?.data?.plating_time.toString(),
                 });
-                console.log(response.data.formData);
                 // FOR DUTY PERSON START
                 let shiftOperatorOptions = [];
                 if (shiftDutyPersons && shiftDutyPersons.length > 0) {
@@ -92,12 +93,14 @@ export default function StartCycleForm(props) {
                 setIsLoading(false);
             });
     },[]);
+    console.log(formData);
     // FOR CYLINDER SCHEDULE DETAILS DATA INPUT
     const inputHandler = (event) => {
         if (event.target.name == 'start_time') {
             let inputTime = new Date(event.target.value );
             // var est_duration = new Date(moment(formData?.est_cycle_duration).format("ll"));
-            const myArray = formData?.est_cycle_duration.split(".");
+            const myArray = formData?.plating_time.split(".");
+            console.log(myArray[0],myArray[1]);
             inputTime.setHours(inputTime.getHours() +  (+myArray[0]));
             inputTime.setMinutes(inputTime.getMinutes() + (+myArray[1]));
 
@@ -260,13 +263,13 @@ export default function StartCycleForm(props) {
                                                             type="text" 
                                                             placeholder="Est Duration"
                                                             autoComplete="off"
-                                                            value={formData.est_cycle_duration}
+                                                            value={formData.plating_time}
                                                             onChange={inputHandler}
                                                             ref={register({
                                                                 required: 'Est Duration Field Required'
                                                             })}
                                                         />
-                                                        {errors.est_cycle_duration && <p className='text-danger'>{errors.est_cycle_duration.message}</p>}
+                                                        {errors.plating_time && <p className='text-danger'>{errors.plating_time.message}</p>}
                                                     </div>
                                                 </div>
 

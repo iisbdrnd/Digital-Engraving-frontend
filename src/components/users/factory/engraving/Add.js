@@ -74,16 +74,16 @@ const Add = (props) => {
     }
 
     if(stateData?.on_time && stateData?.est_duration){
-        let inputDate = moment(stateData?.on_time,"HH:mm").format("HH:mm:ss");
-            var t1 =new Date (moment(inputDate, 'HH:mm:ss').toString());
-            let est_inputDate = moment(stateData?.est_duration,"HH:mm").format("HH:mm:ss");
-           
-            var t2 =new Date (moment(est_inputDate, 'HH:mm:ss').toString());
+        let inputDate = moment(stateData?.on_time, "HH:mm").format("HH:mm:ss");
+        var t1 = new Date(moment(inputDate, 'HH:mm:ss').toString());
+        let est_inputDate = moment(stateData?.est_duration, "HH:mm").format("HH:mm:ss");
 
-            t1.setHours((t1.getHours() + t2.getHours()));
-            t1.setMinutes((t1.getMinutes() + (t2.getMinutes())));
+        var t2 = new Date(moment(est_inputDate, 'HH:mm:ss').toString());
 
-            stateData.est_end_time =  moment(t1).format("HH:mm:ss");
+        t1.setHours((t1.getHours() + t2.getHours()));
+        t1.setMinutes((t1.getMinutes() + (t2.getMinutes())));
+
+        stateData.est_end_time = moment(t1).format("HH:mm:ss");
     }
     if(stateData?.on_time && stateData?.a_off_time){
         let inputDate = moment(stateData?.on_time, "HH:mm").format("HH:mm:ss");
