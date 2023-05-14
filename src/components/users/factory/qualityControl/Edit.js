@@ -9,6 +9,7 @@ import { SubmitButton } from '../../../common/GlobalButton';
 const Edit = (props) => {
     const { handleSubmit, register, errors } = useForm();
     const [isLoading, setIsLoading] = useState(true);
+    const [cylinderInfo, setCylinderInfo] = useState([]);
 
     let [stateData, setStateData] = useReducer(
         (state, newState) => ({...state, ...newState}),
@@ -49,6 +50,7 @@ const Edit = (props) => {
 
             singleJobData                 : [],
             cylinders                     : [],
+            cylinder_length               : 0,
         }
     );
     let jobOrderPkId = props.match.params.job_order_pk_id ? props.match.params.job_order_pk_id : null;
@@ -59,17 +61,30 @@ const Edit = (props) => {
                 // dropDownChange([{id : response.data.jobOrder.job_id}], 'job_order_pk_id');
 
                 console.log('response', response.data.original);
-                let {singleJobData, cylinders} = response.data.original;
+                let {singleJobData, cylinders,cylinderLength} = response.data.original;
                 
                 setStateData({
                     'singleJobData': singleJobData, // GET DATA FROM job_orders table
-                    'cylinders'    : cylinders, // GET DATA FROM factory_cylinder_supply_chains table
+                    'cylinders'    : cylinders, 
+                    'cylinder_length' : cylinderLength
+                    // GET DATA FROM factory_cylinder_supply_chains table
                 });
 
                 setIsLoading(false);
             });
     }, []);
+    if (cylinderInfo.length < stateData.cylinder_length) {
+        for (var i = 0; i < stateData.cylinder_length; i++) {
+            var cylinder_obj = {
+                cylinder_id: stateData.cylinders.cylinder_id[i],
+                remark: stateData.cylinders.rework_remarks[i],
+                status: stateData.cylinders.rework_status[i],
+            };
+            cylinderInfo.push(cylinder_obj);
+        }
+    }
 
+   console.log(cylinderInfo);
     const onChangeHandler = (event) => {
         setStateData({[event.target.name]: event.target.value});
     }
@@ -175,26 +190,23 @@ const Edit = (props) => {
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                                <tr>
-                                                                    {stateData.cylinders.cylinder_id.map((item, index) => (
-                                                                        <td>{item}</td>
-                                                                    ))}
-                                                                    {
-                                                                        stateData.cylinders.rework_status.map((item, index) => (
-                                                                            <td style={{ textAlign: 'center' }}>
-                                                                                <input type="checkbox" name="" defaultChecked={item == 0 ? false : true} />
-                                                                            </td>
-                                                                        ))
-                                                                    }
-                                                                    {
-                                                                        stateData.cylinders.rework_remarks.map((item, index) => (
-                                                                            <td>
-                                                                                <input type="text" className="form-control" name="" value={item} />
-                                                                            </td>
-                                                                        ))
-                                                                    }
-                                                                </tr>
-                                                                
+                                                        {
+                                                            cylinderInfo.length > 0 ? (
+                                                                cylinderInfo.map((item, index) => (
+                                                                    <tr>
+                                                                        <td>{item.cylinder_id}</td>
+                                                                        <td style={{textAlign: 'center'}}>
+                                                                            <input type="checkbox" name="" defaultChecked = {item.status == 0 ? false : true} />
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type="text" className="form-control" name="" value={item.remark} />
+                                                                        </td>
+                                                                    </tr>
+                                                                ))
+                                                            ) :(<tr>
+                                                                <td colSpan="3" align="center">No Cylinder Found</td>
+                                                            </tr>)
+                                                        }       
                                                         {/* {
                                                             stateData.cylinders.length > 0 ? (
                                                                 stateData.cylinders.map((cylinder, key)=>(
