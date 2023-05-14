@@ -85,7 +85,7 @@ const Edit = (props) => {
                         'jobOrderDetailsData'  : jobOrderDetails, //CYLINDER DATA FROM 'job_orders' TABLE
                         'cylindersByJobId'     : cylindersByJobId, //CYLINDER DATA FROM 'factory_cylinder_supply_chains' TABLE
                         'platingData'          : platingData, //PLATING DATA FROM 'plating_tank_schedule_details' TABLE
-                        'completeEngraveData': completeEngraveData //PLATING DATA FROM 'plating_tank_schedule_details' TABLE
+                        'completeEngraveData'  : completeEngraveData //PLATING DATA FROM 'plating_tank_schedule_details' TABLE
                     });
                 });
         }
@@ -175,7 +175,27 @@ const Edit = (props) => {
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        {
+                                                                <tr>
+                                                                    {stateData.cylinders.cylinder_id.map((item, index) => (
+                                                                        <td>{item}</td>
+                                                                    ))}
+                                                                    {
+                                                                        stateData.cylinders.rework_status.map((item, index) => (
+                                                                            <td style={{ textAlign: 'center' }}>
+                                                                                <input type="checkbox" name="" defaultChecked={item == 0 ? false : true} />
+                                                                            </td>
+                                                                        ))
+                                                                    }
+                                                                    {
+                                                                        stateData.cylinders.rework_remarks.map((item, index) => (
+                                                                            <td>
+                                                                                <input type="text" className="form-control" name="" value={item} />
+                                                                            </td>
+                                                                        ))
+                                                                    }
+                                                                </tr>
+                                                                
+                                                        {/* {
                                                             stateData.cylinders.length > 0 ? (
                                                                 stateData.cylinders.map((cylinder, key)=>(
                                                                     <tr key={key}>
@@ -193,7 +213,7 @@ const Edit = (props) => {
                                                                     <td colSpan="3" align="center">No Cylinder Found</td>
                                                                 </tr>
                                                             )
-                                                        }
+                                                        } */}
                                                         
                                                     </tbody>
                                                 </table>
