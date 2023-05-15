@@ -20,6 +20,7 @@ const Add = (props) => {
     const [grindingMaster, setGrindingMaster] = useState([]);
     const [grapped,setGrapped] = useState(false);
     const [chk, setChk] = useState(true);
+    const [jobNumber, setJobNumber] = useState([]);
 
     let [jobOrderData, setJobOrderData] = useReducer(
         (state, newState) => ({...state, ...newState}),
@@ -156,6 +157,7 @@ const Add = (props) => {
 
     const dropDownChange = (e, fieldName) => {
         if(e.length > 0){
+            setJobNumber(e);
             const selectedValueId = e[0].id;
             setDropdownData(
                 (prevstate) => ({
@@ -276,17 +278,58 @@ const Add = (props) => {
         data.job_order_pk_id = dropDownData.job_order_pk_id;
         data.grindingDetails = grindingInput;
         data.total_cylinder_qty = jobOrderData.total_cylinder_qty;
+        
         userPostMethod(GRINDING_RSURL, data)
             .then(response => {
                 if (response.data.status == 1) {
                     toast.success(response.data.message);
                     e.target.reset();
+                    clearForm();
                     // setSelected(false);
                 } else {
                     toast.error(response.data.message)
                 }
             })
         .catch(error => toast.error(error))
+    }
+
+    const clearForm = () => {
+        setGrindingMaster([]);
+        setGrindingInput({
+            'serial'                : [],
+            'cylinder_id'           : [],
+
+            'before_fl'             : [],
+            'before_dia'            : [],
+            'before_target'         : {},
+            'before_pinhole'        : {}, 
+            'before_base_down'      : {}, 
+            'before_key_lock'       : {}, 
+            'before_cone_prob'      : {}, 
+
+            'after_dia'             : {}, 
+            'after_pinhole'         : {}, 
+            'after_base_down'       : {}, 
+            'after_key_lock'        : {}, 
+            'after_cone_prob'       : {}, 
+            'after_mark_as_complete': {}, 
+
+            'plating_order'         : {},
+            'remarks_for_cyl'       : {},
+        })
+        setJobOrderData({'total_cylinder_qty' : ''})
+        setJobOrderData({
+            'job_no'            : '',
+            'client_name'       : '',
+            'marketing_p_name'  : '',
+            'job_type'          : '',
+            'total_cylinder_qty': '',
+            'printer_name'      : '',
+            'desired_fl'        : '',
+            'desired_cir'       : '',
+            'desired_dia'       : ''
+        });
+        setJobNumber([]);
     }
 
     const rowsByTotalCyl = () => {
@@ -393,7 +436,8 @@ const Add = (props) => {
                                                             placeholder="Select Job No..."
                                                             onChange={(e) => dropDownChange(e, 'job_order_pk_id')}
                                                             inputProps={{ required: true }}
-                                                            defaultInputValue={selectedJobOrders?.name}
+                                                            // defaultInputValue={selectedJobOrders?.name}
+                                                            selected={jobNumber}
                                                             // disabled={job_order_pk_id != null ? 'disabled' : ''}
                                                             ref={register({
                                                                 required: 'Job No Field Required'
