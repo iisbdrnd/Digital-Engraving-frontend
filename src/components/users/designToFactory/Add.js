@@ -121,6 +121,7 @@ const Add = (props) => {
         formData.append('job_order_id',data.job_order_id);
         formData.append('send_date',data.send_date);
         formData.append('remark',data.remark);
+        
         userPostMethod(DESIGN_TO_FACTORY_RSURL, formData)
             .then(response => {
                 console.log("response.data", response.data);
@@ -144,6 +145,7 @@ const Add = (props) => {
             printer_mark      : '',
             total_cylinder_qty: ''
         })
+        setUploadImg('');
     }
     
     return (
