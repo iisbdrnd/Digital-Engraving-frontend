@@ -12,15 +12,15 @@ import SweetAlert from 'sweetalert2';
 
 export default function TankSchedule(props) {
     const { handleSubmit, register, errors } = useForm();
-    const [ isOpenModalPrev, setIsOpenModalPrev ] = useState(true);
+    const [isOpenModalPrev, setIsOpenModalPrev] = useState(true);
     const [validateErrors, setValidateErrors] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [typeheadOptions, setTypeheadOptions] = useState({});
     const [dropdownData, setDropdownData] = useState({});
     const [cylScheduleDetails, setCylScheduleDetails] = useState([]);
-    const [modal, setModal] = useState(false); 
-    const [changeUseEffect, setChangeUseEffect] = useState(0); 
-    const [jobData, setJobData] = useState({}); 
+    const [modal, setModal] = useState(false);
+    const [changeUseEffect, setChangeUseEffect] = useState(0);
+    const [jobData, setJobData] = useState({});
     const [jobOrderObj, setJobOrderObj] = useState([]);
 
     let [cylScheduleFormData, setCylScheduleFormData] = useReducer(
@@ -232,7 +232,7 @@ export default function TankSchedule(props) {
                                                         labelKey={option => `${option.name}`}
                                                         options={typeheadOptions['job_orders']}
                                                         placeholder="Select Job No"
-                                                        inputProps={{ required: true }}
+                                                        // inputProps={{ required: true }}
                                                         onChange={(e) => dropDownChange(e, 'job_order_id')}
                                                         ref={register({
                                                             required: 'Job Order Type Field Required'

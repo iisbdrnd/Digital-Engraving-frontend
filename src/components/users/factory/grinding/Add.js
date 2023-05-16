@@ -14,7 +14,7 @@ const Add = (props) => {
     const [typeHeadOptions, setTypeHeadOptions] = useState({});
     const [dropDownData, setDropdownData] = useState();
 
-    const [selectedJobOrders, setSelectedJobOrders] = useState({});
+    // const [selectedJobOrders, setSelectedJobOrders] = useState({});
     const [markedComplete, setMarkedComplete] = useState([]);
     const [grindingValues, setGrindingValues] = useState([]);
     const [grindingMaster, setGrindingMaster] = useState([]);
@@ -90,7 +90,7 @@ const Add = (props) => {
                         jobOrderObj.name = `[${order.job_no}] ` + order.job_name;
                         jobOrderOptions.push(jobOrderObj);
                         if(props.location.state.params.job_order_id && props.location.state.params.job_order_id == jobOrderObj.id){
-                            setSelectedJobOrders(jobOrderObj);
+                            jobNumber.push(jobOrderObj);
                         }
                     })
                 }
@@ -101,6 +101,7 @@ const Add = (props) => {
                         'job_order_pk_id': props.location.state.params.job_order_id,
                     })
                 )
+                // setJobNumber([{'job_order_pk_id':props.location.state.params.job_order_id}])
                 }
                 if(props.location.state.params.job_order_id) 
                 {userGetMethod(`${JOB_ORDER_DETAILS}?jobOrderId=${props.location.state.params.job_order_id}?`)
@@ -123,6 +124,7 @@ const Add = (props) => {
                     'machines'      : response.data.machines,
                     'polishMachines': response.data.polishMachines,
                 });
+                // dropDownChange([{ id: props.location.state.params.job_order_id }], 'job_order_pk_id');
                 setTypeHeadOptions(
                     (prevstate) => ({
                         ...prevstate,
@@ -156,6 +158,9 @@ const Add = (props) => {
     }
 
     const dropDownChange = (e, fieldName) => {
+        if(fieldName =='job_order_pk_id'){
+            setJobNumber(e);
+        }
         if(e.length > 0){
             setJobNumber(e);
             const selectedValueId = e[0].id;
@@ -213,7 +218,7 @@ const Add = (props) => {
             setGrindingInput({[key]:temp_obj})
         })
     }
-    console.log(grindingInput);
+    // console.log(grindingInput);
 
     const  changeMasterGrinder = (e) => {
         setGrindingMaster({...grindingMaster,[e.target.name] : e.target.value});
