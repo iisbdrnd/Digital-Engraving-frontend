@@ -47,7 +47,6 @@ export default function StartCycleForm(props) {
         userGetMethod(`${PLATING_SCHEDULE_START_CYCLE}/${props.platingTankMasterId}`)
             .then(response => {
                 let {cycle_id, shift_operator, plating_date, shift_id, start_time, final_plating_order, est_end_time, actual_end_time, actual_cycle_duration, remarks, shift_type_id, shiftDutyPersons} = response.data.cycleData;
-                console.log(response.data.plating_time); 
                 if(start_time != null) {
                     setIsStarted(true)
                 }
@@ -65,7 +64,7 @@ export default function StartCycleForm(props) {
                     shift_type_id        : shift_type_id != null ? shift_type_id : '',
                     shift_id             : shift_id != null ? shift_id : '',
                 });
-                console.log(response.data.formData);
+              
                 // FOR DUTY PERSON START
                 let shiftOperatorOptions = [];
                 if (shiftDutyPersons && shiftDutyPersons.length > 0) {
@@ -92,7 +91,6 @@ export default function StartCycleForm(props) {
                 setIsLoading(false);
             });
     },[]);
-    console.log(formData);
     // FOR CYLINDER SCHEDULE DETAILS DATA INPUT
     const inputHandler = (event) => {
         if (event.target.name == 'start_time') {

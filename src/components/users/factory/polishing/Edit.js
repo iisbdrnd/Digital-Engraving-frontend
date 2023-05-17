@@ -137,7 +137,6 @@ const Edit = (props) => {
 
             te.setHours((te.getHours() - ts.getHours()));
             te.setMinutes((te.getMinutes() - (ts.getMinutes())));
-            console.log(moment(te).format("HH:mm:ss"));
             setStateData({'a_duration': moment(te).format("HH:mm:ss")})
 
         }
