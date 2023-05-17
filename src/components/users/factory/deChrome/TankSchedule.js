@@ -186,7 +186,7 @@ export default function TankSchedule(props) {
         data.tankId = props.tankId;
         data.tank_id = props.modalTitle;
         data.job_order_id = dropdownData.job_order_id;
-        console.log('data', data);
+        // console.log('data', data);
         if (data.cylScheduleArr.length > 0) {
             userPostMethod(DE_CHROME_RS_URL, data) // SUBMIT ON store() METHOD
                 .then(response => {
@@ -207,7 +207,7 @@ export default function TankSchedule(props) {
 
     return (
         <Modal isOpen={ props.modal && isOpenModalPrev } toggle={props.toggle} size="xlg">
-            <ModalHeader toggle={props.toggle}>Manual Cycle Plan Form #{props.modalTitle} Thank</ModalHeader>
+            <ModalHeader toggle={props.toggle}>Manual Cycle Plan Form #{props.modalTitle} Thank#test</ModalHeader>
             <ModalBody>
             <div className="container-fluid">
                 <div className="row">

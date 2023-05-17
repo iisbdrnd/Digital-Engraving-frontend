@@ -72,6 +72,7 @@ const Add = (props) => {
         setStateData({...stateData,[event.target.name] : event.target.value});
        
     }
+    // console.log(stateData);
 
     if(stateData?.on_time && stateData?.est_duration){
         let inputDate = moment(stateData?.on_time, "HH:mm").format("HH:mm:ss");
@@ -398,7 +399,12 @@ const Add = (props) => {
                                                                 stateData?.output_status == "0" ? (<>
                                                                     <label className="col-md-5 col-form-label label-form">Comment</label>
                                                                     <div className="col-md-7">
-                                                                        <input type="text" className="form-control" name="comment" onChange={handleChange}  ref={register({})} />
+                                                                        {/* <input type="text" className="form-control" name="comment" onChange={handleChange}  ref={register({})} /> */}
+                                                                        <select className="form-control" onChange={handleChange} name='comment' ref={register({})}>
+                                                                            <option>select one</option>
+                                                                            <option value="stylus_broken">Stylus Broken</option>
+                                                                            <option value="machine_hang">Machine Hang</option>
+                                                                        </select>
                                                                     </div>
                                                                 </>) : ""
                                                             }
@@ -429,12 +435,12 @@ const Add = (props) => {
                                                                 <label className="col-md-5 col-form-label label-form">Remarks</label>
                                                                 <div className="col-md-7">
                                                                     {/* <input type="text" className="form-control" name="cyls1" /> */}
-                                                                    {/* <textarea className="form-control" rows="3" name="remarks"  ref={register({})} ></textarea> */}
-                                                                    <select className="form-control" onChange={handleChange} name='remarks'  ref={register({})}>
+                                                                    <textarea className="form-control" rows="3" name="remarks" onChange={handleChange}  ref={register({})} ></textarea>
+                                                                    {/* <select className="form-control" onChange={handleChange} name='remarks'  ref={register({})}>
                                                                         <option>select one</option>
                                                                         <option value="stylus_broken">Stylus Broken</option>
                                                                         <option value="machine_hang">Machine Hang</option>
-                                                                    </select>
+                                                                    </select> */}
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -487,7 +493,7 @@ const Add = (props) => {
                                             </div>
                                         </pre>
                                         <div>
-                                            <img style={{width: '100%', height: '100%'}} src="https://img.wallscloud.net/uploads/thumb/114182468/chelsea-football-club-soccer-7DYA-1024x576-MM-80.webp" />
+                                            <img className='h-100 w-100' src="https://img.wallscloud.net/uploads/thumb/114182468/chelsea-football-club-soccer-7DYA-1024x576-MM-80.webp" />
                                         </div>
                                     </div>
                                     <SubmitButton link="engraving/index" menuId={ menuId } />
