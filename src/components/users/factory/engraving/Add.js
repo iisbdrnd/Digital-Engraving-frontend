@@ -389,7 +389,7 @@ const Add = (props) => {
 
                                                                 <label className="col-md-5 col-form-label label-form">Output Status</label>
                                                                 <div className="col-md-7">
-                                                                    <select className="form-control" onChange={handleChange} name='output_status'  ref={register({})}>
+                                                                    <select className="form-control" onChange={handleChange} name='output_status' required  ref={register({})}>
                                                                         <option>select one</option>
                                                                         <option value="1">Ok</option>
                                                                         <option value="0">Not Ok</option>

@@ -501,7 +501,7 @@ const Add = (props) => {
                                                     
                                                     <label className="col-md-5 col-form-label label-form">Output Status</label>
                                                     <div className="col-md-7">
-                                                        <select className="form-control" name="output_status" onChange={inputChangeHandler} ref={register({})} value={stateData.output_status ? stateData.output_status : ''}>
+                                                        <select className="form-control" name="output_status" onChange={inputChangeHandler} required ref={register({})} value={stateData.output_status ? stateData.output_status : ''}>
                                                             <option value=''>Select One</option>
                                                             <option value="1">Ok</option>
                                                             <option value="0">Not Ok</option>

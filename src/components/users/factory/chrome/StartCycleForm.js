@@ -99,10 +99,14 @@ export default function StartCycleForm(props) {
         if (event.target.name == 'start_time') {
             let inputTime = new Date(event.target.value );
             // var est_duration = new Date(moment(formData?.est_cycle_duration).format("ll"));
-            const myArray = formData?.plating_time.split(".");
-            console.log(myArray[0],myArray[1]);
-            inputTime.setHours(inputTime.getHours() +  (+myArray[0]));
-            inputTime.setMinutes(inputTime.getMinutes() + (+myArray[1]));
+            // const myArray = formData?.plating_time.split(".");
+            const estimate_duration = parseInt(formData?.plating_time);
+            let platting_time = moment(((+estimate_duration/60).toString() + ":"+  parseInt(+estimate_duration-(+estimate_duration/60)*60).toString()).toString()).format("HH:mm:ss");
+            setFormData({plating_time : platting_time});
+
+            // console.log(myArray[0],myArray[1]);
+            inputTime.setHours(inputTime.getHours() + (+estimate_duration/60));
+            inputTime.setMinutes(inputTime.getMinutes() +  parseInt(+estimate_duration-(+estimate_duration/60)*60));
 
             // let addTwoHour = new Date(new Date().setHours(inputTime.getHours() + 2)); 
             let update_est_end_time = formatAm_Pm(inputTime);
