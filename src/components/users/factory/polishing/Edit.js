@@ -128,7 +128,7 @@ const Edit = (props) => {
             // console.log(moment(t1).format("HH:mm:ss"));
             setStateData({"est_end_time": moment(t1).format("HH:mm:ss")})
         }
-        if(stateData?.on_time != '' && stateData?.a_off_time != ''){
+        if(stateData?.on_time != null && stateData?.a_off_time != null ){
             let inputDate = moment(stateData?.on_time, "HH:mm").format("HH:mm:ss");
             let endDate = moment(stateData?.a_off_time, "HH:mm").format("HH:mm:ss");
 

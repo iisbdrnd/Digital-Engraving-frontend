@@ -259,12 +259,12 @@ const Add = (props) => {
 
                                                             <label className="col-md-5 col-form-label label-form ">Screen</label>
                                                             <div className="col-md-7">
-                                                                <input type="text" className="form-control" defaultValue={stateData?.screen} name="screen"  ref={register({})} />
+                                                                <input type="text" className="form-control" disabled required defaultValue={stateData?.screen} name="screen"  ref={register({})} />
                                                             </div>
 
                                                             <label className="col-md-5 col-form-label label-form  ">Start Point</label>
                                                             <div className="col-md-7">
-                                                                <input type="text" className="form-control" defaultValue={stateData?.start_point} id="start_point" name="start_point"  ref={register({})} />
+                                                                <input type="text" className="form-control" disabled required defaultValue={stateData?.start_point} id="start_point" name="start_point"  ref={register({})} />
                                                             </div>
                                                         </div>
 
@@ -284,18 +284,18 @@ const Add = (props) => {
 
                                                             <label className="col-md-5 col-form-label label-form ">Angle</label>
                                                             <div className="col-md-7">
-                                                                <input type="text" className="form-control" name="angle"  defaultValue={stateData?.angle} ref={register({})} />
+                                                                <input type="text" className="form-control" disabled required name="angle"  defaultValue={stateData?.angle} ref={register({})} />
                                                             </div>
 
                                                             <label className="col-md-5 col-form-label label-form  ">Image Area</label>
                                                             <div className="col-md-7">
-                                                                <input type="text" className="form-control" name="image_area" defaultValue={stateData?.image_area} ref={register({})} />
+                                                                <input type="text" className="form-control" disabled required name="image_area" defaultValue={stateData?.image_area} ref={register({})} />
                                                             </div>
                                                         </div>
 
                                                         <label className="col-md-3 col-form-label label-form">Remarks</label>
                                                         <div className="col-md-8">
-                                                            <textarea className="form-control" rows="3" name='remarks' defaultValue={stateData?.remarks}  ref={register({})} ></textarea>
+                                                            <textarea className="form-control" rows="3" name='remarks' disabled defaultValue={stateData?.remarks}  ref={register({})} ></textarea>
                                                         </div>
                                                     </div>
                                                 </fieldset>

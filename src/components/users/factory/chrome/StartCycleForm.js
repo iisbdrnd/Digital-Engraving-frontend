@@ -65,8 +65,13 @@ export default function StartCycleForm(props) {
                     remarks              : remarks === null ? '' : remarks,
                     shift_type_id        : shift_type_id != null ? shift_type_id : '',
                     shift_id             : shift_id != null ? shift_id : '',
-                    plating_time         : response?.data?.plating_time.toString(),
+                    // plating_time         : response?.data?.plating_time.toString(),
                 });
+
+                //formatting time for estimated duration
+                const estimate_duration = response?.data?.plating_time.toString();
+                var platting_time =((parseInt(+estimate_duration/60).toString() + ":"+  parseInt(+estimate_duration-parseInt(+estimate_duration/60)*60).toString()).toString());
+                setFormData({plating_time : (moment(platting_time,  'HH:mm').format("HH:mm:ss"))});
                 // FOR DUTY PERSON START
                 let shiftOperatorOptions = [];
                 if (shiftDutyPersons && shiftDutyPersons.length > 0) {
@@ -98,18 +103,10 @@ export default function StartCycleForm(props) {
     const inputHandler = (event) => {
         if (event.target.name == 'start_time') {
             let inputTime = new Date(event.target.value );
-            // var est_duration = new Date(moment(formData?.est_cycle_duration).format("ll"));
-            // const myArray = formData?.plating_time.split(".");
-            const estimate_duration = parseInt(formData?.plating_time);
-            let platting_time = moment(((+estimate_duration/60).toString() + ":"+  parseInt(+estimate_duration-(+estimate_duration/60)*60).toString()).toString()).format("HH:mm:ss");
-            setFormData({plating_time : platting_time});
-
-            // console.log(myArray[0],myArray[1]);
-            inputTime.setHours(inputTime.getHours() + (+estimate_duration/60));
-            inputTime.setMinutes(inputTime.getMinutes() +  parseInt(+estimate_duration-(+estimate_duration/60)*60));
-
-            // let addTwoHour = new Date(new Date().setHours(inputTime.getHours() + 2)); 
-            let update_est_end_time = formatAm_Pm(inputTime);
+            const estimate_duration = new Date(moment(formData?.plating_time, "HH:mm:ss").toString());
+            inputTime.setHours(inputTime.getHours() + (+estimate_duration.getHours()));
+            inputTime.setMinutes(inputTime.getMinutes() + (+estimate_duration.getMinutes()));
+            let update_est_end_time = moment(inputTime).format('YYYY-MM-DD hh:mm a');
             setFormData({ 
                 est_end_time: update_est_end_time 
             });
