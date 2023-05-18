@@ -51,7 +51,6 @@ const Add = (props) => {
     useEffect(()=>{
         userGetMethod(`${QUALITY_CONTROL_RS_URL}/create`)
             .then(response => {
-                console.log('response', response.data);
                 // FOR JOB ORDER
                 let jobOrderOptions = [];
                 if (response.data.jobOrders && response.data.jobOrders.length > 0) {
@@ -79,7 +78,6 @@ const Add = (props) => {
     }, []);
 
     const dropDownChange = (e, fieldName) => {
-        console.log('e', e);
         if(e.length > 0){
             const selectedValueId = e[0].id;
             
@@ -92,14 +90,12 @@ const Add = (props) => {
 
             userGetMethod(`${QUALITY_CONTROL_JOB_DATA_BY_JOB_ID}/${selectedValueId}`)
                 .then(response => {
-                    console.log('QUALITY_CONTROL_JOB_DATA_BY_JOB_ID', response.data);
                     let { singleJobData, cylinders, cylinderLength } = response.data;
                     setStateData({
                         'cylinderLength': cylinderLength, //get array size of cylinders
                         'singleJobData': singleJobData,
                         'completeStatus': cylinders.complete_status
                     });
-                    console.log('cylinders.cylinder_id', cylinders.cylinder_id);
                     setInputData({
                         'cylinder_id': cylinders.cylinder_id,
                         'rework_status': cylinders.rework_status,
@@ -108,10 +104,8 @@ const Add = (props) => {
                 });
         }
     }
-    console.log('completeStatus', stateData.completeStatus);
+
     const changeInputHandler = (i, e, fieldName, checkbox = false) => {
-        console.log({fieldName});
-        console.log('dsafdf', e.target.value);
         setInputData(
             {
                 [fieldName]: {
@@ -139,11 +133,9 @@ const Add = (props) => {
             inputData.rework_status = [];
             inputData.rework_remarks = [];
         }
-        console.log('inputData', inputData);
 
         userPostMethod(`${QUALITY_CONTROL_RS_URL}?cylinder_id=${stateData.cylinder_id}`, inputData)
             .then(response => {
-                console.log('response', response.data);
                 if (response.data.status == 1) {
                     toast.success(response.data.message)
                 } else {

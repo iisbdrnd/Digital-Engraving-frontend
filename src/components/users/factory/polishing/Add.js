@@ -69,7 +69,6 @@ const Add = (props) => {
         }
     );
     let digPolishingCylinderId = props.location.state.params.dig_polishing_cylinder_id ? props.location.state.params.dig_polishing_cylinder_id : null;
-    console.log({digPolishingCylinderId});
 
     useEffect(()=>{
         userGetMethod(`${POLISHING_RS_URL}/create?polishing_id=${digPolishingCylinderId}`)
@@ -91,7 +90,6 @@ const Add = (props) => {
                     dropDownChange([{id : response.data.jobOrder.job_id}], 'job_order_id');
                 }
                 if (response.data.jobOrders && response.data.jobOrders.length > 0) {
-                    console.log('jobOrders');
                     response.data.jobOrders.map(order => 
                     {
                         let jobOrderObj = {};
@@ -138,7 +136,6 @@ const Add = (props) => {
     }, []);
 
     const dropDownChange = (e, fieldName) => {
-        console.log(e, fieldName);
         if(e.length > 0){
             const selectedValueId = e[0].id;
             setDropdownData(
@@ -211,7 +208,6 @@ const Add = (props) => {
             t1.setHours((t1.getHours() + t2.getHours()));
             t1.setMinutes((t1.getMinutes() + (t2.getMinutes())));
 
-            // console.log(moment(t1).format("HH:mm:ss"));
             setStateData({"est_end_time": moment(t1).format("HH:mm:ss")})
         }
         if(stateData?.on_time != '' && stateData?.a_off_time != ''){
@@ -223,7 +219,6 @@ const Add = (props) => {
 
             te.setHours((te.getHours() - ts.getHours()));
             te.setMinutes((te.getMinutes() - (ts.getMinutes())));
-            console.log(moment(te).format("HH:mm:ss"));
             setStateData({'a_duration': moment(te).format("HH:mm:ss")})
 
         }

@@ -25,7 +25,7 @@ export default function ListData(props) {
     } else {
         menuId = props.location.state.params.menuId;
     }
-    console.log(props);
+
     useEffect(() => {
         // ADD,EDIT,DELETE,SHOW ACCESS CHECK
         userGetMethod(`${userHasAccess}/${menuId}`)

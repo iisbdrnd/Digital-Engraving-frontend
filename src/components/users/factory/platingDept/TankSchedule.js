@@ -97,7 +97,6 @@ export default function TankSchedule(props) {
             );
             userGetMethod(`${JOB_DATA_FROM_PLATING_DEPT}?jobId=${selectedValueId}`)
                 .then(response => {
-                    console.log(response.data.job_cylinder_ids);
                     // console.log("jahid");
                     let {fl, cir, dia, surface_area,job_type} = response.data.jobData;
                     setCylScheduleFormData({
@@ -112,7 +111,6 @@ export default function TankSchedule(props) {
         }
 
     }
-    console.log(dropdownData);
     // FOR CYCLE SCHEDULE DETAILS ARRAY READY
     const addCylSchedulHandler = (event) => {
         let {cylinder_id, job_type, fl, cir, dia, est_plating_order, surface_area} = cylScheduleFormData;

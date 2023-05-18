@@ -51,6 +51,7 @@ const Edit = (props) => {
             singleJobData                 : [],
             cylinders                     : [],
             cylinder_length               : 0,
+            complete_status               : "",
         }
     );
     let jobOrderPkId = props.match.params.job_order_pk_id ? props.match.params.job_order_pk_id : null;
@@ -59,8 +60,6 @@ const Edit = (props) => {
         userGetMethod(`${QUALITY_CONTROL_RS_URL}/${jobOrderPkId}/edit`)
             .then(response => {
                 // dropDownChange([{id : response.data.jobOrder.job_id}], 'job_order_pk_id');
-
-                console.log('response', response.data.original);
                 let {singleJobData, cylinders,cylinderLength} = response.data.original;
                 
                 setStateData({
@@ -84,7 +83,6 @@ const Edit = (props) => {
         }
     }
 
-   console.log(cylinderInfo);
     const onChangeHandler = (event) => {
         setStateData({[event.target.name]: event.target.value});
     }
@@ -159,7 +157,7 @@ const Edit = (props) => {
                                                     {/* <input type="hidden" name="job_no" value={stateData.jobOrderDetails.job_no ? stateData.jobOrderDetails.job_no : ''} ref={register({})} /> */}
                                                 </div>
                                                 <div className="col-md-2">
-                                                    <select className="form-control" name='complete_status' ref={register({required: true })}>
+                                                    <select className="form-control" onChange={onChangeHandler} value={stateData?.complete_status} name='complete_status' ref={register({required: true })}>
                                                         <option value="">select one</option>
                                                         <option value="1">Ok</option>
                                                         <option value="0">Not Ok</option>
@@ -194,13 +192,13 @@ const Edit = (props) => {
                                                             cylinderInfo.length > 0 ? (
                                                                 cylinderInfo.map((item, index) => (
                                                                     <tr>
-                                                                        <td>{item.cylinder_id}</td>
-                                                                        <td style={{textAlign: 'center'}}>
+                                                                        <td colspan={stateData?.complete_status === "0" ? "1" : "3"}>{item.cylinder_id}</td>
+                                                                        {stateData?.complete_status === "0" && (<><td style={{textAlign: 'center'}}>
                                                                             <input type="checkbox" name="" defaultChecked = {item.status == 0 ? false : true} />
                                                                         </td>
                                                                         <td>
                                                                             <input type="text" className="form-control" name="" value={item.remark} />
-                                                                        </td>
+                                                                        </td></>)}
                                                                     </tr>
                                                                 ))
                                                             ) :(<tr>

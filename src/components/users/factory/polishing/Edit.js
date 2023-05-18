@@ -125,7 +125,6 @@ const Edit = (props) => {
             t1.setHours((t1.getHours() + t2.getHours()));
             t1.setMinutes((t1.getMinutes() + (t2.getMinutes())));
 
-            // console.log(moment(t1).format("HH:mm:ss"));
             setStateData({"est_end_time": moment(t1).format("HH:mm:ss")})
         }
         if(stateData?.on_time != null && stateData?.a_off_time != null ){

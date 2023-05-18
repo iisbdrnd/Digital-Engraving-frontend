@@ -23,7 +23,6 @@ const Add = (props) => {
 
     const submitHandler = (data, e) => {
         data.active_status = selected;
-        console.log("data", data);
 
         userPostMethod(MACHINE_RSURL, data)
             .then(response => {
