@@ -162,15 +162,14 @@ export default function StartCycleForm(props) {
 
     const submitHandler = (data, e) => {
         data.scheduleId = props.chromeScheduleMasterId;
-        data.shift_operator = dropdownData.shift_operator;
-        
+        data.shift_operator = dropdownData.shift_operator; 
         userPostMethod(`${CHROME_SCHEDULE_START_CYCLE}/${props.chromeScheduleMasterId}`, data)
             .then(response => {
                 if (response.data.status == 1) {
                     toast.success(response.data.message);
                     e.target.reset();
                     props.toggle();
-                    props.needReload();
+                    props.needReload(props.tankId,props.tank__id);
                 } else {
                     toast.error(response.data.message);
                 }

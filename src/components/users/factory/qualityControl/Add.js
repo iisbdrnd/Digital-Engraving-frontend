@@ -126,7 +126,7 @@ const Add = (props) => {
             )
         }
     }
-
+    console.log(inputData);
     const submitHandler = (data) => {
         inputData.job_no = data.job_no;
         if (data.complete_status == 1) {

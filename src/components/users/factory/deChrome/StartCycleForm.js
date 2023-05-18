@@ -21,6 +21,7 @@ export default function StartCycleForm(props) {
     const [modal, setModal] = useState(false); 
     const [changeUseEffect, setChangeUseEffect] = useState(0); 
     const [jobData, setJobData] = useState({}); 
+    const [isStarted ,setIsStarted] = useState(false);
 
     let [formData, setFormData] = useReducer(
         (state, newState) => ({...state, ...newState}),
@@ -47,6 +48,9 @@ export default function StartCycleForm(props) {
         userGetMethod(`${DE_CHROME_SCHEDULE_START_CYCLE}/${props.chromeScheduleMasterId}`)
             .then(response => {
                 let {cycle_id, shift_operator, de_chrome_date, shift_id, start_time, final_de_chrome_order, est_end_time, actual_end_time, est_cycle_duration, actual_cycle_duration, remarks, shift_type_id, shiftDutyPersons} = response.data.cycleData;
+                if(start_time != null) {
+                    setIsStarted(true)
+                }
 
                 setFormData({ 
                     cycle_id             : cycle_id,
@@ -61,9 +65,11 @@ export default function StartCycleForm(props) {
                     remarks              : remarks === null ? '' : remarks,
                     shift_type_id        : shift_type_id != null ? shift_type_id : '',
                     shift_id             : shift_id != null ? shift_id : '',
-                    plating_time         : response?.data?.plating_time,
+                    plating_time         : (+response?.data?.plating_time/60).toFixed(2),
                 });
-                console.log(response.data.formData);
+                var hours = parseInt((+response?.data?.plating_time)/60);
+                var minutes = (+response?.data?.plating_time) - (hours * 60);
+                setFormData({plating_time : hours.toString() +":"+minutes.toString()})
                 // FOR DUTY PERSON START
                 let shiftOperatorOptions = [];
                 if (shiftDutyPersons && shiftDutyPersons.length > 0) {
@@ -94,11 +100,9 @@ export default function StartCycleForm(props) {
     const inputHandler = (event) => {
         if (event.target.name == 'start_time') {
             let inputTime = new Date(event.target.value );
-            var hours = parseInt(parseInt(formData?.plating_time)/60);
-            var minutes = formData?.plating_time - (hours * 60);
-            inputTime.setHours(inputTime.getHours() + hours);
-            inputTime.setMinutes(inputTime.getMinutes() + minutes);
-            // let addTwoHour = new Date(new Date().setHours(inputTime.getHours() + 2)); 
+            var myArr = formData?.plating_time.split(':');
+            inputTime.setHours(inputTime.getHours() + (+myArr[0]));
+            inputTime.setMinutes(inputTime.getMinutes() + (+myArr[1]));
             let update_est_end_time = formatAm_Pm(inputTime);
             setFormData({ 
                 est_end_time: update_est_end_time 
@@ -162,7 +166,7 @@ export default function StartCycleForm(props) {
                     toast.success(response.data.message);
                     e.target.reset();
                     props.toggle();
-                    props.needReload();
+                    props.needReload(props.tank__id,props.tankId);
                 } else {
                     toast.error(response.data.message);
                 }
@@ -383,6 +387,7 @@ export default function StartCycleForm(props) {
                                                                 type="datetime-local" 
                                                                 placeholder="Actual End Time"
                                                                 autoComplete="off"
+                                                                disabled = {isStarted == false ? true : false}
                                                                 value={formData.actual_end_time}
                                                                 onChange={inputHandler}
                                                                 ref={register({})}
@@ -400,6 +405,7 @@ export default function StartCycleForm(props) {
                                                                 placeholder="Actual Duration"
                                                                 autoComplete="off"
                                                                 value={formData.actual_cycle_duration}
+                                                                disabled = {isStarted == false ? true : false}
                                                                 onChange={inputHandler}
                                                                 ref={register({})}
                                                             />

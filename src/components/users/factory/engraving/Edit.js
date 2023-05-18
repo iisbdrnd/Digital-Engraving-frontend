@@ -386,6 +386,8 @@ const Edit = (props) => {
                                                                         type="text"
                                                                         className="form-control"
                                                                         name="screen"
+                                                                        required
+                                                                        disabled
                                                                         ref={register({})}
                                                                         defaultValue={stateData?.screen}
                                                                     />
@@ -399,6 +401,8 @@ const Edit = (props) => {
                                                                         type="text"
                                                                         className="form-control"
                                                                         name="start_point"
+                                                                        required
+                                                                        disabled
                                                                         defaultValue={stateData?.start_point}
                                                                         ref={register({})}
                                                                     />
@@ -433,6 +437,8 @@ const Edit = (props) => {
                                                                     <input
                                                                         type="text"
                                                                         className="form-control"
+                                                                        required
+                                                                        disabled
                                                                         name="angle"
                                                                         defaultValue={stateData?.angle}
                                                                         ref={register({})}
@@ -447,6 +453,8 @@ const Edit = (props) => {
                                                                         type="text"
                                                                         className="form-control"
                                                                         name="image_area"
+                                                                        required
+                                                                        disabled
                                                                         defaultValue={stateData?.image_area}
                                                                         ref={register({})}
                                                                     />
@@ -461,6 +469,7 @@ const Edit = (props) => {
                                                                     className="form-control"
                                                                     rows="3"
                                                                     name="remarks"
+                                                                    disabled
                                                                     defaultValue={stateData?.remarks}
                                                                     ref={register({})}
                                                                 ></textarea>

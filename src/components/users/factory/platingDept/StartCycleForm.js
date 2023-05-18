@@ -175,7 +175,7 @@ export default function StartCycleForm(props) {
 
     return (
         <Modal isOpen={ props.modal && isOpenModalPrev } toggle={props.toggle} size="lg">
-            <ModalHeader toggle={props.toggle}>Start Cycle Form {props.modalTitle} Tank#test</ModalHeader>
+            <ModalHeader toggle={props.toggle}>Start Cycle Form {props.modalTitle} Tank</ModalHeader>
             <ModalBody>
             <div className="container-fluid">
                 <div className="row">

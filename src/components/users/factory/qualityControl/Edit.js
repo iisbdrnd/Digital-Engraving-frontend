@@ -10,6 +10,11 @@ const Edit = (props) => {
     const { handleSubmit, register, errors } = useForm();
     const [isLoading, setIsLoading] = useState(true);
     const [cylinderInfo, setCylinderInfo] = useState([]);
+    const [cylinderUpdateInfo, setCylinderUpdateInfo] = useState({
+        cylinder_id    : [],
+        rework_status  : [],
+        rework_remarks : {}
+    });
 
     let [stateData, setStateData] = useReducer(
         (state, newState) => ({...state, ...newState}),
@@ -54,6 +59,7 @@ const Edit = (props) => {
             complete_status               : "",
         }
     );
+ 
     let jobOrderPkId = props.match.params.job_order_pk_id ? props.match.params.job_order_pk_id : null;
     
     useEffect(()=>{
@@ -61,7 +67,7 @@ const Edit = (props) => {
             .then(response => {
                 // dropDownChange([{id : response.data.jobOrder.job_id}], 'job_order_pk_id');
                 let {singleJobData, cylinders,cylinderLength} = response.data.original;
-                
+             
                 setStateData({
                     'singleJobData': singleJobData, // GET DATA FROM job_orders table
                     'cylinders'    : cylinders, 
@@ -82,11 +88,29 @@ const Edit = (props) => {
             cylinderInfo.push(cylinder_obj);
         }
     }
-
+    // console.log(cylinderInfo);
     const onChangeHandler = (event) => {
         setStateData({[event.target.name]: event.target.value});
     }
 
+    const onChangeCylinder = (event, index) => {
+        const value = event.target.type == 'checkbox' ? (event.target.checked  ? 1 : 0) : event.target.value;
+        setCylinderInfo(
+            cylinderInfo.map((item, i) =>
+                i == index ? { ...item, [event.target.name]: value } : item)
+        );
+
+    }
+    // console.log(cylinderInfo);
+    const getCylinderUpdateInfo = () => {
+        cylinderInfo.map((item, index) =>{
+            cylinderUpdateInfo['cylinder_id'].push(item?.cylinder_id);
+            cylinderUpdateInfo['rework_remarks'][index] = item?.remark
+            cylinderUpdateInfo['rework_status'].push(item?.status);
+        })
+    }
+   
+ 
     const dropDownChange = (e, fieldName) => {
         if(e.length > 0){
             const selectedValueId = e[0].id; //job_orders.job_order_pk_id
@@ -105,15 +129,30 @@ const Edit = (props) => {
     }
     
     const submitHandler = (data) => {
+        getCylinderUpdateInfo();
+        if (stateData?.complete_status == "0") {
+            data.rework_status = cylinderUpdateInfo.rework_status;
+            data.rework_remarks = cylinderUpdateInfo.rework_remarks;
+            data.cylinder_id = cylinderUpdateInfo.cylinder_id;
+        }
         userPutMethod(`${QUALITY_CONTROL_RS_URL}/${jobOrderPkId}`, data)
             .then(response => {
                 if (response.data.status == 1) {
+                    clearForm();
                     toast.success(response.data.message)
                 } else {
                     toast.error(response.data.message)
                 }
             })
-        .catch(error => toast.error(error))
+            .catch(error => toast.error(error))
+    }
+    const clearForm = () => {
+        setStateData({
+            'complete_status': "",
+            'singleJobData': [],
+            'cylinder_length': 0,
+        })
+        setCylinderInfo([]);
     }
 
     var menuId = 0;
@@ -194,10 +233,10 @@ const Edit = (props) => {
                                                                     <tr>
                                                                         <td colspan={stateData?.complete_status === "0" ? "1" : "3"}>{item.cylinder_id}</td>
                                                                         {stateData?.complete_status === "0" && (<><td style={{textAlign: 'center'}}>
-                                                                            <input type="checkbox" name="" defaultChecked = {item.status == 0 ? false : true} />
+                                                                            <input type="checkbox" name="status" onChange={(event)=> onChangeCylinder(event,index)}  defaultChecked = {item.status == 0 ? false : true} ref={register()} />
                                                                         </td>
                                                                         <td>
-                                                                            <input type="text" className="form-control" name="" value={item.remark} />
+                                                                            <input type="text" className="form-control" onChange={(event)=> onChangeCylinder(event,index)} name="remark" defaultValue={item.remark} ref={register()} />
                                                                         </td></>)}
                                                                     </tr>
                                                                 ))
