@@ -9,6 +9,7 @@ import { DE_CHROME_RS_URL, DE_CHROME_SCHEDULE_START_CYCLE } from '../../../../ap
 import { userGetMethod, userPutMethod, userPostMethod } from '../../../../api/userAction';
 import { ValidationAlerts } from '../../../common/GlobalButton';
 import SweetAlert from 'sweetalert2';
+import moment from 'moment';
 
 export default function StartCycleForm(props) {
     const { handleSubmit, register, errors } = useForm();
@@ -178,7 +179,7 @@ export default function StartCycleForm(props) {
 
     return (
         <Modal isOpen={ props.modal && isOpenModalPrev } toggle={props.toggle} size="lg">
-            <ModalHeader toggle={props.toggle}>Start Cycle Forms {props.modalTitle} Tank#test</ModalHeader>
+            <ModalHeader toggle={props.toggle}>Start Cycle Forms {props.modalTitle} Tank</ModalHeader>
             <ModalBody>
             <div className="container-fluid">
                 <div className="row">
@@ -344,7 +345,7 @@ export default function StartCycleForm(props) {
                                                             disabled="disabled"
                                                             placeholder="Est End Time"
                                                             autoComplete="off"
-                                                            value={formData.est_end_time}
+                                                            value={formData.est_end_time != '' ? moment(formData.est_end_time).format("DD/MM/YYYY hh:mm a") : "DD/MM/YYYY"}
                                                             onChange={inputHandler}
                                                             ref={register({
                                                                 required: 'Est End Time Field Required'
