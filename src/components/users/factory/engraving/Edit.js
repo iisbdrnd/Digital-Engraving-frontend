@@ -724,13 +724,27 @@ const Edit = (props) => {
                                                                             Comment
                                                                         </label>
                                                                         <div className="col-md-7">
-                                                                            <input
+                                                                            {/* <input
                                                                                 type="text"
                                                                                 className="form-control"
                                                                                 name="comment"
                                                                                 onChange={onChangeHandler}
                                                                                 ref={register({})}
-                                                                            />
+                                                                            /> */}
+                                                                                <select
+                                                                                    className="form-control"
+                                                                                    onChange={onChangeHandler}
+                                                                                    name="comment"
+                                                                                    ref={register({})}
+                                                                                >
+                                                                                    <option>select one</option>
+                                                                                    <option value="stylus_broken">
+                                                                                        Stylus Broken
+                                                                                    </option>
+                                                                                    <option value="machine_hang">
+                                                                                        Machine Hang
+                                                                                    </option>
+                                                                                </select>
                                                                         </div>
                                                                     </>
                                                                 ) : (
@@ -796,21 +810,8 @@ const Edit = (props) => {
                                                                 </label>
                                                                 <div className="col-md-7">
                                                                     {/* <input type="text" className="form-control" name="cyls1" /> */}
-                                                                    {/* <textarea className="form-control" rows="3" name="remarks" {...register("remarks", {required: 'error message'})} defaultValue={ stateData.remarks ? stateData.remarks : '' }></textarea> */}
-                                                                    <select
-                                                                        className="form-control"
-                                                                        onChange={onChangeHandler}
-                                                                        name="remarks"
-                                                                        ref={register({})}
-                                                                    >
-                                                                        <option>select one</option>
-                                                                        <option value="stylus_broken">
-                                                                            Stylus Broken
-                                                                        </option>
-                                                                        <option value="machine_hang">
-                                                                            Machine Hang
-                                                                        </option>
-                                                                    </select>
+                                                                    <textarea className="form-control" rows="3" name="remarks" {...register("remarks", {required: 'error message'})} defaultValue={ stateData.remarks ? stateData.remarks : '' }></textarea>
+                                                                   
                                                                 </div>
                                                             </div>
                                                         </div>
