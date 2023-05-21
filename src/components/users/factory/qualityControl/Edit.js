@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState, useReducer } from 'react';
-import { QUALITY_CONTROL_RS_URL, POLISHING_GET_POLISHING_DATA_BY_JOB_ID } from '../../../../api/userUrl';
+import { QUALITY_CONTROL_RS_URL,QUALITY_CONTROL_JOB_DATA_BY_JOB_ID, POLISHING_GET_POLISHING_DATA_BY_JOB_ID } from '../../../../api/userUrl';
 import { userGetMethod, userPutMethod } from '../../../../api/userAction';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -63,10 +63,11 @@ const Edit = (props) => {
     let jobOrderPkId = props.match.params.job_order_pk_id ? props.match.params.job_order_pk_id : null;
     
     useEffect(()=>{
-        userGetMethod(`${QUALITY_CONTROL_RS_URL}/${jobOrderPkId}/edit`)
+        // userGetMethod(`${QUALITY_CONTROL_RS_URL}/${jobOrderPkId}/edit`)
+           userGetMethod(`${QUALITY_CONTROL_JOB_DATA_BY_JOB_ID}/${jobOrderPkId}`)
             .then(response => {
                 // dropDownChange([{id : response.data.jobOrder.job_id}], 'job_order_pk_id');
-                let {singleJobData, cylinders,cylinderLength} = response.data.original;
+                let {singleJobData, cylinders,cylinderLength} = response.data;
              
                 setStateData({
                     'singleJobData': singleJobData, // GET DATA FROM job_orders table
