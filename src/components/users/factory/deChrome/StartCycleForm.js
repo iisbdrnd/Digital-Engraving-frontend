@@ -104,7 +104,8 @@ export default function StartCycleForm(props) {
             var myArr = formData?.plating_time.split(':');
             inputTime.setHours(inputTime.getHours() + (+myArr[0]));
             inputTime.setMinutes(inputTime.getMinutes() + (+myArr[1]));
-            let update_est_end_time = formatAm_Pm(inputTime);
+            // let update_est_end_time = formatAm_Pm(inputTime);
+            let update_est_end_time = new Date(inputTime);
             setFormData({ 
                 est_end_time: update_est_end_time 
             });
@@ -160,7 +161,9 @@ export default function StartCycleForm(props) {
     const submitHandler = (data, e) => {
         data.scheduleId = props.chromeScheduleMasterId;
         data.shift_operator = dropdownData.shift_operator;
-        console.log('submit korlen vai ', data);
+        data.est_end_time = new Date(formData.est_end_time);
+        data.est_end_time = moment(data.est_end_time).format("YYYY-MM-DDTHH:mm");
+
         userPostMethod(`${DE_CHROME_SCHEDULE_START_CYCLE}/${props.chromeScheduleMasterId}`, data)
             .then(response => {
                 if (response.data.status == 1) {

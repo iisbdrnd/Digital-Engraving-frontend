@@ -102,7 +102,8 @@ export default function StartCycleForm(props) {
             inputTime.setHours((inputTime.getHours() + hours));
             inputTime.setMinutes((inputTime.getMinutes() + (+minutes)));
             // addTwoHour = new Date(new Date().setMinutes(inputTime.getMinutes() + 30));  
-            let update_est_end_time = formatAm_Pm(inputTime);
+            // let update_est_end_time = formatAm_Pm(inputTime);
+            let update_est_end_time = new Date(inputTime);
             setFormData({ 
                 est_end_time: update_est_end_time
             });
@@ -157,7 +158,8 @@ export default function StartCycleForm(props) {
     const submitHandler = (data, e) => {
         data.platingTankMasterId = props.platingTankMasterId; //platingTankMasterId == where store data of plating_tank_schedule_masters
         data.shift_operator = dropdownData.shift_operator;
-        
+        data.est_end_time = new Date(formData.est_end_time);
+        data.est_end_time = moment(data.est_end_time).format("YYYY-MM-DDTHH:mm");
         userPostMethod(`${PLATING_SCHEDULE_START_CYCLE}/${props.platingTankMasterId}`, data)
             .then(response => {
                 if (response.data.status == 1) {

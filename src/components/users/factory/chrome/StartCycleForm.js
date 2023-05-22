@@ -106,7 +106,8 @@ export default function StartCycleForm(props) {
             const estimate_duration = new Date(moment(formData?.plating_time, "HH:mm:ss").toString());
             inputTime.setHours(inputTime.getHours() + (+estimate_duration.getHours()));
             inputTime.setMinutes(inputTime.getMinutes() + (+estimate_duration.getMinutes()));
-            let update_est_end_time = moment(inputTime).format('YYYY-MM-DD hh:mm a');
+            // let update_est_end_time = moment(inputTime).format('YYYY-MM-DD hh:mm a');
+            let update_est_end_time = new Date(inputTime);
             setFormData({ 
                 est_end_time: update_est_end_time 
             });
@@ -164,7 +165,7 @@ export default function StartCycleForm(props) {
         data.scheduleId = props.chromeScheduleMasterId;
         data.shift_operator = dropdownData.shift_operator; 
         data.est_end_time = new Date(formData.est_end_time);
-        data.est_end_time = data.est_end_time.toJSON();
+        data.est_end_time = moment(data.est_end_time).format("YYYY-MM-DDTHH:mm");
         userPostMethod(`${CHROME_SCHEDULE_START_CYCLE}/${props.chromeScheduleMasterId}`, data)
             .then(response => {
                 if (response.data.status == 1) {
