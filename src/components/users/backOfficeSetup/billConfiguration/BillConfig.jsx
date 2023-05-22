@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState } from "react";
-import { userGetMethod, userPostMethod } from "../../../../api/userAction";
+import { userGetMethod, userPostMethod, userPutMethod } from "../../../../api/userAction";
 import { billConfigurationAPI } from "../../../../api/userUrl";
 import useForm from "react-hook-form";
 import { toast } from "react-toastify";
@@ -18,12 +18,10 @@ const BillConfig = () => {
             })
     }, [])
     const submitHandler = (data) => {
-        // data.id = billConfigInfo.id;
-        userPostMethod(`${billConfigurationAPI}/${billConfigInfo.id}`, data)
+        userPutMethod(`${billConfigurationAPI}/${billConfigInfo.id}`, data)
             .then((response) => {
                 console.log(response);
                 toast.success("Bill config updated !")
-                // setBillConfigInfo(response.data?.billConfig);
             })
             .catch((error) => {
                 console.log(error);
