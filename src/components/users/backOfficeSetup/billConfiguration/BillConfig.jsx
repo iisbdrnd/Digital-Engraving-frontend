@@ -38,7 +38,7 @@ const BillConfig = () => {
                             <div className="card-header">
                                 <div className="row">
                                     <div className="col-md-6">
-                                        <h5>Account Configuration</h5>
+                                        <h5>Bill Configuration</h5>
                                     </div>
                                     <div className="col-md-6">
                                         {/* <PanelRefreshIcons panelRefresh={pageRefreshHandler} /> */}
@@ -50,12 +50,12 @@ const BillConfig = () => {
                                 <form className="theme-form row" onSubmit={handleSubmit(submitHandler)}>
                                     <div className="form-row">
                                         <div className="col-md-6 form-group row">
-                                            
+
                                             <label for="cylinder_b_amount" className="col-form-label col-md-5 required">Cylinder A Amount</label>
                                             <div className="col-lg-7 col-md-8 col-xs-12">
                                                 <input type="number" className="form-control" required defaultValue={billConfigInfo?.cylinder_a_amount} ref={register({
                                                     required: 'Job No Field Required'
-                                                })} id="cylinder_b_amount" name="cylinder_b_amount" placeholder="" />
+                                                })} id="cylinder_a_amount" name="cylinder_a_amount" placeholder="" />
                                             </div>
                                             <label for="cylinder_b_amount" className="col-form-label col-md-5 required">Cylinder B Amount</label>
                                             <div className="col-lg-7 col-md-8 col-xs-12">
@@ -67,22 +67,22 @@ const BillConfig = () => {
                                             <div className="col-lg-7 col-md-8 col-xs-12">
                                                 <input type="number" className="form-control" required defaultValue={billConfigInfo?.cylinder_c_amount} ref={register({
                                                     required: 'Job No Field Required'
-                                                })} id="cylinder_b_amount" name="cylinder_b_amount" placeholder="" />
+                                                })} id="cylinder_c_amount" name="cylinder_c_amount" placeholder="" />
                                             </div>
                                         </div>
                                         <div className="col-md-6 form-group row">
-                                            
+
                                             <label for="cylinder_b_amount" className="col-form-label col-md-5 required">Fixed Amount</label>
                                             <div className="col-lg-7 col-md-8 col-xs-12">
                                                 <input type="number" className="form-control" required defaultValue={billConfigInfo?.fixed_amount} ref={register({
                                                     required: 'Job No Field Required'
-                                                })} id="cylinder_b_amount" name="cylinder_b_amount" placeholder="" />
+                                                })} id="fixed_amount" name="fixed_amount" placeholder="" />
                                             </div>
                                             <label for="cylinder_b_amount" className="col-form-label col-md-5 required">Per Squre Amount</label>
                                             <div className="col-lg-7 col-md-8 col-xs-12">
                                                 <input type="number" className="form-control" required defaultValue={billConfigInfo?.per_square_amount} ref={register({
                                                     required: 'Job No Field Required'
-                                                })} id="cylinder_b_amount" name="cylinder_b_amount" placeholder="" />
+                                                })} id="per_square_amount" name="per_square_amount" placeholder="" />
                                             </div>
                                         </div>
 
