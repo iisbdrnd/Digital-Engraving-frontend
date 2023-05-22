@@ -101,6 +101,7 @@ export const chartOfAccCodeAPI = 'api/user/chartOfAccounts';
 
 export const accConfigurationAPI = 'api/user/accConfiguration';
 export const projectAccountCodeAPI = 'api/user/projectAccountCode';
+export const billConfigurationAPI = 'api/user/billConfiguration';
 
 export const batchAPI = 'api/user/batch';
 
