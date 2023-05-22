@@ -150,7 +150,6 @@ const Add = (props) => {
         }
     }
    
-
     const submitHandler = (data ,e) => {
         console.log('dropDownData', dropDownData,data);
         data.job_order_pk_id = dropDownData.job_order_pk_id;
@@ -337,8 +336,10 @@ const Add = (props) => {
 
                                                                     <input type="hidden" value={stateData.shiftData.shift_pk_id} className="form-control" name="shift_id" required  ref={register({})} />
                                                                 </div>
+                                                            </div>
 
-                                                                <label className="col-md-5 col-form-label label-form">Done by</label>
+                                                            <div className="col-md-6 form-row">
+                                                            <label className="col-md-5 col-form-label label-form">Done by</label>
                                                                 <div className="col-md-7">
                                                                     <select className="form-control" name="done_by"  ref={register({})}>
                                                                         <option>select one</option>
@@ -349,9 +350,6 @@ const Add = (props) => {
                                                                         }
                                                                     </select>
                                                                 </div>
-                                                            </div>
-
-                                                            <div className="col-md-6 form-row">
                                                                 <label className="col-md-5 col-form-label label-form">A. Machine</label>
                                                                 <div className="col-md-7">
                                                                     <select className="form-control" name="a_machine"  ref={register({})}>

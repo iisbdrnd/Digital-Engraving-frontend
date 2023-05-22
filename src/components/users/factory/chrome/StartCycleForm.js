@@ -163,6 +163,8 @@ export default function StartCycleForm(props) {
     const submitHandler = (data, e) => {
         data.scheduleId = props.chromeScheduleMasterId;
         data.shift_operator = dropdownData.shift_operator; 
+        data.est_end_time = new Date(formData.est_end_time);
+        data.est_end_time = data.est_end_time.toJSON();
         userPostMethod(`${CHROME_SCHEDULE_START_CYCLE}/${props.chromeScheduleMasterId}`, data)
             .then(response => {
                 if (response.data.status == 1) {
