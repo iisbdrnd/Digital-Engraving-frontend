@@ -214,7 +214,7 @@ const Add = (props) => {
                                                     <input type="hidden" name="job_no" value={stateData.jobOrderDetails.job_no ? stateData.jobOrderDetails.job_no : ''} ref={register({})} />
                                                 </div>
 
-                                                <label className="col-md-3 col-form-label label-form required ">Cylinder Id</label>
+                                                <label className="col-md-3 col-form-label label-form required">Cylinder Id</label>
                                                 <div className="col-md-9">
                                                     <select className="form-control" name='cylinder_id' onChange={(e)=>setStateData({'cylinder_id': e.target.value})}  ref={register({})} defaultValue=''>
                                                         <option value="">select one</option>

@@ -83,9 +83,9 @@ const Add = (props) => {
     
     let employeesOptions = [];
     if (clientData && clientData.employeeInfos.length > 0) {
-        employeesOptions = clientData.employeeInfos.map((employee) => (<option key={employee.id} value={employee.id}>{employee.employee_id}</option>))
+        employeesOptions = clientData.employeeInfos.map((employee) => (<option key={employee.id} value={employee.id}>{employee.name}</option>))
     }
-    console.log('clientData', clientData);
+    console.log('clientData', clientData?.employeeInfos);
 
     
 
@@ -247,7 +247,7 @@ const Add = (props) => {
                                             <fieldset className="border" >
                                                 <legend className="w-auto text-left">Marketed By</legend>
                                                 <div className="form-group row">
-                                                    <label className="col-sm-4 col-form-label" htmlFor="marketing_person_id">Id</label>
+                                                    <label className="col-sm-4 col-form-label" htmlFor="marketing_person_id">Name</label>
                                                     <div className="col-sm-8">
                                                         <select className="form-control" onChange={employeeChangeHandler} id="marketing_person_id" name="marketing_person_id"
                                                             ref={register({
@@ -255,13 +255,12 @@ const Add = (props) => {
                                                             })} >
                                                             <option value=''> Select One </option>
                                                             {employeesOptions}
-                                                            
                                                         </select>
                                                         {errors.marketing_person_id && <p className='text-danger'>{errors.marketing_person_id.message}</p>}
                                                     </div>
                                                 </div>
 
-                                                <div className="form-group row">
+                                                {/* <div className="form-group row">
                                                     <label className="col-md-4 col-form-label" htmlFor="marketer_name">Name</label>
                                                     <div className="col-md-8">
                                                         <input 
@@ -276,7 +275,7 @@ const Add = (props) => {
                                                             // })}
                                                         />
                                                     </div>
-                                                </div>
+                                                </div> */}
                                                 <div className="form-group row">
                                                     <label className="col-md-4 col-form-label" htmlFor="marketer_name">Designation</label>
                                                     <div className="col-md-8">
@@ -435,7 +434,7 @@ const Add = (props) => {
                                                     </div>
                                                 </div>
 
-                                                <div className="form-group row">
+                                                {/* <div className="form-group row">
                                                     <label className="col-md-4 col-form-label" htmlFor="cylinder_a_amount">Cylinder A amount</label>
                                                     <div className="col-md-8">
                                                         <input 
@@ -476,7 +475,7 @@ const Add = (props) => {
                                                             ref={register({})}
                                                         />
                                                     </div>
-                                                </div>
+                                                </div> */}
                                                 
                                             </fieldset>
                                         </div>
