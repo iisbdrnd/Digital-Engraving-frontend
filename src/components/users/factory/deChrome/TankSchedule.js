@@ -193,7 +193,8 @@ export default function TankSchedule(props) {
                     if (response.data.status == 1) {
                         toast.success(response.data.message);
                         e.target.reset();
-                        setModal(false);
+                        props.toggle('addTankSchedule')
+                        // setModal(false);
                     } else {
                         toast.error(response.data.message);
                     }

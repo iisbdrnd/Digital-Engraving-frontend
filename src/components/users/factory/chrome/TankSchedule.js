@@ -202,6 +202,7 @@ export default function TankSchedule(props) {
                             surface_area          : '',
                         });
                         props.onChangeTank(props.tankId,props.modalTitle);
+                        props.toggle('addTankSchedule');
                         setModal(false);
                     } else {
                         toast.error(response.data.message);
