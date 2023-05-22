@@ -9,6 +9,7 @@ import { PLATING_DEPT_RSURL, PLATING_SCHEDULE_START_CYCLE, CHECK_CYL_EXIST_OR_NO
 import { userGetMethod, userPutMethod, userPostMethod } from '../../../../api/userAction';
 import { ValidationAlerts } from '../../../common/GlobalButton';
 import SweetAlert from 'sweetalert2';
+import moment from 'moment';
 
 export default function StartCycleForm(props) {
     const { handleSubmit, register, errors } = useForm();
@@ -102,7 +103,6 @@ export default function StartCycleForm(props) {
             inputTime.setMinutes((inputTime.getMinutes() + (+minutes)));
             // addTwoHour = new Date(new Date().setMinutes(inputTime.getMinutes() + 30));  
             let update_est_end_time = formatAm_Pm(inputTime);
-            
             setFormData({ 
                 est_end_time: update_est_end_time
             });
@@ -350,7 +350,7 @@ export default function StartCycleForm(props) {
                                                             placeholder="Est End Time"
                                                             autoComplete="off"
                                                             required
-                                                            value={formData.est_end_time}
+                                                            value={formData.est_end_time != '' ? moment(formData.est_end_time).format("DD/MM/YYYY hh:mm a") : "DD/MM/YYYY"}
                                                             onChange={inputHandler}
                                                             ref={register({
                                                                 required: 'Est End Time Field Required'

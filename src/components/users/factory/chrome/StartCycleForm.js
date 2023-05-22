@@ -347,7 +347,7 @@ export default function StartCycleForm(props) {
                                                             disabled="disabled"
                                                             placeholder="Est End Time"
                                                             autoComplete="off"
-                                                            value={formData.est_end_time}
+                                                            value={formData.est_end_time != '' ? moment(formData.est_end_time).format("DD/MM/YYYY hh:mm a") : "DD/MM/YYYY"}
                                                             onChange={inputHandler}
                                                             ref={register({
                                                                 required: 'Est End Time Field Required'
