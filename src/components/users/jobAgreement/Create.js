@@ -31,6 +31,7 @@ const Add = (props) => {
             vat_status       : '',
             job_order_id     : '',
             job_type         : '',
+            surface_area     : '',
         }
     );
     
@@ -58,7 +59,7 @@ const Add = (props) => {
                         })
                     }
                     setJobNoValue([...jobNoValue,jobOrderObj]);
-                    dropDownChange([{id : response.data.jobOrder.id}], 'job_order_id');
+                    dropDownChange([{id : job_order_id}], 'job_order_id');
                 }
                 if (response.data.jobOrders && response.data.jobOrders.length > 0) {
                     response.data.jobOrders.map(order => 
@@ -85,8 +86,13 @@ const Add = (props) => {
         if(stateName === 'job_order_id' && event[0]?.name){
             setJobNoValue(event);
         }
-        if(event.length > 0){
-            const selectedValue = event[0].id;
+        if(event.length > 0 ){
+            var selectedValue;
+            if (event.length > 0) {
+                selectedValue = event[0].id;
+            } else {
+                selectedValue = event.id;
+            }
             setDropdownData(
                 (prevstate) => ({
                     ...prevstate,
@@ -96,7 +102,7 @@ const Add = (props) => {
 
             userGetMethod(`${JOB_ORDER_DETAILS}?jobOrderId=${selectedValue}`)
                 .then(response => {
-                    let { job_name, job_type, printer_name, client_email, bill_config_type, printer_mark, marketing_p_name, cyl_rate_status, limit_square_cm, vat_status} = response.data.jobOrderDetails;
+                    let { job_name,surface_area, job_type, printer_name, client_email, bill_config_type, printer_mark, marketing_p_name, cyl_rate_status, limit_square_cm, vat_status} = response.data.jobOrderDetails;
                     setJobAgreementInput({
                         'job_name'         : job_name,
                         'printer_name'     : printer_name,
@@ -108,6 +114,7 @@ const Add = (props) => {
                         'limit_square_cm'  : limit_square_cm,
                         'vat_status'       : vat_status,
                         'job_type'         : job_type,
+                        'surface_area'     : surface_area
                     });
                 });
         } 
@@ -142,7 +149,8 @@ const Add = (props) => {
             'client_email': '',
             'marketing_p_name': '',
             'limit_square_cm': 0,
-            'job_type': ''
+            'job_type': '',
+            'surface_area' : ''
         });
     }
 
@@ -257,7 +265,7 @@ const Add = (props) => {
                                                 </>)}
 
                                                 {jobAgreementInput?.job_type != "Redo" && (<>
-                                                {jobAgreementInput.cyl_rate_status != 1 ? (<div className="form-group row">
+                                                {jobAgreementInput.cyl_rate_status == 3 && (<div className="form-group row">
                                                     <label className="col-sm-4 col-form-label" htmlFor="limit_square_cm">Sqr Limit</label>
                                                     <div className="col-sm-8">
                                                         <input 
@@ -276,7 +284,8 @@ const Add = (props) => {
                                                         />
                                                         {errors.limit_square_cm && <p className='text-danger'>{errors.limit_square_cm.message}</p>}
                                                     </div>
-                                                </div>) : (
+                                                </div>)}
+                                                {jobAgreementInput.cyl_rate_status == 1 &&(
                                                     <div className="form-group row">
                                                     <label className="col-sm-4 col-form-label" htmlFor="fixed_amount">Fixed Amount</label>
                                                     <div className="col-sm-8">
@@ -299,6 +308,49 @@ const Add = (props) => {
                                                     </div>
                                                 </div>
                                                 )}
+                                                {jobAgreementInput.cyl_rate_status == 2 &&(<>
+                                                    <div className="form-group row">
+                                                    <label className="col-sm-4 col-form-label" htmlFor="limit_square_cm">Sqr Limit</label>
+                                                    <div className="col-sm-8">
+                                                        <input 
+                                                            className="form-control" 
+                                                            id="limit_square_cm" 
+                                                            name="limit_square_cm"
+                                                            required 
+                                                            type="text" 
+                                                            placeholder="Sqr Limit" 
+                                                            value={jobAgreementInput.limit_square_cm}
+                                                            onChange={calculateFormValue}
+                                                            readOnly={jobAgreementInput.bill_config_type == 2 ? 'readonly' : '' }
+                                                            ref={register({
+                                                                required: 'Sqr Limit Field Required'
+                                                            })}
+                                                        />
+                                                        {errors.limit_square_cm && <p className='text-danger'>{errors.limit_square_cm.message}</p>}
+                                                    </div>
+                                                </div>
+                                                <div className="form-group row">
+                                                    <label className="col-sm-4 col-form-label" htmlFor="per_sq_amount">Per Sq Amount</label>
+                                                    <div className="col-sm-8">
+                                                        <input 
+                                                            className="form-control" 
+                                                            id="per_sq_amount" 
+                                                            name="per_sq_amount"
+                                                            required 
+                                                            type="text" 
+                                                            placeholder="Sqr Limit" 
+                                                            value={0}
+                                                            readOnly
+                                                            // onChange={calculateFormValue}
+                                                            // readOnly={jobAgreementInput.bill_config_type == 2 ? 'readonly' : '' }
+                                                            ref={register({
+                                                                required: 'Fixed Amount Field Required'
+                                                            })}
+                                                        />
+                                                        {errors.per_sq_amount && <p className='text-danger'>{errors.per_sq_amount.message}</p>}
+                                                    </div>
+                                                </div>
+                                                </>)}
                                                 {
                                                     jobAgreementInput.vat_status == 0 ?
                                                     (
@@ -391,6 +443,11 @@ const Add = (props) => {
                                                                 <td align="right">Job Type</td>
                                                                 <td>:</td>
                                                                 <td>{jobAgreementInput.job_type}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td align="right">Surface Area</td>
+                                                                <td>:</td>
+                                                                <td>{jobAgreementInput.surface_area}</td>
                                                             </tr>
                                                             <tr>
                                                                 <td align="right">Printer Name</td>
