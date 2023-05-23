@@ -390,6 +390,7 @@ const Add = (props) => {
                                                             name="limit_square_cm" 
                                                             type="text" 
                                                             onChange={calculateFormValue}
+                                                            required = {cylinderRate ==2 ? true : false}
                                                             // value={employeeInfo.limit_square_cm != undefined ? employeeInfo.limit_square_cm : ""}
                                                             ref={register({
                                                                 required: 'Limit Field Required'
@@ -407,6 +408,7 @@ const Add = (props) => {
                                                             name="fixed_amount" 
                                                             type="text" 
                                                             onChange={calculateFormValue}
+                                                            required = {cylinderRate ==1 ? true : false}
                                                             // value={employeeInfo.fixed_amount != undefined ? employeeInfo.fixed_amount : ""}
                                                             ref={register({
                                                                 required: 'Fixed Amount Field Required'
@@ -425,6 +427,7 @@ const Add = (props) => {
                                                             name="per_square_amount" 
                                                             type="text" 
                                                             readOnly={'readonly'}
+                                                            required = {cylinderRate ==2 ? true : false}
                                                             // onChange={changeHandler}
                                                             value={(calculationValue.fixed_amount / calculationValue.limit_square_cm) ? calculationValue.fixed_amount / calculationValue.limit_square_cm : 0}
                                                             ref={register({
