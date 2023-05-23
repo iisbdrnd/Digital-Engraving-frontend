@@ -32,6 +32,8 @@ const Add = (props) => {
             job_order_id     : '',
             job_type         : '',
             surface_area     : '',
+            fixed_amount     : '',
+            per_square_amount: '',
         }
     );
     
@@ -102,7 +104,7 @@ const Add = (props) => {
 
             userGetMethod(`${JOB_ORDER_DETAILS}?jobOrderId=${selectedValue}`)
                 .then(response => {
-                    let { job_name,surface_area, job_type, printer_name, client_email, bill_config_type, printer_mark, marketing_p_name, cyl_rate_status, limit_square_cm, vat_status} = response.data.jobOrderDetails;
+                    let { job_name, fixed_amount,per_square_amount,surface_area, job_type, printer_name, client_email, bill_config_type, printer_mark, marketing_p_name, cyl_rate_status, limit_square_cm, vat_status} = response.data.jobOrderDetails;
                     setJobAgreementInput({
                         'job_name'         : job_name,
                         'printer_name'     : printer_name,
@@ -114,7 +116,9 @@ const Add = (props) => {
                         'limit_square_cm'  : limit_square_cm,
                         'vat_status'       : vat_status,
                         'job_type'         : job_type,
-                        'surface_area'     : surface_area
+                        'surface_area'     : surface_area,
+                        'fixed_amount'     : fixed_amount,
+                        'per_square_amount'  : per_square_amount,
                     });
                 });
         } 
@@ -150,7 +154,9 @@ const Add = (props) => {
             'marketing_p_name': '',
             'limit_square_cm': 0,
             'job_type': '',
-            'surface_area' : ''
+            'surface_area' : '',
+            'fixed_amount'     : '',
+            'per_square_amount'  : '',
         });
     }
 
@@ -296,7 +302,7 @@ const Add = (props) => {
                                                             required 
                                                             type="text" 
                                                             placeholder="Sqr Limit" 
-                                                            value={0}
+                                                            value={jobAgreementInput.fixed_amount}
                                                             readOnly
                                                             // onChange={calculateFormValue}
                                                             // readOnly={jobAgreementInput.bill_config_type == 2 ? 'readonly' : '' }
@@ -330,16 +336,16 @@ const Add = (props) => {
                                                     </div>
                                                 </div>
                                                 <div className="form-group row">
-                                                    <label className="col-sm-4 col-form-label" htmlFor="per_sq_amount">Per Sq Amount</label>
+                                                    <label className="col-sm-4 col-form-label" htmlFor="per_square_amount">Per Sq Amount</label>
                                                     <div className="col-sm-8">
                                                         <input 
                                                             className="form-control" 
-                                                            id="per_sq_amount" 
-                                                            name="per_sq_amount"
+                                                            id="per_square_amount" 
+                                                            name="per_square_amount"
                                                             required 
                                                             type="text" 
-                                                            placeholder="Sqr Limit" 
-                                                            value={0}
+                                                            placeholder="per_square_amount" 
+                                                            value={jobAgreementInput.per_square_amount}
                                                             readOnly
                                                             // onChange={calculateFormValue}
                                                             // readOnly={jobAgreementInput.bill_config_type == 2 ? 'readonly' : '' }
@@ -347,7 +353,7 @@ const Add = (props) => {
                                                                 required: 'Fixed Amount Field Required'
                                                             })}
                                                         />
-                                                        {errors.per_sq_amount && <p className='text-danger'>{errors.per_sq_amount.message}</p>}
+                                                        {errors.per_square_amount && <p className='text-danger'>{errors.per_square_amount.message}</p>}
                                                     </div>
                                                 </div>
                                                 </>)}
