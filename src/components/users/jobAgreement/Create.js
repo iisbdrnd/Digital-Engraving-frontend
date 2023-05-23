@@ -413,9 +413,8 @@ const Add = (props) => {
                                                         </div>
                                                     )
                                                 }
-                                                
-
-                                                {jobAgreementInput.cyl_rate_status != 1 && <div className="form-group row">
+                                                </>)}
+                                                <div className="form-group row">
                                                     <label className="col-sm-4 col-form-label required" htmlFor="printer_mark">Printer Mark</label>
                                                     <div className="col-sm-8">
                                                         <select className="form-control" required id="printer_mark" name="printer_mark"
@@ -429,8 +428,7 @@ const Add = (props) => {
                                                         </select>
                                                         {errors.printer_mark && <p className='text-danger'>{errors.printer_mark.message}</p>}
                                                     </div>
-                                                </div>}
-                                                </>)}
+                                                </div>
 
                                             </fieldset>
                                         </div>
@@ -470,12 +468,6 @@ const Add = (props) => {
                                                                 <td>:</td>
                                                                 <td>{jobAgreementInput.marketing_p_name}</td>
                                                             </tr>
-                                                            {/* <tr>
-                                                                <td align="right">Reply</td>
-                                                                <td>:</td>
-                                                                <td></td>
-                                                            </tr> */}
-
                                                         </tbody>
                                                     </table>
                                                 </div>
