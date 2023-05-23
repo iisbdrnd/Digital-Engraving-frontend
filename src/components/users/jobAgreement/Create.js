@@ -29,7 +29,8 @@ const Add = (props) => {
             cyl_rate_status  : '',
             limit_square_cm  : 0,
             vat_status       : '',
-            job_order_id     : ''
+            job_order_id     : '',
+            job_type         : '',
         }
     );
     
@@ -95,7 +96,7 @@ const Add = (props) => {
 
             userGetMethod(`${JOB_ORDER_DETAILS}?jobOrderId=${selectedValue}`)
                 .then(response => {
-                    let { job_name, printer_name, client_email, bill_config_type, printer_mark, marketing_p_name, cyl_rate_status, limit_square_cm, vat_status} = response.data.jobOrderDetails;
+                    let { job_name, job_type, printer_name, client_email, bill_config_type, printer_mark, marketing_p_name, cyl_rate_status, limit_square_cm, vat_status} = response.data.jobOrderDetails;
                     setJobAgreementInput({
                         'job_name'         : job_name,
                         'printer_name'     : printer_name,
@@ -106,10 +107,12 @@ const Add = (props) => {
                         'cyl_rate_status'  : cyl_rate_status,
                         'limit_square_cm'  : limit_square_cm,
                         'vat_status'       : vat_status,
+                        'job_type'         : job_type,
                     });
                 });
         } 
     }
+    console.log(jobAgreementInput);
 
     const calculateFormValue = (event) => {
         setJobAgreementInput(
@@ -138,7 +141,8 @@ const Add = (props) => {
             'printer_name': '',
             'client_email': '',
             'marketing_p_name': '',
-            'limit_square_cm': 0
+            'limit_square_cm': 0,
+            'job_type': ''
         });
     }
 
@@ -220,17 +224,40 @@ const Add = (props) => {
                                                             ref={register({
                                                                 required: 'Cyl Rate Status Field Required'
                                                             })}
+                                                            disabled = {jobAgreementInput?.job_type == "Redo" ? true : false}
                                                             defaultValue=''>
                                                             <option value=''>Select One</option>
-                                                            <option selected={jobAgreementInput.cyl_rate_status == 1 ? true : false} value="1">Per Cylinder</option>
-                                                            <option selected={jobAgreementInput.cyl_rate_status == 2 ? true : false} value="2">Per Sqr cm</option>
-                                                            <option selected={jobAgreementInput.cyl_rate_status == 3 ? true : false} value="3">Per Sqr inch</option>
+                                                            <option selected={(jobAgreementInput.cyl_rate_status == 1 && jobAgreementInput?.job_type != "Redo") ? true : false} value="1">Per Cylinder</option>
+                                                            <option selected={(jobAgreementInput.cyl_rate_status == 2 && jobAgreementInput?.job_type != "Redo") ? true : false} value="2">Per Sqr cm</option>
+                                                            <option selected={(jobAgreementInput.cyl_rate_status == 3 && jobAgreementInput?.job_type != "Redo") ? true : false} value="3">Per Sqr inch</option>
+                                                            <option selected={(jobAgreementInput?.job_type == "Redo") ? true : false} value="N/A">Not Applicable</option>
                                                         </select>
                                                         {errors.cyl_rate_status && <p className='text-danger'>{errors.cyl_rate_status.message}</p>}
                                                     </div>
                                                 </div>
+                                                {jobAgreementInput?.job_type == "Redo" && (<>
+                                                    <div className="form-group row">
+                                                    <label className="col-sm-4 col-form-label" htmlFor="fixed_amount">Fixed Amount</label>
+                                                    <div className="col-sm-8">
+                                                        <input 
+                                                            className="form-control" 
+                                                            id="fixed_amount" 
+                                                            name="fixed_amount"
+                                                            type="text" 
+                                                            placeholder="Fixed amount" 
+                                                            value={"0"}
+                                                            readOnly
+                                                            ref={register({
+                                                                required: 'Fixed Amount Field Required'
+                                                            })}
+                                                        />
+                                                        {errors.limit_square_cm && <p className='text-danger'>{errors.limit_square_cm.message}</p>}
+                                                    </div>
+                                                </div>
+                                                </>)}
 
-                                                <div className="form-group row">
+                                                {jobAgreementInput?.job_type != "Redo" && (<>
+                                                {jobAgreementInput.cyl_rate_status != 1 ? (<div className="form-group row">
                                                     <label className="col-sm-4 col-form-label" htmlFor="limit_square_cm">Sqr Limit</label>
                                                     <div className="col-sm-8">
                                                         <input 
@@ -249,7 +276,29 @@ const Add = (props) => {
                                                         />
                                                         {errors.limit_square_cm && <p className='text-danger'>{errors.limit_square_cm.message}</p>}
                                                     </div>
+                                                </div>) : (
+                                                    <div className="form-group row">
+                                                    <label className="col-sm-4 col-form-label" htmlFor="fixed_amount">Fixed Amount</label>
+                                                    <div className="col-sm-8">
+                                                        <input 
+                                                            className="form-control" 
+                                                            id="fixed_amount" 
+                                                            name="fixed_amount"
+                                                            required 
+                                                            type="text" 
+                                                            placeholder="Sqr Limit" 
+                                                            value={0}
+                                                            readOnly
+                                                            // onChange={calculateFormValue}
+                                                            // readOnly={jobAgreementInput.bill_config_type == 2 ? 'readonly' : '' }
+                                                            ref={register({
+                                                                required: 'Fixed Amount Field Required'
+                                                            })}
+                                                        />
+                                                        {errors.limit_square_cm && <p className='text-danger'>{errors.limit_square_cm.message}</p>}
+                                                    </div>
                                                 </div>
+                                                )}
                                                 {
                                                     jobAgreementInput.vat_status == 0 ?
                                                     (
@@ -308,7 +357,7 @@ const Add = (props) => {
                                                 }
                                                 
 
-                                                <div className="form-group row">
+                                                {jobAgreementInput.cyl_rate_status != 1 && <div className="form-group row">
                                                     <label className="col-sm-4 col-form-label required" htmlFor="printer_mark">Printer Mark</label>
                                                     <div className="col-sm-8">
                                                         <select className="form-control" required id="printer_mark" name="printer_mark"
@@ -322,7 +371,8 @@ const Add = (props) => {
                                                         </select>
                                                         {errors.printer_mark && <p className='text-danger'>{errors.printer_mark.message}</p>}
                                                     </div>
-                                                </div>
+                                                </div>}
+                                                </>)}
 
                                             </fieldset>
                                         </div>
@@ -336,6 +386,11 @@ const Add = (props) => {
                                                                 <td width="20%" align="right">Job Name</td>
                                                                 <td width="5%">:</td>
                                                                 <td width="75%">{jobAgreementInput.job_name}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td align="right">Job Type</td>
+                                                                <td>:</td>
+                                                                <td>{jobAgreementInput.job_type}</td>
                                                             </tr>
                                                             <tr>
                                                                 <td align="right">Printer Name</td>
