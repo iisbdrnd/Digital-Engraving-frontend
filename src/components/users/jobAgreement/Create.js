@@ -238,7 +238,7 @@ const Add = (props) => {
                                                             ref={register({
                                                                 required: 'Cyl Rate Status Field Required'
                                                             })}
-                                                            disabled = {jobAgreementInput?.job_type == "Redo" ? true : false}
+                                                            disabled
                                                             defaultValue=''>
                                                             <option value=''>Select One</option>
                                                             <option selected={(jobAgreementInput.cyl_rate_status == 1 && jobAgreementInput?.job_type != "Redo") ? true : false} value="1">Per Cylinder</option>
@@ -283,7 +283,8 @@ const Add = (props) => {
                                                             placeholder="Sqr Limit" 
                                                             value={jobAgreementInput.limit_square_cm}
                                                             onChange={calculateFormValue}
-                                                            readOnly={jobAgreementInput.bill_config_type == 2 ? 'readonly' : '' }
+                                                            // readOnly={jobAgreementInput.bill_config_type == 2 ? 'readonly' : '' }
+                                                            readOnly
                                                             ref={register({
                                                                 required: 'Sqr Limit Field Required'
                                                             })}
@@ -327,7 +328,8 @@ const Add = (props) => {
                                                             placeholder="Sqr Limit" 
                                                             value={jobAgreementInput.limit_square_cm}
                                                             onChange={calculateFormValue}
-                                                            readOnly={jobAgreementInput.bill_config_type == 2 ? 'readonly' : '' }
+                                                            // readOnly={jobAgreementInput.bill_config_type == 2 ? 'readonly' : '' }
+                                                            readOnly
                                                             ref={register({
                                                                 required: 'Sqr Limit Field Required'
                                                             })}
