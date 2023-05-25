@@ -49,6 +49,7 @@ const Edit = (props) => {
             vat_amount: '',
             net_total: '',
             fixed_amount: '',
+            base_total_amount : 0,
         }
     );
 
@@ -185,6 +186,7 @@ const Edit = (props) => {
                     circumference : response.data.jobOrders_details.circumference,
                     face_length : response.data.jobOrders_details.face_length,
                     surface_area : response.data.jobOrders_details.surface_area,
+                    base_total_amount : response.data.base_total_amount,
 
                     total_surface_area_sqr_cm : response.data.jobOrders_details.total_surface_area,
                     total_surface_area_sqr_inch : total_surface_area_sqr_inch_total,
@@ -579,15 +581,26 @@ const Edit = (props) => {
                                                         />
                                                     </div>
 
-                                                    <label className="col-md-2 col-form-label label-form">Less Bare Cost:</label>
-                                                    <div className="col-md-2">
+                                                    <label className="col-md-2 col-form-label label-form d-none">Less Bare Cost:</label>
+                                                    <div className="col-md-2 d-none">
                                                         <input 
                                                             type="number" 
                                                             className="form-control" 
                                                             name="less_bare_cost" 
                                                             ref={register({required: true })}
                                                             onChange={inputChangeHandler} 
-                                                            value={userBillInput.less_bare_cost ? userBillInput.less_bare_cost : 0} 
+                                                            value={0} 
+                                                        />
+                                                    </div>
+                                                    <label className="col-md-2 col-form-label label-form">Less Base Cost:</label>
+                                                    <div className="col-md-2">
+                                                        <input 
+                                                            type="number" 
+                                                            className="form-control" 
+                                                            name="base_total_amount" 
+                                                            ref={register({required: true })}
+                                                            onChange={inputChangeHandler} 
+                                                            value={userBillInput.base_total_amount ? userBillInput.base_total_amount : 0} 
                                                         />
                                                     </div>
 

@@ -139,7 +139,6 @@ const Edit = (props) => {
             data.rework_remarks = [];
         }
         data.cylinder_id = cylinderUpdateInfo.cylinder_id;
-        // userPutMethod(`${QUALITY_CONTROL_RS_URL}/${jobOrderPkId}`, data)
         userPostMethod(`${QUALITY_CONTROL_RS_URL}`, data)
             .then(response => {
                 if (response.data.status == 1) {
