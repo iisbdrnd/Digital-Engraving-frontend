@@ -148,10 +148,11 @@ const Edit = (props) => {
                 if(response.data.jobOrders_details.cyl_rate_status == 2) {
                     rate_per_cm_total_amount = response.data.jobOrders_details.total_surface_area * response.data.jobOrders_details.per_sqr_amount;
                     rate_per_cm_total_amount = rate_per_cm_total_amount.toFixed(2);
-                }else if(response.data.jobOrders_details.cyl_rate_status == 1){
+                }
+                if(response.data.jobOrders_details.cyl_rate_status == 1){
                     rate_per_cm_total_amount = response.data.jobOrders_details.fixed_amount.toFixed(2);
-                    // rate_per_cm_total_amount = rate_per_cm_total_amount.toFixed(2);
-                }else if(response.data.jobOrders_details.cyl_rate_status == 0){
+                }
+                if(response.data.jobOrders_details.cyl_rate_status == 0){
                     rate_per_cm_total_amount = parseInt(0);
                 }
                 
@@ -509,13 +510,12 @@ const Edit = (props) => {
                                                     <label className="col-md-3 col-form-label label-form">Total:</label>
                                                     <div className="col-md-3" style={{marginTop: '5px'}}>
                                                         <input 
-                                                            type="text" 
                                                             className="form-control" 
                                                             name="rate_per_cm_total" 
                                                             onChange={inputChangeHandler} 
                                                             readOnly
                                                             ref={register({required: true })}
-                                                            value={userBillInput.rate_per_cm_total ? userBillInput.rate_per_cm_total : ''} 
+                                                            value={userBillInput.rate_per_cm_total ? userBillInput.rate_per_cm_total : 0} 
                                                         />
                                                     </div>
                                                 </div>
@@ -556,13 +556,12 @@ const Edit = (props) => {
                                                     <label className="col-md-2 col-form-label label-form">Grand Total:</label>
                                                     <div className="col-md-2">
                                                         <input 
-                                                            type="text" 
                                                             className="form-control" 
                                                             name="grand_total" 
                                                             onChange={inputChangeHandler} 
                                                             ref={register({required: true })}
                                                             readOnly
-                                                            value={userBillInput.grand_total ? userBillInput.grand_total : ''} 
+                                                            value={userBillInput.grand_total ? userBillInput.grand_total : 0} 
                                                         />
                                                     </div>
                                                 </div>  
@@ -646,13 +645,12 @@ const Edit = (props) => {
                                                     <label className="col-md-2 col-form-label label-form">Net Total:</label>
                                                     <div className="col-md-2">
                                                         <input 
-                                                                type="text" 
                                                                 className="form-control" 
                                                                 name="net_total" 
                                                                 onChange={inputChangeHandler} 
                                                                 readOnly
                                                                 ref={register({required: true })}
-                                                                value={userBillInput.net_total ? userBillInput.net_total : ''} 
+                                                                value={userBillInput.net_total ? userBillInput.net_total : 0} 
                        
                                                         />
                                                     </div>
