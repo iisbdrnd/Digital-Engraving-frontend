@@ -152,7 +152,7 @@ const Edit = (props) => {
                     rate_per_cm_total_amount = response.data.jobOrders_details.fixed_amount.toFixed(2);
                     // rate_per_cm_total_amount = rate_per_cm_total_amount.toFixed(2);
                 }else if(response.data.jobOrders_details.cyl_rate_status == 0){
-                    rate_per_cm_total_amount = 0;
+                    rate_per_cm_total_amount = parseInt(0);
                 }
                 
 
