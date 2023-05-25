@@ -149,8 +149,8 @@ const Edit = (props) => {
                     rate_per_cm_total_amount = response.data.jobOrders_details.total_surface_area * response.data.jobOrders_details.per_sqr_amount;
                     rate_per_cm_total_amount = rate_per_cm_total_amount.toFixed(2);
                 }else if(response.data.jobOrders_details.cyl_rate_status == 1){
-                    rate_per_cm_total_amount = response.data.jobOrders_details.fixed_amount;
-                    rate_per_cm_total_amount = rate_per_cm_total_amount.toFixed(2);
+                    rate_per_cm_total_amount = response.data.jobOrders_details.fixed_amount.toFixed(2);
+                    // rate_per_cm_total_amount = rate_per_cm_total_amount.toFixed(2);
                 }else if(response.data.jobOrders_details.cyl_rate_status == 0){
                     rate_per_cm_total_amount = 0;
                 }
@@ -208,6 +208,7 @@ const Edit = (props) => {
             })
             .catch(error => console.log(error))   
     },[]);
+    console.log(userBillInput);
 
     const submitHandler = (data) => {
 
