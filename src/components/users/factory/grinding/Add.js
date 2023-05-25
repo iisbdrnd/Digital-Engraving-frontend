@@ -719,7 +719,7 @@ const Add = (props) => {
                                                             <div className="row">
                                                                 <label className="col-sm-5 col-form-label" htmlFor="final_cir">Final Cir</label>
                                                                 <div className="col-sm-7">
-                                                                    <input disabled value={100} className="form-control" name="final_cir" required id="final_cir" type="number" placeholder="Final Cir" onChange={(e) => changeMasterGrinder(e)} ref={register({ required: true })} />
+                                                                    <input  className="form-control" name="final_cir" required id="final_cir" type="number" placeholder="Final Cir" onChange={(e) => changeMasterGrinder(e)} ref={register({ required: true })} />
                                                                     <span>{errors.final_cir && 'Final Cir is required'}</span>
                                                                     <div className="valid-feedback">Looks good!</div>
                                                                 </div>

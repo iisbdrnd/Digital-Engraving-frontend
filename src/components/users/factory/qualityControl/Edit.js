@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState, useReducer } from 'react';
 import { QUALITY_CONTROL_RS_URL,QUALITY_CONTROL_JOB_DATA_BY_JOB_ID, POLISHING_GET_POLISHING_DATA_BY_JOB_ID } from '../../../../api/userUrl';
-import { userGetMethod, userPutMethod } from '../../../../api/userAction';
+import { userGetMethod, userPutMethod, userPostMethod } from '../../../../api/userAction';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import useForm from "react-hook-form";
@@ -68,7 +68,7 @@ const Edit = (props) => {
             .then(response => {
                 // dropDownChange([{id : response.data.jobOrder.job_id}], 'job_order_pk_id');
                 let {singleJobData, cylinders,cylinderLength} = response.data;
-             
+                console.log(response.data.cylinders.cylinder_id[0]);
                 setStateData({
                     'singleJobData': singleJobData, // GET DATA FROM job_orders table
                     'cylinders'    : cylinders, 
@@ -110,7 +110,7 @@ const Edit = (props) => {
             cylinderUpdateInfo['rework_status'].push(item?.status);
         })
     }
-   
+    console.log(cylinderUpdateInfo);
  
     const dropDownChange = (e, fieldName) => {
         if(e.length > 0){
@@ -135,8 +135,13 @@ const Edit = (props) => {
             data.rework_status = cylinderUpdateInfo.rework_status;
             data.rework_remarks = cylinderUpdateInfo.rework_remarks;
             data.cylinder_id = cylinderUpdateInfo.cylinder_id;
+        }else{
+            data.rework_status = [];
+            data.rework_remarks = [];
         }
-        userPutMethod(`${QUALITY_CONTROL_RS_URL}/${jobOrderPkId}`, data)
+        console.log(data);
+        // userPutMethod(`${QUALITY_CONTROL_RS_URL}/${jobOrderPkId}`, data)
+        userPostMethod(`${QUALITY_CONTROL_RS_URL}`, data)
             .then(response => {
                 if (response.data.status == 1) {
                     clearForm();

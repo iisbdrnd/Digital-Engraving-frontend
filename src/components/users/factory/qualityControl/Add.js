@@ -126,7 +126,7 @@ const Add = (props) => {
             )
         }
     }
-    console.log(inputData);
+   
     const submitHandler = (data) => {
         inputData.job_no = data.job_no;
         if (data.complete_status == 1) {
@@ -134,7 +134,7 @@ const Add = (props) => {
             inputData.rework_remarks = [];
         }
 
-        userPostMethod(`${QUALITY_CONTROL_RS_URL}?cylinder_id=${stateData.cylinder_id}`, inputData)
+        userPostMethod(`${QUALITY_CONTROL_RS_URL}`, inputData)
             .then(response => {
                 if (response.data.status == 1) {
                     toast.success(response.data.message)
