@@ -63,44 +63,44 @@ const Edit = (props) => {
 
         if(e.target.name == "less"){
             var less_amount = parseInt(e.target.value);
-            var less_bare_cost = userBillInput.less_bare_cost;
+            var base_total_amount = userBillInput.base_total_amount;
             if(isNaN(less_amount)){
                 setBillInput({
-                    ['net_total'] : grand_total - less_bare_cost,
+                    ['net_total'] : grand_total - base_total_amount,
                 });
             }else{
                 setBillInput({
-                    ['net_total'] : grand_total - parseInt(less_amount) - less_bare_cost,
+                    ['net_total'] : grand_total - parseInt(less_amount) - base_total_amount,
                 });
             }
             
         }
 
-        if(e.target.name == "less_bare_cost"){
+        if(e.target.name == "base_total_amount"){
             var less_amount = userBillInput.less;
-            var less_bare_cost = parseInt(e.target.value);
-            if(isNaN(less_bare_cost)){
+            var base_total_amount = parseInt(e.target.value);
+            if(isNaN(base_total_amount)){
                 setBillInput({
                     ['net_total'] : grand_total - less_amount,
                 });
             }else{
                 setBillInput({
-                    ['net_total'] : grand_total - parseInt(less_amount) - less_bare_cost,
+                    ['net_total'] : grand_total - parseInt(less_amount) - base_total_amount,
                 });
             }
         }
 
         if(e.target.name == "add_cost"){
             var less_amount = userBillInput.less;
-            var less_bare_cost = userBillInput.less_bare_cost;
+            var base_total_amount = userBillInput.base_total_amount;
             var add_cost = parseInt(e.target.value);
             if(isNaN(add_cost)){
                 setBillInput({
-                    ['net_total'] : grand_total - less_amount - less_bare_cost,
+                    ['net_total'] : grand_total - less_amount - base_total_amount,
                 });
             }else{
                 setBillInput({
-                    ['net_total'] : grand_total - less_amount - less_bare_cost + add_cost,
+                    ['net_total'] : grand_total - less_amount - base_total_amount + add_cost,
                 });
             }
         }
