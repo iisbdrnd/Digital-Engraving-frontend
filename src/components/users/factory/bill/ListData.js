@@ -5,6 +5,7 @@ import { filterJobOrderBillAPI, userHasAccess } from '../../../../api/userUrl';
 import { userGetMethod, userDeleteMethod } from '../../../../api/userAction';
 import { AddButton, EditButton, DeleteButton, PerPageBox } from '../../../common/GlobalButton';
 import Pagination from "react-js-pagination";
+import { Link } from 'react-router-dom';
 
 export default function ListData(props) {
     const [jobOrderData, setJobOrderData] = useState([]);
@@ -184,7 +185,7 @@ export default function ListData(props) {
                                                                                 accLoad === false ? <>
 
                                                                                     {item.bill_complete == 1 ? 
-                                                                                    <button className="btn btn-success btn-sm">Done</button> :   <a className="btn btn-primary btn-xs" href={`/bill/edit/${item.id}`} menuId={ menuId }>Bill</a>}
+                                                                                    <button className="btn btn-success btn-sm">Done</button> :   <Link className="btn btn-primary btn-xs" to={`/bill/edit/${item.id}`} menuId={ menuId }>Bill</Link>}
                                                                                     &nbsp;&nbsp;&nbsp;
                                                                                     
                                                                                     {item.bill_complete == 1 ? <a className="btn btn-info btn-xs mr-1" href={`/bill/show/${item.id}`} menuId={ menuId }>Details</a> : ''}
