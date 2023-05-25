@@ -134,12 +134,11 @@ const Edit = (props) => {
         if (stateData?.complete_status == "0") {
             data.rework_status = cylinderUpdateInfo.rework_status;
             data.rework_remarks = cylinderUpdateInfo.rework_remarks;
-            data.cylinder_id = cylinderUpdateInfo.cylinder_id;
         }else{
             data.rework_status = [];
             data.rework_remarks = [];
         }
-        console.log(data);
+        data.cylinder_id = cylinderUpdateInfo.cylinder_id;
         // userPutMethod(`${QUALITY_CONTROL_RS_URL}/${jobOrderPkId}`, data)
         userPostMethod(`${QUALITY_CONTROL_RS_URL}`, data)
             .then(response => {
