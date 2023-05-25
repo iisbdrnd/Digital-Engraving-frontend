@@ -199,7 +199,7 @@ const Edit = (props) => {
 
                     rate:per_chylider_rate,
                     grand_total: rate_per_cm_total_amount,
-                    net_total : rate_per_cm_total_amount,
+                    net_total : rate_per_cm_total_amount -  response.data.base_total_amount,
 
                     challan_no: response.data.challan_details.challan_no,
                     finished_date: response.data.challan_details.finished_date,
