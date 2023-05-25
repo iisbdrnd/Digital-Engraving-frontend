@@ -200,7 +200,7 @@ const Edit = (props) => {
 
                     challan_no: response.data.challan_details.challan_no,
                     finished_date: response.data.challan_details.finished_date,
-                    fixed_amount: response.data.jobOrders_details.fixed_amount,
+                    fixed_amount: rate_per_cm_total_amount,
 
                     isLoading: false
                     
@@ -288,6 +288,7 @@ const Edit = (props) => {
                                                             disabled
                                                         >
                                                             <option> Select One </option>
+                                                            <option value="0" selected={userBillInput.cyl_rate_status == 0? 'selected' : ''}>Redo</option>
                                                             <option value="1" selected={userBillInput.cyl_rate_status == 1? 'selected' : ''}>Per Cylinder</option>
                                                             <option value="2" selected={userBillInput.cyl_rate_status == 2? 'selected' : ''}>Per Sqr cm</option>
                                                             <option value="3" selected={userBillInput.cyl_rate_status == 3? 'selected' : ''}>Per Sqr inch</option>
@@ -496,7 +497,7 @@ const Edit = (props) => {
                                                             onChange={inputChangeHandler} 
                                                             readOnly
                                                             ref={register({required: true })}
-                                                            value={userBillInput.fixed_amount ? userBillInput.fixed_amount : ''} 
+                                                            value={userBillInput.rate_per_cm_total ? userBillInput.rate_per_cm_total : ''} 
                                                         />
                                                     </div></>)}
                                                     {userBillInput.cyl_rate_status == 0 && (<><label className="col-md-3 col-form-label label-form">Fee not applicable</label>
