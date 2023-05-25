@@ -456,7 +456,7 @@ const Edit = (props) => {
                                                         />
                                                     </div>
                                                     <label className="col-md-3 col-form-label label-form">Total S. Area (Sqrcm):</label>
-                                                    <div className="col-md-1">
+                                                    <div className="col-md-3">
                                                         <input 
                                                                 type="text" 
                                                                 className="form-control" 
@@ -475,10 +475,8 @@ const Edit = (props) => {
       
                                                     </div>
                                                     {userBillInput.cyl_rate_status == 2 && (<><label className="col-md-3 col-form-label label-form">Rate Per Sqrcm:</label>
-                                                    <div className="col-md-1" style={{marginTop: '5px'}}>
-                                                    {userBillInput.rate_per_cm ? userBillInput.rate_per_cm : ''}
-                                                        <input 
-                                                            type="hidden" 
+                                                    <div className="col-md-3" style={{marginTop: '5px'}}>
+                                                        <input  
                                                             className="form-control" 
                                                             name="rate_per_cm" 
                                                             onChange={inputChangeHandler} 
@@ -488,10 +486,9 @@ const Edit = (props) => {
                                                         />
                                                     </div></>)}
                                                     {userBillInput.cyl_rate_status == 1 && (<><label className="col-md-3 col-form-label label-form">Fixed Amount:</label>
-                                                    <div className="col-md-1" style={{marginTop: '5px'}}>
-                                                    {/* {userBillInput.rate_per_cm ? userBillInput.rate_per_cm : ''} */}
+                                                    <div className="col-md-3" style={{marginTop: '5px'}}>
+    
                                                         <input 
-                                                            type="hidden" 
                                                             className="form-control" 
                                                             name="rate_per_cm" 
                                                             onChange={inputChangeHandler} 
@@ -510,7 +507,7 @@ const Edit = (props) => {
       
                                                     </div>
                                                     <label className="col-md-3 col-form-label label-form">Total:</label>
-                                                    <div className="col-md-1" style={{marginTop: '5px'}}>
+                                                    <div className="col-md-3" style={{marginTop: '5px'}}>
                                                         <input 
                                                             type="text" 
                                                             className="form-control" 
