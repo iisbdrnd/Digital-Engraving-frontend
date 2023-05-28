@@ -188,19 +188,17 @@ const Add = (props) => {
       color_id_final_arr.push(item.id);
     })
     data.color_id = color_id_final_arr;
-    e.target.reset();
-      clearForm();
-    // userPostMethod(JOB_ORDER_RSURL, data)
-    //   .then(response => {
-    //     if (response.data.status == 1) {
-    //       e.target.reset();
-    //       clearForm();
-    //       toast.success(response.data.message)
-    //     } else {
-    //       toast.error(response.data.message)
-    //     }
-    //   })
-    //   .catch(error => toast.error(error))
+    userPostMethod(JOB_ORDER_RSURL, data)
+      .then(response => {
+        if (response.data.status == 1) {
+          e.target.reset();
+          clearForm();
+          toast.success(response.data.message)
+        } else {
+          toast.error(response.data.message)
+        }
+      })
+      .catch(error => toast.error(error))
   }
 
   const clearForm = () => {
@@ -260,64 +258,112 @@ const Add = (props) => {
                           <legend className="w-auto text-left">Basic</legend>
 
                           <div className="form-group row">
-                            <label className="col-sm-4 col-form-label required" htmlFor="job_type">Job Order Type</label>
+                            <label
+                              className="col-sm-4 col-form-label required"
+                              htmlFor="job_type"
+                            >
+                              Job Order Type
+                            </label>
                             <div className="col-sm-8">
-                              <select className="form-control" required id="job_type" name="job_type"
-                                onChange={(e) => setJobOrderType(e.target.value)}
+                              <select
+                                className="form-control"
+                                required
+                                id="job_type"
+                                name="job_type"
+                                onChange={(e) =>
+                                  setJobOrderType(e.target.value)
+                                }
                                 ref={register({
-                                  required: 'Job Order Type Field Required'
+                                  required: "Job Order Type Field Required",
                                 })}
-                                defaultValue=''>
-                                <option value=''> Select One </option>
+                                defaultValue=""
+                              >
+                                <option value=""> Select One </option>
                                 <option value="New">New</option>
                                 <option value="Remake">Remake</option>
                                 <option value="Redo">Redo</option>
                                 <option value="DC/RC">DC/RC</option>
                               </select>
-                              {errors.job_type && <p className='text-danger'>{errors.job_type.message}</p>}
+                              {errors.job_type && (
+                                <p className="text-danger">
+                                  {errors.job_type.message}
+                                </p>
+                              )}
                             </div>
                           </div>
                           <div className="row">
                             <div className="col-md-6">
-                              <div className='form-group row'>
-                                <label className="col-sm-8 col-form-label" htmlFor="link_job">Link Job</label>
+                              <div className="form-group row">
+                                <label
+                                  className="col-sm-8 col-form-label"
+                                  htmlFor="link_job"
+                                >
+                                  Link Job
+                                </label>
                                 <div className="col-sm-4 mt-2">
                                   <input
                                     name="link_job"
-                                    onChange={(e) => setLinkjob(e.target.checked)}
-                                    required={jobOrderType == 'New' ? false : true}
+                                    onChange={(e) =>
+                                      setLinkjob(e.target.checked)
+                                    }
+                                    required={
+                                      jobOrderType == "New" ? false : true
+                                    }
                                     type="checkbox"
                                   />
                                 </div>
                               </div>
                             </div>
-                            <div className='col-md-6'>
-                              {linkjob == true && <div className="form-group row">
-                                <label className="col-sm-4 col-form-label required" htmlFor="reference_job">Ref Job</label>
-                                <div className="col-sm-8">
-                                  <Typeahead
-                                    id="reference_job"
-                                    name="reference_job"
-                                    labelKey={option => `${option.name}`}
-                                    options={typeheadOptions['reference_jobs']}
-                                    placeholder="Select Reference Job..."
-                                    onChange={(e) => dropDownChange(e, 'reference_job')}
-                                    value={option => `${option.id}`}
-                                    inputProps={{ required: jobOrderType == 'New' ? false : true }}
-                                    // ref={register({
-                                    //     required: 'Reference Job Field Required'
-                                    // })}
-                                    selected={typeAheadValue['reference_job']}
-                                    {...register('reference_job')}
-                                  />
-                                  {errors.reference_job && <p className='text-danger'>{errors.reference_job.message}</p>}
+                            <div className="col-md-6">
+                              {linkjob == true && (
+                                <div className="form-group row">
+                                  <label
+                                    className="col-sm-4 col-form-label required"
+                                    htmlFor="reference_job"
+                                  >
+                                    Ref Job
+                                  </label>
+                                  <div className="col-sm-8">
+                                    <Typeahead
+                                      id="reference_job"
+                                      name="reference_job"
+                                      labelKey={(option) => `${option.name}`}
+                                      options={
+                                        typeheadOptions["reference_jobs"]
+                                      }
+                                      placeholder="Select Reference Job..."
+                                      onChange={(e) =>
+                                        dropDownChange(e, "reference_job")
+                                      }
+                                      value={(option) => `${option.id}`}
+                                      inputProps={{
+                                        required:
+                                          jobOrderType == "New" ? false : true,
+                                      }}
+                                      // ref={register({
+                                      //     required: 'Reference Job Field Required'
+                                      // })}
+                                      selected={typeAheadValue["reference_job"]}
+                                      {...register("reference_job")}
+                                    />
+                                    {errors.reference_job && (
+                                      <p className="text-danger">
+                                        {errors.reference_job.message}
+                                      </p>
+                                    )}
+                                  </div>
                                 </div>
-                              </div>}
+                              )}
                             </div>
                           </div>
 
                           <div className="form-group row">
-                            <label className="col-sm-4 col-form-label required" htmlFor="job_name">Job Name</label>
+                            <label
+                              className="col-sm-4 col-form-label required"
+                              htmlFor="job_name"
+                            >
+                              Job Name
+                            </label>
                             <div className="col-sm-8">
                               <input
                                 className="form-control"
@@ -328,31 +374,46 @@ const Add = (props) => {
                                 type="text"
                                 placeholder="Job Name"
                                 ref={register({
-                                  required: 'Job Name Field Required'
+                                  required: "Job Name Field Required",
                                 })}
                               />
-                              {errors.job_name && <p className='text-danger'>{errors.job_name.message}</p>}
+                              {errors.job_name && (
+                                <p className="text-danger">
+                                  {errors.job_name.message}
+                                </p>
+                              )}
                             </div>
                           </div>
 
                           <div className="form-group row">
-                            <label className="col-sm-4 col-form-label required" htmlFor="job_sub_class_id">Sub Class</label>
+                            <label
+                              className="col-sm-4 col-form-label required"
+                              htmlFor="job_sub_class_id"
+                            >
+                              Sub Class
+                            </label>
                             <div className="col-sm-8">
                               <Typeahead
                                 id="job_sub_class_id"
                                 name="job_sub_class_id"
-                                labelKey={option => `${option.name}`}
-                                options={typeheadOptions['job_sub_classes']}
+                                labelKey={(option) => `${option.name}`}
+                                options={typeheadOptions["job_sub_classes"]}
                                 placeholder="Select Sub Class..."
-                                onChange={(e) => dropDownChange(e, 'job_sub_class_id')}
+                                onChange={(e) =>
+                                  dropDownChange(e, "job_sub_class_id")
+                                }
                                 inputProps={{ required: true }}
-                                selected={typeAheadValue['job_sub_class_id']}
+                                selected={typeAheadValue["job_sub_class_id"]}
                                 // ref={register({
                                 //     required: 'Sub Class Field Required'
                                 // })}
-                                {...register('job_sub_class_id')}
+                                {...register("job_sub_class_id")}
                               />
-                              {errors.job_sub_class_id && <p className='text-danger'>{errors.job_sub_class_id.message}</p>}
+                              {errors.job_sub_class_id && (
+                                <p className="text-danger">
+                                  {errors.job_sub_class_id.message}
+                                </p>
+                              )}
                             </div>
                           </div>
 
@@ -370,15 +431,13 @@ const Add = (props) => {
                                 labelKey={(option) => `${option.name}`}
                                 options={typeheadOptions["clients"]}
                                 placeholder="Select Client..."
-                                onChange={(e) =>
-                                  dropDownChange(e, "client_id")
-                                }
+                                onChange={(e) => dropDownChange(e, "client_id")}
                                 inputProps={{ required: true }}
-                                selected={typeAheadValue['client_id']}
+                                selected={typeAheadValue["client_id"]}
                                 // ref={register({
                                 //   required: "Client Name Field Required",
                                 // })}
-                                {...register('client_id')}
+                                {...register("client_id")}
                               />
                               {errors.client_id && (
                                 <p className="text-danger">
@@ -406,11 +465,11 @@ const Add = (props) => {
                                   dropDownChange(e, "printer_id")
                                 }
                                 inputProps={{ required: true }}
-                                selected={typeAheadValue['printer_id']}
+                                selected={typeAheadValue["printer_id"]}
                                 // ref={register({
                                 //   required: "Printer Name Field Required",
                                 // })}
-                                {...register('printer_id')}
+                                {...register("printer_id")}
                               />
                               {errors.printer_id && (
                                 <p className="text-danger">
@@ -438,11 +497,11 @@ const Add = (props) => {
                                   dropDownChange(e, "marketing_person_id")
                                 }
                                 inputProps={{ required: true }}
-                                selected={typeAheadValue['marketing_person_id']}
+                                selected={typeAheadValue["marketing_person_id"]}
                                 // ref={register({
                                 //   required: "Marketing Person Field Required",
                                 // })}
-                                {...register('marketing_person_id')}
+                                {...register("marketing_person_id")}
                               />
                               {errors.marketing_person_id && (
                                 <p className="text-danger">
@@ -469,8 +528,8 @@ const Add = (props) => {
                                 onChange={(e) =>
                                   dropDownChange(e, "design_machine_id")
                                 }
-                                selected={typeAheadValue['design_machine_id']}
-                                {...register('design_machine_id')}
+                                selected={typeAheadValue["design_machine_id"]}
+                                {...register("design_machine_id")}
                               />
                               {errors.design_machine_id && (
                                 <p className="text-danger">
@@ -501,8 +560,14 @@ const Add = (props) => {
                                 placeholder="Select Color..."
                                 onChange={setMultipleDropdownData}
                                 selected={multipleDropdownData}
-                                {...register('color_id')}
-                                inputProps={{ required: multipleDropdownData && multipleDropdownData == "" ? true : false }}
+                                {...register("color_id")}
+                                inputProps={{
+                                  required:
+                                    multipleDropdownData &&
+                                    multipleDropdownData == ""
+                                      ? true
+                                      : false,
+                                }}
                               />
                               {errors.color_id && (
                                 <p className="text-danger">
@@ -674,13 +739,15 @@ const Add = (props) => {
                                     id="printing_width"
                                     name="printing_width"
                                     required
-                                    type='text'
+                                    type="text"
                                     placeholder="Printing Width"
-                                    value={calculationValue.ups * calculationValue.design_width}
+                                    value={
+                                      calculationValue.ups *
+                                      calculationValue.design_width
+                                    }
                                     readOnly={"readonly"}
                                     ref={register({
-                                      required:
-                                        "Printing Width Field Required",
+                                      required: "Printing Width Field Required",
                                     })}
                                   />
                                   {errors.printing_width && (
@@ -739,7 +806,7 @@ const Add = (props) => {
                                     value={
                                       calculationValue.face_length -
                                       calculationValue.design_width *
-                                      calculationValue.ups
+                                        calculationValue.ups
                                     }
                                     ref={register({
                                       required: "Extra Width Field Required",
@@ -832,8 +899,7 @@ const Add = (props) => {
                                     }
                                     readOnly={"readonly"}
                                     ref={register({
-                                      required:
-                                        "Circumference Field Required",
+                                      required: "Circumference Field Required",
                                     })}
                                   />
                                   {errors.circumference && (
@@ -916,7 +982,12 @@ const Add = (props) => {
                             </div>
                           </div>
                           <div className="form-group row">
-                            <label className="col-sm-4 col-form-label required" htmlFor="total_cylinder_qty">Cylinder Qty</label>
+                            <label
+                              className="col-sm-4 col-form-label required"
+                              htmlFor="total_cylinder_qty"
+                            >
+                              Cylinder Qty
+                            </label>
                             <div className="col-sm-8">
                               <input
                                 className="form-control"
@@ -925,17 +996,24 @@ const Add = (props) => {
                                 required
                                 type="text"
                                 placeholder="Please enter color"
-                                value={multipleDropdownData.length > 0 ? multipleDropdownData.length : ''}
-                                onChange={e => calculateFormValue(e)}
+                                value={
+                                  multipleDropdownData.length > 0
+                                    ? multipleDropdownData.length
+                                    : ""
+                                }
+                                onChange={(e) => calculateFormValue(e)}
                                 ref={register({
-                                  required: 'Cylinder Qty Field Required'
+                                  required: "Cylinder Qty Field Required",
                                 })}
                                 disabled
                               />
-                              {errors.total_cylinder_qty && <p className='text-danger'>{errors.total_cylinder_qty.message}</p>}
+                              {errors.total_cylinder_qty && (
+                                <p className="text-danger">
+                                  {errors.total_cylinder_qty.message}
+                                </p>
+                              )}
                             </div>
                           </div>
-
 
                           <div className="form-group row">
                             <label
@@ -1024,8 +1102,7 @@ const Add = (props) => {
                                   100
                                 }
                                 ref={register({
-                                  required:
-                                    "Total Surface Area Field Required",
+                                  required: "Total Surface Area Field Required",
                                 })}
                               />
                               {errors.total_surface_area && (
@@ -1039,7 +1116,12 @@ const Add = (props) => {
                           <div className="form-group row">
                             <div className="col-md-4">
                               <div className="row">
-                                <label className="col-sm-6 col-form-label required" htmlFor="fl">FL (mm)</label>
+                                <label
+                                  className="col-sm-6 col-form-label required"
+                                  htmlFor="fl"
+                                >
+                                  FL (mm)
+                                </label>
                                 <div className="col-sm-6">
                                   <input
                                     className="form-control"
@@ -1051,13 +1133,22 @@ const Add = (props) => {
                                     disabled="disabled"
                                     value={calculationValue.face_length}
                                   />
-                                  {errors.fl && <p className='text-danger'>{errors.fl.message}</p>}
+                                  {errors.fl && (
+                                    <p className="text-danger">
+                                      {errors.fl.message}
+                                    </p>
+                                  )}
                                 </div>
                               </div>
                             </div>
                             <div className="col-md-4">
                               <div className="row">
-                                <label className="col-sm-6 col-form-label required" htmlFor="cir">Cir (mm)</label>
+                                <label
+                                  className="col-sm-6 col-form-label required"
+                                  htmlFor="cir"
+                                >
+                                  Cir (mm)
+                                </label>
                                 <div className="col-sm-6">
                                   <input
                                     className="form-control"
@@ -1067,15 +1158,27 @@ const Add = (props) => {
                                     type="text"
                                     placeholder="Cir"
                                     disabled="disabled"
-                                    value={calculationValue.design_height * calculationValue.rpt}
+                                    value={
+                                      calculationValue.design_height *
+                                      calculationValue.rpt
+                                    }
                                   />
-                                  {errors.cir && <p className='text-danger'>{errors.cir.message}</p>}
+                                  {errors.cir && (
+                                    <p className="text-danger">
+                                      {errors.cir.message}
+                                    </p>
+                                  )}
                                 </div>
                               </div>
                             </div>
                             <div className="col-md-4">
                               <div className="row">
-                                <label className="col-sm-6 col-form-labelb required" htmlFor="dia">Dia (mm)</label>
+                                <label
+                                  className="col-sm-6 col-form-labelb required"
+                                  htmlFor="dia"
+                                >
+                                  Dia (mm)
+                                </label>
                                 <div className="col-sm-6">
                                   <input
                                     className="form-control"
@@ -1084,31 +1187,36 @@ const Add = (props) => {
                                     required
                                     type="text"
                                     placeholder="Dia"
-                                    disabled='disabled'
-                                    value={Math.round((calculationValue.design_height * calculationValue.rpt) / Math.PI)}
+                                    disabled="disabled"
+                                    value={Math.round(
+                                      (calculationValue.design_height *
+                                        calculationValue.rpt) /
+                                        Math.PI
+                                    )}
                                     // value={jobOrderData.dia}
                                     // calculationValue.design_height * calculationValue.rpt
                                     // calculationValue.face_length
                                     ref={register({
-                                      required: 'Dia Field Required'
+                                      required: "Dia Field Required",
                                     })}
                                   />
-                                  {errors.dia && <p className='text-danger'>{errors.dia.message}</p>}
+                                  {errors.dia && (
+                                    <p className="text-danger">
+                                      {errors.dia.message}
+                                    </p>
+                                  )}
                                 </div>
                               </div>
                             </div>
                           </div>
                         </fieldset>
                       </div>
-
                     </div>
 
                     <div className="row">
                       <div className="col-md-12">
                         <fieldset className="border">
-                          <legend className="w-auto text-left">
-                            Finished
-                          </legend>
+                          <legend className="w-auto text-left">Finished</legend>
                           <div className="form-group row">
                             <label
                               className="col-sm-2 col-form-label required"
