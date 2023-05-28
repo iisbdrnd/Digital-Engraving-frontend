@@ -189,20 +189,17 @@ const Add = (props) => {
       color_id_final_arr.push(item.id);
     })
     data.color_id = color_id_final_arr;
-    e.target.reset();
-    clearForm();
-    setLinkjob(false);
-    // userPostMethod(JOB_ORDER_RSURL, data)
-    //   .then(response => {
-    //     if (response.data.status == 1) {
-    //       e.target.reset();
-    //       clearForm();
-    //       toast.success(response.data.message)
-    //     } else {
-    //       toast.error(response.data.message)
-    //     }
-    //   })
-    //   .catch(error => toast.error(error))
+    userPostMethod(JOB_ORDER_RSURL, data)
+      .then(response => {
+        if (response.data.status == 1) {
+          e.target.reset();
+          clearForm();
+          toast.success(response.data.message)
+        } else {
+          toast.error(response.data.message)
+        }
+      })
+      .catch(error => toast.error(error))
   }
 
   const clearForm = () => {
@@ -224,6 +221,7 @@ const Add = (props) => {
       'face_length': 0,
       'total_cylinder_qty': 0,
     });
+    setLinkjob(false);
     setMultipleDropdownData([]);
 
   }
