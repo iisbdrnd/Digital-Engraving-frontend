@@ -30,15 +30,14 @@ const Add = (props) => {
   let [calculationValue, setCalculationValue] = useReducer(
     (state, newState) => ({ ...state, ...newState }),
     {
-      design_width: 0,
-      ups: 0,
-      printing_width: 0,
-      design_height: 0,
-      rpt: 0,
-      printing_height: 0,
-      circumference: 0,
-      face_length: 0,
-      total_cylinder_qty: 0,
+      'design_width': 0,
+      'ups': 0,
+      'design_height': 0,
+      'rpt': 0,
+      'printing_height': 0,
+      'circumference': 0,
+      'face_length': 0,
+      'total_cylinder_qty': 0,
     }
   );
   // const [ jobInfo, setJobInfo] = useState({
@@ -156,11 +155,11 @@ const Add = (props) => {
   }
 
   const calculateFormValue = (event) => {
-    console.log(event.target.value);
     setCalculationValue(
       { [event.target.name]: event.target.value },
     );
   }
+
   // const jobChangeHandler = (e) => {
   //     var selectJobId = e[0]['id'];
   //     setJobId(selectJobId);
@@ -175,7 +174,7 @@ const Add = (props) => {
   //         })
   //         .catch(error => console.log(error))   
   // }
-
+  console.log(calculationValue);
   const submitHandler = (data, e) => {
     e.preventDefault();
     console.log(data);
@@ -190,18 +189,20 @@ const Add = (props) => {
       color_id_final_arr.push(item.id);
     })
     data.color_id = color_id_final_arr;
-
-    userPostMethod(JOB_ORDER_RSURL, data)
-      .then(response => {
-        if (response.data.status == 1) {
-          e.target.reset();
-          clearForm();
-          toast.success(response.data.message)
-        } else {
-          toast.error(response.data.message)
-        }
-      })
-      .catch(error => toast.error(error))
+    e.target.reset();
+    clearForm();
+    setLinkjob(false);
+    // userPostMethod(JOB_ORDER_RSURL, data)
+    //   .then(response => {
+    //     if (response.data.status == 1) {
+    //       e.target.reset();
+    //       clearForm();
+    //       toast.success(response.data.message)
+    //     } else {
+    //       toast.error(response.data.message)
+    //     }
+    //   })
+    //   .catch(error => toast.error(error))
   }
 
   const clearForm = () => {
@@ -214,15 +215,14 @@ const Add = (props) => {
       'design_machine_id': []
     })
     setCalculationValue({
-      design_width: 0,
-      ups: 0,
-      printing_width: 0,
-      design_height: 0,
-      rpt: 0,
-      printing_height: 0,
-      circumference: 0,
-      face_length: 0,
-      total_cylinder_qty: 0,
+      'design_width': 0,
+      'ups': 0,
+      'design_height': 0,
+      'rpt': 0,
+      'printing_height': 0,
+      'circumference': 0,
+      'face_length': 0,
+      'total_cylinder_qty': 0,
     });
     setMultipleDropdownData([]);
 
@@ -675,12 +675,9 @@ const Add = (props) => {
                                     id="printing_width"
                                     name="printing_width"
                                     required
-                                    type="text"
+                                    type='text'
                                     placeholder="Printing Width"
-                                    value={
-                                      calculationValue.design_width *
-                                      calculationValue.ups
-                                    }
+                                    value={calculationValue.ups * calculationValue.design_width}
                                     readOnly={"readonly"}
                                     ref={register({
                                       required:
