@@ -53,7 +53,8 @@ const Add = (props) => {
         axl_start_point : 0,
         history_name: '',
         layout_history_date: '',
-        history_remarks: ''
+        history_remarks: '',
+        history_image: ''
     });
     const [dropdownData, setDropdownData] = useState({});
     const [typeColorOptions, setTypeColorOptions] = useState([]);
@@ -277,11 +278,13 @@ const Add = (props) => {
     }
 
     const onSubmit = (data, e) => {
+        e.preventDefault();
         const formValue = new FormData();
         Object.entries(formData).forEach(([key, value]) => {
+            if(key != 'history_image')
             formValue.append(`${key}`, `${value}`)
         })
-
+        formValue.append("history_image", formData.history_image);
         formValue.append("job_id", dropdownData.job_id);
         formValue.append("engraveOrder", JSON.stringify(engraveOrder));
         userPostMethod(`${DESIGN_LAYOUT_RSURL}`, formValue)
