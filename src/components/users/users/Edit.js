@@ -18,6 +18,7 @@ class Edit extends Component {
             name: '',
             surname: '',
             email: '',
+            employee_id: '',
             timezone_id: [],
             projectList: [],
             userId: this.props.match.params.userId,
@@ -26,6 +27,7 @@ class Edit extends Component {
             designation: [],
             branches: [],
             branch: [],
+            employees: []
         }; 
     }
 
@@ -34,6 +36,7 @@ class Edit extends Component {
         const postData = {
             name: this.state.name,
             surname: this.state.surname,
+            employee_id: this.state.employee_id,
             designation: this.state.designation[0].id,
             branch: this.state.branch[0].id,
             timezone_id: this.state.timezone_id[0].id,
@@ -91,7 +94,11 @@ class Edit extends Component {
                         }
                     })
                 }
-
+                 //getting employees
+                let employeeOPtions = [];
+                if (response.data.employees && response.data.employees.length > 0) {
+                    employeeOPtions = response.data.employees;
+                }
 
                 // FOR TIMEZONES
                 let timezoneOption = [];
@@ -112,12 +119,14 @@ class Edit extends Component {
                 this.setState({
                     project_id: response.data.user.project_id,
                     name: response.data.user.name,
+                    employee_id: response.data.user.employee_id,
                     surname: response.data.user.surname,
                     email: response.data.user.email,
                     projectList: response.data.projects,
                     designations: designationOption,
                     branches: branchesOption,
-                    timezoneList: timezoneOption
+                    timezoneList: timezoneOption,
+                    employees : employeeOPtions,
                 })
             })
             .catch(error => { toast.error(`getMethod Error from ${error}`)});
@@ -227,6 +236,17 @@ class Edit extends Component {
                                                         onChange={(e) => this.dropDownChange(e, 'branch')}
                                                         selected={this.state.branch}
                                                     />
+                                                </div>
+                                            </div>
+                                            <div className="form-group row">
+                                                <label className="col-sm-3 control-form-label text-right" htmlFor='employee_id'>Employee</label>
+                                                <div className="col-sm-8">
+                                                    <select onChange = {(e) => this.changeHandler(e)} value={this.state.employee_id} name="employee_id" id="employee_id" className="form-control">
+                                                        <option>Select employee..</option>
+                                                        {
+                                                            this.state.employees.map((employee) =>(<option value={employee.id}>{employee?.name}</option>))
+                                                        }
+                                                    </select>
                                                 </div>
                                             </div>
 
