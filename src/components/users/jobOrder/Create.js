@@ -156,7 +156,7 @@ const Add = (props) => {
 
   const calculateFormValue = (event) => {
     setCalculationValue(
-      { [event.target.name]: event.target.value },
+      { ...calculationValue,[event.target.name]: event.target.value },
     );
   }
 
@@ -174,10 +174,9 @@ const Add = (props) => {
   //         })
   //         .catch(error => console.log(error))   
   // }
-  console.log(calculationValue);
+
   const submitHandler = (data, e) => {
     e.preventDefault();
-    console.log(data);
     data.client_id = dropdownData.client_id;
     data.job_sub_class_id = dropdownData.job_sub_class_id;
     data.reference_job = dropdownData.reference_job;
@@ -189,17 +188,19 @@ const Add = (props) => {
       color_id_final_arr.push(item.id);
     })
     data.color_id = color_id_final_arr;
-    userPostMethod(JOB_ORDER_RSURL, data)
-      .then(response => {
-        if (response.data.status == 1) {
-          e.target.reset();
-          clearForm();
-          toast.success(response.data.message)
-        } else {
-          toast.error(response.data.message)
-        }
-      })
-      .catch(error => toast.error(error))
+    e.target.reset();
+      clearForm();
+    // userPostMethod(JOB_ORDER_RSURL, data)
+    //   .then(response => {
+    //     if (response.data.status == 1) {
+    //       e.target.reset();
+    //       clearForm();
+    //       toast.success(response.data.message)
+    //     } else {
+    //       toast.error(response.data.message)
+    //     }
+    //   })
+    //   .catch(error => toast.error(error))
   }
 
   const clearForm = () => {

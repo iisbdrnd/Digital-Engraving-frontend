@@ -194,7 +194,7 @@ export default function ListData(props) {
                                                     <th scope="col" width="10%" >Qty</th>
                                                     <th scope="col" width="10%" >Per Sqr Amount</th>
                                                     <th scope="col" width="10%" >Base Order</th>
-                                                    <th scope="col" width="7%">Action</th>
+                                                    {/* <th scope="col" width="7%">Action</th> */}
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -224,7 +224,7 @@ export default function ListData(props) {
                                                                             </Link>
                                                                             : 'Done'}
                                                                         </td>
-                                                                        <td className="">
+                                                                        {/* <td className="">
                                                                             {
                                                                                 accLoad === false ? 
                                                                                 <>
@@ -235,7 +235,7 @@ export default function ListData(props) {
                                                                                     : ''} 
                                                                                 </> : ''
                                                                             }
-                                                                        </td>
+                                                                        </td> */}
                                                                     </tr>
                                                                 )                
                                                             )}
