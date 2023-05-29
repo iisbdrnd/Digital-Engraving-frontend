@@ -213,11 +213,10 @@ const Edit = (props) => {
     },[]);
     console.log(userBillInput);
 
-    const submitHandler = (data) => {
+    const submitHandler = (data,e) => {
 
         console.log('output', data);
-
-        if(data.net_total > 0){
+        if(data.net_total >= 0){
 
             userPutMethod(`${billAPI}/${job_order_id}`, data )
                 .then(response => {

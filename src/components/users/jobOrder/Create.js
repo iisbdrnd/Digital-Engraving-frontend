@@ -30,14 +30,14 @@ const Add = (props) => {
   let [calculationValue, setCalculationValue] = useReducer(
     (state, newState) => ({ ...state, ...newState }),
     {
-      'design_width': 0,
-      'ups': 0,
-      'design_height': 0,
-      'rpt': 0,
-      'printing_height': 0,
-      'circumference': 0,
-      'face_length': 0,
-      'total_cylinder_qty': 0,
+      'design_width': '0',
+      'ups': '0',
+      'design_height': '0',
+      'rpt': '0',
+      'printing_height': '0',
+      'circumference': '0',
+      'face_length': '0',
+      'total_cylinder_qty': '0',
     }
   );
   // const [ jobInfo, setJobInfo] = useState({
@@ -155,10 +155,14 @@ const Add = (props) => {
   }
 
   const calculateFormValue = (event) => {
+    event.preventDefault();
     setCalculationValue(
       { ...calculationValue,[event.target.name]: event.target.value },
     );
   }
+  useEffect(() => {
+    console.log(calculationValue.ups * calculationValue.design_width);
+  },[calculationValue]);
 
   // const jobChangeHandler = (e) => {
   //     var selectJobId = e[0]['id'];
@@ -211,14 +215,14 @@ const Add = (props) => {
       'design_machine_id': []
     })
     setCalculationValue({
-      'design_width': 0,
-      'ups': 0,
-      'design_height': 0,
-      'rpt': 0,
-      'printing_height': 0,
-      'circumference': 0,
-      'face_length': 0,
-      'total_cylinder_qty': 0,
+      'design_width': '0',
+      'ups': '0',
+      'design_height': '0',
+      'rpt': '0',
+      'printing_height': '0',
+      'circumference': '0',
+      'face_length': '0',
+      'total_cylinder_qty': '0',
     });
     setLinkjob(false);
     setMultipleDropdownData([]);
@@ -684,7 +688,7 @@ const Add = (props) => {
                                     type="text"
                                     placeholder="Job Width"
                                     // value={jobOrderData.design_width}
-                                    onChange={(e) => calculateFormValue(e)}
+                                    onChange={calculateFormValue}
                                     ref={register({
                                       required: "Job Width Field Required",
                                     })}
@@ -713,7 +717,7 @@ const Add = (props) => {
                                     type="text"
                                     placeholder="UPS"
                                     // value={jobOrderData.ups}
-                                    onChange={(e) => calculateFormValue(e)}
+                                    onChange={calculateFormValue}
                                     ref={register({
                                       required: "UPS Field Required",
                                     })}

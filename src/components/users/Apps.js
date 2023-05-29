@@ -31,8 +31,8 @@ const Apps = () => {
                                 </div>
                                 
                                 <div className="card-body">
-                                    <div className="col-md-11 offset-md-2">
-                                        <div className="row">
+                                    <div className="col-md-11 offset-md-1">
+                                        <div className="row d-flex">
                                             {modulePanel}
                                         </div>
                                     </div>

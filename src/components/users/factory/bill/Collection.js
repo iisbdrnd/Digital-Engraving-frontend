@@ -21,6 +21,7 @@ const Edit = (props) => {
     const [ remarks, setRemarks] = useState('');
 
     const [ showCheckInfo, setShowCheckInfo] = useState(false);
+    const [submitDisabled, setSubmitDisabled] = useState(false);
 
     const [ clientInfo, setClientInfo] = useState({
         'clientName': '',
@@ -101,10 +102,12 @@ const Edit = (props) => {
 
     
     const amountChangeHandler = (e)=>{
+        setSubmitDisabled(false);
         setAmount(e.target.value);
     }
 
     const clientChangeHandler = (e) => {
+        setSubmitDisabled(false);
         var selectClientId = e.value;
         setClientId(selectClientId);
         userGetMethod(`${getClientDetails}/${selectClientId}`)
@@ -123,6 +126,7 @@ const Edit = (props) => {
     }
 
     const transactionHandleChange = (transaction) => {
+        setSubmitDisabled(false);
         setTransactionBy(transaction.value);
 
         if(transaction.value == "2201000001"){
@@ -133,18 +137,19 @@ const Edit = (props) => {
     };
 
     const calculateCheck = (e) => {
-
+        setSubmitDisabled(false);
         setCheckInfo({
             [e.target.name]: e.target.value,
         });
     }
 
     const remarksChangeHandler = (e) => {
+        setSubmitDisabled(false);
         setRemarks(e.target.value);
     }
 
-    const submitHandler = (data) => {
-
+    const submitHandler = (data,e) => {
+        setSubmitDisabled(true);
         if(transactionBy == 0 || clientId == ""){
             toast.error('please select client and transactionBy');
         }else{
@@ -152,6 +157,7 @@ const Edit = (props) => {
                 if(checkInfo.check_no == "" || checkInfo.check_date == ""){
                     toast.error('please select client and transactionBy');
                 }else{
+                   
 
                     if(clientInfo.due >= amount && amount > 0){
 
@@ -165,6 +171,7 @@ const Edit = (props) => {
                         userPutMethod(`${submitCollectionApi}/${clientId}`, data )
                         .then(response => {
                             if (response.data.status == 1) {
+                                e.target.reset();
                                 toast.success(response.data.message);
                             } else {
                                 toast.error(response.data.message);
@@ -177,6 +184,7 @@ const Edit = (props) => {
                     }
                 }
             }else{
+                
                 if(clientInfo.due >= amount && amount > 0){
 
                     data.clientId = clientId;
@@ -188,6 +196,7 @@ const Edit = (props) => {
                     userPutMethod(`${submitCollectionApi}/${clientId}`, data )
                     .then(response => {
                         if (response.data.status == 1) {
+                            e.target.reset();
                             toast.success(response.data.message);
                         } else {
                             toast.error(response.data.message);
@@ -429,7 +438,7 @@ const Edit = (props) => {
                                             <div className="col-md-12 offset-sm-2"  style={{'padding':'0'}}>
                                                 <button 
                                                     className="btn btn-primary btn-sm mr-1" 
-                                                    type="submit">Submit
+                                                    type="submit" disabled={submitDisabled == true ? true : false}>Submit
                                                     </button>
                                             </div>
                                         </div>
