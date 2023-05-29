@@ -14,7 +14,7 @@ const Add = (props) => {
   const [dropdownData, setDropdownData] = useState({});
   const [multipleDropdownData, setMultipleDropdownData] = useState([]);
   const [typeheadOptions, setTypeheadOptions] = useState({});
-  const [linkjob, setLinkjob] = useState(false)
+  const [linkjob, setLinkjob] = useState(false);
   const [jobOrderType, setJobOrderType] = useState(null);
   
   // const [jobId, setJobId] = useState(0);
@@ -195,12 +195,12 @@ const Add = (props) => {
         if (response.data.status == 1) {
           e.target.reset();
           clearForm();
-          toast.success(response.data.message)
+          toast.success(response.data.message);
         } else {
-          toast.error(response.data.message)
+          toast.error(response.data.message);
         }
       })
-      .catch(error => toast.error(error))
+      .catch(error => toast.error(error));
   }
 
   const clearForm = () => {
