@@ -194,6 +194,7 @@ export default function TankSchedule(props) {
                         toast.success(response.data.message);
                         e.target.reset();
                         props.toggle('addTankSchedule')
+                        props.needReload(props.tankId,props.modalTitle);
                         // setModal(false);
                     } else {
                         toast.error(response.data.message);
@@ -208,7 +209,7 @@ export default function TankSchedule(props) {
 
     return (
         <Modal isOpen={ props.modal && isOpenModalPrev } toggle={props.toggle} size="xlg">
-            <ModalHeader toggle={props.toggle}>Manual Cycle Plan Form #{props.modalTitle} Thank#test</ModalHeader>
+            <ModalHeader toggle={props.toggle}>Manual Cycle Plan Form #{props.modalTitle} Thank#test add</ModalHeader>
             <ModalBody>
             <div className="container-fluid">
                 <div className="row">

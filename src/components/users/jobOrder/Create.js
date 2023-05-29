@@ -15,7 +15,8 @@ const Add = (props) => {
   const [multipleDropdownData, setMultipleDropdownData] = useState([]);
   const [typeheadOptions, setTypeheadOptions] = useState({});
   const [linkjob, setLinkjob] = useState(false)
-  const [jobOrderType, setJobOrderType] = useState(null)
+  const [jobOrderType, setJobOrderType] = useState(null);
+  
   // const [jobId, setJobId] = useState(0);
   const [typeAheadValue, setTypeAheadValue] = useState({
     'reference_job': [],
@@ -1252,7 +1253,7 @@ const Add = (props) => {
                       </div>
                     </div>
 
-                    <SubmitButton link="jobOrder/index" menuId={menuId} />
+                    <SubmitButton link="jobOrder/index" menuId={menuId}/>
                   </form>
                 )}
               </div>
