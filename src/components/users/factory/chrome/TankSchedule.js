@@ -217,7 +217,7 @@ export default function TankSchedule(props) {
 
     return (
         <Modal isOpen={ props.modal && isOpenModalPrev } toggle={props.toggle} size="xlg">
-            <ModalHeader toggle={props.toggle}>Manual Cycle Plan Form #{props.modalTitle} Thank #test-test</ModalHeader>
+            <ModalHeader toggle={props.toggle}>Manual Cycle Plan Form #{props.modalTitle} Thank #chrome-add</ModalHeader>
             <ModalBody>
             <div className="container-fluid">
                 <div className="row">

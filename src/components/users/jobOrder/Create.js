@@ -161,9 +161,6 @@ const Add = (props) => {
       { ...calculationValue,[event.target.name]: event.target.value },
     );
   }
-  useEffect(() => {
-    console.log(calculationValue.ups * calculationValue.design_width);
-  },[calculationValue]);
 
   // const jobChangeHandler = (e) => {
   //     var selectJobId = e[0]['id'];
@@ -215,16 +212,7 @@ const Add = (props) => {
       'marketing_person_id': [],
       'design_machine_id': []
     })
-    setCalculationValue({
-      'design_width': '0',
-      'ups': '0',
-      'design_height': '0',
-      'rpt': '0',
-      'printing_height': '0',
-      'circumference': '0',
-      'face_length': '0',
-      'total_cylinder_qty': '0',
-    });
+    setCalculationValue({});
     setLinkjob(false);
     setMultipleDropdownData([]);
 
