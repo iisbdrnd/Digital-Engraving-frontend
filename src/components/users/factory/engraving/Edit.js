@@ -54,6 +54,7 @@ const Edit = (props) => {
             polishMachines: [],
             layout_id          : '',
             color              : '',
+            history_image      : '',
 
         }
     );
@@ -126,7 +127,8 @@ const Edit = (props) => {
                     "des_machine": response?.data?.layoutDetails[0]?.er_engraving_machine,
                     "start_point": response?.data?.layoutMaster?.axl_start_point,
                     "image_area": response?.data?.layoutMaster?.axl_image_area,
-                    "remarks": response?.data?.layoutMaster?.remarks
+                    "remarks": response?.data?.layoutMaster?.remarks,
+                    "history_image": response?.data?.layoutMaster?.history_image
                 })
             })
             .catch((error) => {
@@ -881,7 +883,7 @@ const Edit = (props) => {
                                             <div>
                                                 <img
                                                     style={{ width: "100%", height: "100%" }}
-                                                    src="https://img.wallscloud.net/uploads/thumb/114182468/chelsea-football-club-soccer-7DYA-1024x576-MM-80.webp"
+                                                    src={"http://127.0.0.1:8000/uploads/"+`${stateData.history_image}`}
                                                 />
                                             </div>
                                         </div>
