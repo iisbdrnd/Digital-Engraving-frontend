@@ -14,7 +14,7 @@ const Add = (props) => {
   const [dropdownData, setDropdownData] = useState({});
   const [multipleDropdownData, setMultipleDropdownData] = useState([]);
   const [typeheadOptions, setTypeheadOptions] = useState({});
-  const [linkjob, setLinkjob] = useState(false)
+  const [linkjob, setLinkjob] = useState(false);
   const [jobOrderType, setJobOrderType] = useState(null);
   
   // const [jobId, setJobId] = useState(0);
@@ -161,9 +161,6 @@ const Add = (props) => {
       { ...calculationValue,[event.target.name]: event.target.value },
     );
   }
-  useEffect(() => {
-    console.log(calculationValue.ups * calculationValue.design_width);
-  },[calculationValue]);
 
   // const jobChangeHandler = (e) => {
   //     var selectJobId = e[0]['id'];
@@ -198,12 +195,12 @@ const Add = (props) => {
         if (response.data.status == 1) {
           e.target.reset();
           clearForm();
-          toast.success(response.data.message)
+          toast.success(response.data.message);
         } else {
-          toast.error(response.data.message)
+          toast.error(response.data.message);
         }
       })
-      .catch(error => toast.error(error))
+      .catch(error => toast.error(error));
   }
 
   const clearForm = () => {
@@ -215,16 +212,7 @@ const Add = (props) => {
       'marketing_person_id': [],
       'design_machine_id': []
     })
-    setCalculationValue({
-      'design_width': '0',
-      'ups': '0',
-      'design_height': '0',
-      'rpt': '0',
-      'printing_height': '0',
-      'circumference': '0',
-      'face_length': '0',
-      'total_cylinder_qty': '0',
-    });
+    setCalculationValue({});
     setLinkjob(false);
     setMultipleDropdownData([]);
 
