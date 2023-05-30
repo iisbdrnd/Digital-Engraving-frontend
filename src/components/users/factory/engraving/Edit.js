@@ -880,12 +880,12 @@ const Edit = (props) => {
                                                     </div>
                                                 </div>
                                             </pre>
-                                            <div>
+                                            {stateData?.history_image != '' && (<div>
                                                 <img
                                                     style={{ width: "100%", height: "100%" }}
                                                     src={"http://127.0.0.1:8000/uploads/"+`${stateData.history_image}`}
                                                 />
-                                            </div>
+                                            </div>)}
                                         </div>
                                         <SubmitButton link="engraving/index" menuId={menuId} />
                                     </form>

@@ -30,7 +30,8 @@ const Add = (props) => {
             polishMachines     : [],
             engraves           : [],
             layout_id          : '',
-            color              : ''
+            color              : '',
+            history_image      : '',
         }
     );
 
@@ -111,7 +112,8 @@ const Add = (props) => {
                     "des_machine": response?.data?.layoutDetails[0]?.er_engraving_machine,
                     "start_point": response?.data?.layoutMaster?.axl_start_point,
                     "image_area": response?.data?.layoutMaster?.axl_image_area,
-                    "remarks": response?.data?.layoutMaster?.remarks
+                    "remarks": response?.data?.layoutMaster?.remarks,
+                    "history_image" : response?.data?.layoutMaster?.history_image
                 })
             })
             .catch((error) => {
@@ -490,9 +492,9 @@ const Add = (props) => {
                                                 </div>
                                             </div>
                                         </pre>
-                                        <div>
-                                            <img className='h-100 w-100' src="https://img.wallscloud.net/uploads/thumb/114182468/chelsea-football-club-soccer-7DYA-1024x576-MM-80.webp" />
-                                        </div>
+                                        {stateData?.history_image != '' && (<div>
+                                            <img className='h-100 w-100'  src={"http://127.0.0.1:8000/uploads/"+`${stateData.history_image}`} />
+                                        </div>)}
                                     </div>
                                     <SubmitButton link="engraving/index" menuId={ menuId } />
                                 </form>
