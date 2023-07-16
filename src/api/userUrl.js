@@ -159,6 +159,7 @@ export const TANK_CONFIG_RSURL = 'api/user/tankConfig';
 
 //DIG SHIFT
 export const DIG_SHIFT_RSURL = 'api/user/digShift';
+export const ShiftFor = 'api/user/shiftFor'
 
 //PLATING DEPT
 export const PLATING_DEPT_RSURL = 'api/user/platingDept';
