@@ -54,18 +54,18 @@ const Add = (props) => {
 
         console.log('input', accConfigInputData);
  
-        userPostMethod(accConfigurationAPI, accConfigInputData)
-            .then(response => {
+        // userPostMethod(accConfigurationAPI, accConfigInputData)
+        //     .then(response => {
 
-                console.log(response);
-                if (response.data.status == 1) {
-                    e.target.reset();
-                    toast.success(response.data.messege)
-                } else {
-                    toast.error(response.data.messege)
-                }
-            })
-        .catch(error => toast.error(error))
+        //         console.log(response);
+        //         if (response.data.status == 1) {
+        //             e.target.reset();
+        //             toast.success(response.data.messege)
+        //         } else {
+        //             toast.error(response.data.messege)
+        //         }
+        //     })
+        // .catch(error => toast.error(error))
     }
 
     var menuId = 0;

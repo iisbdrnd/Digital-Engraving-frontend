@@ -115,7 +115,7 @@ const Edit = (props) => {
     }
     // FOR SHIFT DETAILS ARRAY READY
     const addShiftDetailsHandler = (event) => {
-        if (dropdownData.duty_person === '') {
+        if (dropdownData.duty_person === undefined) {
             SweetAlert.fire({title:"Warning", text:"Please Select any one duty Person", icon:"warning"});
         } else {
             // OBJECT CREATE & PUSH IN AN ARRAY

@@ -195,7 +195,7 @@ export default function ListData(props) {
                                                     <th scope="col" width="10%">Receive</th>
                                                     {/* <th scope="col" width="15%" onClick={() => sortHandler(6)} ><i className="fa fa-sort"></i> Printer</th>
                                                     <th scope="col" width="10%" ><i className="fa fa-sort"></i> Per Sqr Amount</th> */}
-                                                    <th scope="col" width="7%">Action</th>
+                                                    {/* <th scope="col" width="7%">Action</th> */}
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -223,14 +223,14 @@ export default function ListData(props) {
                                                                             </Link>
                                                                             : 'Done'}
                                                                         </td>
-                                                                        <td className="">
+                                                                        {/* <td className="">
                                                                             {
                                                                                 accLoad === false ? <>
                                                                                     {hasAccess.edit === true ? <EditButton link={`/baseReceive/edit/${item.id}`} menuId={ menuId } /> : ''} 
                                                                                     {hasAccess.destroy === true ? <DeleteButton deleteLink={BASE_RECEIVE_RSURL} deleteHandler={ deleteHandler } menuId={ menuId } dataId={item.id} /> : ''} 
                                                                                 </> : ''
                                                                             }
-                                                                        </td>
+                                                                        </td> */}
                                                                     </tr>
                                                                 )                
                                                             )}

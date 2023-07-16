@@ -5,22 +5,23 @@ import useForm from "react-hook-form";
 import { Typeahead } from 'react-bootstrap-typeahead';
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 import { toast } from 'react-toastify';
-import { PLATING_DEPT_RSURL, CHECK_PLATING_CYL_EXIST_OR_NOT, JOB_DATA_FROM_PLATING_DEPT } from '../../../../api/userUrl';
+import { PLATING_DEPT_RSURL, CHECK_PLATING_CYL_EXIST_OR_NOT, JOB_DATA_FROM_PLATING_DEPT, EST_PLATING_ORDER_RSURL } from '../../../../api/userUrl';
 import { userGetMethod, userPostMethod } from '../../../../api/userAction';
 import { ValidationAlerts } from '../../../common/GlobalButton';
 import SweetAlert from 'sweetalert2';
 
 export default function TankSchedule(props) {
     const { handleSubmit, register, errors } = useForm();
-    const [ isOpenModalPrev, setIsOpenModalPrev ] = useState(true);
+    const [isOpenModalPrev, setIsOpenModalPrev] = useState(true);
     const [validateErrors, setValidateErrors] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [typeheadOptions, setTypeheadOptions] = useState({});
     const [dropdownData, setDropdownData] = useState({});
     const [cylScheduleDetails, setCylScheduleDetails] = useState([]);
-    const [modal, setModal] = useState(false); 
-    const [changeUseEffect, setChangeUseEffect] = useState(0); 
-    const [jobData, setJobData] = useState({}); 
+    const [modal, setModal] = useState(false);
+    const [changeUseEffect, setChangeUseEffect] = useState(0);
+    const [jobData, setJobData] = useState({});
+    const [jobOrderObj, setJobOrderObj] = useState([]);
 
     let [cylScheduleFormData, setCylScheduleFormData] = useReducer(
         (state, newState) => ({...state, ...newState}),
@@ -66,10 +67,25 @@ export default function TankSchedule(props) {
         setCylScheduleFormData(
             {[event.target.name] : event.target.value},
         );
+        if(event.target.name == 'cylinder_id') {
+            getPlatingOrder(event.target.value);
+        }
+    }
+    const  getPlatingOrder = async(cylinder_id) => {
+        userGetMethod(`${EST_PLATING_ORDER_RSURL}?cylinder_id=${cylinder_id}`)
+        .then((response) => {
+            setCylScheduleFormData(
+                {'est_plating_order' : response?.data},
+            );
+        })
+        .catch((error) => {
+            console.log(error);
+        })
     }
     // FOR Typeahead DATA INPUT
     const dropDownChange = (event, stateName) => {
         if(event.length > 0){
+            setJobOrderObj(event);
             const selectedValueId = event[0].id;
             const selectedValueName = event[0].name;
             setDropdownData(
@@ -81,14 +97,15 @@ export default function TankSchedule(props) {
             );
             userGetMethod(`${JOB_DATA_FROM_PLATING_DEPT}?jobId=${selectedValueId}`)
                 .then(response => {
-                    console.log(response.data.job_cylinder_ids);
                     // console.log("jahid");
-                    let {fl, cir, dia} = response.data.jobData;
+                    let {fl, cir, dia, surface_area,job_type} = response.data.jobData;
                     setCylScheduleFormData({
                         'job_cylinder_ids': response.data.job_cylinder_ids,
                         'fl'              : fl,
                         'cir'             : cir,
-                        'dia'             : dia
+                        'dia'             : dia,
+                        'surface_area'    : surface_area,
+                        'job_type'        : job_type,
                     })
                 });
         }
@@ -145,6 +162,8 @@ export default function TankSchedule(props) {
                                 est_plating_order: '',
                                 surface_area     : '',
                             });
+                            //Empty the job order typeahead
+                            setJobOrderObj([]);
                         }
                     });
                 
@@ -211,8 +230,12 @@ export default function TankSchedule(props) {
                                                         labelKey={option => `${option.name}`}
                                                         options={typeheadOptions['job_orders']}
                                                         placeholder="Select Job No"
-                                                        inputProps={{ required: true }}
+                                                        // inputProps={{ required: true }}
                                                         onChange={(e) => dropDownChange(e, 'job_order_id')}
+                                                        ref={register({
+                                                            required: 'Job Order Type Field Required'
+                                                          })}
+                                                        selected={jobOrderObj}
                                                     />
                                                 </div>
 
@@ -228,11 +251,12 @@ export default function TankSchedule(props) {
 
                                                 <div className="col-md-2 mb-3">
                                                     <label htmlFor="job_type">Job Type</label>
-                                                    <select className="form-control" onChange={inputHandler} id="job_type" name="job_type" value={cylScheduleFormData?.job_type}>
+                                                    <select className="form-control" onChange={inputHandler} id="job_type" name="job_type" value={cylScheduleFormData?.job_type} disabled>
                                                         <option value=''>Select One</option>
-                                                        <option value="1">Per Cylinder</option>
-                                                        <option value="2">Per Sqr cm</option>
-                                                        <option value="3">Per Sqr inch</option>
+                                                        <option value="New">New</option>
+                                                        <option value="Remake">Remake</option>
+                                                        <option value="Redo">Redo</option>
+                                                        <option value="DC/RC">DC/RC</option>
                                                     </select>
                                                 </div>
 
@@ -292,6 +316,7 @@ export default function TankSchedule(props) {
                                                         type="number" 
                                                         placeholder="" 
                                                         onChange={inputHandler}
+                                                        disabled
                                                     />
                                                 </div>
 
@@ -306,6 +331,7 @@ export default function TankSchedule(props) {
                                                         type="number" 
                                                         placeholder="" 
                                                         onChange={inputHandler}
+                                                        disabled
                                                     />
                                                 </div>
 

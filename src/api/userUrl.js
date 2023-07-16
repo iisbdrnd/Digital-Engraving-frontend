@@ -101,6 +101,7 @@ export const chartOfAccCodeAPI = 'api/user/chartOfAccounts';
 
 export const accConfigurationAPI = 'api/user/accConfiguration';
 export const projectAccountCodeAPI = 'api/user/projectAccountCode';
+export const billConfigurationAPI = 'api/user/billConfiguration';
 
 export const batchAPI = 'api/user/batch';
 
@@ -142,6 +143,8 @@ export const AccountsReceivableReportActionApi = 'api/user/AccountsReceivableRep
 //------ FACTORY START------//
 //DESIGN LAYOUT
 export const DESIGN_LAYOUT_RSURL = 'api/user/layoutDesign';
+export const DESIGN_LAYOUT_HISTORY = 'api/user/layoutHistory';
+export const DESIGN_LAYOUT_DETAILS = 'api/user/layoutDetails';
 //GRINDING
 export const GRINDING_RSURL = 'api/user/grinding';
 export const GRINDING_JOB_ORDER_DETAILS = 'api/user/jobOrderDetailsFromGrinding';
@@ -163,6 +166,7 @@ export const CHECK_PLATING_CYL_EXIST_OR_NOT = 'api/user/checkPlatingCylExistOrNo
 export const JOB_DATA_FROM_PLATING_DEPT = 'api/user/jobDataFromPlatingDept';
 export const TANK_SCHEDULE_DETAILS = 'api/user/tankScheduleDetails';
 export const PLATING_SCHEDULE_START_CYCLE = 'api/user/platingScheduleStartCycle';
+export const EST_PLATING_ORDER_RSURL = 'api/user/getEstPlatingOrder';
 // ENGRAVING MENU
 // export const ENGRAVING_RSURL = 'api/user/engraving';
 export const JOB_WISE_ENGRAVE_CYLINDERS = 'api/user/getJobWiseEngraveCylinders';

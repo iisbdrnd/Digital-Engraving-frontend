@@ -5,12 +5,13 @@ import useForm from "react-hook-form";
 import { Typeahead } from 'react-bootstrap-typeahead';
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 import { toast } from 'react-toastify';
-import { CHROME_RS_URL, GET_CYLINDERS_BY_JOB_ID, CHECK_CHROME_CYL_EXIST_OR_NOT } from '../../../../api/userUrl';
+import { CHROME_RS_URL, GET_CYLINDERS_BY_JOB_ID, CHECK_CHROME_CYL_EXIST_OR_NOT, EST_PLATING_ORDER_RSURL } from '../../../../api/userUrl';
 import { userGetMethod, userPostMethod } from '../../../../api/userAction';
 import { ValidationAlerts } from '../../../common/GlobalButton';
 import SweetAlert from 'sweetalert2';
 
 export default function TankSchedule(props) {
+    console.log(props);
     const { handleSubmit, register, errors } = useForm();
     const [ isOpenModalPrev, setIsOpenModalPrev ] = useState(true);
     const [validateErrors, setValidateErrors] = useState([]);
@@ -20,6 +21,7 @@ export default function TankSchedule(props) {
     const [cylScheduleDetails, setCylScheduleDetails] = useState([]);
     const [modal, setModal] = useState(false); 
     const [changeUseEffect, setChangeUseEffect] = useState(0); 
+    const [jobOrderObject, setJobOrderObject] = useState([]);
 
     let [cylScheduleFormData, setCylScheduleFormData] = useReducer(
         (state, newState) => ({...state, ...newState}),
@@ -29,7 +31,7 @@ export default function TankSchedule(props) {
             fl                    : '',
             cir                   : '',
             dia                   : '',
-            est_plating_order: '',
+            est_plating_order     : '',
             surface_area          : '',
         }
     );
@@ -64,10 +66,26 @@ export default function TankSchedule(props) {
         setCylScheduleFormData(
             {[event.target.name] : event.target.value},
         );
+        if(event.target.name == 'cylinder_id') {
+            getPlatingOrder(event.target.value);
+        }
+    }
+
+    const  getPlatingOrder = async(cylinder_id) => {
+        userGetMethod(`${EST_PLATING_ORDER_RSURL}?cylinder_id=${cylinder_id}`)
+        .then((response) => {
+            setCylScheduleFormData(
+                {'est_plating_order' : response?.data},
+            );
+        })
+        .catch((error) => {
+            console.log(error);
+        })
     }
     // FOR Typeahead DATA INPUT
     const dropDownChange = (event, stateName) => {
         if(event.length > 0){
+            setJobOrderObject(event);
             const selectedValueId = event[0].id; 
             const selectedValueName = event[0].name; 
             setDropdownData(
@@ -80,12 +98,14 @@ export default function TankSchedule(props) {
             userGetMethod(`${GET_CYLINDERS_BY_JOB_ID}?jobId=${selectedValueId}`) //selectedValueId MEANS job_orders.id
                 .then(response => {
                     console.log(response.data.job_cylinder_ids);
-                    let {fl, cir, dia} = response.data.jobData;
+                    let {fl, cir, dia, job_type,surface_area} = response.data.jobData;
                     setCylScheduleFormData({
                         'cylinders'       : response.data.cylinders,
                         'fl'              : fl,
                         'cir'             : cir,
-                        'dia'             : dia
+                        'dia'             : dia,
+                        'job_type'        : job_type,
+                        'surface_area'    : surface_area
                     })
                 });
         } 
@@ -138,12 +158,13 @@ export default function TankSchedule(props) {
                             setCylScheduleFormData({
                                 cylinder_id      : '',
                                 job_type         : '',
-                                // fl               : '',
-                                // cir              : '',
-                                // dia              : '',
+                                fl               : '',
+                                cir              : '',
+                                dia              : '',
                                 est_plating_order: '',
                                 surface_area     : '',
                             });
+                            setJobOrderObject([]);
                         }
                     });
                 
@@ -162,9 +183,9 @@ export default function TankSchedule(props) {
 
     const submitHandler = (data, e) => {
         data.cylScheduleArr = cylScheduleDetails;
+        data.tank_id = props.modalTitle;
         data.tankId = props.tankId;
         data.job_order_id = dropdownData.job_order_id;
-        console.log('data', data);
         if (data.cylScheduleArr.length > 0) {
             userPostMethod(CHROME_RS_URL, data)
                 .then(response => {
@@ -177,10 +198,11 @@ export default function TankSchedule(props) {
                             fl                    : '',
                             cir                   : '',
                             dia                   : '',
-                            est_plating_order     :'',
+                            est_plating_order     : '',
                             surface_area          : '',
                         });
                         props.onChangeTank(props.tankId,props.modalTitle);
+                        props.toggle('addTankSchedule');
                         setModal(false);
                     } else {
                         toast.error(response.data.message);
@@ -195,7 +217,7 @@ export default function TankSchedule(props) {
 
     return (
         <Modal isOpen={ props.modal && isOpenModalPrev } toggle={props.toggle} size="xlg">
-            <ModalHeader toggle={props.toggle}>Manual Cycle Plan Form #{props.modalTitle} Thank</ModalHeader>
+            <ModalHeader toggle={props.toggle}>Manual Cycle Plan Form #{props.modalTitle} Thank #chrome-add</ModalHeader>
             <ModalBody>
             <div className="container-fluid">
                 <div className="row">
@@ -218,13 +240,14 @@ export default function TankSchedule(props) {
                                                         options={typeheadOptions['job_orders']}
                                                         placeholder="Select Job No"
                                                         onChange={(e) => dropDownChange(e, 'job_order_id')}
+                                                        selected={jobOrderObject}
                                                     />
                                                 </div>
                                                 
                                                 <div className="col-md-2 mb-3">
                                                     <label htmlFor="cylinder_id">Cylinder Id</label>
-                                                    <select className="form-control" onChange={inputHandler} id="cylinder_id" name="cylinder_id">
-                                                        <option> Select One </option>
+                                                    <select className="form-control" onChange={inputHandler} value={cylScheduleFormData?.cylinder_id} id="cylinder_id" name="cylinder_id">
+                                                        <option value=""> Select One </option>
                                                         {cylScheduleFormData.cylinders && cylScheduleFormData.cylinders.map(cylinder => (
                                                             <option value={cylinder.cylinder_id} key={cylinder.cylinder_id}>{cylinder.cylinder_id}</option>
                                                         ))}
@@ -233,11 +256,12 @@ export default function TankSchedule(props) {
 
                                                 <div className="col-md-1 mb-3">
                                                     <label htmlFor="job_type">Job Type</label>
-                                                    <select className="form-control" onChange={inputHandler} id="job_type" name="job_type">
-                                                        <option> Select One </option>
-                                                        <option value="1">Per Cylinder</option>
-                                                        <option value="2">Per Sqr cm</option>
-                                                        <option value="3">Per Sqr inch</option>
+                                                    <select className="form-control" onChange={inputHandler} id="job_type" name="job_type" value={cylScheduleFormData?.job_type} disabled>
+                                                        <option value=''>Select One</option>
+                                                        <option value="New">New</option>
+                                                        <option value="Remake">Remake</option>
+                                                        <option value="Redo">Redo</option>
+                                                        <option value="DC/RC">DC/RC</option>
                                                     </select>
                                                 </div>
 
@@ -292,6 +316,7 @@ export default function TankSchedule(props) {
                                                         value={cylScheduleFormData.est_plating_order} 
                                                         type="number" 
                                                         placeholder="" 
+                                                        disabled
                                                         onChange={inputHandler}
                                                     />
                                                 </div>
@@ -305,6 +330,7 @@ export default function TankSchedule(props) {
                                                         value={cylScheduleFormData.surface_area} 
                                                         type="number" 
                                                         placeholder="" 
+                                                        disabled
                                                         onChange={inputHandler}
                                                     />
                                                 </div>

@@ -29,12 +29,14 @@ class Create extends Component {
             email: '',
             designation: '',
             branch: '',
+            employee_id: '',
             isFetch: false,
             timezones: [],
             timezone_id: '',
             projectList: [],
             designations: [],
-            branches: []
+            branches: [],
+            employees: []
         };
     }
 
@@ -48,6 +50,7 @@ class Create extends Component {
             designation: this.state.designation,
             branch: this.state.branch,
             timezone_id: this.state.timezone_id,
+            employee_id: this.state.employee_id
         }
         
         let response = userPostMethod(usersRsurl, postData)
@@ -64,7 +67,7 @@ class Create extends Component {
 
     changeHandler = (event) =>{
         this.setState({
-            [event.target.name]: event.target.value
+            [event.target.name]: event.target.name == "employee_id" ? parseInt(event.target.value) : event.target.value
         });   
     }
 
@@ -102,6 +105,11 @@ class Create extends Component {
                     branchesOption.push(branchesObj);
                 })
             }
+            //getting employees
+            let employeeOPtions = [];
+            if(result.data.employees && result.data.employees.length > 0) {
+                employeeOPtions = result.data.employees;
+            }
             // FOR PROJECTS
             let projectOption = [];
             if (result.data.projects && result.data.projects.length > 0) {
@@ -116,11 +124,11 @@ class Create extends Component {
             this.setState({
                 designations:designationOption,
                 projectList: projectOption,
-                branches: branchesOption
+                branches: branchesOption,
+                employees : employeeOPtions,
             })
         })
         .catch(error => { toast.error(`getMethod Error from ${error}`)});
-
         //TIMEZONE LIST 
         globalGetMethod(timezoneList)
         .then(result => {
@@ -143,9 +151,10 @@ class Create extends Component {
         })
         .catch(error => console.log(error))
     }
-
+  
+   
     render() {
-
+        console.log(this.state);
         return (
             <Fragment>
             <Breadcrumb title="User Add" parent="User" />
@@ -236,6 +245,17 @@ class Create extends Component {
                                                         placeholder="Select Branch..."
                                                         onChange={(e) => this.dropDownChange(e, 'branch')}
                                                     />
+                                                </div>
+                                            </div>
+                                            <div className="form-group row">
+                                                <label className="col-sm-3 control-form-label text-right" htmlFor='employee_id'>Employee</label>
+                                                <div className="col-sm-8">
+                                                    <select onChange = {(e) => this.changeHandler(e)} name="employee_id" id="employee_id" className="form-control">
+                                                        <option>Select employee..</option>
+                                                        {
+                                                            this.state.employees.map((employee) =>(<option value={employee.id}>{employee?.name}</option>))
+                                                        }
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>

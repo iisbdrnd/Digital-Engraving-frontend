@@ -9,6 +9,7 @@ import { DE_CHROME_RS_URL, DE_CHROME_SCHEDULE_START_CYCLE } from '../../../../ap
 import { userGetMethod, userPutMethod, userPostMethod } from '../../../../api/userAction';
 import { ValidationAlerts } from '../../../common/GlobalButton';
 import SweetAlert from 'sweetalert2';
+import moment from 'moment';
 
 export default function StartCycleForm(props) {
     const { handleSubmit, register, errors } = useForm();
@@ -21,6 +22,7 @@ export default function StartCycleForm(props) {
     const [modal, setModal] = useState(false); 
     const [changeUseEffect, setChangeUseEffect] = useState(0); 
     const [jobData, setJobData] = useState({}); 
+    const [isStarted ,setIsStarted] = useState(false);
 
     let [formData, setFormData] = useReducer(
         (state, newState) => ({...state, ...newState}),
@@ -38,6 +40,7 @@ export default function StartCycleForm(props) {
             remarks              : '',
             shift_id             : '',
             shift_type_id        : '',
+            plating_time         : '', 
         }
     );
         
@@ -46,6 +49,9 @@ export default function StartCycleForm(props) {
         userGetMethod(`${DE_CHROME_SCHEDULE_START_CYCLE}/${props.chromeScheduleMasterId}`)
             .then(response => {
                 let {cycle_id, shift_operator, de_chrome_date, shift_id, start_time, final_de_chrome_order, est_end_time, actual_end_time, est_cycle_duration, actual_cycle_duration, remarks, shift_type_id, shiftDutyPersons} = response.data.cycleData;
+                if(start_time != null) {
+                    setIsStarted(true)
+                }
 
                 setFormData({ 
                     cycle_id             : cycle_id,
@@ -60,8 +66,11 @@ export default function StartCycleForm(props) {
                     remarks              : remarks === null ? '' : remarks,
                     shift_type_id        : shift_type_id != null ? shift_type_id : '',
                     shift_id             : shift_id != null ? shift_id : '',
+                    plating_time         : (+response?.data?.plating_time/60).toFixed(2),
                 });
-                console.log(response.data.formData);
+                var hours = parseInt((+response?.data?.plating_time)/60);
+                var minutes = (+response?.data?.plating_time) - (hours * 60);
+                setFormData({plating_time : hours.toString() +":"+minutes.toString()})
                 // FOR DUTY PERSON START
                 let shiftOperatorOptions = [];
                 if (shiftDutyPersons && shiftDutyPersons.length > 0) {
@@ -92,8 +101,11 @@ export default function StartCycleForm(props) {
     const inputHandler = (event) => {
         if (event.target.name == 'start_time') {
             let inputTime = new Date(event.target.value );
-            let addTwoHour = new Date(new Date().setHours(inputTime.getHours() + 2)); 
-            let update_est_end_time = formatAm_Pm(addTwoHour);
+            var myArr = formData?.plating_time.split(':');
+            inputTime.setHours(inputTime.getHours() + (+myArr[0]));
+            inputTime.setMinutes(inputTime.getMinutes() + (+myArr[1]));
+            // let update_est_end_time = formatAm_Pm(inputTime);
+            let update_est_end_time = new Date(inputTime);
             setFormData({ 
                 est_end_time: update_est_end_time 
             });
@@ -149,14 +161,16 @@ export default function StartCycleForm(props) {
     const submitHandler = (data, e) => {
         data.scheduleId = props.chromeScheduleMasterId;
         data.shift_operator = dropdownData.shift_operator;
-        console.log('submit korlen vai ', data);
+        data.est_end_time = new Date(formData.est_end_time);
+        data.est_end_time = moment(data.est_end_time).format("YYYY-MM-DDTHH:mm");
+
         userPostMethod(`${DE_CHROME_SCHEDULE_START_CYCLE}/${props.chromeScheduleMasterId}`, data)
             .then(response => {
                 if (response.data.status == 1) {
                     toast.success(response.data.message);
                     e.target.reset();
                     props.toggle();
-                    props.needReload();
+                    props.needReload(props.tank__id,props.tankId);
                 } else {
                     toast.error(response.data.message);
                 }
@@ -250,7 +264,7 @@ export default function StartCycleForm(props) {
                                                             type="text" 
                                                             placeholder="Est Duration"
                                                             autoComplete="off"
-                                                            value={formData.est_cycle_duration}
+                                                            value={formData.plating_time}
                                                             onChange={inputHandler}
                                                             ref={register({
                                                                 required: 'Est Duration Field Required'
@@ -334,7 +348,7 @@ export default function StartCycleForm(props) {
                                                             disabled="disabled"
                                                             placeholder="Est End Time"
                                                             autoComplete="off"
-                                                            value={formData.est_end_time}
+                                                            value={formData.est_end_time != '' ? moment(formData.est_end_time).format("DD/MM/YYYY hh:mm a") : "DD/MM/YYYY"}
                                                             onChange={inputHandler}
                                                             ref={register({
                                                                 required: 'Est End Time Field Required'
@@ -377,6 +391,7 @@ export default function StartCycleForm(props) {
                                                                 type="datetime-local" 
                                                                 placeholder="Actual End Time"
                                                                 autoComplete="off"
+                                                                disabled = {isStarted == false ? true : false}
                                                                 value={formData.actual_end_time}
                                                                 onChange={inputHandler}
                                                                 ref={register({})}
@@ -394,6 +409,7 @@ export default function StartCycleForm(props) {
                                                                 placeholder="Actual Duration"
                                                                 autoComplete="off"
                                                                 value={formData.actual_cycle_duration}
+                                                                disabled = {isStarted == false ? true : false}
                                                                 onChange={inputHandler}
                                                                 ref={register({})}
                                                             />

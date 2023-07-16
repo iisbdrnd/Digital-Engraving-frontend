@@ -9,6 +9,7 @@ import { PLATING_DEPT_RSURL, PLATING_SCHEDULE_START_CYCLE, CHECK_CYL_EXIST_OR_NO
 import { userGetMethod, userPutMethod, userPostMethod } from '../../../../api/userAction';
 import { ValidationAlerts } from '../../../common/GlobalButton';
 import SweetAlert from 'sweetalert2';
+import moment from 'moment';
 
 export default function StartCycleForm(props) {
     const { handleSubmit, register, errors } = useForm();
@@ -34,7 +35,7 @@ export default function StartCycleForm(props) {
             final_plating_order   : '',
             est_end_time          : '',
             actual_end_time       : '',
-            est_cycle_duration    : '2.00',
+            est_cycle_duration    : 0,
             actual_cycle_duration : '',
             remarks               : '',
             shift_id              : '',
@@ -46,7 +47,7 @@ export default function StartCycleForm(props) {
         // ADD,EDIT,DELETE,SHOW ACCESS CHECK
         userGetMethod(`${PLATING_SCHEDULE_START_CYCLE}/${props.platingTankMasterId}`)
             .then(response => {
-                let {cycle_id, shift_operator, plating_date, shift_id, start_time, final_plating_order, est_end_time, actual_end_time, est_cycle_duration, actual_cycle_duration, remarks, shift_type_id, shiftDutyPersons} = response.data.cycleData;
+                let {cycle_id, shift_operator, plating_date, shift_id, start_time, final_plating_order, est_end_time, actual_end_time, actual_cycle_duration, remarks, shift_type_id, shiftDutyPersons} = response.data.cycleData;
                 if(start_time != null) {
                     setIsStarted(true)
                 }
@@ -58,13 +59,13 @@ export default function StartCycleForm(props) {
                     final_plating_order  : final_plating_order === null ? '': final_plating_order,
                     est_end_time         : est_end_time === null ? '': est_end_time,
                     actual_end_time      : actual_end_time === null ? '': actual_end_time.replace(" ", "T"),
-                    est_cycle_duration   : est_cycle_duration === null ? '2.00': est_cycle_duration,
+                    est_cycle_duration   : (+response.data.plating_time),
                     actual_cycle_duration: actual_cycle_duration === null ? '': actual_cycle_duration,
                     remarks              : remarks === null ? '' : remarks,
                     shift_type_id        : shift_type_id != null ? shift_type_id : '',
                     shift_id             : shift_id != null ? shift_id : '',
                 });
-                console.log(response.data.formData);
+              
                 // FOR DUTY PERSON START
                 let shiftOperatorOptions = [];
                 if (shiftDutyPersons && shiftDutyPersons.length > 0) {
@@ -91,15 +92,20 @@ export default function StartCycleForm(props) {
                 setIsLoading(false);
             });
     },[]);
-    console.log(formData);
     // FOR CYLINDER SCHEDULE DETAILS DATA INPUT
     const inputHandler = (event) => {
         if (event.target.name == 'start_time') {
-            let inputTime = new Date(event.target.value );
-            let addTwoHour = new Date(new Date().setHours(inputTime.getHours() + 2)); 
-            let update_est_end_time = formatAm_Pm(addTwoHour);
+            let inputTime = new Date(event.target.value);
+            // let addTwoHour = new Date(new Date().setHours(inputTime.getHours() + 2));
+            let hours = parseInt(formData?.est_cycle_duration /60);
+            let minutes = parseInt(formData?.est_cycle_duration) - (+hours*60);
+            inputTime.setHours((inputTime.getHours() + hours));
+            inputTime.setMinutes((inputTime.getMinutes() + (+minutes)));
+            // addTwoHour = new Date(new Date().setMinutes(inputTime.getMinutes() + 30));  
+            // let update_est_end_time = formatAm_Pm(inputTime);
+            let update_est_end_time = new Date(inputTime);
             setFormData({ 
-                est_end_time: update_est_end_time 
+                est_end_time: update_est_end_time
             });
         }else if (event.target.name == 'actual_end_time') {
             let inputTime = new Date(event.target.value);
@@ -152,7 +158,8 @@ export default function StartCycleForm(props) {
     const submitHandler = (data, e) => {
         data.platingTankMasterId = props.platingTankMasterId; //platingTankMasterId == where store data of plating_tank_schedule_masters
         data.shift_operator = dropdownData.shift_operator;
-        
+        data.est_end_time = new Date(formData.est_end_time);
+        data.est_end_time = moment(data.est_end_time).format("YYYY-MM-DDTHH:mm");
         userPostMethod(`${PLATING_SCHEDULE_START_CYCLE}/${props.platingTankMasterId}`, data)
             .then(response => {
                 if (response.data.status == 1) {
@@ -255,7 +262,7 @@ export default function StartCycleForm(props) {
                                                             type="text" 
                                                             placeholder="Est Duration"
                                                             autoComplete="off"
-                                                            value={formData.est_cycle_duration}
+                                                            value={(formData.est_cycle_duration/60).toFixed(2)}
                                                             required
                                                             onChange={inputHandler}
                                                             ref={register({
@@ -345,7 +352,7 @@ export default function StartCycleForm(props) {
                                                             placeholder="Est End Time"
                                                             autoComplete="off"
                                                             required
-                                                            value={formData.est_end_time}
+                                                            value={formData.est_end_time != '' ? moment(formData.est_end_time).format("DD/MM/YYYY hh:mm a") : "DD/MM/YYYY"}
                                                             onChange={inputHandler}
                                                             ref={register({
                                                                 required: 'Est End Time Field Required'

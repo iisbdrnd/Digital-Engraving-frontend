@@ -42,7 +42,6 @@ export default function TankScheduleEdit(props) {
         userGetMethod(`${PLATING_DEPT_RSURL}/${props.scheduleId}/edit`)
             .then(response => {
                 // FOR JOB ORDER
-                console.log('response.data', response.data);
                 let jobOrderOptions = [];
                 if (response.data.jobOrders && response.data.jobOrders.length > 0) {
                     response.data.jobOrders.map(order => 
@@ -59,7 +58,6 @@ export default function TankScheduleEdit(props) {
                         ['job_orders']: jobOrderOptions,
                     })
                 );
-                console.log('response.data.scheduleData.length', response.data.scheduleData.length);
                 if (response.data.scheduleData.length > 0) {
                     setCylScheduleDetails(
                         response.data.scheduleData
@@ -89,7 +87,6 @@ export default function TankScheduleEdit(props) {
             );
             userGetMethod(`${JOB_DATA_FROM_PLATING_DEPT}?jobId=${selectedValueId}`)
                 .then(response => {
-                    // console.log(response.data);
                     let {fl, cir, dia} = response.data.jobData;
                     setCylScheduleFormData({
                         'fl' : fl,
@@ -207,7 +204,6 @@ export default function TankScheduleEdit(props) {
         data.cylScheduleArr = cylScheduleDetails;
         data.tankId = props.tankId;
         data.job_order_id = dropdownData.job_order_id;
-        console.log('data', data);
         if (data.cylScheduleArr.length > 0) {
             userPutMethod(`${PLATING_DEPT_RSURL}/${props.scheduleId}`, data)
                 .then(response => {

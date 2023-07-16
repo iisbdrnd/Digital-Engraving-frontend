@@ -47,7 +47,9 @@ const Edit = (props) => {
             vat_type: 0,
             vat_value: '',
             vat_amount: '',
-            net_total: ''
+            net_total: '',
+            fixed_amount: '',
+            base_total_amount : 0,
         }
     );
 
@@ -61,44 +63,44 @@ const Edit = (props) => {
 
         if(e.target.name == "less"){
             var less_amount = parseInt(e.target.value);
-            var less_bare_cost = userBillInput.less_bare_cost;
+            var base_total_amount = userBillInput.base_total_amount;
             if(isNaN(less_amount)){
                 setBillInput({
-                    ['net_total'] : grand_total - less_bare_cost,
+                    ['net_total'] : grand_total - base_total_amount,
                 });
             }else{
                 setBillInput({
-                    ['net_total'] : grand_total - parseInt(less_amount) - less_bare_cost,
+                    ['net_total'] : grand_total - parseInt(less_amount) - base_total_amount,
                 });
             }
             
         }
 
-        if(e.target.name == "less_bare_cost"){
+        if(e.target.name == "base_total_amount"){
             var less_amount = userBillInput.less;
-            var less_bare_cost = parseInt(e.target.value);
-            if(isNaN(less_bare_cost)){
+            var base_total_amount = parseInt(e.target.value);
+            if(isNaN(base_total_amount)){
                 setBillInput({
                     ['net_total'] : grand_total - less_amount,
                 });
             }else{
                 setBillInput({
-                    ['net_total'] : grand_total - parseInt(less_amount) - less_bare_cost,
+                    ['net_total'] : grand_total - parseInt(less_amount) - base_total_amount,
                 });
             }
         }
 
         if(e.target.name == "add_cost"){
             var less_amount = userBillInput.less;
-            var less_bare_cost = userBillInput.less_bare_cost;
+            var base_total_amount = userBillInput.base_total_amount;
             var add_cost = parseInt(e.target.value);
             if(isNaN(add_cost)){
                 setBillInput({
-                    ['net_total'] : grand_total - less_amount - less_bare_cost,
+                    ['net_total'] : grand_total - less_amount - base_total_amount,
                 });
             }else{
                 setBillInput({
-                    ['net_total'] : grand_total - less_amount - less_bare_cost + add_cost,
+                    ['net_total'] : grand_total - less_amount - base_total_amount + add_cost,
                 });
             }
         }
@@ -143,8 +145,18 @@ const Edit = (props) => {
             .then(response => {
 
                 console.log('response', response);
-                var rate_per_cm_total_amount = response.data.jobOrders_details.total_surface_area * response.data.jobOrders_details.per_sqr_amount;
-                rate_per_cm_total_amount = rate_per_cm_total_amount.toFixed(2);
+                var rate_per_cm_total_amount;
+                if(response.data.jobOrders_details.cyl_rate_status == 2) {
+                    rate_per_cm_total_amount = response.data.jobOrders_details.total_surface_area * response.data.jobOrders_details.per_sqr_amount;
+                    rate_per_cm_total_amount = rate_per_cm_total_amount.toFixed(2);
+                }
+                if(response.data.jobOrders_details.cyl_rate_status == 1){
+                    rate_per_cm_total_amount = response.data.jobOrders_details.fixed_amount.toFixed(2);
+                }
+                if(response.data.jobOrders_details.cyl_rate_status == 0){
+                    rate_per_cm_total_amount = parseInt(0);
+                }
+                
 
                 var total_surface_area_sqr_inch_total = response.data.jobOrders_details.total_surface_area * 0.393701;
                 total_surface_area_sqr_inch_total = total_surface_area_sqr_inch_total.toFixed(2);
@@ -174,6 +186,7 @@ const Edit = (props) => {
                     circumference : response.data.jobOrders_details.circumference,
                     face_length : response.data.jobOrders_details.face_length,
                     surface_area : response.data.jobOrders_details.surface_area,
+                    base_total_amount : response.data.base_total_amount,
 
                     total_surface_area_sqr_cm : response.data.jobOrders_details.total_surface_area,
                     total_surface_area_sqr_inch : total_surface_area_sqr_inch_total,
@@ -186,10 +199,11 @@ const Edit = (props) => {
 
                     rate:per_chylider_rate,
                     grand_total: rate_per_cm_total_amount,
-                    net_total : rate_per_cm_total_amount,
+                    net_total : rate_per_cm_total_amount -  response.data.base_total_amount,
 
                     challan_no: response.data.challan_details.challan_no,
                     finished_date: response.data.challan_details.finished_date,
+                    fixed_amount: rate_per_cm_total_amount,
 
                     isLoading: false
                     
@@ -197,12 +211,12 @@ const Edit = (props) => {
             })
             .catch(error => console.log(error))   
     },[]);
+    console.log(userBillInput);
 
-    const submitHandler = (data) => {
+    const submitHandler = (data,e) => {
 
         console.log('output', data);
-
-        if(data.net_total > 0){
+        if(data.net_total >= 0){
 
             userPutMethod(`${billAPI}/${job_order_id}`, data )
                 .then(response => {
@@ -273,9 +287,10 @@ const Edit = (props) => {
                                                             className="form-control" 
                                                             onChange={inputChangeHandler} 
                                                             name="cyl_rate_status"
-                                                            readOnly
+                                                            disabled
                                                         >
                                                             <option> Select One </option>
+                                                            <option value="0" selected={userBillInput.cyl_rate_status == 0? 'selected' : ''}>Redo</option>
                                                             <option value="1" selected={userBillInput.cyl_rate_status == 1? 'selected' : ''}>Per Cylinder</option>
                                                             <option value="2" selected={userBillInput.cyl_rate_status == 2? 'selected' : ''}>Per Sqr cm</option>
                                                             <option value="3" selected={userBillInput.cyl_rate_status == 3? 'selected' : ''}>Per Sqr inch</option>
@@ -291,6 +306,7 @@ const Edit = (props) => {
                                                             className="form-control" 
                                                             name="job_no" 
                                                             onChange={inputChangeHandler}
+                                                            readOnly
                                                             value={userBillInput.job_no ? userBillInput.job_no : ''} 
                                                         />
                                                     </div>
@@ -301,6 +317,7 @@ const Edit = (props) => {
                                                             type="text" 
                                                             className="form-control" 
                                                             name="job_name" 
+                                                            readOnly
                                                             value={userBillInput.job_name ? userBillInput.job_name : ''} 
                                                         />
                                                     </div>
@@ -441,7 +458,7 @@ const Edit = (props) => {
                                                         />
                                                     </div>
                                                     <label className="col-md-3 col-form-label label-form">Total S. Area (Sqrcm):</label>
-                                                    <div className="col-md-1">
+                                                    <div className="col-md-3">
                                                         <input 
                                                                 type="text" 
                                                                 className="form-control" 
@@ -452,18 +469,6 @@ const Edit = (props) => {
                                                                 value={userBillInput.total_surface_area_sqr_cm ? userBillInput.total_surface_area_sqr_cm : ''} 
                                                         />
                                                     </div>
-                                                    <label className="col-md-3 col-form-label label-form">Total S. Area (Sqr Inch):</label>
-                                                    <div className="col-md-1">
-                                                        <input 
-                                                                type="text" 
-                                                                className="form-control" 
-                                                                name="total_surface_area_sqr_inch" 
-                                                                onChange={inputChangeHandler} 
-                                                                readOnly
-                                                                ref={register({required: true })}
-                                                                value={userBillInput.total_surface_area_sqr_inch ? userBillInput.total_surface_area_sqr_inch : ''} 
-                                                        />
-                                                    </div>
 
                                                 </div>
                                                 <div className="row">
@@ -471,11 +476,9 @@ const Edit = (props) => {
                                                     <div className="col-md-2">
       
                                                     </div>
-                                                    <label className="col-md-3 col-form-label label-form">Rate Per Sqrcm:</label>
-                                                    <div className="col-md-1" style={{marginTop: '5px'}}>
-                                                    {userBillInput.rate_per_cm ? userBillInput.rate_per_cm : ''}
-                                                        <input 
-                                                            type="hidden" 
+                                                    {userBillInput.cyl_rate_status == 2 && (<><label className="col-md-3 col-form-label label-form">Rate Per Sqrcm:</label>
+                                                    <div className="col-md-3" style={{marginTop: '5px'}}>
+                                                        <input  
                                                             className="form-control" 
                                                             name="rate_per_cm" 
                                                             onChange={inputChangeHandler} 
@@ -483,21 +486,22 @@ const Edit = (props) => {
                                                             ref={register({required: true })}
                                                             value={userBillInput.rate_per_cm ? userBillInput.rate_per_cm : ''} 
                                                         />
-                                                    </div>
-                                                    <label className="col-md-3 col-form-label label-form">Rate Per SqrInch:</label>
-                                                    <div className="col-md-1" style={{marginTop: '5px'}}>
-                                                    {userBillInput.rate_per_inch ? userBillInput.rate_per_inch : ''}
+                                                    </div></>)}
+                                                    {userBillInput.cyl_rate_status == 1 && (<><label className="col-md-3 col-form-label label-form">Fixed Amount:</label>
+                                                    <div className="col-md-3" style={{marginTop: '5px'}}>
+    
                                                         <input 
-                                                            type="hidden" 
                                                             className="form-control" 
-                                                            name="rate_per_inch" 
+                                                            name="rate_per_cm" 
                                                             onChange={inputChangeHandler} 
                                                             readOnly
                                                             ref={register({required: true })}
-                                                            value={userBillInput.rate_per_inch ? userBillInput.rate_per_inch : ''} 
+                                                            value={userBillInput.rate_per_cm_total ? userBillInput.rate_per_cm_total : ''} 
                                                         />
-                                                    </div>
-
+                                                    </div></>)}
+                                                    {userBillInput.cyl_rate_status == 0 && (<><label className="col-md-3 col-form-label label-form">Fee not applicable</label>
+                                                   
+                                                    </>)}
                                                 </div>
                                                 <div className="row">
                                                     <label className="col-md-2 col-form-label label-form"></label>
@@ -505,29 +509,16 @@ const Edit = (props) => {
       
                                                     </div>
                                                     <label className="col-md-3 col-form-label label-form">Total:</label>
-                                                    <div className="col-md-1" style={{marginTop: '5px'}}>
+                                                    <div className="col-md-3" style={{marginTop: '5px'}}>
                                                         <input 
-                                                            type="text" 
                                                             className="form-control" 
                                                             name="rate_per_cm_total" 
                                                             onChange={inputChangeHandler} 
                                                             readOnly
                                                             ref={register({required: true })}
-                                                            value={userBillInput.rate_per_cm_total ? userBillInput.rate_per_cm_total : ''} 
+                                                            value={userBillInput.rate_per_cm_total ? userBillInput.rate_per_cm_total : 0} 
                                                         />
                                                     </div>
-                                                    <label className="col-md-3 col-form-label label-form">Total:</label>
-                                                    <div className="col-md-1" style={{marginTop: '5px'}}>
-                                                        <input 
-                                                            type="text" 
-                                                            className="form-control" 
-                                                            name="rate_per_inch" 
-                                                            onChange={inputChangeHandler} 
-                                                            readOnly
-                                                            value={userBillInput.rate_per_inch_total ? userBillInput.rate_per_inch_total : ''} 
-                                                        />
-                                                    </div>
-
                                                 </div>
 
                                             </fieldset>
@@ -566,13 +557,12 @@ const Edit = (props) => {
                                                     <label className="col-md-2 col-form-label label-form">Grand Total:</label>
                                                     <div className="col-md-2">
                                                         <input 
-                                                            type="text" 
                                                             className="form-control" 
                                                             name="grand_total" 
                                                             onChange={inputChangeHandler} 
                                                             ref={register({required: true })}
                                                             readOnly
-                                                            value={userBillInput.grand_total ? userBillInput.grand_total : ''} 
+                                                            value={userBillInput.grand_total ? userBillInput.grand_total : 0} 
                                                         />
                                                     </div>
                                                 </div>  
@@ -590,15 +580,26 @@ const Edit = (props) => {
                                                         />
                                                     </div>
 
-                                                    <label className="col-md-2 col-form-label label-form">Less Bare Cost:</label>
-                                                    <div className="col-md-2">
+                                                    <label className="col-md-2 col-form-label label-form d-none">Less Bare Cost:</label>
+                                                    <div className="col-md-2 d-none">
                                                         <input 
                                                             type="number" 
                                                             className="form-control" 
                                                             name="less_bare_cost" 
                                                             ref={register({required: true })}
                                                             onChange={inputChangeHandler} 
-                                                            value={userBillInput.less_bare_cost ? userBillInput.less_bare_cost : 0} 
+                                                            value={0} 
+                                                        />
+                                                    </div>
+                                                    <label className="col-md-2 col-form-label label-form">Less Base Cost:</label>
+                                                    <div className="col-md-2">
+                                                        <input 
+                                                            type="number" 
+                                                            className="form-control" 
+                                                            name="base_total_amount" 
+                                                            ref={register({required: true })}
+                                                            onChange={inputChangeHandler} 
+                                                            value={userBillInput.base_total_amount ? userBillInput.base_total_amount : 0} 
                                                         />
                                                     </div>
 
@@ -656,13 +657,12 @@ const Edit = (props) => {
                                                     <label className="col-md-2 col-form-label label-form">Net Total:</label>
                                                     <div className="col-md-2">
                                                         <input 
-                                                                type="text" 
                                                                 className="form-control" 
                                                                 name="net_total" 
                                                                 onChange={inputChangeHandler} 
                                                                 readOnly
                                                                 ref={register({required: true })}
-                                                                value={userBillInput.net_total ? userBillInput.net_total : ''} 
+                                                                value={userBillInput.net_total ? userBillInput.net_total : 0} 
                        
                                                         />
                                                     </div>

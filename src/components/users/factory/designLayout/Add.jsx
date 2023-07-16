@@ -3,10 +3,11 @@ import { useState } from "react";
 import { Fragment } from "react";
 import useForm from "react-hook-form";
 import 'react-bootstrap-typeahead/css/Typeahead.css';
+import moment from 'moment';
 
 import { PanelRefreshIcons, SubmitButton } from "../../../common/GlobalButton";
 import { Typeahead } from 'react-bootstrap-typeahead';
-import { JOB_ORDER_DETAILS, DESIGN_LAYOUT_RSURL } from "../../../../api/userUrl";
+import { JOB_ORDER_DETAILS, DESIGN_LAYOUT_RSURL, DESIGN_LAYOUT_HISTORY } from "../../../../api/userUrl";
 import { userGetMethod, userPostMethod } from "../../../../api/userAction";
 import { toast } from "react-toastify";
 
@@ -14,12 +15,13 @@ const Add = (props) => {
     const { handleSubmit, register, errors, reset } = useForm();
     const [isLayout, setIsLayout] = useState(true);
     const [isBase, setIsBase] = useState(false);
-    const [typeheadOptions, setTypeheadOptions] = useState({ job_orders: [],layout_references:[] });
+    const [typeheadOptions, setTypeheadOptions] = useState({ job_orders: [],layout_references:[],employees:[],clients:[],suppliers:[] });
     const [selectedJobOrder, setSelectedJobOrder] = useState([]);
     const [engraveOrder, setEngraveOrder] = useState([]);
     const [uploadImage, setUploadImage] = useState();
     const [formData, setFormData] = useState({
         layout_date:  new Date().toLocaleDateString(),
+        layout_date: '',
         layout_time : '',
         cir: '',
         client_email: '',
@@ -49,6 +51,10 @@ const Add = (props) => {
         r_fl_cut : 0,
         axl_image_area : 0,
         axl_start_point : 0,
+        history_name: '',
+        layout_history_date: '',
+        history_remarks: '',
+        history_image: ''
     });
     const [dropdownData, setDropdownData] = useState({});
     const [typeColorOptions, setTypeColorOptions] = useState([]);
@@ -57,7 +63,7 @@ const Add = (props) => {
     useEffect(() => {
         pageRefreshHandler(job_id);
     }, [])
-    const pageRefreshHandler = (job_id = null) => {
+    const pageRefreshHandler = async(job_id = null) => {
         // setIsLoading(true);
         userGetMethod(`${DESIGN_LAYOUT_RSURL}/create?job_order_id=${job_id}`)
             .then(response => {
@@ -88,7 +94,47 @@ const Add = (props) => {
 
                     })
                 }
-                setTypeheadOptions({ ...typeheadOptions, ['job_orders']: jobOrderOptions,['layout_references']:response?.data?.layout_references});
+
+                let clientsOptions = [];
+                if(response.data.clients && response.data.clients.length > 0) {
+                    response.data.clients.map(client => {
+                        let clientObj = {};
+                        clientObj.id = client.id;
+                        clientObj.client_id = client.client_id;
+                        clientObj.name = client.name;
+                        clientsOptions.push(clientObj);
+                    })
+                }
+
+                let employeesOptions = [];
+                if(response.data.employees && response.data.employees.length > 0) {
+                    response.data.employees.map(employee => {
+                        let employeeObj = {};
+                        employeeObj.id = employee.id;
+                        employeeObj.client_id = employee.employee_id;
+                        employeeObj.name = employee.name;
+                        employeesOptions.push(employeeObj);
+                    })
+                }
+
+                let suppliersOptions = [];
+                if(response.data.suppliers && response.data.suppliers.length > 0) {
+                    response.data.suppliers.map(supplier => {
+                        let supplierObj = {};
+                        supplierObj.id = supplier.id;
+                        supplierObj.supplier_id = supplier.supplier_id;
+                        supplierObj.name = supplier.name;
+                        suppliersOptions.push(supplierObj)
+                    })
+                }
+
+                setTypeheadOptions({ ...typeheadOptions, 
+                 ['job_orders']: jobOrderOptions,
+                 ['layout_references']: response?.data?.layout_references,
+                 ['clients']: clientsOptions,
+                 ['employees']: employeesOptions,
+                 ['suppliers']: suppliersOptions
+                });
                 // setIsLoading(false);
             });
     }
@@ -112,6 +158,26 @@ const Add = (props) => {
             setFormData({ ...formData, [e.target.name]: e.target.type == 'checkbox' ? (e.target.checked ? 1 : 0) : e.target.value });
         }
     }
+
+    console.log(formData);
+
+    const  getLayoutInfo = () => {
+        userGetMethod(`${DESIGN_LAYOUT_HISTORY}?ref_layout_id=${formData?.ref_layout_id}`)
+            .then(res => {
+                setFormData({
+                    ...formData,
+                    history_name: res.data.layoutHistory.job_name,
+                    history_remarks: res.data.layoutHistory.remarks,
+                    layout_history_date: res.data.layoutHistory.layout_date,
+                    layout_id : formData?.ref_layout_id
+                })
+            })
+            .catch(err => { console.log(err) })
+    }
+
+    useEffect(() => {
+        getLayoutInfo();
+    },[formData?.ref_layout_id])
     console.log(formData);
 
     const engOrderHandler = (e, index) => {
@@ -212,11 +278,13 @@ const Add = (props) => {
     }
 
     const onSubmit = (data, e) => {
+        e.preventDefault();
         const formValue = new FormData();
         Object.entries(formData).forEach(([key, value]) => {
+            if(key != 'history_image')
             formValue.append(`${key}`, `${value}`)
         })
-
+        formValue.append("history_image", formData.history_image);
         formValue.append("job_id", dropdownData.job_id);
         formValue.append("engraveOrder", JSON.stringify(engraveOrder));
         userPostMethod(`${DESIGN_LAYOUT_RSURL}`, formValue)
@@ -226,6 +294,7 @@ const Add = (props) => {
                 e.target.reset();
             })
     }
+    
     const clearForm = () => {
         console.log('clear');
         setSelectedJobOrder([]);
@@ -427,14 +496,12 @@ const Add = (props) => {
                                                 <legend className="w-auto text-left">Layout</legend>
                                                 <div className="form-row">
                                                     <div className="col-md-12 row">
-                                                    <label className="col-sm-5 col-form-label">Ref. Layout No</label>
+                                                    <label className="col-sm-5 col-form-label">Ref. Layout</label>
                                                         <div className="col-md-7">
                                                             <select type="text"
                                                                 className="form-control"
                                                                 name="ref_layout_id"
-                                                                ref={register({
-                                                                    required: 'On text Field Required'
-                                                                })}
+    
                                                                 onChange={inputChangeHandler}
                                                                 value={formData.ref_layout_id ? formData.ref_layout_id : ''}
                                                             >
@@ -446,7 +513,7 @@ const Add = (props) => {
                                                                 ))}
                                                             </select>
                                                         </div>
-                                                        <label className="col-sm-5 col-form-label required">Layout ID</label>
+                                                        <label className="col-sm-5 text-left col-form-label required">Layout ID</label>
                                                         <div className="col-md-7">
                                                             <input
                                                                 type="text"
@@ -461,8 +528,8 @@ const Add = (props) => {
                                                             />
                                                         </div>
                                                     </div>
-                                                    <div className="col-md-6 row pl-0 pr-0">
-                                                        <label className="col-sm-5 col-form-label" style={{whiteSpace: 'nowrap'}}>UPS</label>
+                                                    <div className="col-md-6 row text-left m-l-0 m-r-0" style={{marginLeft:"0px !important",paddingLeft:"0px !important"}}>
+                                                        <label className="col-md-5 text-left col-form-label p-l-0" style={{whiteSpace: 'nowrap'}}>UPS</label>
                                                         <div className="col-md-7">
                                                             <input
                                                                 type="text"
@@ -477,7 +544,7 @@ const Add = (props) => {
                                                                 disabled={formData.ups != '' ?    true : false}
                                                             />
                                                         </div>
-                                                        <label className="col-sm-5 col-form-label" style={{whiteSpace: 'nowrap'}}>Dia</label>
+                                                        <label className="col-sm-5 text-left col-form-label p-l-0" style={{whiteSpace: 'nowrap'}}>Dia</label>
                                                         <div className="col-md-7">
                                                             <input
                                                                 type="text"
@@ -492,7 +559,7 @@ const Add = (props) => {
                                                                 disabled={formData.dia != '' ?    true : false}
                                                             />
                                                         </div>
-                                                        <label className="col-sm-5 col-form-label" style={{whiteSpace: 'nowrap'}}>Eye mark</label>
+                                                        <label className="col-sm-5 text-left col-form-label p-l-0" style={{whiteSpace: 'nowrap'}}>Eye mrk</label>
                                                         <div className="col-md-7">
                                                             <input
                                                                 type="text"
@@ -524,8 +591,8 @@ const Add = (props) => {
                                                                 disabled={formData.rpt != '' ?    true : false}
                                                             />
                                                         </div>
-                                                        <label className="col-md-9" style={{whiteSpace: 'nowrap'}}>Printer mark</label>
-                                                        <div className="col-md-3">
+                                                        <label className="col-md-8" style={{whiteSpace: 'nowrap'}}>Prntr mark</label>
+                                                        <div className="col-md-4">
                                                             <input
                                                                 type="checkbox"
                                                                 name="printer_mark"
@@ -536,11 +603,10 @@ const Add = (props) => {
                                                                 value={formData.printer_mark ? formData.printer_mark : ''}
                                                             />
                                                         </div>
-                                                        <label className="col-md-9" style={{whiteSpace: 'nowrap'}}>Complete</label>
-                                                        <div className="col-md-3">
+                                                        <label className="col-md-8" style={{whiteSpace: 'nowrap'}}>Done</label>
+                                                        <div className="col-md-4">
                                                             <input
                                                                 type="checkbox"
-                                                                className=""
                                                                 name="mark_as_complete"
                                                                 ref={register({
                                                                     required: 'On text Field Required'
@@ -553,10 +619,10 @@ const Add = (props) => {
                                                        
                                                     </div>
                                                     <div className="col-md-12 row">
-                                                    <label className="col-md-5 col-form-label" style={{whiteSpace: 'nowrap'}}>Date</label>
+                                                    <label className="col-md-5 text-left col-form-label" style={{whiteSpace: 'nowrap'}}>Date</label>
                                                         <div className="col-md-7">
                                                             <input
-                                                                type="text"
+                                                                type="date"
                                                                 className="form-control"
                                                                 name="layout_date"
                                                                 required
@@ -564,10 +630,11 @@ const Add = (props) => {
                                                                     required: 'On text Field Required'
                                                                 })}
                                                                 onChange={inputChangeHandler}
-                                                                value={formData.layout_date}
+                                                                defaultValue={moment().format("ll")}
+                                                                
                                                             />
                                                         </div>
-                                                        <label className="col-md-5 col-form-label" style={{whiteSpace: 'nowrap'}}>On time</label>
+                                                        <label className="col-md-5 text-left col-form-label" style={{whiteSpace: 'nowrap'}}>On time</label>
                                                         <div className="col-md-7">
                                                             <input
                                                                 type="time"
@@ -581,7 +648,7 @@ const Add = (props) => {
                                                                 value={formData.layout_time}
                                                             />
                                                         </div>
-                                                        <label className="col-md-5 col-form-label">Layout</label>
+                                                        <label className="col-md-5 text-left col-form-label">Layout</label>
                                                         <div className="col-md-7">
                                                             <select className="form-control" name="	layout_id" id="	layout_id">
                                                                 <option value="1">opt 1</option>
@@ -589,7 +656,7 @@ const Add = (props) => {
                                                                 <option value="3">opt 3</option>
                                                             </select>
                                                         </div>
-                                                        <label className="col-sm-5 col-form-label">info</label>
+                                                        <label className="col-sm-5 text-left col-form-label">info</label>
                                                         <div className="col-md-7">
                                                             <select className="form-control" name="operator_info" id="operator_info" onChange={inputChangeHandler} 
                                                             ref={register({
@@ -600,7 +667,7 @@ const Add = (props) => {
                                                                 <option value="3">opt 3</option>
                                                             </select>
                                                         </div>
-                                                        <label className="col-sm-5 col-form-label">Station</label>
+                                                        <label className="col-sm-5 text-left col-form-label">Station</label>
                                                         <div className="col-md-7">
                                                             <select className="form-control" name="station" id="station" onChange={inputChangeHandler} ref={register({
                                                                 required: 'On text Field Required'
@@ -610,7 +677,7 @@ const Add = (props) => {
                                                                 <option value="3">opt 3</option>
                                                             </select>
                                                         </div>
-                                                        <label className="col-sm-5 col-form-label required">Remarks</label>
+                                                        <label className="col-sm-5 text-left col-form-label required">Remarks</label>
                                                         <div className="col-md-7">
                                                             <input
                                                                 type="text"
@@ -641,9 +708,10 @@ const Add = (props) => {
                                                         </thead>
                                                         <tbody>
                                                             <tr>
-                                                                <td><input class="form-control" type="text" /></td>
-                                                                <td><input class="form-control" type="text" name="job_no" /></td>
-                                                                <td><input class="form-control" type="text" name="remarks" /></td>
+                                                                <td>
+                                                                    <input class="form-control" type="text" value={formData?.layout_history_date}/></td>
+                                                                <td><input class="form-control" type="text" name="job_no" value={formData?.history_name} /></td>
+                                                                <td><input class="form-control" type="text" name="remarks" value={formData?.history_remarks} /></td>
                                                             </tr>
 
                                                         </tbody>
@@ -659,8 +727,8 @@ const Add = (props) => {
                                             <fieldset className="border p-2">
                                                 <legend className="w-auto text-left">Base</legend>
                                                 <div className="form-row">
-                                                    <div className="col-md-6 row">
-                                                        <label className="col-sm-5 col-form-label">FL</label>
+                                                    <div className="col-md-12 row">
+                                                    <label className="col-md-5 col-form-label text-left">Face Length</label>
                                                         <div className="col-md-7">
                                                             <input
                                                                 type="text"
@@ -675,6 +743,8 @@ const Add = (props) => {
                                                                 disabled={formData?.fl != '' ? true : false}
                                                             />
                                                         </div>
+                                                    </div>
+                                                    <div className="col-md-6 row m-l-0 m-r-0">
                                                         <label className="col-sm-5 col-form-label" style={{whiteSpace:'nowrap'}}>D. Dia</label>
                                                         <div className="col-md-7">
                                                             <input
@@ -719,7 +789,7 @@ const Add = (props) => {
                                                                 })}
                                                                 onChange={inputChangeHandler}
                                                                 // disabled={formData?.d_cir != '' ? true : false}
-                                                                // value={formData.d_cir ? formData.d_cir : ''}
+                                                                value={formData.cir ? formData.cir : ''}
                                                             />
                                                         </div>
                                                         <label className="col-sm-5 col-form-label" style={{whiteSpace:'nowrap'}}>F. Cir</label>
@@ -742,7 +812,7 @@ const Add = (props) => {
                                             <fieldset className="border p-2">
                                                 <legend className="w-auto text-left">Design</legend>
                                                 <div className="form-row">
-                                                    <div className="col-md-6 row">
+                                                    <div className="col-md-6 row m-l-0 m-r-0">
                                                         <p className="text-center col-md-12">Desire Size</p>
                                                         <label className="col-sm-5 col-form-label required">H</label>
                                                         <div className="col-md-7">
@@ -806,6 +876,78 @@ const Add = (props) => {
                                                     </div>
                                                 </div>
                                             </fieldset>
+                                            <fieldset className="border p-2">
+                                                <legend className="w-auto text-left">Additional Info</legend>
+                                                <div className="form-row">
+                                                <div className="col-md-12 row">
+                                                        <label className="col-sm-5 text-left col-form-label" style={{whiteSpace : 'nowrap'}}>Employee</label>
+                                                        <div className="col-md-7">
+                                                            <select className="form-control" name="employee_id" id="employee_id"  onChange={inputChangeHandler}   ref={register({
+                                                                    required: 'On text Field Required'
+                                                                })}>
+                                                                <option value="">Select....</option>
+                                                                {typeheadOptions['employees'].map((item,index) => (
+                                                                    <option key={index} value={item?.id}>
+                                                                        {item?.name}
+                                                                    </option>
+                                                                ))}
+                                                            </select>
+
+                                                        </div>
+
+                                                    </div>
+                                                    <div className="col-md-12 row">
+                                                        <label className="col-sm-5 text-left col-form-label" style={{whiteSpace:'nowrap'}}>Designer</label>
+                                                        <div className="col-md-7">
+                                                            <input
+                                                                type="text"
+                                                                className="form-control"
+                                                                name="designer"
+                                                                id="designer_id"
+                                                                required
+                                                                ref={register({
+                                                                    required: 'On text Field Required'
+                                                                })}
+                                                                onChange={inputChangeHandler}
+                                                                // disabled={formData?.d_cir != '' ? true : false}
+                                                                // value={formData.d_cir ? formData.d_cir : ''}
+                                                            />
+
+                                                        </div>
+                                                    </div>
+                                                    <div className="col-md-12 row">
+                                                        <label className="col-sm-5 text-left col-form-label" style={{whiteSpace : 'nowrap'}}>Supplier</label>
+                                                        <div className="col-md-7">
+                                                            <select className="form-control" name="supplier_id" id="supplier_id"  onChange={inputChangeHandler}   ref={register({
+                                                                    required: 'On text Field Required'
+                                                                })}>
+                                                                <option value="">Select ...</option>
+                                                                {typeheadOptions['suppliers'].map((item,index) => (
+                                                                    <option key={index} value={item?.id}>{item?.name}</option>
+                                                                ))}
+                                                            </select>
+
+                                                        </div>
+
+                                                    </div>
+                                                    <div className="col-md-12 row">
+                                                        <label className="col-sm-5 text-left col-form-label" style={{whiteSpace : 'nowrap'}}>Clients</label>
+                                                        <div className="col-md-7">
+                                                            <select className="form-control" name="client_id" id="client_id" onChange={inputChangeHandler}   ref={register({
+                                                                    required: 'On text Field Required'
+                                                                })}>
+                                                                <option value="">Select ...</option>
+                                                                {typeheadOptions['clients'].map((item, index) => (
+                                                                    <option key={index} value={item?.id}>{item?.name}</option>
+                                                                ))}
+                                                            </select>
+
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </fieldset>
+                                            
                                         </div>
                                         <div className="col-md-3 pl-0 pr-0">
                                             <fieldset className="border p-1" style={{overflow:'auto'}}>
@@ -826,7 +968,7 @@ const Add = (props) => {
                                                                 typeColorOptions.map((item,index) => {
                                                                     return (
                                                                         <tr>
-                                                                            <td><input className="form-control" type="text" value={item.id + 1} /></td>
+                                                                            <td><input className="form-control" type="text" value={item.id + 1}  name="er_id" id="er_id" onChange={(e) => engOrderHandler(e, index)}/></td>
                                                                             <td><input className="form-control" type="text" value={item.name} name="er_color_id" id="er_color_id" onChange={(e) => engOrderHandler(e, index)}/></td>
                                                                             <td><input className="form-control" type="text"  name="er_desired_screen" id="er_desired_screen" onChange={(e) =>engOrderHandler(e, index)} /></td>
                                                                             <td><input className="form-control" type="text"  name="er_desired_angle" id="er_desired_angle" onChange={(e) =>engOrderHandler(e, index)} /></td>
@@ -840,6 +982,7 @@ const Add = (props) => {
                                                     </table>
                                                 </div>
                                             </fieldset>
+                                            
                                         </div>
                                     </div>
                                     <div className="col-md-12">

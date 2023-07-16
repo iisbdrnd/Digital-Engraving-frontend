@@ -54,7 +54,6 @@ export default function ListData(props) {
             ...rowCount
         ]);
 	}
-    console.log('rowCount ', rowCount);
 
     const rows = () => {
         let tbodyRows = [];
@@ -73,7 +72,6 @@ export default function ListData(props) {
         // let inputDataNew = Object.keys(platingData.cylinder_id[removeIndex]);
         // delete platingData.cylinder_id[inputDataNew];
 	}
-    console.log('inputDataNew ', platingData.cylinder_id);
 
     const submitHandler = () => {}
 

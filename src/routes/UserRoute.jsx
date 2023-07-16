@@ -259,6 +259,8 @@ import CollectionAndDiscountDetailsReport from './../components/users/management
     import chartOfAccounts from './../components/users/accounts/backOfficeSetup/chartOfAccounts/ListData';
     import chartOfAccountsAdd from './../components/users/accounts/backOfficeSetup/chartOfAccounts/Add';
     import chartOfAccountsEdit from './../components/users/accounts/backOfficeSetup/chartOfAccounts/Edit';
+    import BillConfig from "../components/users/backOfficeSetup/billConfiguration/BillConfig";
+
 
     //Account Configuration
     import accConfiguration from './../components/users/accounts/backOfficeSetup/accConfiguration/Add';
@@ -1291,6 +1293,10 @@ class UserRoute extends Component {
                 <UserAuthRoute
                   path={`${process.env.PUBLIC_URL}/chartOfAccounts/index`}
                   component={chartOfAccounts}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/bill_configuration/index`}
+                  component={BillConfig} 
                 />
                 <UserAuthRoute
                   path={`${process.env.PUBLIC_URL}/chartOfAccounts/add`}

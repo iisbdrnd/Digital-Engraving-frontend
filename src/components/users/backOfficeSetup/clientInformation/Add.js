@@ -15,6 +15,7 @@ const Add = (props) => {
     const [employeeInfo, setEmployeeInfo] = useState("");   
     const [limitSquareCm, setLimitSquareCM] = useState();   
     const [perSquareAmount, setPerSquareAmount] = useState(0.0);   
+    const [cylinderRate, setCylinderRate] = useState();
 
     let [calculationValue, setCalculationValue] = useReducer(
         (state, newState) => ({...state, ...newState}),
@@ -83,9 +84,9 @@ const Add = (props) => {
     
     let employeesOptions = [];
     if (clientData && clientData.employeeInfos.length > 0) {
-        employeesOptions = clientData.employeeInfos.map((employee) => (<option key={employee.id} value={employee.id}>{employee.employee_id}</option>))
+        employeesOptions = clientData.employeeInfos.map((employee) => (<option key={employee.id} value={employee.id}>{employee.name}</option>))
     }
-    console.log('clientData', clientData);
+    console.log('clientData', clientData?.employeeInfos);
 
     
 
@@ -247,7 +248,7 @@ const Add = (props) => {
                                             <fieldset className="border" >
                                                 <legend className="w-auto text-left">Marketed By</legend>
                                                 <div className="form-group row">
-                                                    <label className="col-sm-4 col-form-label" htmlFor="marketing_person_id">Id</label>
+                                                    <label className="col-sm-4 col-form-label" htmlFor="marketing_person_id">Name</label>
                                                     <div className="col-sm-8">
                                                         <select className="form-control" onChange={employeeChangeHandler} id="marketing_person_id" name="marketing_person_id"
                                                             ref={register({
@@ -255,13 +256,12 @@ const Add = (props) => {
                                                             })} >
                                                             <option value=''> Select One </option>
                                                             {employeesOptions}
-                                                            
                                                         </select>
                                                         {errors.marketing_person_id && <p className='text-danger'>{errors.marketing_person_id.message}</p>}
                                                     </div>
                                                 </div>
 
-                                                <div className="form-group row">
+                                                {/* <div className="form-group row">
                                                     <label className="col-md-4 col-form-label" htmlFor="marketer_name">Name</label>
                                                     <div className="col-md-8">
                                                         <input 
@@ -276,7 +276,7 @@ const Add = (props) => {
                                                             // })}
                                                         />
                                                     </div>
-                                                </div>
+                                                </div> */}
                                                 <div className="form-group row">
                                                     <label className="col-md-4 col-form-label" htmlFor="marketer_name">Designation</label>
                                                     <div className="col-md-8">
@@ -370,20 +370,19 @@ const Add = (props) => {
                                                 <div className="form-group row">
                                                     <label className="col-sm-4 col-form-label" htmlFor="cyl_rate_status">Cyl Rate Status</label>
                                                     <div className="col-sm-8">
-                                                        <select className="form-control" required id="cyl_rate_status" name="cyl_rate_status"
+                                                        <select className="form-control" required onChange={(e) => setCylinderRate(e.target.value)} id="cyl_rate_status" name="cyl_rate_status"
                                                             ref={register({
                                                                 required: 'Rate Type Field Required'
                                                             })} >
                                                             <option value=""> Select One </option>
-                                                            <option value="1"> Per Cylinder </option>
                                                             <option value="2"> Per square CM </option>
-                                                            <option value="3"> Per square Inch </option>
+                                                            <option value="1"> Per Cylinder </option>
                                                         </select>
                                                         {errors.cyl_rate_status && <p className='text-danger'>{errors.cyl_rate_status.message}</p>}
                                                     </div>
                                                 </div>
                                                 
-                                                <div className="form-group row">
+                                                {cylinderRate ==2 && <div className="form-group row">
                                                     <label className="col-md-4 col-form-label" htmlFor="limit_square_cm">Limit (square cm)</label>
                                                     <div className="col-md-8">
                                                         <input 
@@ -391,6 +390,7 @@ const Add = (props) => {
                                                             name="limit_square_cm" 
                                                             type="text" 
                                                             onChange={calculateFormValue}
+                                                            required = {cylinderRate ==2 ? true : false}
                                                             // value={employeeInfo.limit_square_cm != undefined ? employeeInfo.limit_square_cm : ""}
                                                             ref={register({
                                                                 required: 'Limit Field Required'
@@ -398,9 +398,9 @@ const Add = (props) => {
                                                         />
                                                         {errors.limit_square_cm && <p className='text-danger'>{errors.limit_square_cm.message}</p>}
                                                     </div>
-                                                </div>
+                                                </div>}
                                                 
-                                                <div className="form-group row">
+                                                {cylinderRate ==1 && <div className="form-group row">
                                                     <label className="col-md-4 col-form-label" htmlFor="fixed_amount">Fixed Amount</label>
                                                     <div className="col-md-8">
                                                         <input 
@@ -408,6 +408,7 @@ const Add = (props) => {
                                                             name="fixed_amount" 
                                                             type="text" 
                                                             onChange={calculateFormValue}
+                                                            required = {cylinderRate ==1 ? true : false}
                                                             // value={employeeInfo.fixed_amount != undefined ? employeeInfo.fixed_amount : ""}
                                                             ref={register({
                                                                 required: 'Fixed Amount Field Required'
@@ -416,8 +417,9 @@ const Add = (props) => {
                                                         {errors.fixed_amount && <p className='text-danger'>{errors.fixed_amount.message}</p>}
                                                     </div>
                                                 </div>
+                                                }
                                                 
-                                                <div className="form-group row">
+                                                {cylinderRate ==2 && <div className="form-group row">
                                                     <label className="col-md-4 col-form-label" htmlFor="per_square_amount">Per square amount</label>
                                                     <div className="col-md-8">
                                                         <input 
@@ -425,6 +427,7 @@ const Add = (props) => {
                                                             name="per_square_amount" 
                                                             type="text" 
                                                             readOnly={'readonly'}
+                                                            required = {cylinderRate ==2 ? true : false}
                                                             // onChange={changeHandler}
                                                             value={(calculationValue.fixed_amount / calculationValue.limit_square_cm) ? calculationValue.fixed_amount / calculationValue.limit_square_cm : 0}
                                                             ref={register({
@@ -433,9 +436,9 @@ const Add = (props) => {
                                                         />
                                                         {errors.per_square_amount && <p className='text-danger'>{errors.per_square_amount.message}</p>}
                                                     </div>
-                                                </div>
+                                                </div>}
 
-                                                <div className="form-group row">
+                                                {/* <div className="form-group row">
                                                     <label className="col-md-4 col-form-label" htmlFor="cylinder_a_amount">Cylinder A amount</label>
                                                     <div className="col-md-8">
                                                         <input 
@@ -476,7 +479,7 @@ const Add = (props) => {
                                                             ref={register({})}
                                                         />
                                                     </div>
-                                                </div>
+                                                </div> */}
                                                 
                                             </fieldset>
                                         </div>

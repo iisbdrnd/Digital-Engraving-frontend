@@ -14,12 +14,13 @@ const Add = (props) => {
     const [typeHeadOptions, setTypeHeadOptions] = useState({});
     const [dropDownData, setDropdownData] = useState();
 
-    const [selectedJobOrders, setSelectedJobOrders] = useState({});
+    // const [selectedJobOrders, setSelectedJobOrders] = useState({});
     const [markedComplete, setMarkedComplete] = useState([]);
     const [grindingValues, setGrindingValues] = useState([]);
     const [grindingMaster, setGrindingMaster] = useState([]);
     const [grapped,setGrapped] = useState(false);
     const [chk, setChk] = useState(true);
+    const [jobNumber, setJobNumber] = useState([]);
 
     let [jobOrderData, setJobOrderData] = useReducer(
         (state, newState) => ({...state, ...newState}),
@@ -89,7 +90,7 @@ const Add = (props) => {
                         jobOrderObj.name = `[${order.job_no}] ` + order.job_name;
                         jobOrderOptions.push(jobOrderObj);
                         if(props.location.state.params.job_order_id && props.location.state.params.job_order_id == jobOrderObj.id){
-                            setSelectedJobOrders(jobOrderObj);
+                            jobNumber.push(jobOrderObj);
                         }
                     })
                 }
@@ -100,6 +101,7 @@ const Add = (props) => {
                         'job_order_pk_id': props.location.state.params.job_order_id,
                     })
                 )
+                // setJobNumber([{'job_order_pk_id':props.location.state.params.job_order_id}])
                 }
                 if(props.location.state.params.job_order_id) 
                 {userGetMethod(`${JOB_ORDER_DETAILS}?jobOrderId=${props.location.state.params.job_order_id}?`)
@@ -122,6 +124,7 @@ const Add = (props) => {
                     'machines'      : response.data.machines,
                     'polishMachines': response.data.polishMachines,
                 });
+                // dropDownChange([{ id: props.location.state.params.job_order_id }], 'job_order_pk_id');
                 setTypeHeadOptions(
                     (prevstate) => ({
                         ...prevstate,
@@ -155,7 +158,11 @@ const Add = (props) => {
     }
 
     const dropDownChange = (e, fieldName) => {
+        if(fieldName =='job_order_pk_id'){
+            setJobNumber(e);
+        }
         if(e.length > 0){
+            setJobNumber(e);
             const selectedValueId = e[0].id;
             setDropdownData(
                 (prevstate) => ({
@@ -211,7 +218,7 @@ const Add = (props) => {
             setGrindingInput({[key]:temp_obj})
         })
     }
-    console.log(grindingInput);
+    // console.log(grindingInput);
 
     const  changeMasterGrinder = (e) => {
         setGrindingMaster({...grindingMaster,[e.target.name] : e.target.value});
@@ -276,17 +283,58 @@ const Add = (props) => {
         data.job_order_pk_id = dropDownData.job_order_pk_id;
         data.grindingDetails = grindingInput;
         data.total_cylinder_qty = jobOrderData.total_cylinder_qty;
+        
         userPostMethod(GRINDING_RSURL, data)
             .then(response => {
                 if (response.data.status == 1) {
                     toast.success(response.data.message);
                     e.target.reset();
+                    clearForm();
                     // setSelected(false);
                 } else {
                     toast.error(response.data.message)
                 }
             })
         .catch(error => toast.error(error))
+    }
+
+    const clearForm = () => {
+        setGrindingMaster([]);
+        setGrindingInput({
+            'serial'                : [],
+            'cylinder_id'           : [],
+
+            'before_fl'             : [],
+            'before_dia'            : [],
+            'before_target'         : {},
+            'before_pinhole'        : {}, 
+            'before_base_down'      : {}, 
+            'before_key_lock'       : {}, 
+            'before_cone_prob'      : {}, 
+
+            'after_dia'             : {}, 
+            'after_pinhole'         : {}, 
+            'after_base_down'       : {}, 
+            'after_key_lock'        : {}, 
+            'after_cone_prob'       : {}, 
+            'after_mark_as_complete': {}, 
+
+            'plating_order'         : {},
+            'remarks_for_cyl'       : {},
+        })
+        setJobOrderData({'total_cylinder_qty' : ''})
+        setJobOrderData({
+            'job_no'            : '',
+            'client_name'       : '',
+            'marketing_p_name'  : '',
+            'job_type'          : '',
+            'total_cylinder_qty': '',
+            'printer_name'      : '',
+            'desired_fl'        : '',
+            'desired_cir'       : '',
+            'desired_dia'       : ''
+        });
+        setJobNumber([]);
     }
 
     const rowsByTotalCyl = () => {
@@ -393,7 +441,8 @@ const Add = (props) => {
                                                             placeholder="Select Job No..."
                                                             onChange={(e) => dropDownChange(e, 'job_order_pk_id')}
                                                             inputProps={{ required: true }}
-                                                            defaultInputValue={selectedJobOrders?.name}
+                                                            // defaultInputValue={selectedJobOrders?.name}
+                                                            selected={jobNumber}
                                                             // disabled={job_order_pk_id != null ? 'disabled' : ''}
                                                             ref={register({
                                                                 required: 'Job No Field Required'
@@ -670,7 +719,7 @@ const Add = (props) => {
                                                             <div className="row">
                                                                 <label className="col-sm-5 col-form-label" htmlFor="final_cir">Final Cir</label>
                                                                 <div className="col-sm-7">
-                                                                    <input disabled value={100} className="form-control" name="final_cir" required id="final_cir" type="number" placeholder="Final Cir" onChange={(e) => changeMasterGrinder(e)} ref={register({ required: true })} />
+                                                                    <input  className="form-control" name="final_cir" required id="final_cir" type="number" placeholder="Final Cir" onChange={(e) => changeMasterGrinder(e)} ref={register({ required: true })} />
                                                                     <span>{errors.final_cir && 'Final Cir is required'}</span>
                                                                     <div className="valid-feedback">Looks good!</div>
                                                                 </div>

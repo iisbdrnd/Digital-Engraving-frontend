@@ -79,7 +79,6 @@ export default function ListData(props) {
         // TABLE DATA READY
         userGetMethod(`${QUALITY_CONTROL_RS_URL}?qc_status=${jobActiveStatus}&page=${pageNumber}&perPage=${perPage}&searchText=${searchText}`)
             .then(response => {
-                console.log("res", response.data);
                 setCurrentPage(response.data.jobOrders.current_page)
                 setPerPage(response.data.jobOrders.per_page)
                 setTotalData(response.data.jobOrders.total)

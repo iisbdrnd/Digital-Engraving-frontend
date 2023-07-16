@@ -12,6 +12,7 @@ const Edit = (props) => {
     const [employeeInfo, setEmployeeInfo] = useState("");  
     const [emailNotify, setEmailNotify] = useState(false);  
     const [smsNotify, setSmsNotify] = useState(false);  
+    const [cylinderRate, setCylinderRate] = useState();
 
     const [clientInformationInput, setClientInformationInput] = useReducer(
         (state, newState) => ({...state, ...newState}),
@@ -48,6 +49,9 @@ const Edit = (props) => {
 
     const changeHandler = (event) => {
         setClientInformationInput({[event.target.name]: event.target.value});
+        if(event.target.name == 'sms_notify'){
+            setSmsNotify(!smsNotify)
+        }
     }
 
     useEffect(() => {
@@ -79,7 +83,8 @@ const Edit = (props) => {
                     branch_data           : response.data.branches,
                     isLoading             : false
                 });
-
+                employeeChangeHandler(marketing_person_id);
+                setCylinderRate(cyl_rate_status);
                 setEmailNotify(email_notify == 1 ? true : false);
                 setSmsNotify(sms_notify == 1 ? true : false);
             })
@@ -87,7 +92,6 @@ const Edit = (props) => {
     },[]);
 
     const submitHandler = (data, e) => {
-        console.log('data dsjf fsdjhfds', data);
         userPutMethod(`${clientInformation}/${clientInfoId}`, data )
             .then(response => {
                 console.log("response.data", response.data);
@@ -106,11 +110,9 @@ const Edit = (props) => {
         );
     }
 
-    const employeeChangeHandler = (e) => {
-        let employee_id = e.target.value;
+    const employeeChangeHandler = (employee_id) => {
         userGetMethod(`${clientInformation}/getEmployee/${employee_id}`)
             .then(response => {
-                console.log('response', response.data);
                 setEmployeeInfo(response.data.employee);
             });
     }
@@ -129,7 +131,7 @@ const Edit = (props) => {
     
     let employeesOptions = [];
     if (clientInformationInput && clientInformationInput.employee_data.length > 0) {
-        employeesOptions = clientInformationInput.employee_data.map((employee) => (<option key={employee.id} selected={employee.id == clientInformationInput.marketing_person_id ? true : false} value={employee.id}>{employee.employee_id}</option>))
+        employeesOptions = clientInformationInput.employee_data.map((employee) => (<option key={employee.id} selected={employee.id == clientInformationInput.marketing_person_id ? true : false} value={employee.id}>{employee.name}</option>))
     }
 
     return (
@@ -285,11 +287,8 @@ const Edit = (props) => {
                                                 <div className="form-group row">
                                                     <label className="col-sm-4 col-form-label" htmlFor="marketing_person_id">Id</label>
                                                     <div className="col-sm-8">
-                                                        <select className="form-control" onChange={employeeChangeHandler} required ref={register}  id="marketing_person_id" name="marketing_person_id"
-                                                            defaultValue={clientInformationInput.marketing_person_id}
-                                                            ref={register({
-                                                                required: 'Branch Field Required'
-                                                            })} >
+                                                        <select className="form-control" onChange={(e)=>employeeChangeHandler(e.target.value)} required ref={register}  id="marketing_person_id" name="marketing_person_id"
+                                                            defaultValue={clientInformationInput.marketing_person_id}>
                                                             <option> Select One </option>
                                                             {employeesOptions}
                                                             
@@ -298,7 +297,7 @@ const Edit = (props) => {
                                                     </div>
                                                 </div>
 
-                                                <div className="form-group row">
+                                                {/* <div className="form-group row">
                                                     <label className="col-md-4 col-form-label" htmlFor="marketer_name">Name</label>
                                                     <div className="col-md-8">
                                                         <input 
@@ -313,7 +312,7 @@ const Edit = (props) => {
                                                             // })}
                                                         />
                                                     </div>
-                                                </div>
+                                                </div> */}
                                                 <div className="form-group row">
                                                     <label className="col-md-4 col-form-label" htmlFor="marketer_name">Designation</label>
                                                     <div className="col-md-8">
@@ -392,7 +391,7 @@ const Edit = (props) => {
                                                         onChange={changeHandler}
                                                         // value={userInput.name}
                                                         checked={smsNotify}
-                                                        onChange={() => setSmsNotify(!smsNotify)}
+                                                        // onChange={() => setSmsNotify(!smsNotify)}
                                                         ref={register({
                                                             // required: 'Email Notify Field Required'
                                                         })}
@@ -439,20 +438,19 @@ const Edit = (props) => {
                                                 <div className="form-group row">
                                                     <label className="col-sm-4 col-form-label" htmlFor="cyl_rate_status">Cyl Rate Status</label>
                                                     <div className="col-sm-8">
-                                                        <select className="form-control" required id="cyl_rate_status" name="cyl_rate_status"
+                                                        <select className="form-control" required  onChange={(e) => setCylinderRate(e.target.value)} id="cyl_rate_status" name="cyl_rate_status"
                                                             ref={register({
                                                                 required: 'Rate Type Field Required'
                                                             })} >
                                                             <option value=""> Select One </option>
-                                                            <option value="1" selected={clientInformationInput.cyl_rate_status == 1 ? true : false}> Per Cylinder </option>
                                                             <option value="2" selected={clientInformationInput.cyl_rate_status == 2 ? true : false}> Per square CM </option>
-                                                            <option value="3" selected={clientInformationInput.cyl_rate_status == 3 ? true : false}> Per square Inch </option>
+                                                            <option value="1" selected={clientInformationInput.cyl_rate_status == 1 ? true : false}> Per Cylinder </option>
                                                         </select>
                                                         {errors.cyl_rate_status && <p className='text-danger'>{errors.cyl_rate_status.message}</p>}
                                                     </div>
                                                 </div>
                                                 
-                                                <div className="form-group row">
+                                                {(cylinderRate == 2) && <div className="form-group row">
                                                     <label className="col-md-4 col-form-label" htmlFor="limit_square_cm">Limit (square cm)</label>
                                                     <div className="col-md-8">
                                                         <input 
@@ -467,9 +465,9 @@ const Edit = (props) => {
                                                         />
                                                         {errors.limit_square_cm && <p className='text-danger'>{errors.limit_square_cm.message}</p>}
                                                     </div>
-                                                </div>
+                                                </div>}
                                                 
-                                                <div className="form-group row">
+                                                {(cylinderRate == 1) && <div className="form-group row">
                                                     <label className="col-md-4 col-form-label" htmlFor="fixed_amount">Fixed Amount</label>
                                                     <div className="col-md-8">
                                                         <input 
@@ -484,9 +482,9 @@ const Edit = (props) => {
                                                         />
                                                         {errors.fixed_amount && <p className='text-danger'>{errors.fixed_amount.message}</p>}
                                                     </div>
-                                                </div>
+                                                </div>}
                                                 
-                                                <div className="form-group row">
+                                                {(cylinderRate == 2) && <div className="form-group row">
                                                     <label className="col-md-4 col-form-label" htmlFor="per_square_amount">Per square amount</label>
                                                     <div className="col-md-8">
                                                         <input 
@@ -502,9 +500,9 @@ const Edit = (props) => {
                                                         />
                                                         {errors.per_square_amount && <p className='text-danger'>{errors.per_square_amount.message}</p>}
                                                     </div>
-                                                </div>
+                                                </div>}
 
-                                                <div className="form-group row">
+                                                {/* <div className="form-group row">
                                                     <label className="col-md-4 col-form-label" htmlFor="cylinder_a_amount">Cylinder A amount</label>
                                                     <div className="col-md-8">
                                                         <input 
@@ -545,7 +543,7 @@ const Edit = (props) => {
                                                             ref={register({})}
                                                         />
                                                     </div>
-                                                </div>
+                                                </div> */}
                                             </fieldset>
 
                                         </div>

@@ -315,8 +315,8 @@ export default function ListData(props) {
                     </div>
                 </div>
             </div>
-            {modal == true ? <TankSchedule tankId={stateData.currentTank.id} modalTitle={stateData.currentTank.tank_id} toggle={()=>toggleModal('addTankSchedule')} modal={modal} /> : ''} 
-            {cycleModal == true ? <StartCycleForm tankId={stateData.currentTank.id} chromeScheduleMasterId={stateData.singleScheduleInfo.id} modalTitle={stateData.singleScheduleInfo.scheduleCycleId +' of #'+stateData.currentTank.tank_id} toggle={()=>toggleModal('cycleStart')} modalName="cycleStart" modal={cycleModal} needReload={() => onChangeTank(stateData.currentTank.id, stateData.currentTank.tank_id)}/> : ''} 
+            {modal == true ? <TankSchedule tankId={stateData.currentTank.id} modalTitle={stateData.currentTank.tank_id} toggle={()=>toggleModal('addTankSchedule')} modal={modal} needReload={() => onChangeTank(stateData.currentTank.id, stateData.currentTank.tank_id)} /> : ''} 
+            {cycleModal == true ? <StartCycleForm tankId={stateData.currentTank.id} chromeScheduleMasterId={stateData.singleScheduleInfo.id} modalTitle={stateData.singleScheduleInfo.scheduleCycleId +' of #'+stateData.currentTank.tank_id} tank__id={stateData.currentTank.tank_id} toggle={()=>toggleModal('cycleStart')} modalName="cycleStart" modal={cycleModal} needReload={() => onChangeTank(stateData.currentTank.id, stateData.currentTank.tank_id)}/> : ''} 
             
             {editTankSchedule == true ? <TankScheduleEdit tankId={stateData.currentTank.id} chromeScheduleMasterId={stateData.singleScheduleInfo.id} modalTitle={stateData.currentTank.tank_id} toggle={()=>toggleModal('editTankSchedule')} modalName="cycleStart" modal={editTankSchedule} /> : ''} 
         </Fragment>

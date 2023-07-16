@@ -204,9 +204,9 @@ export default function ListData(props) {
                                                                         <td className="">
                                                                             {
                                                                                 accLoad === false ? <>
-                                                                                    {hasAccess.edit === true ? <EditButton link={`/jobOrder/edit/${item.id}`} menuId={ menuId } /> : ''} 
+                                                                                    {(hasAccess.edit === true && item?.agreement_status != 1) ? <EditButton link={`/jobOrder/edit/${item.id}`} menuId={ menuId } /> : ''} 
                                                                                     {hasAccess.show === true ? <ShowButton link={`/jobOrder/show/${item.id}`} menuId={ menuId } /> : ''} 
-                                                                                    {hasAccess.destroy === true ? <DeleteButton deleteLink={JOB_ORDER_RSURL} deleteHandler={ deleteHandler } menuId={ menuId } dataId={item.id} /> : ''} 
+                                                                                    {(hasAccess.destroy === true  && item?.agreement_status != 1) ? <DeleteButton deleteLink={JOB_ORDER_RSURL} deleteHandler={ deleteHandler } menuId={ menuId } dataId={item.id} /> : ''} 
                                                                                 </> : ''
                                                                             }
                                                                         </td>

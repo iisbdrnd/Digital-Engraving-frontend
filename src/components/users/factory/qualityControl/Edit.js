@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState, useReducer } from 'react';
-import { QUALITY_CONTROL_RS_URL, POLISHING_GET_POLISHING_DATA_BY_JOB_ID } from '../../../../api/userUrl';
-import { userGetMethod, userPutMethod } from '../../../../api/userAction';
+import { QUALITY_CONTROL_RS_URL,QUALITY_CONTROL_JOB_DATA_BY_JOB_ID, POLISHING_GET_POLISHING_DATA_BY_JOB_ID } from '../../../../api/userUrl';
+import { userGetMethod, userPutMethod, userPostMethod } from '../../../../api/userAction';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import useForm from "react-hook-form";
@@ -9,6 +9,12 @@ import { SubmitButton } from '../../../common/GlobalButton';
 const Edit = (props) => {
     const { handleSubmit, register, errors } = useForm();
     const [isLoading, setIsLoading] = useState(true);
+    const [cylinderInfo, setCylinderInfo] = useState([]);
+    const [cylinderUpdateInfo, setCylinderUpdateInfo] = useState({
+        cylinder_id    : [],
+        rework_status  : [],
+        rework_remarks : {}
+    });
 
     let [stateData, setStateData] = useReducer(
         (state, newState) => ({...state, ...newState}),
@@ -49,31 +55,63 @@ const Edit = (props) => {
 
             singleJobData                 : [],
             cylinders                     : [],
+            cylinder_length               : 0,
+            complete_status               : "",
         }
     );
+ 
     let jobOrderPkId = props.match.params.job_order_pk_id ? props.match.params.job_order_pk_id : null;
     
     useEffect(()=>{
-        userGetMethod(`${QUALITY_CONTROL_RS_URL}/${jobOrderPkId}/edit`)
+        // userGetMethod(`${QUALITY_CONTROL_RS_URL}/${jobOrderPkId}/edit`)
+           userGetMethod(`${QUALITY_CONTROL_JOB_DATA_BY_JOB_ID}/${jobOrderPkId}`)
             .then(response => {
                 // dropDownChange([{id : response.data.jobOrder.job_id}], 'job_order_pk_id');
-
-                console.log('response', response.data.original);
-                let {singleJobData, cylinders} = response.data.original;
-                
+                let {singleJobData, cylinders,cylinderLength} = response.data;
+                console.log(response.data.cylinders.cylinder_id[0]);
                 setStateData({
                     'singleJobData': singleJobData, // GET DATA FROM job_orders table
-                    'cylinders'    : cylinders, // GET DATA FROM factory_cylinder_supply_chains table
+                    'cylinders'    : cylinders, 
+                    'cylinder_length' : cylinderLength
+                    // GET DATA FROM factory_cylinder_supply_chains table
                 });
 
                 setIsLoading(false);
             });
     }, []);
-
+    if (cylinderInfo.length < stateData.cylinder_length) {
+        for (var i = 0; i < stateData.cylinder_length; i++) {
+            var cylinder_obj = {
+                cylinder_id: stateData.cylinders.cylinder_id[i],
+                remark: stateData.cylinders.rework_remarks[i],
+                status: stateData.cylinders.rework_status[i],
+            };
+            cylinderInfo.push(cylinder_obj);
+        }
+    }
+    // console.log(cylinderInfo);
     const onChangeHandler = (event) => {
         setStateData({[event.target.name]: event.target.value});
     }
 
+    const onChangeCylinder = (event, index) => {
+        const value = event.target.type == 'checkbox' ? (event.target.checked  ? 1 : 0) : event.target.value;
+        setCylinderInfo(
+            cylinderInfo.map((item, i) =>
+                i == index ? { ...item, [event.target.name]: value } : item)
+        );
+
+    }
+    // console.log(cylinderInfo);
+    const getCylinderUpdateInfo = () => {
+        cylinderInfo.map((item, index) =>{
+            cylinderUpdateInfo['cylinder_id'].push(item?.cylinder_id);
+            cylinderUpdateInfo['rework_remarks'][index] = item?.remark
+            cylinderUpdateInfo['rework_status'].push(item?.status);
+        })
+    }
+    console.log(cylinderUpdateInfo);
+ 
     const dropDownChange = (e, fieldName) => {
         if(e.length > 0){
             const selectedValueId = e[0].id; //job_orders.job_order_pk_id
@@ -85,22 +123,40 @@ const Edit = (props) => {
                         'jobOrderDetailsData'  : jobOrderDetails, //CYLINDER DATA FROM 'job_orders' TABLE
                         'cylindersByJobId'     : cylindersByJobId, //CYLINDER DATA FROM 'factory_cylinder_supply_chains' TABLE
                         'platingData'          : platingData, //PLATING DATA FROM 'plating_tank_schedule_details' TABLE
-                        'completeEngraveData': completeEngraveData //PLATING DATA FROM 'plating_tank_schedule_details' TABLE
+                        'completeEngraveData'  : completeEngraveData //PLATING DATA FROM 'plating_tank_schedule_details' TABLE
                     });
                 });
         }
     }
     
     const submitHandler = (data) => {
-        userPutMethod(`${QUALITY_CONTROL_RS_URL}/${jobOrderPkId}`, data)
+        getCylinderUpdateInfo();
+        if (stateData?.complete_status == "0") {
+            data.rework_status = cylinderUpdateInfo.rework_status;
+            data.rework_remarks = cylinderUpdateInfo.rework_remarks;
+        }else{
+            data.rework_status = [];
+            data.rework_remarks = [];
+        }
+        data.cylinder_id = cylinderUpdateInfo.cylinder_id;
+        userPostMethod(`${QUALITY_CONTROL_RS_URL}`, data)
             .then(response => {
                 if (response.data.status == 1) {
+                    clearForm();
                     toast.success(response.data.message)
                 } else {
                     toast.error(response.data.message)
                 }
             })
-        .catch(error => toast.error(error))
+            .catch(error => toast.error(error))
+    }
+    const clearForm = () => {
+        setStateData({
+            'complete_status': "",
+            'singleJobData': [],
+            'cylinder_length': 0,
+        })
+        setCylinderInfo([]);
     }
 
     var menuId = 0;
@@ -144,7 +200,7 @@ const Edit = (props) => {
                                                     {/* <input type="hidden" name="job_no" value={stateData.jobOrderDetails.job_no ? stateData.jobOrderDetails.job_no : ''} ref={register({})} /> */}
                                                 </div>
                                                 <div className="col-md-2">
-                                                    <select className="form-control" name='complete_status' ref={register({required: true })}>
+                                                    <select className="form-control" onChange={onChangeHandler} value={stateData?.complete_status} name='complete_status' ref={register({required: true })}>
                                                         <option value="">select one</option>
                                                         <option value="1">Ok</option>
                                                         <option value="0">Not Ok</option>
@@ -176,6 +232,23 @@ const Edit = (props) => {
                                                     </thead>
                                                     <tbody>
                                                         {
+                                                            cylinderInfo.length > 0 ? (
+                                                                cylinderInfo.map((item, index) => (
+                                                                    <tr>
+                                                                        <td colspan={stateData?.complete_status === "0" ? "1" : "3"}>{item.cylinder_id}</td>
+                                                                        {stateData?.complete_status === "0" && (<><td style={{textAlign: 'center'}}>
+                                                                            <input type="checkbox" name="status" onChange={(event)=> onChangeCylinder(event,index)}  defaultChecked = {item.status == 0 ? false : true} ref={register()} />
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type="text" className="form-control" onChange={(event)=> onChangeCylinder(event,index)} name="remark" defaultValue={item.remark} ref={register()} />
+                                                                        </td></>)}
+                                                                    </tr>
+                                                                ))
+                                                            ) :(<tr>
+                                                                <td colSpan="3" align="center">No Cylinder Found</td>
+                                                            </tr>)
+                                                        }       
+                                                        {/* {
                                                             stateData.cylinders.length > 0 ? (
                                                                 stateData.cylinders.map((cylinder, key)=>(
                                                                     <tr key={key}>
@@ -193,7 +266,7 @@ const Edit = (props) => {
                                                                     <td colSpan="3" align="center">No Cylinder Found</td>
                                                                 </tr>
                                                             )
-                                                        }
+                                                        } */}
                                                         
                                                     </tbody>
                                                 </table>

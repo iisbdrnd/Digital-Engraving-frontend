@@ -29,7 +29,11 @@ const Add = (props) => {
             cyl_rate_status  : '',
             limit_square_cm  : 0,
             vat_status       : '',
-            job_order_id     : ''
+            job_order_id     : '',
+            job_type         : '',
+            surface_area     : '',
+            fixed_amount     : '',
+            per_square_amount: '',
         }
     );
     
@@ -57,7 +61,7 @@ const Add = (props) => {
                         })
                     }
                     setJobNoValue([...jobNoValue,jobOrderObj]);
-                    dropDownChange([{id : response.data.jobOrder.id}], 'job_order_id');
+                    dropDownChange([{id : job_order_id}], 'job_order_id');
                 }
                 if (response.data.jobOrders && response.data.jobOrders.length > 0) {
                     response.data.jobOrders.map(order => 
@@ -84,8 +88,13 @@ const Add = (props) => {
         if(stateName === 'job_order_id' && event[0]?.name){
             setJobNoValue(event);
         }
-        if(event.length > 0){
-            const selectedValue = event[0].id;
+        if(event.length > 0 ){
+            var selectedValue;
+            if (event.length > 0) {
+                selectedValue = event[0].id;
+            } else {
+                selectedValue = event.id;
+            }
             setDropdownData(
                 (prevstate) => ({
                     ...prevstate,
@@ -95,7 +104,7 @@ const Add = (props) => {
 
             userGetMethod(`${JOB_ORDER_DETAILS}?jobOrderId=${selectedValue}`)
                 .then(response => {
-                    let { job_name, printer_name, client_email, bill_config_type, printer_mark, marketing_p_name, cyl_rate_status, limit_square_cm, vat_status} = response.data.jobOrderDetails;
+                    let { job_name, fixed_amount,per_square_amount,surface_area, job_type, printer_name, client_email, bill_config_type, printer_mark, marketing_p_name, cyl_rate_status, limit_square_cm, vat_status} = response.data.jobOrderDetails;
                     setJobAgreementInput({
                         'job_name'         : job_name,
                         'printer_name'     : printer_name,
@@ -106,10 +115,15 @@ const Add = (props) => {
                         'cyl_rate_status'  : cyl_rate_status,
                         'limit_square_cm'  : limit_square_cm,
                         'vat_status'       : vat_status,
+                        'job_type'         : job_type,
+                        'surface_area'     : surface_area,
+                        'fixed_amount'     : fixed_amount,
+                        'per_square_amount'  : per_square_amount,
                     });
                 });
         } 
     }
+    console.log(jobAgreementInput);
 
     const calculateFormValue = (event) => {
         setJobAgreementInput(
@@ -138,7 +152,11 @@ const Add = (props) => {
             'printer_name': '',
             'client_email': '',
             'marketing_p_name': '',
-            'limit_square_cm': 0
+            'limit_square_cm': 0,
+            'job_type': '',
+            'surface_area' : '',
+            'fixed_amount'     : '',
+            'per_square_amount'  : '',
         });
     }
 
@@ -220,17 +238,40 @@ const Add = (props) => {
                                                             ref={register({
                                                                 required: 'Cyl Rate Status Field Required'
                                                             })}
+                                                            disabled
                                                             defaultValue=''>
                                                             <option value=''>Select One</option>
-                                                            <option selected={jobAgreementInput.cyl_rate_status == 1 ? true : false} value="1">Per Cylinder</option>
-                                                            <option selected={jobAgreementInput.cyl_rate_status == 2 ? true : false} value="2">Per Sqr cm</option>
-                                                            <option selected={jobAgreementInput.cyl_rate_status == 3 ? true : false} value="3">Per Sqr inch</option>
+                                                            <option selected={(jobAgreementInput.cyl_rate_status == 1 && jobAgreementInput?.job_type != "Redo") ? true : false} value="1">Per Cylinder</option>
+                                                            <option selected={(jobAgreementInput.cyl_rate_status == 2 && jobAgreementInput?.job_type != "Redo") ? true : false} value="2">Per Sqr cm</option>
+                                                            <option selected={(jobAgreementInput.cyl_rate_status == 3 && jobAgreementInput?.job_type != "Redo") ? true : false} value="3">Per Sqr inch</option>
+                                                            <option selected={(jobAgreementInput?.job_type == "Redo") ? true : false} value="N/A">Not Applicable</option>
                                                         </select>
                                                         {errors.cyl_rate_status && <p className='text-danger'>{errors.cyl_rate_status.message}</p>}
                                                     </div>
                                                 </div>
+                                                {jobAgreementInput?.job_type == "Redo" && (<>
+                                                    <div className="form-group row">
+                                                    <label className="col-sm-4 col-form-label" htmlFor="fixed_amount">Fixed Amount</label>
+                                                    <div className="col-sm-8">
+                                                        <input 
+                                                            className="form-control" 
+                                                            id="fixed_amount" 
+                                                            name="fixed_amount"
+                                                            type="text" 
+                                                            placeholder="Fixed amount" 
+                                                            value={"0"}
+                                                            readOnly
+                                                            ref={register({
+                                                                required: 'Fixed Amount Field Required'
+                                                            })}
+                                                        />
+                                                        {errors.limit_square_cm && <p className='text-danger'>{errors.limit_square_cm.message}</p>}
+                                                    </div>
+                                                </div>
+                                                </>)}
 
-                                                <div className="form-group row">
+                                                {jobAgreementInput?.job_type != "Redo" && (<>
+                                                {jobAgreementInput.cyl_rate_status == 3 && (<div className="form-group row">
                                                     <label className="col-sm-4 col-form-label" htmlFor="limit_square_cm">Sqr Limit</label>
                                                     <div className="col-sm-8">
                                                         <input 
@@ -242,7 +283,53 @@ const Add = (props) => {
                                                             placeholder="Sqr Limit" 
                                                             value={jobAgreementInput.limit_square_cm}
                                                             onChange={calculateFormValue}
-                                                            readOnly={jobAgreementInput.bill_config_type == 2 ? 'readonly' : '' }
+                                                            // readOnly={jobAgreementInput.bill_config_type == 2 ? 'readonly' : '' }
+                                                            readOnly
+                                                            ref={register({
+                                                                required: 'Sqr Limit Field Required'
+                                                            })}
+                                                        />
+                                                        {errors.limit_square_cm && <p className='text-danger'>{errors.limit_square_cm.message}</p>}
+                                                    </div>
+                                                </div>)}
+                                                {jobAgreementInput.cyl_rate_status == 1 &&(
+                                                    <div className="form-group row">
+                                                    <label className="col-sm-4 col-form-label" htmlFor="fixed_amount">Fixed Amount</label>
+                                                    <div className="col-sm-8">
+                                                        <input 
+                                                            className="form-control" 
+                                                            id="fixed_amount" 
+                                                            name="fixed_amount"
+                                                            required 
+                                                            type="text" 
+                                                            placeholder="Sqr Limit" 
+                                                            value={jobAgreementInput.fixed_amount}
+                                                            readOnly
+                                                            // onChange={calculateFormValue}
+                                                            // readOnly={jobAgreementInput.bill_config_type == 2 ? 'readonly' : '' }
+                                                            ref={register({
+                                                                required: 'Fixed Amount Field Required'
+                                                            })}
+                                                        />
+                                                        {errors.limit_square_cm && <p className='text-danger'>{errors.limit_square_cm.message}</p>}
+                                                    </div>
+                                                </div>
+                                                )}
+                                                {jobAgreementInput.cyl_rate_status == 2 &&(<>
+                                                    <div className="form-group row">
+                                                    <label className="col-sm-4 col-form-label" htmlFor="limit_square_cm">Sqr Limit</label>
+                                                    <div className="col-sm-8">
+                                                        <input 
+                                                            className="form-control" 
+                                                            id="limit_square_cm" 
+                                                            name="limit_square_cm"
+                                                            required 
+                                                            type="text" 
+                                                            placeholder="Sqr Limit" 
+                                                            value={jobAgreementInput.limit_square_cm}
+                                                            onChange={calculateFormValue}
+                                                            // readOnly={jobAgreementInput.bill_config_type == 2 ? 'readonly' : '' }
+                                                            readOnly
                                                             ref={register({
                                                                 required: 'Sqr Limit Field Required'
                                                             })}
@@ -250,6 +337,28 @@ const Add = (props) => {
                                                         {errors.limit_square_cm && <p className='text-danger'>{errors.limit_square_cm.message}</p>}
                                                     </div>
                                                 </div>
+                                                <div className="form-group row">
+                                                    <label className="col-sm-4 col-form-label" htmlFor="per_square_amount">Per Sq Amount</label>
+                                                    <div className="col-sm-8">
+                                                        <input 
+                                                            className="form-control" 
+                                                            id="per_square_amount" 
+                                                            name="per_square_amount"
+                                                            required 
+                                                            type="text" 
+                                                            placeholder="per_square_amount" 
+                                                            value={jobAgreementInput.per_square_amount}
+                                                            readOnly
+                                                            // onChange={calculateFormValue}
+                                                            // readOnly={jobAgreementInput.bill_config_type == 2 ? 'readonly' : '' }
+                                                            ref={register({
+                                                                required: 'Fixed Amount Field Required'
+                                                            })}
+                                                        />
+                                                        {errors.per_square_amount && <p className='text-danger'>{errors.per_square_amount.message}</p>}
+                                                    </div>
+                                                </div>
+                                                </>)}
                                                 {
                                                     jobAgreementInput.vat_status == 0 ?
                                                     (
@@ -306,8 +415,7 @@ const Add = (props) => {
                                                         </div>
                                                     )
                                                 }
-                                                
-
+                                                </>)}
                                                 <div className="form-group row">
                                                     <label className="col-sm-4 col-form-label required" htmlFor="printer_mark">Printer Mark</label>
                                                     <div className="col-sm-8">
@@ -338,6 +446,16 @@ const Add = (props) => {
                                                                 <td width="75%">{jobAgreementInput.job_name}</td>
                                                             </tr>
                                                             <tr>
+                                                                <td align="right">Job Type</td>
+                                                                <td>:</td>
+                                                                <td>{jobAgreementInput.job_type}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td align="right">Surface Area</td>
+                                                                <td>:</td>
+                                                                <td>{jobAgreementInput.surface_area}</td>
+                                                            </tr>
+                                                            <tr>
                                                                 <td align="right">Printer Name</td>
                                                                 <td>:</td>
                                                                 <td>{jobAgreementInput.printer_name}</td>
@@ -352,12 +470,6 @@ const Add = (props) => {
                                                                 <td>:</td>
                                                                 <td>{jobAgreementInput.marketing_p_name}</td>
                                                             </tr>
-                                                            {/* <tr>
-                                                                <td align="right">Reply</td>
-                                                                <td>:</td>
-                                                                <td></td>
-                                                            </tr> */}
-
                                                         </tbody>
                                                     </table>
                                                 </div>

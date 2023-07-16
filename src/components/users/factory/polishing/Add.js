@@ -6,6 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import useForm from "react-hook-form";
 import { SubmitButton } from '../../../common/GlobalButton';
 import { Typeahead } from 'react-bootstrap-typeahead';
+import moment from 'moment';
 
 const Add = (props) => {
     const { handleSubmit, register, errors ,reset} = useForm();
@@ -68,7 +69,6 @@ const Add = (props) => {
         }
     );
     let digPolishingCylinderId = props.location.state.params.dig_polishing_cylinder_id ? props.location.state.params.dig_polishing_cylinder_id : null;
-    console.log({digPolishingCylinderId});
 
     useEffect(()=>{
         userGetMethod(`${POLISHING_RS_URL}/create?polishing_id=${digPolishingCylinderId}`)
@@ -90,7 +90,6 @@ const Add = (props) => {
                     dropDownChange([{id : response.data.jobOrder.job_id}], 'job_order_id');
                 }
                 if (response.data.jobOrders && response.data.jobOrders.length > 0) {
-                    console.log('jobOrders');
                     response.data.jobOrders.map(order => 
                     {
                         let jobOrderObj = {};
@@ -137,7 +136,6 @@ const Add = (props) => {
     }, []);
 
     const dropDownChange = (e, fieldName) => {
-        console.log(e, fieldName);
         if(e.length > 0){
             const selectedValueId = e[0].id;
             setDropdownData(
@@ -192,14 +190,40 @@ const Add = (props) => {
     }
 
     const inputChangeHandler = (e)=>{
-        console.log(e.target.value,e.target.checked);
         if(e.target.type == 'checkbox'){
             e.target.checked == true ? setStateData({[e.target.name] : 1}) : setStateData({[e.target.name] : 0})
         }else{
             setStateData({[e.target.name]: e.target.value});
         }
     }
-    console.log(stateData);
+    
+    useEffect(() => {
+        if(stateData?.on_time != '' && stateData?.est_duration != '' ){
+            let inputDate = moment(stateData?.on_time,"HH:mm").format("HH:mm:ss");
+            var t1 =new Date (moment(inputDate, 'HH:mm:ss').toString());
+            let est_inputDate = moment(stateData?.est_duration,"HH:mm").format("HH:mm:ss");
+           
+            var t2 =new Date (moment(est_inputDate, 'HH:mm:ss').toString());
+
+            t1.setHours((t1.getHours() + t2.getHours()));
+            t1.setMinutes((t1.getMinutes() + (t2.getMinutes())));
+
+            setStateData({"est_end_time": moment(t1).format("HH:mm:ss")})
+        }
+        if(stateData?.on_time != '' && stateData?.a_off_time != ''){
+            let inputDate = moment(stateData?.on_time, "HH:mm").format("HH:mm:ss");
+            let endDate = moment(stateData?.a_off_time, "HH:mm").format("HH:mm:ss");
+
+            var ts = new Date(moment(inputDate, "HH:mm:ss").toString());
+            var te = new Date(moment(endDate, "HH:mm:ss").toString());
+
+            te.setHours((te.getHours() - ts.getHours()));
+            te.setMinutes((te.getMinutes() - (ts.getMinutes())));
+            setStateData({'a_duration': moment(te).format("HH:mm:ss")})
+
+        }
+
+    },[stateData?.on_time,stateData?.est_duration,stateData?.a_off_time]);
 
     const submitHandler = (data,e) => {
         data.job_no = stateData.jobOrderDetailsData.job_no;
@@ -394,7 +418,7 @@ const Add = (props) => {
                                                     
                                                     <label className="col-md-5 col-form-label label-form">Est, Duration</label>
                                                     <div className="col-md-7">
-                                                        <input type="text" className="form-control" name="est_duration" required onChange={inputChangeHandler} ref={register({ required: true })} value={stateData.est_duration ? stateData.est_duration : ''}/>
+                                                        <input type="text" className="form-control" name="est_duration" placeholder='HH:MM' required onChange={inputChangeHandler} ref={register({ required: true })} value={stateData.est_duration ? stateData.est_duration : ''}/>
                                                     </div>
                                                 
                                                     <label className="col-md-5 col-form-label label-form">Est, End Time</label>
@@ -472,7 +496,7 @@ const Add = (props) => {
                                                     
                                                     <label className="col-md-5 col-form-label label-form">Output Status</label>
                                                     <div className="col-md-7">
-                                                        <select className="form-control" name="output_status" onChange={inputChangeHandler} ref={register({})} value={stateData.output_status ? stateData.output_status : ''}>
+                                                        <select className="form-control" name="output_status" onChange={inputChangeHandler} required ref={register({})} value={stateData.output_status ? stateData.output_status : ''}>
                                                             <option value=''>Select One</option>
                                                             <option value="1">Ok</option>
                                                             <option value="0">Not Ok</option>

@@ -489,7 +489,6 @@ const CylinderInfo = (props) => {
                                         <strong>Engravers Order</strong>
                                     </div>
                                     <div className="card-body">
-                                        {/* <div className="col-md-10"> */}
                                             <div className="form-row">
                                                 <div className="col-md-12 mb-1">
                                                     {/* <div className="row">
