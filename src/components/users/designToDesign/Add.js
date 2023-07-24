@@ -83,6 +83,7 @@ const Add = (props) => {
     const dropDownChange = (e, fieldName) => {
         if(fieldName === 'job_order_id' && e[0].name){
             setJobNoValue(e);
+            // console.log(setJobNoValue);
         }
         if(e.length > 0){
             const selectedValueId = e[0].id;

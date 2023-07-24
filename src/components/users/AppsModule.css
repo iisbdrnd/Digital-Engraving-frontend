@@ -1,0 +1,36 @@
+
+@media only screen and (min-width: 769px) and (max-width: 1225px) {
+    /* #user-navbar {
+     width: 100% !important;
+     background-color: red;
+    } */
+    .feather-main .feather-icon-block svg {
+        width: 60px;
+        height: 27px;
+        left: -10px;
+        position: absolute;
+        top: 8px;
+    }
+    .feather-main .feather-icon-block {
+        width: 45px;
+        background-color: #4466f2;
+        height: 40px;
+        margin-right: 43px;
+        border-radius: 50%;
+        position: absolute;
+        color: #FFF;
+        margin-left: 18px;
+    }
+    .media-body.align-self-center {
+        position: absolute;
+        width: 100px;
+        left: 15px;
+        top: 80px;
+    }
+    a#user-navbar {
+        height: 150px;
+        width: 200px;
+    }
+    
+  }
+  

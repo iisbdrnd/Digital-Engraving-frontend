@@ -13,6 +13,7 @@ const Apps = () => {
                 setModules(response.data.modules);
             });
     },[]);
+    // console.log(modules);
 
     const moduleHandler = (moduleId) => {
         localStorage.removeItem('moduleId');

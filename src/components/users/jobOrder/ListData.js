@@ -36,6 +36,7 @@ export default function ListData(props) {
         // TABLE DATA READY
         pageChange();
     },[]);
+    // console.log(hasAccess);
 
     useEffect(() => {
         perPageBoxChange();
@@ -86,7 +87,7 @@ export default function ListData(props) {
             })
             .catch(error => console.log(error))
     }
-
+// console.log(jobOrderData);
     const perPageBoxChange = (e) => {
         setIsLoading(true);
         // TABLE DATA READY
@@ -106,8 +107,10 @@ export default function ListData(props) {
         let ascUrl = '';
         if (ascDesc === true) {
             ascUrl = `${JOB_ORDER_RSURL}?asc=${params}&desc=`;
+            
         } else {
             ascUrl = `${JOB_ORDER_RSURL}?asc=&desc=${params}`;
+            
         }
         
         setIsLoading(true);
@@ -118,6 +121,7 @@ export default function ListData(props) {
                 setPerPage(response.data.jobOrders.per_page)
                 setTotalData(response.data.jobOrders.total)
                 setJobOrderData(response.data.jobOrders.data)
+                console.log(jobOrderData);
                 setIsLoading(false)
             })
             .catch(error => console.log(error))

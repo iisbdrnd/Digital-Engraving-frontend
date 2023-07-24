@@ -144,6 +144,7 @@ const Add = (props) => {
     if (stateName == 'reference_job' || stateName == 'job_sub_class_id' || stateName == 'client_id' || stateName == 'printer_id' || stateName == 'marketing_person_id' || stateName == 'design_machine_id') {
       setTypeAheadValue({ [stateName]: event })
     }
+    
     if (event.length > 0) {
       const selectedValue = event[0].id;
       setDropdownData(
@@ -176,6 +177,7 @@ const Add = (props) => {
   //         })
   //         .catch(error => console.log(error))   
   // }
+  // console.log(multipleDropdownData);
 
   const submitHandler = (data, e) => {
     e.preventDefault();

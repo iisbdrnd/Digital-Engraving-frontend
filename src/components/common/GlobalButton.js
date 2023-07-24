@@ -8,6 +8,7 @@ import { Button, Alert } from "reactstrap";
 import swal from 'sweetalert2';
 
 export const SubmitButton = props => {
+    // console.log(props);
     return (
         <Fragment>
             <div className={`card-footer ${props.addClass}`} >

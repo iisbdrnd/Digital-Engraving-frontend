@@ -96,6 +96,7 @@ const Add = (props) => {
 
             userGetMethod(`${JOB_ORDER_DETAILS}?jobOrderId=${selectedValueId}?`)
                 .then(response => {
+                    console.log(response);
                     let { job_name, printer_name, printer_mark, total_cylinder_qty, client_name} = response.data.jobOrderDetails;
                     setDesignToFactoryInput({
                         'job_name'          : job_name,

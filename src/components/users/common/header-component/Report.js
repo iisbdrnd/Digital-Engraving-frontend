@@ -20,10 +20,11 @@ const Report = () => {
      const menuObject = [];
      const [clicked, setClicked] = useState("0");
      const [showDropdown, setShowDropdown] = useState(false);
+     const ReportStyle = {
+        height: '650px',
+        overflowY: 'auto',
+      };
 
-    //  const handleShowDropdown = () => {
-    //     setShowDropdown( prevState => !prevState)
-    //  }
 
       const handleToggle = (index) => {
 
@@ -161,8 +162,8 @@ const Report = () => {
                                     {menu.title}
                                 </button>
                                 {/* ${showDropdown && 'show' } */}
-                                <div id="dropdown-hover-container" class={`dropdown-menu ${showDropdown && 'show' }`} aria-labelledby="dropdownMenuButton">
-                                    <div className='dropdown-container'>
+                                <div id="dropdown-hover-container" style={ReportStyle} class={`dropdown-menu overflow-auto ${showDropdown && 'show' }`} aria-labelledby="dropdownMenuButton">
+                                    <div className='dropdown-container overflow-auto'>
                                         {
                                             menu?.children?.map( (dropdown , index) => (
                                                 dropdown.type === 'sub' ? (

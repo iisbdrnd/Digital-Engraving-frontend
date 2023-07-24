@@ -41,6 +41,7 @@ const Add = (props) => {
         }
     );
     let job_order_id = props.location.state.params.job_order_id ? props.location.state.params.job_order_id : null;
+    console.log(job_order_id);
     useEffect(() => {
         pageRefreshHandler(job_order_id);
         setJobId(job_order_id);
@@ -121,6 +122,7 @@ const Add = (props) => {
 
     // FOR Typeahead DATA INPUT
     const dropDownChange = (event, stateName) => {
+        // console.log(event);
         if(stateName === 'job_order_id'){
             setSelectedValue(event);
         }
@@ -286,6 +288,7 @@ const Add = (props) => {
     }
     // FINALLY SUBMIT FOR SAVE TO SERVER
     const submitHandler = (data, e) => {
+        console.log(data,e)
         data.job_order_id = dropdownData.job_order_id[0].id;
         data.order_date = jobOrderData.order_date;
         data.totalOrderQty = jobOrderData.orderQty;
@@ -328,6 +331,7 @@ const Add = (props) => {
         var menuId = 0;
     }else{
         menuId = props.location.state.params.menuId;
+        console.log(menuId);
     }
 
     return (
