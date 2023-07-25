@@ -4,6 +4,7 @@ import { Fragment } from "react";
 import useForm from "react-hook-form";
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 import moment from 'moment';
+import './Add.css';
 
 import { PanelRefreshIcons, SubmitButton } from "../../../common/GlobalButton";
 import { Typeahead } from 'react-bootstrap-typeahead';
@@ -56,6 +57,7 @@ const Add = (props) => {
         history_remarks: '',
         history_image: ''
     });
+    
     const [dropdownData, setDropdownData] = useState({});
     const [typeColorOptions, setTypeColorOptions] = useState([]);
 
@@ -490,7 +492,10 @@ const Add = (props) => {
                                             </div>
                                         </fieldset>
                                     </div>
-                                    <div className="d-flex col-md-12 pl-0" >
+
+
+                                    <div className="d-flex col-md-12 pl-0">
+
                                         <div className="col-md-3">
                                             <fieldset className="border p-2">
                                                 <legend className="w-auto text-left">Layout</legend>
@@ -694,8 +699,10 @@ const Add = (props) => {
                                                 </div>
                                             </fieldset>
                                         </div>
+
+
                                         <div className="col-md-3 pl-0">
-                                            <fieldset className="border p-2">
+                                            <fieldset className="border">
                                                 <legend className="w-auto text-left">Layout history</legend>
                                                 <div className="col-md-12">
                                                     <table className="table table-bordered" style={{ width: '100%' }}>
@@ -723,6 +730,8 @@ const Add = (props) => {
                                                 </div>
                                             </fieldset>
                                         </div>
+
+
                                         <div className="col-md-3 pl-0">
                                             <fieldset className="border p-2">
                                                 <legend className="w-auto text-left">Base</legend>
@@ -949,18 +958,20 @@ const Add = (props) => {
                                             </fieldset>
                                             
                                         </div>
+
+
                                         <div className="col-md-3 pl-0 pr-0">
-                                            <fieldset className="border p-1" style={{overflow:'auto'}}>
+                                            <fieldset className="border p-1">
                                                 <legend className="w-auto text-left">Engravers Order</legend>
                                                 <div className="col-md-12 pl-0 pr-0">
-                                                    <table className="table table-bordered pl-0 pr-0" style={{ width: '100%', }}>
+                                                    <table className="table table-bordered pl-0 pr-0">
                                                         <thead>
                                                             <tr>
-                                                                <th scope="col" width="10%">Sl</th>
-                                                                <th scope="col" width="10%">Color</th>
-                                                                <th scope="col" width="10%">Screen</th>
-                                                                <th scope="col" width="10%">Angel</th>
-                                                                <th scope="col" width="10%">Machine</th>
+                                                                <th id="engraverList">Sl</th>
+                                                                <th id="engraverList">Color</th>
+                                                                <th id="engraverList">Screen</th>
+                                                                <th id="engraverList">Angel</th>
+                                                                <th id="engraverList">Machine</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
@@ -984,7 +995,10 @@ const Add = (props) => {
                                             </fieldset>
                                             
                                         </div>
+
+                                        
                                     </div>
+
                                     <div className="col-md-12">
                                         <fieldset className="border p-2">
                                             <legend className="w-auto text-left">Axial</legend>

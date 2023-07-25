@@ -33,4 +33,15 @@
     }
     
   }
-  
+  @media only screen and (min-width: 1230px) {
+    /* #user-navbar {
+     width: 100% !important;
+     background-color: red;
+    } */
+    .feather-main .media-body {
+        width: 25px !important;
+       
+    }
+    
+    
+  }

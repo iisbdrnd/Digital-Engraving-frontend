@@ -20,12 +20,19 @@ const Report = () => {
      const menuObject = [];
      const [clicked, setClicked] = useState("0");
      const [showDropdown, setShowDropdown] = useState(false);
-    //  const ReportStyle = {
-        
-    //     height:'650px'
-    //   };
 
+    // MENUITEMS.map(item =>console.log(item));
+    
 
+    
+         const title = MENUITEMS?.map(item =>(item.children));
+        //  console.log(title)
+        //  console.log(title[0])
+         const isTitle = title[0]?.some(item =>item.title ==="Accounts"|| item.title === "Test Report Menu")
+     const autoOverflowClass = MENUITEMS.map(item =>(item.children.length)) > 10 && !isTitle ? 'overFlow' : 'smallFlow';
+
+    
+    // MENUITEMS.map(a =>a.children.map(isTile => console.log(isTitle.title)));
       const handleToggle = (index) => {
 
             if (clicked === index) {
@@ -141,7 +148,7 @@ const Report = () => {
 
     return (
         <>
-            <div onMouseEnter={handleOpenDropDown} onMouseLeave={handlehoverOutDropDown} class="dropdown">
+            <div onMouseEnter={handleOpenDropDown} onMouseLeave={handlehoverOutDropDown} class={`dropdown`}>
                 {
                     MENUITEMS?.map( (menu) => (
                         menu.type === 'link' ? (
@@ -162,8 +169,8 @@ const Report = () => {
                                     {menu.title}
                                 </button>
                                 {/* ${showDropdown && 'show' } */}
-                                <div id="dropdown-hover-container" class={`dropdown-menu overflow-auto ${showDropdown && 'show' }`} aria-labelledby="dropdownMenuButton">
-                                    <div className='dropdown-container'>
+                                <div id="dropdown-hover-container" class={`dropdown-menu ${showDropdown && 'show' }`} aria-labelledby="dropdownMenuButton">
+                                    <div className={`dropdown-container ${autoOverflowClass}`}>
                                         {
                                             menu?.children?.map( (dropdown , index) => (
                                                 dropdown.type === 'sub' ? (
