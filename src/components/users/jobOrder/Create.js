@@ -9,13 +9,23 @@ import { Typeahead } from 'react-bootstrap-typeahead';
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 
 const Add = (props) => {
-  const { handleSubmit, register, errors } = useForm();
+  const { handleSubmit, register,reset, errors } = useForm();
   const [isLoading, setIsLoading] = useState(true);
   const [dropdownData, setDropdownData] = useState({});
   const [multipleDropdownData, setMultipleDropdownData] = useState([]);
   const [typeheadOptions, setTypeheadOptions] = useState({});
   const [linkjob, setLinkjob] = useState(false);
   const [jobOrderType, setJobOrderType] = useState(null);
+
+  const [printingWidth,setPrintingWidth] = useState(0);
+  const [printingHeight,setPrintingHeight] = useState(0);
+  const [extraFaceLength,setExtraFaceLength] = useState(0);
+  const [circumference,setCircumference] = useState(0);
+  const [surfaceArea,setSurfaceArea] = useState(0);
+  const [totalSurfaceArea,setTotalSurfaceArea] = useState(0);
+  const [flArea,setFlArea] = useState(0);
+  const [cirArea,setCirArea] = useState(0);
+  const [dirArea,setDirArea] = useState(0);
   
   // const [jobId, setJobId] = useState(0);
   const [typeAheadValue, setTypeAheadValue] = useState({
@@ -27,6 +37,20 @@ const Add = (props) => {
     'design_machine_id': []
 
   });
+  // const [calculationValue, setCalculationValue] = useState(
+    
+  //   {
+  //     'design_width': '0',
+  //     'ups': '0',
+  //     'design_height': '0',
+  //     'rpt': '0',
+  //     'printing_height': '0',
+  //     'circumference': '0',
+  //     'face_length': '0',
+  //     'total_cylinder_qty': '0',
+  //   }
+  // );
+
 
   let [calculationValue, setCalculationValue] = useReducer(
     (state, newState) => ({ ...state, ...newState }),
@@ -41,15 +65,17 @@ const Add = (props) => {
       'total_cylinder_qty': '0',
     }
   );
+
   // const [ jobInfo, setJobInfo] = useState({
   //     'jobName': ''
   // });
+  
 
   useEffect(() => {
     userGetMethod(`${JOB_ORDER_RSURL}/create`)
       .then(response => {
         // FOR MARKETING PERSON
-
+        // console.log(response);
         let marketingEmpOptions = [];
         if (response.data.marketingPersons && response.data.marketingPersons.length > 0) {
           response.data.marketingPersons.map(person => {
@@ -70,6 +96,7 @@ const Add = (props) => {
             printerOptions.push(printerObj);
           })
         }
+        // console.log(jobOrderType);
 
         // FOR CLIENTS
         let clientOptions = [];
@@ -138,6 +165,8 @@ const Add = (props) => {
 
         setIsLoading(false);
       });
+
+      // console.log(typeAheadValue);
   }, []);
 
   const dropDownChange = (event, stateName) => {
@@ -155,13 +184,54 @@ const Add = (props) => {
       );
     }
   }
+  // console.log(dropdownData)
+  // calculated area=================
+ 
+  // console.log(printingWidth)
 
   const calculateFormValue = (event) => {
     event.preventDefault();
     setCalculationValue(
       { ...calculationValue,[event.target.name]: event.target.value },
     );
-  }
+  };
+  useEffect(()=>{
+    const printing_width_val = calculationValue.ups * calculationValue.design_width;
+    setPrintingWidth(printing_width_val);
+
+    const printing_height_val= (calculationValue.design_height * calculationValue.rpt);
+    setPrintingHeight(printing_height_val);
+
+    const circumference_val=(calculationValue.design_height * calculationValue.rpt)
+    setCircumference(circumference_val);
+
+    const extra_face_length_val = calculationValue.face_length - calculationValue.design_width * calculationValue.ups
+    setExtraFaceLength(extra_face_length_val);
+
+    const surface_val=((calculationValue.face_length * (calculationValue.design_height * calculationValue.rpt)) / 100);
+    setSurfaceArea(surface_val);
+
+    const total_surface_val=((multipleDropdownData.length * (calculationValue.face_length * (calculationValue.design_height * calculationValue.rpt))) / 100)
+    setTotalSurfaceArea(total_surface_val);
+
+    const fl_val=(calculationValue.face_length);
+    setFlArea(fl_val);
+
+    const cirArea_val=(calculationValue.design_height * calculationValue.rpt);
+    setCirArea(cirArea_val);
+
+    const dirArea_val=(Math.round((calculationValue.design_height * calculationValue.rpt) / Math.PI));
+    setDirArea(dirArea_val);
+
+
+
+
+
+  },[calculateFormValue,calculationValue,setPrintingWidth,setPrintingHeight,setDirArea,setCirArea,setFlArea,setTotalSurfaceArea,setSurfaceArea,setExtraFaceLength,setCircumference,calculationValue.ups,calculationValue.design_width,calculationValue.design_height,calculationValue.rpt,calculationValue.face_length,multipleDropdownData.length]);
+  // console.log(calculationValue)
+
+  
+  // console.log(calculationValue);
 
   // const jobChangeHandler = (e) => {
   //     var selectJobId = e[0]['id'];
@@ -178,8 +248,8 @@ const Add = (props) => {
   //         .catch(error => console.log(error))   
   // }
   // console.log(multipleDropdownData);
-
   const submitHandler = (data, e) => {
+    console.log(data)
     e.preventDefault();
     data.client_id = dropdownData.client_id;
     data.job_sub_class_id = dropdownData.job_sub_class_id;
@@ -194,9 +264,12 @@ const Add = (props) => {
     data.color_id = color_id_final_arr;
     userPostMethod(JOB_ORDER_RSURL, data)
       .then(response => {
+        setIsLoading(true)
         if (response.data.status == 1) {
-          e.target.reset();
+          // e.target.reset();
+          reset();
           clearForm();
+          setIsLoading(false);
           toast.success(response.data.message);
         } else {
           toast.error(response.data.message);
@@ -204,6 +277,7 @@ const Add = (props) => {
       })
       .catch(error => toast.error(error));
   }
+
 
   const clearForm = () => {
     setTypeAheadValue({
@@ -214,7 +288,16 @@ const Add = (props) => {
       'marketing_person_id': [],
       'design_machine_id': []
     })
-    setCalculationValue({});
+    setCalculationValue({
+      'design_width': '',
+      'ups': '',
+      'design_height': '',
+      'rpt': '',
+      'printing_height': '',
+      'circumference': '',
+      'face_length': '',
+      'total_cylinder_qty': '',
+    });
     setLinkjob(false);
     setMultipleDropdownData([]);
 
@@ -625,6 +708,9 @@ const Add = (props) => {
                                   required
                                   ref={register({
                                     required: "Eye Mark Size Field Required",
+                                    valueAsNumber: true,
+                                    
+                                    
                                   })}
                                 />
                                 {errors.eye_mark_size_one && (
@@ -737,8 +823,7 @@ const Add = (props) => {
                                     type="text"
                                     placeholder="Printing Width"
                                     value={
-                                      calculationValue.ups *
-                                      calculationValue.design_width
+                                      printingWidth
                                     }
                                     readOnly={"readonly"}
                                     ref={register({
@@ -768,7 +853,7 @@ const Add = (props) => {
                                     required
                                     type="text"
                                     placeholder="FL"
-                                    onChange={(e) => calculateFormValue(e)}
+                                    onChange={calculateFormValue}
                                     // value={jobOrderData.face_length}
                                     ref={register({
                                       required: "Face Length Field Required",
@@ -798,11 +883,8 @@ const Add = (props) => {
                                     type="text"
                                     placeholder="Extra Width"
                                     readOnly={"readonly"}
-                                    value={
-                                      calculationValue.face_length -
-                                      calculationValue.design_width *
-                                        calculationValue.ups
-                                    }
+                                    value={extraFaceLength}
+                                    
                                     ref={register({
                                       required: "Extra Width Field Required",
                                     })}
@@ -832,7 +914,7 @@ const Add = (props) => {
                                     required
                                     type="text"
                                     placeholder="Job Height"
-                                    onChange={(e) => calculateFormValue(e)}
+                                    onChange={(e)=>calculateFormValue(e)}
                                     ref={register({
                                       required: "Job Height Field Required",
                                     })}
@@ -860,7 +942,7 @@ const Add = (props) => {
                                     required
                                     type="text"
                                     placeholder="RPT"
-                                    onChange={(e) => calculateFormValue(e)}
+                                    onChange={(e)=>calculateFormValue(e)}
                                     ref={register({
                                       required: "RPT Field Required",
                                     })}
@@ -889,8 +971,7 @@ const Add = (props) => {
                                     type="text"
                                     placeholder="Circumference"
                                     value={
-                                      calculationValue.design_height *
-                                      calculationValue.rpt
+                                      circumference
                                     }
                                     readOnly={"readonly"}
                                     ref={register({
@@ -922,8 +1003,7 @@ const Add = (props) => {
                                     placeholder="Printing Height"
                                     readOnly={"readonly"}
                                     value={
-                                      calculationValue.design_height *
-                                      calculationValue.rpt
+                                      printingHeight
                                     }
                                     ref={register({
                                       required:
@@ -996,7 +1076,7 @@ const Add = (props) => {
                                     ? multipleDropdownData.length
                                     : ""
                                 }
-                                onChange={(e) => calculateFormValue(e)}
+                                onChange={ calculateFormValue}
                                 ref={register({
                                   required: "Cylinder Qty Field Required",
                                 })}
@@ -1057,10 +1137,7 @@ const Add = (props) => {
                                 placeholder="Face Length"
                                 readOnly={"readonly"}
                                 value={
-                                  (calculationValue.face_length *
-                                    (calculationValue.design_height *
-                                      calculationValue.rpt)) /
-                                  100
+                                  surfaceArea
                                 }
                                 ref={register({
                                   required: "Face Length Field Required",
@@ -1090,11 +1167,7 @@ const Add = (props) => {
                                 type="text"
                                 placeholder="Total Surface Area"
                                 value={
-                                  (multipleDropdownData.length *
-                                    (calculationValue.face_length *
-                                      (calculationValue.design_height *
-                                        calculationValue.rpt))) /
-                                  100
+                                  totalSurfaceArea
                                 }
                                 ref={register({
                                   required: "Total Surface Area Field Required",
@@ -1126,7 +1199,7 @@ const Add = (props) => {
                                     type="text"
                                     placeholder="FL"
                                     disabled="disabled"
-                                    value={calculationValue.face_length}
+                                    value={flArea}
                                   />
                                   {errors.fl && (
                                     <p className="text-danger">
@@ -1154,8 +1227,7 @@ const Add = (props) => {
                                     placeholder="Cir"
                                     disabled="disabled"
                                     value={
-                                      calculationValue.design_height *
-                                      calculationValue.rpt
+                                      cirArea
                                     }
                                   />
                                   {errors.cir && (
@@ -1183,11 +1255,7 @@ const Add = (props) => {
                                     type="text"
                                     placeholder="Dia"
                                     disabled="disabled"
-                                    value={Math.round(
-                                      (calculationValue.design_height *
-                                        calculationValue.rpt) /
-                                        Math.PI
-                                    )}
+                                    value={dirArea}
                                     // value={jobOrderData.dia}
                                     // calculationValue.design_height * calculationValue.rpt
                                     // calculationValue.face_length
