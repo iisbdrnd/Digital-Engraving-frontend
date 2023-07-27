@@ -13,6 +13,7 @@ const Header = () => {
   const [sidebar, setSidebar] = useState(false);
   const [rightSidebar, setRightSidebar] = useState(true);
   const [headerbar, setHeaderbar] = useState(true);
+  const [isFullScreen, setIsFullScreen] = useState(false);
 
   const openCloseSidebar = () => {
     if (sidebar) {
@@ -38,24 +39,28 @@ const Header = () => {
 
   //full screen function
   function goFull() {
-    if ((document.fullScreenElement && document.fullScreenElement !== null) ||
-      (!document.mozFullScreen && !document.webkitIsFullScreen)) {
-      if (document.documentElement.requestFullScreen) {
-        document.documentElement.requestFullScreen();
-      } else if (document.documentElement.mozRequestFullScreen) {
+    if (!isFullScreen) {
+      if (document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen();
+      } else if (document.documentElement.mozRequestFullScreen) { 
         document.documentElement.mozRequestFullScreen();
-      } else if (document.documentElement.webkitRequestFullScreen) {
-        document.documentElement.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
+      } else if (document.documentElement.webkitRequestFullscreen) {
+        document.documentElement.webkitRequestFullscreen();
+      } else if (document.documentElement.msRequestFullscreen) {
+        document.documentElement.msRequestFullscreen();
       }
     } else {
-      if (document.cancelFullScreen) {
-        document.cancelFullScreen();
-      } else if (document.mozCancelFullScreen) {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      } else if (document.mozCancelFullScreen) { /* Firefox */
         document.mozCancelFullScreen();
-      } else if (document.webkitCancelFullScreen) {
-        document.webkitCancelFullScreen();
+      } else if (document.webkitExitFullscreen) { /* Chrome, Safari and Opera */
+        document.webkitExitFullscreen();
+      } else if (document.msExitFullscreen) { /* IE/Edge */
+        document.msExitFullscreen();
       }
     }
+    setIsFullScreen(!isFullScreen);
   }
 
   return (
@@ -89,10 +94,10 @@ const Header = () => {
               {/* add dropdown to this  */}
               {/* report api https://del.uddoktahub.com/api/user/software-menus/3 */}
               <li>
-                <SearchHeader />
+                {/* <SearchHeader /> */}
               </li>
               <li>
-                <a onClick={goFull} className="text-dark" href="#!">
+                <a onClick={goFull} className="text-dark cursor-pointer" >
                   <Maximize />
                 </a>
               </li>

@@ -34,8 +34,7 @@ export default function ListData(props) {
                 setAccLoad(false);
             });
         
-        // TABLE DATA READY
-        pageChange();
+        
     },[]);
 
     useEffect(() => {
@@ -74,19 +73,7 @@ export default function ListData(props) {
             .catch(error => toast.error(error));
     }
 
-    const pageChange = (pageNumber = 1) => {
-        setIsLoading(true);
-        // TABLE DATA READY
-        userGetMethod(`${JOB_AGREEMENT_RSURL}?agreement_status=${jobActiveStatus}&page=${pageNumber}&perPage=${perPage}&searchText=${searchText}`)
-            .then(response => {
-                setCurrentPage(response.data.pendingJobOrders.current_page)
-                setPerPage(response.data.pendingJobOrders.per_page)
-                setTotalData(response.data.pendingJobOrders.total)
-                setJobAgreementData(response.data.pendingJobOrders.data)
-                setIsLoading(false);
-            })
-            .catch(error => console.log(error))
-    }
+    
 
     const perPageBoxChange = (e) => {
         setIsLoading(true);
@@ -133,12 +120,10 @@ export default function ListData(props) {
                         <div className="card">
                             <div className="card-header">
                                 <div className="row">
-                                    <div className="col-md-6">
+                                    <div className="col-md-12">
                                         <h5>Job Agreement List</h5>
                                     </div>
-                                    <div className="col-md-6">
-                                        <PanelRefreshIcons panelRefresh={pageChange} />
-                                    </div>
+                                    
                                 </div>
                             </div>
                             <div className="row">
@@ -238,7 +223,6 @@ export default function ListData(props) {
                                     activePage={currentPage}
                                     itemsCountPerPage={perPage}
                                     totalItemsCount={totalData}
-                                    onChange={pageChange}
                                     itemClass="page-item"
                                     linkClass="page-link"
                                     firstPageText="First"

@@ -33,8 +33,7 @@ export default function ListData(props) {
                 setAccLoad(false);
             });
         
-        // TABLE DATA READY
-        pageChange();
+       
     },[]);
     // console.log(hasAccess);
 
@@ -74,19 +73,7 @@ export default function ListData(props) {
             .catch(error => toast.error(error));
     }
 
-    const pageChange = (pageNumber = 1) => {
-        setIsLoading(true);
-        // TABLE DATA READY
-        userGetMethod(`${JOB_ORDER_RSURL}?page=${pageNumber}&perPage=${perPage}&searchText=${searchText}`)
-            .then(response => {
-                setCurrentPage(response.data.jobOrders.current_page)
-                setPerPage(response.data.jobOrders.per_page)
-                setTotalData(response.data.jobOrders.total)
-                setJobOrderData(response.data.jobOrders.data)
-                setIsLoading(false);
-            })
-            .catch(error => console.log(error))
-    }
+    
 // console.log(jobOrderData);
     const perPageBoxChange = (e) => {
         setIsLoading(true);
@@ -136,16 +123,10 @@ export default function ListData(props) {
                         <div className="card">
                             <div className="card-header">
                                 <div className="row">
-                                    <div className="col-md-6">
+                                    <div className="col-md-12">
                                         <h5>Job Order List</h5>
                                     </div>
-                                    <div className="col-md-6">
-                                        <ul className="d-flex pull-right">
-                                            <li className="p-r-10 cursor-pointer" onClick={pageChange}><i className="fa fa-rotate-right"></i></li>
-                                            <li className="p-r-10"><i className="fa fa-minus"></i></li>
-                                            <li className="p-r-10"><i className="icon-close"></i></li>
-                                        </ul>
-                                    </div>
+                                    
                                 </div>
                             </div>
                             <div className="row">
@@ -228,7 +209,7 @@ export default function ListData(props) {
                                     activePage={currentPage}
                                     itemsCountPerPage={perPage}
                                     totalItemsCount={totalData}
-                                    onChange={pageChange}
+                                    
                                     itemClass="page-item"
                                     linkClass="page-link"
                                     firstPageText="First"

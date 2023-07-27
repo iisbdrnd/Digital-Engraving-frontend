@@ -120,7 +120,7 @@ export default function ListData(props) {
                                         <h5>Polishing List</h5>
                                     </div>
                                     <div className="col-md-6">
-                                        <PanelRefreshIcons panelRefresh={pageChange} />
+                                        {/* <PanelRefreshIcons panelRefresh={pageChange} /> */}
                                     </div>
                                 </div>
                             </div>

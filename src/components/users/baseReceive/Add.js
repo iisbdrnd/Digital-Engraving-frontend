@@ -161,7 +161,7 @@ const CylinderInfo = (props) => {
                                         <h5>Base Receive Form</h5>
                                     </div>
                                     <div className="col-md-6">
-                                        <PanelRefreshIcons panelRefresh={pageRefreshHandler} />
+                                        
                                     </div>
                                 </div>
                             </div>

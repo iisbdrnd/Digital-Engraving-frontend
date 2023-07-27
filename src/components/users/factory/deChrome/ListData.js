@@ -170,13 +170,7 @@ export default function ListData(props) {
                                     <div className="col-md-6">
                                         <h5>De-Chrome Tank</h5>
                                     </div>
-                                    <div className="col-md-6">
-                                        <ul className="d-flex pull-right">
-                                            <li className="p-r-10"><i className="fa fa-rotate-right"></i></li>
-                                            <li className="p-r-10"><i className="fa fa-minus"></i></li>
-                                            <li className="p-r-10"><i className="icon-close"></i></li>
-                                        </ul>
-                                    </div>
+                                    
                                 </div>
                             </div>
                                  

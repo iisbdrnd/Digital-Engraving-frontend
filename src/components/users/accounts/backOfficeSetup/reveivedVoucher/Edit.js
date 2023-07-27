@@ -306,7 +306,7 @@ const Edit = (props) => {
                                         <h5>Received Voucher</h5>
                                     </div>
                                     <div className="col-md-6">
-                                        <PanelRefreshIcons panelRefresh={pageRefreshHandler} />
+                                        {/* <PanelRefreshIcons panelRefresh={pageRefreshHandler} /> */}
                                     </div>
                                 </div>
                             </div>

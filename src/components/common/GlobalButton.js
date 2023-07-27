@@ -25,6 +25,14 @@ export const SubmitButton = props => {
         </Fragment>
     )
 }
+export const rightSideReset = () => {
+    return(<ul className="d-flex pull-right">
+    <li className="p-r-10"><i className="fa fa-rotate-right"></i></li>
+    <li className="p-r-10"><i className="fa fa-minus"></i></li>
+    <li className="p-r-10"><i className="icon-close"></i></li>
+</ul>)
+    
+}
 
 export const AddButton = props => {
     const [hasAccess, setHasAccess] = useState({});

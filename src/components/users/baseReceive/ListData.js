@@ -137,7 +137,7 @@ export default function ListData(props) {
                                         <h5>Pending Base Receive List</h5>
                                     </div>
                                     <div className="col-md-6">
-                                        <PanelRefreshIcons panelRefresh={pageChange} />
+                                        
                                     </div>
                                 </div>
                             </div>

@@ -175,12 +175,10 @@ const Add = (props) => {
                         <div className="card">
                             <div className="card-header">
                                 <div className="row">
-                                    <div className="col-md-6">
+                                    <div className="col-md-12">
                                         <h5>Job Agreement Create</h5>
                                     </div>
-                                    <div className="col-md-6">
-                                        <PanelRefreshIcons panelRefresh={pageRefreshHandler} />
-                                    </div>
+                                    
                                 </div>
                             </div>
 

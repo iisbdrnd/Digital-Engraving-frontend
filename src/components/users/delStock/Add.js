@@ -264,7 +264,7 @@ const Add = (props) => {
                                         <h5>Del Stock Form</h5>
                                     </div>
                                     <div className="col-md-6">
-                                        <PanelRefreshIcons panelRefresh={pageRefreshHandler} />
+                                        {/* <PanelRefreshIcons panelRefresh={pageRefreshHandler} /> */}
                                     </div>
                                 </div>
                             </div>

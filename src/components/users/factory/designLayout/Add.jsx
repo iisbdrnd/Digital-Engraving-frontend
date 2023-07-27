@@ -347,7 +347,7 @@ const Add = (props) => {
                                     <h5>Design Layout Form</h5>
                                 </div>
                                 <div className="col-md-6">
-                                    <PanelRefreshIcons onClick={pageRefreshHandler} />
+                                    {/* <PanelRefreshIcons onClick={pageRefreshHandler} /> */}
                                 </div>
                             </div>
                         </div>

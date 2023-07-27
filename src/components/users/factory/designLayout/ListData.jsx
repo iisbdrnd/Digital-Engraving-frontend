@@ -138,7 +138,7 @@ const ListData = (props) =>  {
                                     <h5>Layout List</h5>
                                 </div>
                                 <div className="col-md-6">
-                                    <PanelRefreshIcons PanelRefresh={pageChange}/>
+                                    {/* <PanelRefreshIcons PanelRefresh={pageChange}/> */}
                                 </div>
                             </div>
                         </div>
