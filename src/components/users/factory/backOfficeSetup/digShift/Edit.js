@@ -349,7 +349,7 @@ const Edit = (props) => {
         data.duty_person_array = convertedArray;
         // array of object =====>>>
         // data.duty_person_array = shiftDutyEmployees;
-        console.log(data);
+        // console.log(data);
        
         
         if (Object.keys(data).length > 0) {
