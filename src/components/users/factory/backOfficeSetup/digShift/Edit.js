@@ -344,11 +344,11 @@ const Edit = (props) => {
     const submitHandler = (data, e) => {
         data.shift_for = shiftArr.selectedOption;
         data.shift_in_charge = selectedShiftChar;
-        const convertedArray = shiftDutyEmployees.map(item => [item.id, item.name]); 
+        // const convertedArray = shiftDutyEmployees.map(item => [item.id, item.name]); 
         // Multidinamtional array
-        data.duty_person_array = convertedArray;
+        data.duty_person_array = shiftDutyEmployees;
+        // data.duty_person_array = ;
         // array of object =====>>>
-        // data.duty_person_array = shiftDutyEmployees;
         // console.log(data);
        
         
