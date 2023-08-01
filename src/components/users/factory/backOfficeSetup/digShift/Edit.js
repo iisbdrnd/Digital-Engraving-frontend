@@ -6,8 +6,9 @@ import { Typeahead } from 'react-bootstrap-typeahead';
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 import { PanelRefreshIcons, SubmitButton, ValidationAlerts, AddButton } from '../../../../common/GlobalButton';
 import { userGetMethod, userPutMethod, userPostMethod } from '../../../../../api/userAction';
-import { DIG_SHIFT_RSURL, ShiftFor, userHasAccess } from '../../../../../api/userUrl';
+import { DIG_SHIFT_RSURL, ShiftFor, userHasAccess,digShiftFor,shiftInCharge,mechine_GETURL } from '../../../../../api/userUrl';
 import SweetAlert from 'sweetalert2';
+import { Form } from 'react-bootstrap';
 
 
 const Edit = (props) => {
@@ -22,6 +23,17 @@ const Edit = (props) => {
     const [allMachines, setAllMachines] = useState([]);
     const [options, setOptions] = useState([]);
     const [selectedOption, setSelectedOption] = useState('');
+    const [selectedDutyPerson,setSeletedDutyPerson] = useState({});
+    const [shiftArr, setShiftArr] = useState({});
+    const [shiftDutyEmployees, setShiftDutyEmployees] = useState([]);
+    const [getDate,setGetDate] = useState('');
+    const [getShift,setGetShift] = useState(0);
+    const [inChargeData,setInChargeData] = useState([]);
+    const [newDuty,setNewDuty] = useState('');
+    const [totalEmployees,setTotalEmployees] = useState([]);
+    const [newOptions,setNewOptions] = useState([]);
+    const [machineData,setMachineData] = useState([]);
+    const [selectedShiftChar,setSelectedShiftChar] = useState('');
 
 
 
@@ -54,37 +66,97 @@ const Edit = (props) => {
     }, []);
     //nirab
 
+
+
     useEffect(() => {
 
-        userGetMethod(`${ShiftFor}`)
+        userGetMethod(`${digShiftFor}`)
             .then(response => {
                 setOptions(response.data.shifts);
-                console.log("response", response.data.shifts);
+                setTotalEmployees(response.data.allEmployees);
             })
             .catch(error => {
                 console.log(error);
             });
     }, []);
+    // console.log(options);
+
+   
+
+
     // const handleOptionChange = (event) => {
     //     setSelectedOption(event.target.value);
     // }
     const handleSelect = (event) => {
         setSelectedOption(event.target.value);
+        // console.log(selectedOption)
     };
+
+    const handleGetCharge = (e) =>{
+        setSelectedShiftChar(e.target.value);
+
+    }
+    // console.log(selectedShiftChar)
+    // const pageRefreshHandler = () => {
+    //     setIsLoading(true);
+    //     userGetMethod(`${digShiftFor}`)
+    //         .then(response => {
+    //             if (response.data.allEmployees                    ) {
+    //                 let { shift_date, shift_type, remarks } = response.data.platingShiftInfo;
+    //                 setShiftFormData({ shift_date, shift_type, remarks });
+    //             } else {
+    //                 setShiftFormData({ shift_date: '', shift_type: '', remarks: '' });
+    //             }
+    //             setShiftFormData({ 'isUpdate': response.data.isUpdate });
+    //             setAllMachines(response.data.allMachines);
+    //             setShiftEmployees(response.data.platingShiftDetails);
+    //             // FOR JOB ORDER
+    //             let shiftInChargeEmpOptions = [];
+    //             if (response.data.shiftInChargeEmpls && response.data.shiftInChargeEmpls.length > 0) {
+    //                 response.data.shiftInChargeEmpls.map(inCharge => {
+    //                     let shiftInChargeObj = {};
+    //                     shiftInChargeObj.id = inCharge.id;
+    //                     shiftInChargeObj.name = `[${inCharge.employee_id}] ` + inCharge.name;
+    //                     shiftInChargeEmpOptions.push(shiftInChargeObj);
+
+    //                     if (response.data.platingShiftInfo && (response.data.platingShiftInfo.shift_in_charge == inCharge.id)) {
+    //                         setShiftFormData({
+    //                             shift_in_charge: [shiftInChargeObj]
+    //                         })
+    //                     } else {
+    //                         setShiftFormData({
+    //                             shift_in_charge: []
+    //                         })
+    //                     }
+    //                 })
+    //             }
+    //             setTypeheadOptions(
+    //                 (prevstate) => ({
+    //                     ...prevstate,
+    //                     ['shiftInChargeEmplyees']: shiftInChargeEmpOptions,
+    //                     ['dutyPersonEmployees']: shiftInChargeEmpOptions,
+    //                 })
+    //             );
+
+    //             setIsLoading(false);
+    //         });
+    // }
+    
 
     const pageRefreshHandler = () => {
         setIsLoading(true);
         userGetMethod(`${DIG_SHIFT_RSURL}`)
             .then(response => {
-                if (response.data.platingShiftInfo) {
-                    let { shift_date, shift_type, remarks } = response.data.platingShiftInfo;
-                    setShiftFormData({ shift_date, shift_type, remarks });
-                } else {
-                    setShiftFormData({ shift_date: '', shift_type: '', remarks: '' });
-                }
-                setShiftFormData({ 'isUpdate': response.data.isUpdate });
-                setAllMachines(response.data.allMachines);
-                setShiftEmployees(response.data.platingShiftDetails);
+                // console.log(response.data);
+                // if (response.data.allEmployees                    ) {
+                //     let { shift_date, shift_type, remarks } = response.data.platingShiftInfo;
+                //     setShiftFormData({ shift_date, shift_type, remarks });
+                // } else {
+                //     setShiftFormData({ shift_date: '', shift_type: '', remarks: '' });
+                // }
+                // setShiftFormData({ 'isUpdate': response.data.isUpdate });
+                // setAllMachines(response.data.allMachines);
+                // setShiftEmployees(response.data.platingShiftDetails);
                 // FOR JOB ORDER
                 let shiftInChargeEmpOptions = [];
                 if (response.data.shiftInChargeEmpls && response.data.shiftInChargeEmpls.length > 0) {
@@ -117,60 +189,143 @@ const Edit = (props) => {
             });
     }
 
+
+
+    
     const changeHandler = (event) => {
         setShiftFormData({ [event.target.name]: event.target.value });
+        // console.log(shiftFormData);
     }
+    useEffect(()=>{
+        setShiftArr({selectedOption,getDate,getShift})
+        
+    },[selectedOption,getDate,getShift]);
+    // console.log(shiftArr);
+    
+    // console.log(totalEmployees);
+    useEffect(()=>{
+        if (shiftArr.selectedOption !== ''
+        && shiftArr.getDate !== ''
+        && shiftArr.getShift !== '') {
+            // setIsLoading(true);
+            userGetMethod(`${shiftInCharge}?shift_date=${shiftArr.getDate}&shift_type=${getShift}&shift_for=${shiftArr.selectedOption}`)
+            .then(response => {
+                setInChargeData(response?.data);
+               
+                const shiftInChargArr=[response.data.shiftIncharge];
+                if (shiftInChargArr.length > 0) {
+                    const newArr = totalEmployees.filter((employee) =>shiftInChargArr.some((inCharge) => inCharge.id === employee.id || inCharge.name === employee.name));
+                        // console.log(newArr);
+                      if (newArr.length > 0) {
+                          setNewOptions(newArr);
+                          setSelectedShiftChar(newArr[0].id)
+                      }else{
+                        setNewOptions(totalEmployees)
+                      }
+                }
+                else{
+                    setNewOptions(totalEmployees)
+                }
+                
+                
+                setShiftDutyEmployees(response?.data?.shiftEmployees);
+
+                // setIsLoading(false);
+            })
+            .catch(error => {
+                console.log(error);
+                // setIsLoading(false);
+            });
+        } 
+        else{
+            // setIsLoading(false);
+        }
+
+    },[shiftArr.getShift,shiftArr.selectedOption,shiftArr.getDate]);
+    // console.log(inChargeData)
+    // console.log(shiftArr);
+    // console.log(newOptions);
+
+
+
+// =================Mechine Data Fetching========================//
+    useEffect(()=>{
+        if (shiftArr.selectedOption !== '') {
+            userGetMethod(`${mechine_GETURL}?shift_for=${shiftArr.selectedOption}`)
+            .then(response => {
+                setMachineData(response?.data?.machines);
+            })
+        } else {
+            setMachineData([]);
+        }
+    },[shiftArr.selectedOption])
+    // console.log(machineData);
+
+
+ const handleDutySelect = (e)=> {
+     setNewDuty(e.target.value)
+    const selectedId = parseInt(e.target.value);
+    const selectedEmployee = totalEmployees.find((employee) => employee.id === selectedId);
+    if (selectedEmployee) {
+        setSeletedDutyPerson((prevSelected) => ({
+          ...prevSelected,
+          id:selectedId, name: selectedEmployee.name,
+        }));
+      }
+    // setSeletedDutyPerson(e.target.value)
+}
+// console.log(selectedDutyPerson);
+
 
     // FOR Typeahead DATA INPUT
     const dropDownChange = (event, stateName) => {
         if (event.length > 0) {
             const selectedValue = event[0].id;
             const selectedValueName = event[0].name;
-            setDropdownData(
+             setDropdownData(
                 (prevstate) => ({
-                    ...prevstate,
-                    [stateName]: selectedValue,
-                    [stateName + '_name']: selectedValueName,
+                    ...prevstate,[stateName]: selectedValue,[stateName + '_name']: selectedValueName,
                 })
-            );
+             );
         }
 
     }
     // FOR SHIFT DETAILS ARRAY READY
     const addShiftDetailsHandler = (event) => {
-        if (dropdownData.duty_person === undefined) {
+        console.log(shiftDutyEmployees)
+        if (shiftDutyEmployees.length === 0 && !newDuty) {
             SweetAlert.fire({ title: "Warning", text: "Please Select any one duty Person", icon: "warning" });
         } else {
             // OBJECT CREATE & PUSH IN AN ARRAY
             let shiftEmployees_arr = [];
             let shiftEmployees_obj = {};
-            shiftEmployees_obj.duty_person = dropdownData.duty_person;
-            shiftEmployees_obj.duty_person_name = dropdownData.duty_person_name;
+            shiftEmployees_obj.id = selectedDutyPerson.id;
+            shiftEmployees_obj.name = selectedDutyPerson.name;
 
             shiftEmployees_arr.push(shiftEmployees_obj);
 
             // console.log({shiftEmployees_arr});
             // PUSH BASE ORDER DETAILS MAIN ARRAY
-            if (shiftEmployees.length > 0) {
+            if (shiftDutyEmployees.length > 0) {
                 // CHECKING FOR DUPLICATE ENTRY
-                let isExist = shiftEmployees.some(item => item.duty_person === shiftEmployees_obj.duty_person);
-                let alreadyInShiftInCharge = shiftEmployees.some(item => item.duty_person === shiftFormData.shift_in_charge[0].id);
-                console.log('shiftEmployees', shiftEmployees, shiftFormData.shift_in_charge[0].id);
-                console.log({ alreadyInShiftInCharge });
+                let isExist = shiftDutyEmployees.some(item => item.id === shiftEmployees_obj.id);
+                // let alreadyInShiftInCharge = shiftDutyEmployees.some(item => item.id === shiftFormData.shift_in_charge[0].id);
+                // console.log('shiftEmployees', shiftEmployees, shiftFormData.shift_in_charge[0].id);
+                // console.log({ alreadyInShiftInCharge });
                 // if (condition) {
 
                 // }
                 if (isExist === false) {
-                    setShiftEmployees([
-                        ...shiftEmployees,
+                    setShiftDutyEmployees([
+                        ...shiftDutyEmployees,
                         ...shiftEmployees_arr
                     ]);
                 } else {
                     SweetAlert.fire({ title: "Warning", text: "This Duty Person is already exists!", icon: "warning" });
                 }
             } else { //FIRST TIME PUSH
-                setShiftEmployees([
-                    ...shiftEmployees,
+                setShiftDutyEmployees([
+                    ...shiftDutyEmployees,
                     ...shiftEmployees_arr
                 ]);
             }
@@ -178,31 +333,34 @@ const Edit = (props) => {
     }
     // console.log({shiftEmployees});
     // FOR REMOVE ORDER DETAILS SINGLE DATA FROM ORDER DETAILS ARRAY
-    const removeBaseOrderHandler = (duty_person) => {
-        console.log(duty_person);
-        let availableBaseOrder = shiftEmployees.filter((item) => item.duty_person != duty_person);
-        setShiftEmployees([
+    const removeBaseOrderHandler = (id) => {
+        // console.log(id);
+        let availableBaseOrder = shiftDutyEmployees.filter((item) => item.id != id);
+        setShiftDutyEmployees([
             ...availableBaseOrder
         ]);
     }
     // FINALLY SUBMIT FOR SAVE TO SERVER
     const submitHandler = (data, e) => {
-        data.shift_in_charge = dropdownData.shift_in_charge == undefined ? shiftFormData.shift_in_charge[0].id : dropdownData.shift_in_charge;
-        let duty_person_array = [];
-        shiftEmployees.map((item, index) => {
-            duty_person_array.push(item.duty_person)
-        });
-        data.duty_person_array = duty_person_array;
-        console.log({ duty_person_array });
-        if (duty_person_array.length > 0) {
-            let isUpdate = shiftFormData.isUpdate == true ? 1 : 0;
-            userPostMethod(`${DIG_SHIFT_RSURL}?isUpdate=${isUpdate}`, data)
+        data.shift_for = shiftArr.selectedOption;
+        data.shift_in_charge = selectedShiftChar;
+        const convertedArray = shiftDutyEmployees.map(item => [item.id, item.name]); 
+        // Multidinamtional array
+        data.duty_person_array = convertedArray;
+        // array of object =====>>>
+        // data.duty_person_array = shiftDutyEmployees;
+        console.log(data);
+       
+        
+        if (Object.keys(data).length > 0) {
+            
+            userPostMethod(`${DIG_SHIFT_RSURL}`, data)
                 .then(response => {
                     console.log('response', response.data);
                     if (response.data.status == 1) {
                         toast.success(response.data.message)
                         e.target.reset();
-                        pageRefreshHandler();
+                        // pageRefreshHandler();
                     } else {
                         setValidateErrors([])
                         toast.error(response.data.message)
@@ -229,7 +387,7 @@ const Edit = (props) => {
                                         <h5>{shiftFormData.isUpdate ? 'Running Shift Form' : 'Add Shift'}</h5>
                                     </div>
                                     <div className="col-md-6">
-                                        <PanelRefreshIcons panelRefresh={pageRefreshHandler} />
+                                        {/* <PanelRefreshIcons panelRefresh={pageRefreshHandler} /> */}
                                     </div>
                                 </div>
                             </div>
@@ -253,7 +411,7 @@ const Edit = (props) => {
                                                         <select className='form-control' value={selectedOption} onChange={handleSelect}>
                                                             <option value=""> Select a shift</option>
                                                             {options.map((option, index) => (
-                                                                <option key={index} value={option.shift_name}>
+                                                                <option key={index} value={option.id}>
                                                                     {option.shift_name}
                                                                 </option>
                                                             ))}
@@ -283,8 +441,8 @@ const Edit = (props) => {
                                                                 ref={register({
                                                                     required: 'Shift Date Field Required'
                                                                 })}
-                                                                value={shiftFormData.shift_date}
-                                                                onChange={changeHandler}
+                                                                value={getDate}
+                                                                onChange={(e)=>setGetDate(e.target.value)}
                                                             />
                                                             {errors.shift_date && <p className='text-danger'>{errors.shift_date.message}</p>}
                                                         </div>
@@ -298,7 +456,7 @@ const Edit = (props) => {
                                                             <select className="form-control" id="shift_type" name="shift_type"
                                                                 ref={register({
                                                                     required: 'Shift Type Field Required'
-                                                                })} defaultValue={shiftFormData.shift_type} onChange={changeHandler}>
+                                                                })} defaultValue={shiftFormData.shift_type} onChange={(e)=>setGetShift(e.target.value)} value={getShift}>
                                                                 <option value=""> Select </option>
                                                                 <option value="1">Day</option>
                                                                 <option value="2">Evening</option>
@@ -313,24 +471,38 @@ const Edit = (props) => {
                                                     <div className="form-group row">
                                                         <label className="col-sm-4 col-form-label" htmlFor="shift_in_charge">Shift In Charge</label>
                                                         <div className="col-sm-6">
-                                                            {shiftFormData.shift_in_charge.length === 0 ?
-                                                                <Typeahead
-                                                                    id="shift_in_charge"
-                                                                    name="shift_in_charge"
-                                                                    labelKey={option => `${option.name}`}
-                                                                    options={typeheadOptions['shiftInChargeEmplyees']}
-                                                                    placeholder="Select Issue To"
-                                                                    onChange={(e) => dropDownChange(e, 'shift_in_charge')}
-                                                                /> :
-                                                                <Typeahead
-                                                                    id="shift_in_charge"
-                                                                    name="shift_in_charge"
-                                                                    labelKey={option => `${option.name}`}
-                                                                    options={typeheadOptions['shiftInChargeEmplyees']}
-                                                                    placeholder="Select Issue To"
-                                                                    onChange={(e) => dropDownChange(e, 'shift_in_charge')}
-                                                                    selected={shiftFormData.shift_in_charge}
-                                                                />}
+
+                                                    {
+                                                        newOptions.length == 1 ? <select className='form-control' value={newOptions.length > 0 ? newOptions.name : ""}  disabled onChange={handleGetCharge}>
+                                                            { newOptions?.map((item,i) => (
+                                                                <option key={i} value={item?.id}>
+                                                                {item?.name}
+                                                                </option>
+                                                            ))
+                                                                
+                                                            }
+                                                                
+                                                           
+                                                        </select> 
+                                                        :
+                                                        <select className='form-control' value={newOptions.length > 0?newOptions.name: ""} onChange={handleGetCharge}>
+                                                        <option value=""> Select a Incharge</option>
+                                                            { newOptions?.map((item,i) => (
+                                                                <option key={i} value={item?.id}>
+                                                                {item?.name}
+                                                                </option>
+                                                            ))
+                                                                
+                                                            }
+                                                                
+                                                           
+                                                        </select>
+                                                    }
+
+   
+                                                        
+                                                            
+
                                                         </div>
                                                     </div>
                                                 </div>
@@ -351,9 +523,9 @@ const Edit = (props) => {
                                                                 </thead>
                                                                 <tbody>
                                                                     {
-                                                                        allMachines.length > 0 ?
+                                                                        machineData.length > 0 ?
                                                                             <>
-                                                                                {allMachines.map((machine, index) => (
+                                                                                {machineData.map((machine, index) => (
                                                                                     <tr key={index}>
                                                                                         <td align="left">{machine.machine_name}</td>
                                                                                         <td align="left">{machine.active_status == 1 ? 'Online' : 'Offline'}</td>
@@ -380,14 +552,14 @@ const Edit = (props) => {
                                                             <div className="form-group row">
                                                                 <label className="col-sm-4 col-form-label" htmlFor="duty_person">On Duty Person</label>
                                                                 <div className="col-sm-6">
-                                                                    <Typeahead
-                                                                        id="duty_person"
-                                                                        name="duty_person"
-                                                                        labelKey={option => `${option.name}`}
-                                                                        options={typeheadOptions['dutyPersonEmployees']}
-                                                                        placeholder="Select Duty Person"
-                                                                        onChange={(e) => dropDownChange(e, 'duty_person')}
-                                                                    />
+                                                                <select className='form-control' value={newDuty} onChange={handleDutySelect}>
+                                                                    <option value=""> Select Duty Person</option>
+                                                                    {totalEmployees.map((option, index) => (
+                                                                        <option key={option.id} value={option.id}>
+                                                                            {option.name}
+                                                                        </option>
+                                                                    ))}
+                                                                </select>
                                                                 </div>
                                                                 <div className="col-md-1 mb-4">
                                                                     <span className="btn btn-primary btn-sm mr-1" type="add" onClick={addShiftDetailsHandler}>Add</span>
@@ -405,14 +577,14 @@ const Edit = (props) => {
                                                                 </thead>
                                                                 <tbody>
                                                                     {
-                                                                        shiftEmployees.length > 0 ?
+                                                                        shiftDutyEmployees?.length > 0 ?
                                                                             <>
-                                                                                {shiftEmployees.map((item, index) =>
+                                                                                {shiftDutyEmployees.map((item, index) =>
                                                                                 (
                                                                                     <tr key={index}>
-                                                                                        <th scope="row">{item.duty_person_name}</th>
+                                                                                        <th scope="row">{item.name}</th>
                                                                                         <td align="center">
-                                                                                            <span onClick={() => removeBaseOrderHandler(item.duty_person)}>
+                                                                                            <span onClick={() => removeBaseOrderHandler(item.id)}>
                                                                                                 <i className="icon-close" style={{ width: 25, fontSize: 16, padding: 0, color: '#e4566e', cursor: 'pointer' }}
                                                                                                 ></i>
                                                                                             </span>
