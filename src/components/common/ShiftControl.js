@@ -1,18 +1,16 @@
-import React, { Fragment, useEffect, useReducer, useState } from 'react';
+import React ,{ Fragment, useEffect, useReducer, useState } from 'react'
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import useForm from 'react-hook-form'
 import { Typeahead } from 'react-bootstrap-typeahead';
 import 'react-bootstrap-typeahead/css/Typeahead.css';
-import { PanelRefreshIcons, SubmitButton, ValidationAlerts, AddButton } from '../../../../common/GlobalButton';
-import { userGetMethod, userPutMethod, userPostMethod } from '../../../../../api/userAction';
-import { DIG_SHIFT_RSURL, ShiftFor, userHasAccess,digShiftFor,shiftInCharge,mechine_GETURL } from '../../../../../api/userUrl';
+import { PanelRefreshIcons, SubmitButton, ValidationAlerts, AddButton } from './GlobalButton';
+import { userGetMethod, userPutMethod, userPostMethod } from '../../../src/api/userAction';
+import { DIG_SHIFT_RSURL, ShiftFor, userHasAccess,digShiftFor,shiftInCharge,mechine_GETURL } from '../../../src/api/userUrl';
 import SweetAlert from 'sweetalert2';
 import { Form } from 'react-bootstrap';
-import Select from 'react-select';
 
-
-const Edit = (props) => {
+const ShiftControl = (props) => {
     const { handleSubmit, register, errors } = useForm();
     const [isLoading, setIsLoading] = useState(true);
     const [hasAccess, setHasAccess] = useState({});
@@ -34,16 +32,16 @@ const Edit = (props) => {
     const [totalEmployees,setTotalEmployees] = useState([]);
     const [newOptions,setNewOptions] = useState([]);
     const [machineData,setMachineData] = useState([]);
-    const [exitingShiftCharg,setExitingShiftCharg] = useState([]);
+    const [exitingShiftCharg,setExitingShiftCharg] = useState('');
     const [selectedShiftChar,setSelectedShiftChar] = useState('');
 
 
 
     var menuId = 0;
-    if (props.location.state === undefined) {
+    if (props?.location?.state === undefined) {
         var menuId = 0;
     } else {
-        menuId = props.location.state.params.menuId;
+        menuId = props?.location?.state?.params?.menuId;
     }
 
     let [shiftFormData, setShiftFormData] = useReducer(
@@ -74,7 +72,46 @@ const Edit = (props) => {
 
         userGetMethod(`${digShiftFor}`)
             .then(response => {
-                setOptions(response.data.shifts);
+                // console.log(response.data.shifts);
+                if (props.value == 'grinding_shift') {
+                    const newArr = response.data.shifts.filter(item => item.shift_name == 'grinding_shift');
+                    // console.log(newArr);
+                    setOptions(newArr);
+                    setSelectedOption(newArr[0].id);
+                    // console.log(selectedOption)
+                }
+                else if (props.value == 'plating_shift') {
+                    const newArr = response.data.shifts.filter(item => item.shift_name == 'plating_shift');
+                    // console.log(newArr);
+                    setOptions(newArr);
+                    setSelectedOption(newArr[0].id);
+                    // console.log(selectedOption)
+                }
+               else if (props.value == 'polishing_shift') {
+                    const newArr = response.data.shifts.filter(item => item.shift_name == 'polishing_shift');
+                    // console.log(newArr);
+                    setOptions(newArr);
+                    setSelectedOption(newArr[0].id);
+                    // console.log(selectedOption)
+                }
+               else if (props.value == 'engraving_shift') {
+                    const newArr = response.data.shifts.filter(item => item.shift_name == 'engraving_shift');
+                    // console.log(newArr);
+                    setOptions(newArr);
+                    setSelectedOption(newArr[0].id);
+                    // console.log(selectedOption)
+                }
+                else if (props.value == 'chrome_shift') {
+                    const newArr = response.data.shifts.filter(item => item.shift_name == 'chrome_shift');
+                    // console.log(newArr);
+                    setOptions(newArr);
+                    setSelectedOption(newArr[0].id);
+                    // console.log(selectedOption)
+                }
+                else{
+                    setOptions(response.data.shifts); 
+
+                }
                 setTotalEmployees(response.data.allEmployees);
             })
             .catch(error => {
@@ -96,7 +133,6 @@ const Edit = (props) => {
 
     const handleGetCharge = (e) =>{
         setSelectedShiftChar(e.target.value);
-        console.log(selectedShiftChar);
 
     }
     // console.log(selectedShiftChar)
@@ -204,9 +240,8 @@ const Edit = (props) => {
         
     },[selectedOption,getDate,getShift]);
     // console.log(shiftArr);
-    
-    // console.log(totalEmployees);
     let valueCharge;
+    // console.log(totalEmployees);
     useEffect(()=>{
         if (shiftArr.selectedOption !== ''
         && shiftArr.getDate !== ''
@@ -217,25 +252,8 @@ const Edit = (props) => {
                 setInChargeData(response?.data);
                
                 const shiftInChargArr=[response.data.shiftIncharge];
-                // console.log(shiftInChargArr);
-                // // console.log(totalEmployees)
-                // if (shiftInChargArr.length > 0) {
-                    
-                //     const newArr = totalEmployees.filter((employee) => shiftInChargArr.some((inCharge) => inCharge.id === employee.id || inCharge.name === employee.name));
-                //     // const newArr = totalEmployees.find((employee) =>shiftInChargArr.includes(employee)); 
-                //     console.log(newArr)   
-                //     if (newArr.length > 0) {
-                        
-                //         setNewOptions(newArr)
-                //         setSelectedShiftChar(newArr[0].id)
-                          
-                //       }else{
-                //         setNewOptions(totalEmployees)
-                //       }
-                // }
-                // else{
-                //     setNewOptions(totalEmployees)
-                // }
+                
+                
                 
                 setNewOptions(shiftInChargArr);
                 setShiftDutyEmployees(response?.data?.shiftEmployees);
@@ -250,10 +268,11 @@ const Edit = (props) => {
         else{
             // setIsLoading(false);
         }
-          
 
-    },[shiftArr.getShift,shiftArr.selectedOption,shiftArr.getDate,totalEmployees,shiftInCharge]);
+    },[shiftArr.getShift,shiftArr.selectedOption,shiftArr.getDate]);
     // console.log(inChargeData)
+    
+    // console.log(exitingShiftCharg);
     function getDefaultSelectedValue() {
         const match = totalEmployees.find((item) =>
           newOptions.some((option) => option.id === item.id)
@@ -269,9 +288,6 @@ const Edit = (props) => {
             return selectedShiftChar;
         }
       }
-    // console.log(exitingShiftCharg);
-    // let chargeName = newOptions[0]?.name;
-    // console.log(chargeName)
 
 
 // =================Mechine Data Fetching========================//
@@ -439,8 +455,8 @@ const Edit = (props) => {
                                                         Shift For
                                                     </label>
                                                     <div>
-                                                        <select className='form-control' value={selectedOption} onChange={handleSelect}>
-                                                            <option value=""> Select a shift</option>
+                                                        <select className='form-control' value={options[0]?.shift_name} onChange={handleSelect} disabled>
+                                                            
                                                             {options.map((option, index) => (
                                                                 <option key={index} value={option.id}>
                                                                     {option.shift_name}
@@ -661,4 +677,4 @@ const Edit = (props) => {
     );
 };
 
-export default Edit;
+export default ShiftControl

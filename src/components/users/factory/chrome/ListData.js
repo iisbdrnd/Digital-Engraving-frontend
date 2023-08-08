@@ -196,7 +196,7 @@ export default function ListData(props) {
                                         </div>
                                         <div className="col-md-3 col-lg-3">
                                             <Link to={{pathname: `${process.env.PUBLIC_URL}/tankConfig/index`, state: {params: {menuId: menuId}}}} className=" btn btn-info" style={{'marginRight': '3px'}}>Tank Settings</Link>
-                                            <Link to={{pathname: `${process.env.PUBLIC_URL}/platingShift/index`, state: { params: {menuId: menuId} }}} className="btn btn-primary bt-xs " style={{'marginRight': '5px'}}>Shift</Link>
+                                            <Link to={{pathname: `${process.env.PUBLIC_URL}/chromeShift/Control`, state: { params: {menuId: menuId} }}} className="btn btn-primary bt-xs " style={{'marginRight': '5px'}}>Shift</Link>
                                             
                                             {/* <Link to="/" className="btn btn-warning bt-xs mt-2 mr-1">All Tank's Schedule</Link> */}
                                         </div>

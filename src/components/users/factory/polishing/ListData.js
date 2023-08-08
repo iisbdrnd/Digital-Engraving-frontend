@@ -119,7 +119,13 @@ export default function ListData(props) {
                                     <div className="col-md-6">
                                         <h5>Polishing List</h5>
                                     </div>
-                                    <div className="col-md-6">
+                                    <div className="col-md-6 text-right">
+                                    <Link to={{pathname: `${process.env.PUBLIC_URL}/polishingShift/control`, state: { params: {menuId: menuId} }}}
+                                                className="btn btn-primary btn-sm" 
+                                                type="button" 
+                                               
+                                            >Shift
+                                            </Link>
                                         {/* <PanelRefreshIcons panelRefresh={pageChange} /> */}
                                     </div>
                                 </div>

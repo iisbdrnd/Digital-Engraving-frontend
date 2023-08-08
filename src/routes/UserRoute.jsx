@@ -416,6 +416,11 @@ import BillCollection from './../components/users/factory/bill/Collection';
 import UserApp from "./../components/UserApp";
 import UserAccess from "../components/users/users/access/List/UserAccess";
 import RoleAccess from "../components/users/roles/access/List/RoleAccess";
+import GrindingShift from "../components/users/factory/grinding/GrindingShift";
+import PlantingShiftControl from "../components/users/factory/platingDept/PlantingShiftControl";
+import PolishingShift from "../components/users/factory/polishing/PolishingShift";
+import EngravingShift from "../components/users/factory/engraving/EngravingShift";
+import ChromeShift from "../components/users/factory/chrome/ChromeShift";
 
 class UserRoute extends Component {
     constructor(props) {
@@ -1420,6 +1425,10 @@ class UserRoute extends Component {
                   path={`${process.env.PUBLIC_URL}/grinding/edit/:jobOrderJobNo`}
                   component={GrindingEdit}
                 />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/grinding/shiftControl`}
+                  component={GrindingShift}
+                />
                 {/* BACK OFFICE SETUP START  */}
                 {/* GRINDING MACHINE */}
                 <UserAuthRoute
@@ -1452,6 +1461,10 @@ class UserRoute extends Component {
                   path={`${process.env.PUBLIC_URL}/shiftControl/index`}
                   component={DigShiftEdit}
                 />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/platingShift/control`}
+                  component={PlantingShiftControl}
+                />
                 {/* PLATING DEPARTMENT */}
                 <UserAuthRoute
                   path={`${process.env.PUBLIC_URL}/platingDept/index`}
@@ -1475,6 +1488,10 @@ class UserRoute extends Component {
                   component={PolishingAdd}
                 />
                 <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/polishingShift/control`}
+                  component={PolishingShift}
+                />
+                <UserAuthRoute
                   path={`${process.env.PUBLIC_URL}/polishing/edit/:dig_polishing_cylinder_id`}
                   component={PolishingEdit}
                 />
@@ -1486,6 +1503,10 @@ class UserRoute extends Component {
                 <UserAuthRoute
                   path={`${process.env.PUBLIC_URL}/engraving/add`}
                   component={EngravingAdd}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/engravingShift/control`}
+                  component={EngravingShift}
                 />
                 <UserAuthRoute
                   path={`${process.env.PUBLIC_URL}/engraving/edit/:dig_engravings_cylinder_id`}
@@ -1503,6 +1524,10 @@ class UserRoute extends Component {
                 <UserAuthRoute
                   path={`${process.env.PUBLIC_URL}/chrome/edit`}
                   component={ChromeEdit}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/chromeShift/Control`}
+                  component={ChromeShift}
                 />
                 {/* QUALITY CONTROL */}
                 <UserAuthRoute

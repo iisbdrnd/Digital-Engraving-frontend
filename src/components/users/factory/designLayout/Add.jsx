@@ -62,14 +62,18 @@ const Add = (props) => {
     const [typeColorOptions, setTypeColorOptions] = useState([]);
 
     let job_id = props.location.state.params.jobNo ? props.location.state.params.jobNo : null;
+    
     useEffect(() => {
         pageRefreshHandler(job_id);
     }, [])
+
+
     const pageRefreshHandler = async(job_id = null) => {
         // setIsLoading(true);
         userGetMethod(`${DESIGN_LAYOUT_RSURL}/create?job_order_id=${job_id}`)
             .then(response => {
                 // FOR JOB ORDER
+                console.log(response.data)
                 let jobOrderOptions = [];
                 if (response.data.jobOrder) {
                     let jobOrderObj = {};
@@ -108,6 +112,17 @@ const Add = (props) => {
                     })
                 }
 
+                let machinesOptions = [];
+                if(response.data.machines && response.data.machines.length > 0) {
+                    response.data.machines.map(machine => {
+                        let machineObj = {};
+                        machineObj.id = machine.id;
+                        // machineObj.client_id = machine.client_id;
+                        machineObj.name = machine.machine_name;
+                        machinesOptions.push(machineObj);
+                    })
+                }
+
                 let employeesOptions = [];
                 if(response.data.employees && response.data.employees.length > 0) {
                     response.data.employees.map(employee => {
@@ -135,11 +150,13 @@ const Add = (props) => {
                  ['layout_references']: response?.data?.layout_references,
                  ['clients']: clientsOptions,
                  ['employees']: employeesOptions,
-                 ['suppliers']: suppliersOptions
+                 ['suppliers']: suppliersOptions,
+                 ['machines'] : machinesOptions
                 });
                 // setIsLoading(false);
             });
     }
+
     console.log(typeheadOptions);
 
     const toogleLtoB = (val) => {
@@ -160,17 +177,19 @@ const Add = (props) => {
             setFormData({ ...formData, [e.target.name]: e.target.type == 'checkbox' ? (e.target.checked ? 1 : 0) : e.target.value });
         }
     }
-
     console.log(formData);
+
+    // console.log(formData);
 
     const  getLayoutInfo = () => {
         userGetMethod(`${DESIGN_LAYOUT_HISTORY}?ref_layout_id=${formData?.ref_layout_id}`)
             .then(res => {
+                // console.log(res.data)
                 setFormData({
                     ...formData,
-                    history_name: res.data.layoutHistory.job_name,
-                    history_remarks: res.data.layoutHistory.remarks,
-                    layout_history_date: res.data.layoutHistory.layout_date,
+                    history_name: res.data?.layoutHistory?.job_name,
+                    history_remarks: res.data?.layoutHistory?.remarks,
+                    layout_history_date: res.data?.layoutHistory?.layout_date,
                     layout_id : formData?.ref_layout_id
                 })
             })
@@ -180,7 +199,7 @@ const Add = (props) => {
     useEffect(() => {
         getLayoutInfo();
     },[formData?.ref_layout_id])
-    console.log(formData);
+    // console.log(formData);
 
     const engOrderHandler = (e, index) => {
         setEngraveOrder(
@@ -229,6 +248,7 @@ const Add = (props) => {
             );
             userGetMethod(`${JOB_ORDER_DETAILS}?jobOrderId=${selectedValue}`)
                 .then(response => {
+                    console.log(response.data)
                     let { 
                         // layout_date,
                         ref_layout_id,cir,client_email,dia,fl,id,job_name,job_no,job_type,printer_id,printer_mark,mark_as_complete,total_cylinder_qty,remarks,ups,rpt,operator_info,station,printer_name,printing_status } = response.data.jobOrderDetails;
@@ -281,24 +301,31 @@ const Add = (props) => {
 
     const onSubmit = (data, e) => {
         e.preventDefault();
+        console.log(data);
         const formValue = new FormData();
-        Object.entries(formData).forEach(([key, value]) => {
-            if(key != 'history_image')
+        
+        
+        Object.entries(data).forEach(([key, value]) => {
+            if(key != 'history_image'){  
             formValue.append(`${key}`, `${value}`)
-        })
-        formValue.append("history_image", formData.history_image);
-        formValue.append("job_id", dropdownData.job_id);
-        formValue.append("engraveOrder", JSON.stringify(engraveOrder));
+        }
+     })
+     formValue.append("history_image", formData.history_image);
+     formValue.append("job_id", dropdownData.job_id);
+     formValue.append("engraveOrder", JSON.stringify(engraveOrder));
+    //  console.log(formValue)
+    // console.log(Array.from(formValue.entries()));
         userPostMethod(`${DESIGN_LAYOUT_RSURL}`, formValue)
             .then((response) => {
                 toast.success(response.data.message);
                 clearForm();
                 e.target.reset();
             })
+            .catch((error) => {console.log(error)});
     }
     
     const clearForm = () => {
-        console.log('clear');
+        // console.log('clear');
         setSelectedJobOrder([]);
         setTypeColorOptions([]);
         setEngraveOrder([]);
@@ -655,7 +682,7 @@ const Add = (props) => {
                                                         </div>
                                                         <label className="col-md-5 text-left col-form-label">Layout</label>
                                                         <div className="col-md-7">
-                                                            <select className="form-control" name="	layout_id" id="	layout_id">
+                                                            <select className="form-control" name="layout_id" id="	layout_id">
                                                                 <option value="1">opt 1</option>
                                                                 <option value="2">opt 2</option>
                                                                 <option value="3">opt 3</option>
@@ -716,9 +743,14 @@ const Add = (props) => {
                                                         <tbody>
                                                             <tr>
                                                                 <td>
-                                                                    <input class="form-control" type="text" value={formData?.layout_history_date}/></td>
-                                                                <td><input class="form-control" type="text" name="job_no" value={formData?.history_name} /></td>
-                                                                <td><input class="form-control" type="text" name="remarks" value={formData?.history_remarks} /></td>
+                                                                    <input class="form-control" type="text" value={formData?.layout_history_date}/>
+                                                                    </td>
+                                                                <td>
+                                                                    <input class="form-control" type="text" name="job_no" value={formData?.history_name} />
+                                                                </td>
+                                                                <td>
+                                                                    <input class="form-control" type="text" name="remarks" value={formData?.history_remarks} />
+                                                                </td>
                                                             </tr>
 
                                                         </tbody>
@@ -979,11 +1011,39 @@ const Add = (props) => {
                                                                 typeColorOptions.map((item,index) => {
                                                                     return (
                                                                         <tr>
-                                                                            <td><input className="form-control" type="text" value={item.id + 1}  name="er_id" id="er_id" onChange={(e) => engOrderHandler(e, index)}/></td>
-                                                                            <td><input className="form-control" type="text" value={item.name} name="er_color_id" id="er_color_id" onChange={(e) => engOrderHandler(e, index)}/></td>
-                                                                            <td><input className="form-control" type="text"  name="er_desired_screen" id="er_desired_screen" onChange={(e) =>engOrderHandler(e, index)} /></td>
-                                                                            <td><input className="form-control" type="text"  name="er_desired_angle" id="er_desired_angle" onChange={(e) =>engOrderHandler(e, index)} /></td>
-                                                                            <td><input className="form-control" type="text"  name="er_engraving_machine" id="er_engraving_machine" onChange={(e) =>engOrderHandler(e, index)} /></td>
+                                                                            <td>
+                                                                                <input className="form-control" type="text" value={item.id + 1}  name="er_id" id="er_id" onChange={(e) => engOrderHandler(e, index)}/>
+                                                                                </td>
+
+                                                                            <td>
+                                                                                <input className="form-control" type="text" value={item.name} name="er_color_id" id="er_color_id" onChange={(e) => engOrderHandler(e, index)}/>
+                                                                                </td>
+
+                                                                            <td>
+                                                                                <input className="form-control" type="text"  name="er_desired_screen" id="er_desired_screen" onChange={(e) =>engOrderHandler(e, index)} />
+                                                                                </td>
+
+                                                                            <td>
+                                                                                <input className="form-control" type="text"  name="er_desired_angle" id="er_desired_angle" onChange={(e) =>engOrderHandler(e, index)} />
+                                                                                </td>
+
+                                                                            <td>
+                                                                                <input className="form-control" type="text"  name="er_engraving_machine" id="er_engraving_machine" onChange={(e) =>engOrderHandler(e, index)} />
+
+                                                                                
+                                                                                {/* <select className="form-control" name="machine_id" id="machine_id" onChange={inputChangeHandler}   ref={register({
+                                                                                    required: 'On text Field Required'
+                                                                                })}>
+                                                                                <option value="">Select ...</option>
+                                                                                {typeheadOptions['machines'].map((item, index) => (
+                                                                                    <option key={index} value={item?.id}>{item?.name}</option>
+                                                                                ))}
+                                                                                </select> */}
+
+
+
+
+                                                                                </td>
                                                                         </tr>
                                                                     )
                                                                 })

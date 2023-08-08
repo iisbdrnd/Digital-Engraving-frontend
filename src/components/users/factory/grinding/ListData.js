@@ -6,6 +6,7 @@ import { userGetMethod, userDeleteMethod } from '../../../../api/userAction';
 import { AddButton, EditButton, DeleteButton, PerPageBox, PanelRefreshIcons } from '../../../common/GlobalButton';
 import Pagination from "react-js-pagination";
 import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
 export default function ListData(props) {
     const [grindingData, setGrindingData] = useState([]);
@@ -18,6 +19,7 @@ export default function ListData(props) {
     const [totalData, setTotalData] = useState(0);
     const [ascDesc, setAscDesc] = useState(false);
     const [jobActiveStatus, setJobActiveStatus] = useState(0);
+    const history = useHistory();
 
     var menuId = 0;
     if (props.location.state === undefined) {
@@ -41,6 +43,12 @@ export default function ListData(props) {
     useEffect(() => {
         perPageBoxChange();
     },[jobActiveStatus,perPage])
+
+
+    const shiftHandler = () =>{
+        history.push('/grinding/shiftControl')
+    }
+
 
     const handleSearchText = (e) => {
         setSearchText(e);
@@ -137,7 +145,13 @@ export default function ListData(props) {
                                     <div className="col-md-6">
                                         <h5>Pending Grinding List</h5>
                                     </div>
-                                    <div className="col-md-6">
+                                    <div className="col-md-6 text-right">
+                                         <button 
+                                                className="btn btn-primary btn-sm" 
+                                                type="button" 
+                                                onClick={shiftHandler} 
+                                            >Shift
+                                            </button>
                                         {/* <PanelRefreshIcons panelRefresh={pageChange} /> */}
                                     </div>
                                 </div>
