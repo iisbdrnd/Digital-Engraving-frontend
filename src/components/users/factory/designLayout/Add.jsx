@@ -249,44 +249,46 @@ const Add = (props) => {
             userGetMethod(`${JOB_ORDER_DETAILS}?jobOrderId=${selectedValue}`)
                 .then(response => {
                     console.log(response.data)
-                    let { 
-                        // layout_date,
-                        ref_layout_id,cir,client_email,dia,fl,id,job_name,job_no,job_type,printer_id,printer_mark,mark_as_complete,total_cylinder_qty,remarks,ups,rpt,operator_info,station,printer_name,printing_status } = response.data.jobOrderDetails;
-                    setFormData({
-                        // 'layout_date': layout_date,
-                        'cir': cir,
-                        'client_email': client_email,
-                        'dia': dia,
-                        'fl': fl,
-                        'id': id,
-                        'job_name': job_name,
-                        'job_no': job_no,
-                        'job_type': job_type,
-                        'printer_id': printer_id,
-                        'printer_name': printer_name,
-                        'printing_status': printing_status,
-                        'printer_mark': printer_mark,
-                        'total_cylinder_qty': total_cylinder_qty,
-                        'remarks': remarks,
-                        'ups': ups,
-                        'rpt': rpt,
-                        'ref_layout_id' : ref_layout_id,
-                        'mark_as_complete' :  mark_as_complete,
-                        'operator_info' : operator_info ,
-                        'station' : station,
-                    });
-                    setTypeColorOptions(response.data.colors);
-                    if (response.data.colors.length > 0) {
-                        let colorOptions = [];
-                        response.data.colors.map((item, index) => {
-                            let colorObj = {};
-                            colorObj.id = index;
-                            colorObj.name = item.color_name;
-                            colorObj.er_color_id = item.id;
-                            colorOptions.push(colorObj);
-                        })
-                        setEngraveOrder(colorOptions);
-                        setTypeColorOptions(colorOptions);
+                    if (response?.data) {
+                        let { 
+                            // layout_date,
+                            ref_layout_id,cir,client_email,dia,fl,id,job_name,job_no,job_type,printer_id,printer_mark,mark_as_complete,total_cylinder_qty,remarks,ups,rpt,operator_info,station,printer_name,printing_status } = response.data.jobOrderDetails;
+                        setFormData({
+                            // 'layout_date': layout_date,
+                            'cir': cir,
+                            'client_email': client_email,
+                            'dia': dia,
+                            'fl': fl,
+                            'id': id,
+                            'job_name': job_name,
+                            'job_no': job_no,
+                            'job_type': job_type,
+                            'printer_id': printer_id,
+                            'printer_name': printer_name,
+                            'printing_status': printing_status,
+                            'printer_mark': printer_mark,
+                            'total_cylinder_qty': total_cylinder_qty,
+                            'remarks': remarks,
+                            'ups': ups,
+                            'rpt': rpt,
+                            'ref_layout_id' : ref_layout_id,
+                            'mark_as_complete' :  mark_as_complete,
+                            'operator_info' : operator_info ,
+                            'station' : station,
+                        });
+                        setTypeColorOptions(response.data.colors);
+                        if (response.data.colors.length > 0) {
+                            let colorOptions = [];
+                            response.data.colors.map((item, index) => {
+                                let colorObj = {};
+                                colorObj.id = index;
+                                colorObj.name = item.color_name;
+                                colorObj.er_color_id = item.id;
+                                colorOptions.push(colorObj);
+                            })
+                            setEngraveOrder(colorOptions);
+                            setTypeColorOptions(colorOptions);
+                        }
                     }
                 });
         }
