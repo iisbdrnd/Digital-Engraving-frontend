@@ -13,7 +13,7 @@ import Select from 'react-select';
 
 
 const Edit = (props) => {
-    const { handleSubmit, register, errors } = useForm();
+    const { handleSubmit, register, errors,reset } = useForm();
     const [isLoading, setIsLoading] = useState(true);
     const [hasAccess, setHasAccess] = useState({});
     const [accLoad, setAccLoad] = useState(true);
@@ -215,7 +215,7 @@ const Edit = (props) => {
             userGetMethod(`${shiftInCharge}?shift_date=${shiftArr.getDate}&shift_type=${getShift}&shift_for=${shiftArr.selectedOption}`)
             .then(response => {
                 setInChargeData(response?.data);
-               
+                // console.log(response.data);
                 const shiftInChargArr=[response.data.shiftIncharge];
                 // console.log(shiftInChargArr);
                 // // console.log(totalEmployees)
@@ -380,7 +380,7 @@ const Edit = (props) => {
         data.duty_person_array = shiftDutyEmployees;
         // data.duty_person_array = ;
         // array of object =====>>>
-        // console.log(data);
+        console.log(data);
        
         
         if (Object.keys(data).length > 0) {
@@ -391,6 +391,10 @@ const Edit = (props) => {
                     if (response.data.status == 1) {
                         toast.success(response.data.message)
                         e.target.reset();
+                        setMachineData([]);
+                        setShiftDutyEmployees([]);
+                        
+                        setShiftFormData({ remarks: '' });
                         // pageRefreshHandler();
                     } else {
                         setValidateErrors([])
