@@ -75,6 +75,7 @@ export const rolesAPI = 'api/user/roles';
 export const customMenuAPI = 'api/user/custom-menu';
 
 //SUPPLIER INFORMATION
+export const JOB_SUPPLIERS = 'api/user/suppliers';
 export const supplierInformationAPI = 'api/user/supplierInformation';
 
 //COLOR
