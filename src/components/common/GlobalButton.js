@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { Fragment, useState, useEffect,useRef } from 'react';
 import { Link } from 'react-router-dom'
 import { userGetMethod } from '../../api/userAction';
 import { userHasAccess } from '../../api/userUrl';
@@ -7,13 +7,19 @@ import 'react-toastify/dist/ReactToastify.css';
 import { Button, Alert } from "reactstrap";
 import swal from 'sweetalert2';
 
+
+
 export const SubmitButton = props => {
+    
+
     // console.log(props);
     return (
         <Fragment>
             <div className={`card-footer ${props.addClass}`} >
                 <div className={`col-md-12 offset-sm-${props.offset}`} style={{'padding':'0'}}>
-                    <button className="btn btn-primary btn-sm mr-1" type="submit">Submit</button>
+                    <button className="btn btn-primary btn-sm mr-1" type="submit"
+                   
+                    >Submit</button>
                     <Link 
                     to={{
                         pathname: `${process.env.PUBLIC_URL}/${props.link}`,

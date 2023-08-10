@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useState } from "react";
+import { useState,useRef } from "react";
 import { Fragment } from "react";
 import useForm from "react-hook-form";
 import 'react-bootstrap-typeahead/css/Typeahead.css';
@@ -21,6 +21,18 @@ const Add = (props) => {
     const [engraveOrder, setEngraveOrder] = useState([]);
     const [supplierArr, setSupplierArr] = useState([]);
     const [uploadImage, setUploadImage] = useState();
+    const [layoutArr,setLayoutArr] = useState([]);
+    const [isDisable,setIsDisable] = useState(false);
+    const [outSideClicked,setOutSideClicked] = useState(false);
+    const [layoutDetails,setLayoutDetails] = useState({
+        final_cir:'',
+        final_dia:'',
+        final_height:'',
+        final_width:'',
+        layout_id:''
+
+    })
+    const buttonRef = useRef(null);
     const [formData, setFormData] = useState({
         layout_date:  new Date().toLocaleDateString(),
         layout_date: '',
@@ -56,7 +68,9 @@ const Add = (props) => {
         history_name: '',
         layout_history_date: '',
         history_remarks: '',
-        history_image: ''
+        history_image: '',
+        design_width:'',
+        design_height:''
     });
     
     const [dropdownData, setDropdownData] = useState({});
@@ -178,7 +192,7 @@ const Add = (props) => {
             setFormData({ ...formData, [e.target.name]: e.target.type == 'checkbox' ? (e.target.checked ? 1 : 0) : e.target.value });
         }
     }
-    console.log(formData);
+    // console.log(formData);
 
     // console.log(formData);
 
@@ -186,12 +200,21 @@ const Add = (props) => {
         const  getLayoutInfo = () => {
             userGetMethod(`${DESIGN_LAYOUT_HISTORY}?ref_layout_id=${formData?.ref_layout_id}`)
                 .then(res => {
-                    // console.log(res.data)
+                  console.log(res.data);
+                  setLayoutArr(res.data?.layoutHistory)
+                  setLayoutDetails({
+                    ...layoutDetails,
+                    final_cir: res.data?.layoutDetails?.final_cir,
+                    final_dia: res.data?.layoutDetails?.final_dia,
+                    final_height: res.data?.layoutDetails?.final_height,
+                    final_width: res.data?.layoutDetails?.final_width,
+                    layout_id: res.data?.layoutDetails?.layout_id
+                  })
                     setFormData({
                         ...formData,
                         history_name: res.data?.layoutHistory?.job_name,
                         history_remarks: res.data?.layoutHistory?.remarks,
-                        layout_history_date: res.data?.layoutHistory?.layout_date,
+                        layout_history_date: res.data.layoutHistory[0]?.layout_date,
                         layout_id : formData?.ref_layout_id
                     })
                 })
@@ -203,6 +226,7 @@ const Add = (props) => {
         },[formData?.ref_layout_id])
     
     // console.log(formData);
+    // console.log(layoutArr);
 
     const engOrderHandler = (e, index) => {
         setEngraveOrder(
@@ -334,9 +358,10 @@ const Add = (props) => {
         menuId = props.location.state.params.menuId;
     }
 
+   
+
     const onSubmit = (data, e) => {
         e.preventDefault();
-        
 
         const keysToInclude = ['layout', 'layout_date','layout_id','layout_time','machine_location','mark_as_complete','r_fl_cut','r_reg_mark','ref_layout_id','remarks','station','axial_ups','axl_image_area','axl_start_point','final_cir','final_dia','final_height','final_width','designer','design_w','operator_info' ];
         const b = {};
@@ -362,6 +387,7 @@ const Add = (props) => {
                 toast.success(response.data.message);
                 clearForm();
                 e.target.reset();
+                
             })
             .catch((error) => {console.log(error)});
     
@@ -809,17 +835,34 @@ const Add = (props) => {
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            <tr>
-                                                                <td>
-                                                                    <input class="form-control" type="text" value={formData?.layout_history_date}/>
-                                                                    </td>
-                                                                <td>
-                                                                    <input class="form-control" type="text" name="job_no" value={formData?.history_name} />
+                                                        
+
+                                                                {
+                                                                    layoutArr.map((item, index)=>(
+                                                                        <tr>
+                                                                            <td>
+                                                                                <input class="form-control" type="text" value={item.layout_date} />
+                                                                            </td>
+                                                                            <td><input class="form-control" type="text" value={item.job_name} /></td>
+                                                                            <td><input class="form-control" type="text" value={item.remarks} /></td>
+                                                                        </tr>
+                                                                        
+                                                                    ))
+                                                                }
+                                                                
+
+                                                                {/* <td>
+                                                                    <input class="form-control" type="text" value=''
+                                                                        
+                                                                    />
                                                                 </td>
                                                                 <td>
-                                                                    <input class="form-control" type="text" name="remarks" value={formData?.history_remarks} />
+                                                                    <input class="form-control" type="text" name="job_no" />
                                                                 </td>
-                                                            </tr>
+                                                                <td>
+                                                                    <input class="form-control" type="text" name="remarks" />
+                                                                </td> */}
+                                                            
 
                                                         </tbody>
                                                     </table>
@@ -880,7 +923,7 @@ const Add = (props) => {
                                                                     required: 'On text Field Required'
                                                                 })}
                                                                 onChange={inputChangeHandler}
-                                                                value={formData.final_dia ? formData.final_dia : ''}
+                                                                value={layoutDetails.final_dia ? layoutDetails.final_dia : ''}
                                                             />
                                                         </div>
 
@@ -912,7 +955,7 @@ const Add = (props) => {
                                                                     required: 'On text Field Required'
                                                                 })}
                                                             onChange={inputChangeHandler}
-                                                            value={formData.final_cir ? formData.final_cir : ''}
+                                                            value={layoutDetails.final_cir ? layoutDetails.final_cir : ''}
                                                             />
                                                         </div>
                                                     </div>
@@ -967,7 +1010,7 @@ const Add = (props) => {
                                                                     required: 'On text Field Required'
                                                                 })}
                                                             onChange={inputChangeHandler}
-                                                            value={formData.final_height ? formData.final_height : ''}
+                                                            value={layoutDetails.final_height ? layoutDetails.final_height : ''}
                                                             />
                                                         </div>
                                                         <span style={{fontSize: '13px',paddingRight:'0px',paddingLeft:'0px'}} className="col-sm-6 col-form-label required">Width</span>
@@ -981,7 +1024,7 @@ const Add = (props) => {
                                                                     required: 'On text Field Required'
                                                                 })}
                                                             onChange={inputChangeHandler}
-                                                            value={formData.final_width ? formData.final_width : ''}
+                                                            value={layoutDetails.final_width ? layoutDetails.final_width : ''}
                                                             />
                                                         </div>
                                                     </div>
@@ -1356,7 +1399,7 @@ const Add = (props) => {
 
                                     {/* {isBase == true ? (<Base inputChangeHandler={inputChangeHandler} formData={formData} typeColorOptions = {typeColorOptions}/>) : ("")
                                     } */}
-                                    <SubmitButton link="designLayout/index" menuId={menuId} />
+                                    <SubmitButton link="designLayout/index"  menuId={menuId} />
                                 </form>
                             </>
                         </div>
