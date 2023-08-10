@@ -182,24 +182,26 @@ const Add = (props) => {
 
     // console.log(formData);
 
-    const  getLayoutInfo = () => {
-        userGetMethod(`${DESIGN_LAYOUT_HISTORY}?ref_layout_id=${formData?.ref_layout_id}`)
-            .then(res => {
-                // console.log(res.data)
-                setFormData({
-                    ...formData,
-                    history_name: res.data?.layoutHistory?.job_name,
-                    history_remarks: res.data?.layoutHistory?.remarks,
-                    layout_history_date: res.data?.layoutHistory?.layout_date,
-                    layout_id : formData?.ref_layout_id
+    
+        const  getLayoutInfo = () => {
+            userGetMethod(`${DESIGN_LAYOUT_HISTORY}?ref_layout_id=${formData?.ref_layout_id}`)
+                .then(res => {
+                    // console.log(res.data)
+                    setFormData({
+                        ...formData,
+                        history_name: res.data?.layoutHistory?.job_name,
+                        history_remarks: res.data?.layoutHistory?.remarks,
+                        layout_history_date: res.data?.layoutHistory?.layout_date,
+                        layout_id : formData?.ref_layout_id
+                    })
                 })
-            })
-            .catch(err => { console.log(err) })
-    }
-
-    useEffect(() => {
-        getLayoutInfo();
-    },[formData?.ref_layout_id])
+                .catch(err => { console.log(err) })
+        }
+    
+        useEffect(() => {
+            getLayoutInfo();
+        },[formData?.ref_layout_id])
+    
     // console.log(formData);
 
     const engOrderHandler = (e, index) => {
@@ -568,7 +570,7 @@ const Add = (props) => {
                                                                 className="form-control"
                                                                 name="ref_layout_id"
                                                                 ref={register({
-                                                                    required: 'On text Field Required'
+                                                                    
                                                                 })}
                                                                 onChange={inputChangeHandler}
                                                                 value={formData.ref_layout_id ? formData.ref_layout_id : ''}
@@ -912,9 +914,9 @@ const Add = (props) => {
                                                 <legend className="w-auto text-left">Design</legend>
                                                 <div className="form-row">
                                                     <div className="col-md-6 row m-l-0 m-r-0">
-                                                        <p className="text-center col-md-12">Desire Size</p>
-                                                        <label className="col-sm-5 col-form-label required">H</label>
-                                                        <div className="col-md-7">
+                                                        <p className="text-center col-md-12" style={{marginBottom:'8px'}}>Desire Size</p>
+                                                        <span style={{fontSize: '13px',paddingRight:'0px',paddingLeft:'0px'}} className="col-sm-6 col-form-label required">Height</span>
+                                                        <div className="col-md-6" style={{paddingRight:'7px',paddingLeft:'7px'}}>
                                                             <input
                                                                 type="text"
                                                                 className="form-control"
@@ -928,8 +930,8 @@ const Add = (props) => {
                                                             disabled={formData?.design_height != '' ? true : false}
                                                             />
                                                         </div>
-                                                        <label className="col-sm-5 col-form-label required">W</label>
-                                                        <div className="col-md-7">
+                                                        <span style={{fontSize: '13px',paddingRight:'0px',paddingLeft:'0px'}} className="col-sm-6 col-form-label required">Width</span>
+                                                        <div className="col-md-6" style={{paddingRight:'7px',paddingLeft:'7px'}}>
                                                         <input
                                                                 type="text"
                                                                 className="form-control"
@@ -945,9 +947,9 @@ const Add = (props) => {
                                                         </div>
                                                     </div>
                                                     <div className="col-md-6 row">
-                                                    <p className="text-center col-md-12">Final</p>
-                                                        <label className="col-sm-5 col-form-label required">H</label>
-                                                        <div className="col-md-7">
+                                                    <p className="text-center col-md-12" style={{marginBottom:'8px'}}>Final</p>
+                                                        <span style={{fontSize: '13px',paddingRight:'0px',paddingLeft:'0px'}} className="col-sm-6 col-form-label required">Height</span>
+                                                        <div className="col-md-6 " style={{paddingRight:'7px',paddingLeft:'7px'}}>
                                                             <input
                                                                 type="text"
                                                                 className="form-control"
@@ -960,8 +962,8 @@ const Add = (props) => {
                                                             value={formData.final_height ? formData.final_height : ''}
                                                             />
                                                         </div>
-                                                        <label className="col-sm-5 col-form-label required">W</label>
-                                                        <div className="col-md-7">
+                                                        <span style={{fontSize: '13px',paddingRight:'0px',paddingLeft:'0px'}} className="col-sm-6 col-form-label required">Width</span>
+                                                        <div className="col-md-6" style={{paddingRight:'7px',paddingLeft:'7px'}} >
                                                             <input
                                                                 type="text"
                                                                 className="form-control"
@@ -978,10 +980,10 @@ const Add = (props) => {
                                                 </div>
 
 
-                                                <div className="form-row mt-3">
-                                                <div className="col-md-12 row">
-                                                <label className="col-sm-4 text-left col-form-label">Machine Location</label>
-                                                        <div className="col-md-8 ">
+                                                <div className="form-row mt-2">
+                                                <div className="col-md-12 row align-items-center">
+                                                <span className="col-sm-5 text-left col-form-label" style={{fontSize: '13px',paddingLeft: '35px',paddingRight: '5px'}}>M. Location</span>
+                                                        <div className="col-md-7 p-2">
                                                             <select className="form-control" name="machine_location" id="machine_location" onChange={inputChangeHandler} ref={register({
                                                                 required: 'On text Field Required'
                                                             })}>
@@ -999,8 +1001,8 @@ const Add = (props) => {
                                                 <legend className="w-auto text-left">Additional Info</legend>
                                                 <div className="form-row">
                                                 <div className="col-md-12 row">
-                                                        <label className="col-sm-5 text-left col-form-label" style={{whiteSpace : 'nowrap'}}>Employee</label>
-                                                        <div className="col-md-7">
+                                                        <label className="col-sm-4 text-left col-form-label" style={{whiteSpace : 'nowrap'}}>Employee</label>
+                                                        <div className="col-md-8">
                                                             <select className="form-control" name="employee_id" id="employee_id"  onChange={inputChangeHandler}   ref={register({
                                                                     required: 'On text Field Required'
                                                                 })}>
@@ -1016,8 +1018,8 @@ const Add = (props) => {
 
                                                     </div>
                                                     <div className="col-md-12 row">
-                                                        <label className="col-sm-5 text-left col-form-label" style={{whiteSpace:'nowrap'}}>Designer</label>
-                                                        <div className="col-md-7">
+                                                        <label className="col-sm-4 text-left col-form-label" style={{whiteSpace:'nowrap'}}>Designer</label>
+                                                        <div className="col-md-8">
                                                             <input
                                                                 type="text"
                                                                 className="form-control"
@@ -1037,8 +1039,8 @@ const Add = (props) => {
                                     
 
                                                     <div className="col-md-12 row">
-                                                        <label className="col-sm-5 text-left col-form-label" style={{whiteSpace : 'nowrap'}}>Clients</label>
-                                                        <div className="col-md-7">
+                                                        <label className="col-sm-4 text-left col-form-label" style={{whiteSpace : 'nowrap'}}>Clients</label>
+                                                        <div className="col-md-8">
                                                         <input
                                                             type="text"
                                                             className="form-control"
@@ -1070,11 +1072,12 @@ const Add = (props) => {
                                                             placeholder="Select Supplier..."
                                                             onChange={(e) => dropDownChange(e, 'supplier')}
                                                             selected={supplierArr}
+                                                            readOnly
                                                             ref={register({
                                                                 required: 'On text Field Required'
                                                             })}
                                                         // disabled={stateData.job_order_id != '' ? 'disabled' : ''}
-                                                            // disabled={formData.color != '' ? true : false}
+                                                            disabled={supplierArr != '' ? true : false}
                                                         />
 
 
