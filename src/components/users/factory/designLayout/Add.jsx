@@ -317,6 +317,13 @@ const Add = (props) => {
         }
     }
 
+    let checked;
+    if (formData.printer_mark == "Yes") {
+        checked = true;
+    }
+    else{
+         checked = false;
+    }
 
     var menuId = 0;
     if (props.location.state === undefined) {
@@ -327,7 +334,7 @@ const Add = (props) => {
 
     const onSubmit = (data, e) => {
         e.preventDefault();
-        console.log(data);
+        // console.log(data);
         const formValue = new FormData();
         
         
@@ -348,6 +355,7 @@ const Add = (props) => {
                 e.target.reset();
             })
             .catch((error) => {console.log(error)});
+    
     }
     
     const clearForm = () => {
@@ -553,13 +561,15 @@ const Add = (props) => {
                                             <fieldset className="border p-2">
                                                 <legend className="w-auto text-left">Layout</legend>
                                                 <div className="form-row">
-                                                    <div className="col-md-12 row">
+                                                    <div className="col-md-12 row"> 
                                                     <label className="col-sm-5 col-form-label">Ref. Layout</label>
                                                         <div className="col-md-7">
                                                             <select type="text"
                                                                 className="form-control"
                                                                 name="ref_layout_id"
-    
+                                                                ref={register({
+                                                                    required: 'On text Field Required'
+                                                                })}
                                                                 onChange={inputChangeHandler}
                                                                 value={formData.ref_layout_id ? formData.ref_layout_id : ''}
                                                             >
@@ -659,11 +669,11 @@ const Add = (props) => {
                                                                 type="checkbox"
                                                                 name="printer_mark"
                                                                 ref={register({
-                                                                    required: 'On text Field Required'
+                                                                    
                                                                 })}
                                                                 onChange={inputChangeHandler}
-                                                                checked={formData.printer_mark === 'Yes'}
-                                                                value={formData.printer_mark == "Yes" ? formData.printer_mark : ''}
+                                                                checked={checked}
+                                                                value={formData.printer_mark ? formData.printer_mark : ''}
                                                             />
                                                         </div>
                                                         <label className="col-md-8" style={{whiteSpace: 'nowrap'}}>Done</label>
@@ -672,7 +682,7 @@ const Add = (props) => {
                                                                 type="checkbox"
                                                                 name="mark_as_complete"
                                                                 ref={register({
-                                                                    required: 'On text Field Required'
+                                                                    
                                                                 })}
                                                                 onChange={inputChangeHandler}
                                                                 value={formData.mark_as_complete ? formData.mark_as_complete : ''}
@@ -716,7 +726,7 @@ const Add = (props) => {
                                                         <label className="col-md-5 text-left col-form-label">Layout</label>
                                                         <div className="col-md-7">
 
-                                                        <select className="form-control" name="layout_id" id="layout_id"  onChange={inputChangeHandler}   ref={register({
+                                                        <select className="form-control" name="layout" id="layout"  onChange={inputChangeHandler}   ref={register({
                                                                     required: 'On text Field Required'
                                                                 })}>
                                                                 <option value="">Select....</option>
@@ -966,6 +976,24 @@ const Add = (props) => {
                                                         </div>
                                                     </div>
                                                 </div>
+
+
+                                                <div className="form-row mt-3">
+                                                <div className="col-md-12 row">
+                                                <label className="col-sm-4 text-left col-form-label">Machine Location</label>
+                                                        <div className="col-md-8 ">
+                                                            <select className="form-control" name="machine_location" id="machine_location" onChange={inputChangeHandler} ref={register({
+                                                                required: 'On text Field Required'
+                                                            })}>
+                                                                <option value="1">opt 1</option>
+                                                                <option value="2">opt 2</option>
+                                                                <option value="3">opt 3</option>
+                                                            </select>
+                                                        </div>
+                                                </div>
+                                                </div>
+
+
                                             </fieldset>
                                             <fieldset className="border p-2">
                                                 <legend className="w-auto text-left">Additional Info</legend>
