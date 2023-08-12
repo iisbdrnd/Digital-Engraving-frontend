@@ -923,7 +923,8 @@ const Add = (props) => {
                                                                     required: 'On text Field Required'
                                                                 })}
                                                                 onChange={inputChangeHandler}
-                                                                value={layoutDetails.final_dia ? layoutDetails.final_dia : ''}
+                                                                value={layoutDetails.final_dia != '' || layoutDetails.final_dia != undefined || layoutDetails.final_dia != null ? layoutDetails.final_dia : ''}
+                                                                
                                                             />
                                                         </div>
 
@@ -955,7 +956,7 @@ const Add = (props) => {
                                                                     required: 'On text Field Required'
                                                                 })}
                                                             onChange={inputChangeHandler}
-                                                            value={layoutDetails.final_cir ? layoutDetails.final_cir : ''}
+                                                            value={layoutDetails.final_cir != undefined || layoutDetails.final_cir != null || layoutDetails.final_cir != '' ? layoutDetails.final_cir : ''}
                                                             />
                                                         </div>
                                                     </div>
@@ -977,8 +978,8 @@ const Add = (props) => {
                                                                     required: 'On text Field Required'
                                                                 })}
                                                             // onChange={inputChangeHandler}
-                                                            value={formData?.design_height ? formData?.design_height : ''}
-                                                            disabled={formData?.design_height != '' ? true : false}
+                                                            value={formData?.design_height !== '' || formData?.design_height !== null || formData?.design_height !== undefined ? formData?.design_height : ''}
+                                                            disabled={formData?.design_height !== '' || formData?.design_height !== null || formData?.design_height !== undefined ? true : false}
                                                             />
                                                         </div>
                                                         <span style={{fontSize: '13px',paddingRight:'0px',paddingLeft:'0px'}} className="col-sm-6 col-form-label required">Width</span>
@@ -992,8 +993,8 @@ const Add = (props) => {
                                                                     required: 'On text Field Required'
                                                                 })}
                                                             // onChange={inputChangeHandler}
-                                                            value={formData?.design_width ? formData?.design_width : ''}
-                                                            disabled={formData?.design_width != '' ? true : false}
+                                                            value={formData?.design_width != '' || formData?.design_width !== null || formData?.design_width !== undefined? formData?.design_width : ''}
+                                                            disabled={formData?.design_width != '' || formData?.design_width !== null || formData?.design_width !== undefined ? true : false}
                                                             />
                                                         </div>
                                                     </div>
@@ -1010,7 +1011,7 @@ const Add = (props) => {
                                                                     required: 'On text Field Required'
                                                                 })}
                                                             onChange={inputChangeHandler}
-                                                            value={layoutDetails.final_height ? layoutDetails.final_height : ''}
+                                                            value={layoutDetails.final_height != '' || layoutDetails.final_height != null || layoutDetails.final_height != undefined ? layoutDetails.final_height : ''}
                                                             />
                                                         </div>
                                                         <span style={{fontSize: '13px',paddingRight:'0px',paddingLeft:'0px'}} className="col-sm-6 col-form-label required">Width</span>
@@ -1024,7 +1025,7 @@ const Add = (props) => {
                                                                     required: 'On text Field Required'
                                                                 })}
                                                             onChange={inputChangeHandler}
-                                                            value={layoutDetails.final_width ? layoutDetails.final_width : ''}
+                                                            value={layoutDetails.final_width != '' || layoutDetails.final_width != null || layoutDetails.final_width != undefined ? layoutDetails.final_width : ''}
                                                             />
                                                         </div>
                                                     </div>
