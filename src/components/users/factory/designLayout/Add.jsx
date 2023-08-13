@@ -200,7 +200,7 @@ const Add = (props) => {
     
         const  getLayoutInfo = async () => {
             try{
-                if (formData.ref_layout_id) {
+                if (formData.ref_layout_id != '' || formData.ref_layout_id != undefined || formData.ref_layout_id != null) {
                     const response = await userGetMethod(`${DESIGN_LAYOUT_HISTORY}?ref_layout_id=${formData.ref_layout_id}`);
                     console.log(response.data);
                     setLayoutArr(response.data?.layoutHistory);
@@ -227,7 +227,7 @@ const Add = (props) => {
         }
     
         useEffect(() => {
-            if (formData.ref_layout_id ) {
+            if (formData.ref_layout_id != '' || formData.ref_layout_id != undefined || formData.ref_layout_id != null) {
                 getLayoutInfo();
             }
         },[formData.ref_layout_id])
