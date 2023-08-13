@@ -90,20 +90,23 @@ const ListData = (props) =>  {
     }
     
 
-    const perPageBoxChange = (e) => {
+    const perPageBoxChange = async (e) => {
         setIsLoading(true);
-        // TABLE DATA READY
-        userGetMethod(`${DESIGN_LAYOUT_RSURL}?layout_status=${jobActiveStatus}&perPage=${perPage}&searchText=${searchText}`)
-            .then(response => {
-                setCurrentPage(response.data.pendingLayouts.current_page)
-                setPerPage(response.data.pendingLayouts.per_page)
-                setTotalData(response.data.pendingLayouts.total)
-                setLayoutData(response?.data?.pendingLayouts?.data)
-                setIsLoading(false);
-            })
-            .catch(error => console.log(error))
+        
+        try {
+            const response = await userGetMethod(`${DESIGN_LAYOUT_RSURL}?layout_status=${jobActiveStatus}&perPage=${perPage}&searchText=${searchText}`);
+            
+            setCurrentPage(response.data.pendingLayouts.current_page);
+            setPerPage(response.data.pendingLayouts.per_page);
+            setTotalData(response.data.pendingLayouts.total);
+            setLayoutData(response?.data?.pendingLayouts?.data);
+            setIsLoading(false);
+        } catch (error) {
+            console.log(error);
+        }
     }
     console.log(layoutData);
+    
     const sortHandler = (params) => {
         setAscDesc(!ascDesc);
         let ascUrl = '';

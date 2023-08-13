@@ -18,7 +18,8 @@ export const SubmitButton = props => {
             <div className={`card-footer ${props.addClass}`} >
                 <div className={`col-md-12 offset-sm-${props.offset}`} style={{'padding':'0'}}>
                     <button className="btn btn-primary btn-sm mr-1" type="submit"
-                   
+                    onClick={props.onClick}
+                    disabled={props.disabled}
                     >Submit</button>
                     <Link 
                     to={{

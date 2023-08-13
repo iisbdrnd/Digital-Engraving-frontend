@@ -33,6 +33,7 @@ const Add = (props) => {
 
     })
     const buttonRef = useRef(null);
+    const [isSubmitting, setIsSubmitting] = useState(false)
     const [formData, setFormData] = useState({
         layout_date:  new Date().toLocaleDateString(),
         layout_date: '',
@@ -96,7 +97,7 @@ const Add = (props) => {
                     jobOrderObj.name = `[${response.data.jobOrder.job_no}] ` + response.data.jobOrder.job_name;
                     jobOrderOptions.push(jobOrderObj);
 
-                    if (response.data.jobOrder != null) {
+                    if (response.data.jobOrders != null) {
                         setFormData({
                             'job_id': [jobOrderObj]
                         })
@@ -197,33 +198,39 @@ const Add = (props) => {
     // console.log(formData);
 
     
-        const  getLayoutInfo = () => {
-            userGetMethod(`${DESIGN_LAYOUT_HISTORY}?ref_layout_id=${formData?.ref_layout_id}`)
-                .then(res => {
-                  console.log(res.data);
-                  setLayoutArr(res.data?.layoutHistory)
-                  setLayoutDetails({
-                    ...layoutDetails,
-                    final_cir: res.data?.layoutDetails?.final_cir,
-                    final_dia: res.data?.layoutDetails?.final_dia,
-                    final_height: res.data?.layoutDetails?.final_height,
-                    final_width: res.data?.layoutDetails?.final_width,
-                    layout_id: res.data?.layoutDetails?.layout_id
-                  })
+        const  getLayoutInfo = async () => {
+            try{
+                if (formData.ref_layout_id) {
+                    const response = await userGetMethod(`${DESIGN_LAYOUT_HISTORY}?ref_layout_id=${formData.ref_layout_id}`);
+                    console.log(response.data);
+                    setLayoutArr(response.data?.layoutHistory);
+                    setLayoutDetails({
+                        ...layoutDetails,
+                        final_cir: response.data?.layoutDetails?.final_cir,
+                        final_dia: response.data?.layoutDetails?.final_dia,
+                        final_height: response.data?.layoutDetails?.final_height,
+                        final_width: response.data?.layoutDetails?.final_width,
+                        layout_id: response.data?.layoutDetails?.layout_id
+                    });
                     setFormData({
                         ...formData,
-                        history_name: res.data?.layoutHistory?.job_name,
-                        history_remarks: res.data?.layoutHistory?.remarks,
-                        layout_history_date: res.data.layoutHistory[0]?.layout_date,
-                        layout_id : formData?.ref_layout_id
-                    })
-                })
-                .catch(err => { console.log(err) })
+                        history_name: response.data?.layoutHistory?.job_name,
+                        history_remarks: response.data?.layoutHistory?.remarks,
+                        layout_history_date: response.data.layoutHistory[0]?.layout_date,
+                        layout_id: formData?.ref_layout_id
+                    });
+                }
+            }
+            catch(error) {
+                console.error(error)
+            }
         }
     
         useEffect(() => {
-            getLayoutInfo();
-        },[formData?.ref_layout_id])
+            if (formData.ref_layout_id ) {
+                getLayoutInfo();
+            }
+        },[formData.ref_layout_id])
     
     // console.log(formData);
     // console.log(layoutArr);
@@ -362,8 +369,10 @@ const Add = (props) => {
 
     const onSubmit = (data, e) => {
         e.preventDefault();
+        // console.log(data);
+        setIsSubmitting(true)
 
-        const keysToInclude = ['layout', 'layout_date','layout_id','layout_time','machine_location','mark_as_complete','r_fl_cut','r_reg_mark','ref_layout_id','remarks','station','axial_ups','axl_image_area','axl_start_point','final_cir','final_dia','final_height','final_width','designer','design_w','operator_info' ];
+        const keysToInclude = ['layout', 'layout_date','layout_id','layout_time','machine_location','mark_as_complete','r_fl_cut','r_reg_mark','ref_layout_id','remarks','station','axial_ups','axl_image_area','axl_start_point','final_cir','final_dia','final_height','final_width','designer','design_w','operator_info','l_fl_cut','l_reg_mark','printer_mark' ];
         const b = {};
         keysToInclude.forEach(key => {
             b[key] = data[key];
@@ -380,25 +389,38 @@ const Add = (props) => {
      formValue.append("history_image", formData.history_image);
      formValue.append("job_id", dropdownData.job_id);
      formValue.append("engraveOrder", JSON.stringify(engraveOrder));
+     
     //  console.log(formValue)
     console.log(Array.from(formValue.entries()));
+    // setIsSubmitting(false);
         userPostMethod(`${DESIGN_LAYOUT_RSURL}`, formValue)
             .then((response) => {
                 toast.success(response.data.message);
                 clearForm();
-                e.target.reset();
-                
+                reset();
+                // e.target.reset();
+                setIsSubmitting(false);
             })
             .catch((error) => {console.log(error)});
-    
+            
     }
-    
+
     const clearForm = () => {
         // console.log('clear');
         setSelectedJobOrder([]);
         setTypeColorOptions([]);
         setEngraveOrder([]);
-        setSupplierArr([])
+        setSupplierArr([]);
+        setLayoutDetails({
+        final_cir:'',
+        final_dia:'',
+        final_height:'',
+        final_width:'',
+        layout_id:''
+        });
+        setUploadImage({
+            history_image: ''
+        });
         setFormData({
             'layout_date': new Date().toLocaleDateString(),
             'layout_time': '',
@@ -430,6 +452,8 @@ const Add = (props) => {
             'r_fl_cut' : 0,
             'axl_image_area' : 0,
             'axl_start_point' : 0,
+            'design_height' : '',
+            'design_width' : ''
         });
     }
 
@@ -923,7 +947,7 @@ const Add = (props) => {
                                                                     required: 'On text Field Required'
                                                                 })}
                                                                 onChange={inputChangeHandler}
-                                                                value={layoutDetails.final_dia ? layoutDetails.final_dia : ''}
+                                                                value={layoutDetails.final_dia != '' || layoutDetails.final_dia != undefined || layoutDetails.final_dia != null ? layoutDetails.final_dia : ''}
                                                             />
                                                         </div>
 
@@ -955,7 +979,7 @@ const Add = (props) => {
                                                                     required: 'On text Field Required'
                                                                 })}
                                                             onChange={inputChangeHandler}
-                                                            value={layoutDetails.final_cir ? layoutDetails.final_cir : ''}
+                                                            value={layoutDetails.final_cir != undefined || layoutDetails.final_cir != null || layoutDetails.final_cir != '' ? layoutDetails.final_cir : ''}
                                                             />
                                                         </div>
                                                     </div>
@@ -977,8 +1001,8 @@ const Add = (props) => {
                                                                     required: 'On text Field Required'
                                                                 })}
                                                             // onChange={inputChangeHandler}
-                                                            value={formData?.design_height ? formData?.design_height : ''}
-                                                            disabled={formData?.design_height != '' ? true : false}
+                                                            value={formData?.design_height !== '' || formData?.design_height !== null || formData?.design_height !== undefined ? formData?.design_height : ''}
+                                                            disabled={formData?.design_height !== '' || formData?.design_height !== null || formData?.design_height !== undefined ? true : false}
                                                             />
                                                         </div>
                                                         <span style={{fontSize: '13px',paddingRight:'0px',paddingLeft:'0px'}} className="col-sm-6 col-form-label required">Width</span>
@@ -992,8 +1016,8 @@ const Add = (props) => {
                                                                     required: 'On text Field Required'
                                                                 })}
                                                             // onChange={inputChangeHandler}
-                                                            value={formData?.design_width ? formData?.design_width : ''}
-                                                            disabled={formData?.design_width != '' ? true : false}
+                                                            value={formData?.design_width != '' || formData?.design_width !== null || formData?.design_width !== undefined? formData?.design_width : ''}
+                                                            disabled={formData?.design_width != '' || formData?.design_width !== null || formData?.design_width !== undefined ? true : false}
                                                             />
                                                         </div>
                                                     </div>
@@ -1010,7 +1034,7 @@ const Add = (props) => {
                                                                     required: 'On text Field Required'
                                                                 })}
                                                             onChange={inputChangeHandler}
-                                                            value={layoutDetails.final_height ? layoutDetails.final_height : ''}
+                                                            value={layoutDetails.final_height != '' || layoutDetails.final_height != null || layoutDetails.final_height != undefined ? layoutDetails.final_height : ''}
                                                             />
                                                         </div>
                                                         <span style={{fontSize: '13px',paddingRight:'0px',paddingLeft:'0px'}} className="col-sm-6 col-form-label required">Width</span>
@@ -1024,7 +1048,7 @@ const Add = (props) => {
                                                                     required: 'On text Field Required'
                                                                 })}
                                                             onChange={inputChangeHandler}
-                                                            value={layoutDetails.final_width ? layoutDetails.final_width : ''}
+                                                            value={layoutDetails.final_width != '' || layoutDetails.final_width != null || layoutDetails.final_width != undefined ? layoutDetails.final_width : ''}
                                                             />
                                                         </div>
                                                     </div>
@@ -1399,7 +1423,7 @@ const Add = (props) => {
 
                                     {/* {isBase == true ? (<Base inputChangeHandler={inputChangeHandler} formData={formData} typeColorOptions = {typeColorOptions}/>) : ("")
                                     } */}
-                                    <SubmitButton link="designLayout/index"  menuId={menuId} />
+                                    <SubmitButton link="designLayout/index"  menuId={menuId} onClick={handleSubmit(onSubmit)} disabled={isSubmitting}/>
                                 </form>
                             </>
                         </div>
