@@ -35,7 +35,7 @@ const Add = (props) => {
     const buttonRef = useRef(null);
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [formData, setFormData] = useState({
-        layout_date:  new Date().toLocaleDateString(),
+        // layout_date:  new Date().toLocaleDateString(),
         layout_date: '',
         layout_time : '',
         cir: '',
@@ -173,7 +173,7 @@ const Add = (props) => {
             });
     }
 
-    console.log(typeheadOptions);
+    // console.log(typeheadOptions);
 
     const toogleLtoB = (val) => {
         if (val == "layout") {
@@ -186,11 +186,15 @@ const Add = (props) => {
     }
 
     const inputChangeHandler = (e) => {
+
         if(e.target.name == 'history_image'){
             setUploadImage({[e.target.name] : URL.createObjectURL(e.target.files[0])});
             setFormData({ ...formData, [e.target.name]: e.target.files[0]});
         }else{
+           
             setFormData({ ...formData, [e.target.name]: e.target.type == 'checkbox' ? (e.target.checked ? 1 : 0) : e.target.value });
+            // console.log('Input name:', e.target.name);
+            // console.log('Input value:', e.target.value);
         }
     }
     // console.log(formData);
@@ -200,7 +204,7 @@ const Add = (props) => {
     
         const  getLayoutInfo = async () => {
             try{
-                if (formData.ref_layout_id != '' || formData.ref_layout_id != undefined || formData.ref_layout_id != null) {
+               
                     const response = await userGetMethod(`${DESIGN_LAYOUT_HISTORY}?ref_layout_id=${formData.ref_layout_id}`);
                     console.log(response.data);
                     setLayoutArr(response.data?.layoutHistory);
@@ -220,16 +224,16 @@ const Add = (props) => {
                         layout_id: formData?.ref_layout_id
                     });
                 }
-            }
+            
             catch(error) {
                 console.error(error)
             }
         }
-    
+        console.log(layoutDetails);
         useEffect(() => {
-            if (formData.ref_layout_id != '' || formData.ref_layout_id != undefined || formData.ref_layout_id != null) {
+            
                 getLayoutInfo();
-            }
+            
         },[formData.ref_layout_id])
     
     // console.log(formData);
@@ -391,7 +395,7 @@ const Add = (props) => {
      formValue.append("engraveOrder", JSON.stringify(engraveOrder));
      
     //  console.log(formValue)
-    console.log(Array.from(formValue.entries()));
+    // console.log(Array.from(formValue.entries()));
     // setIsSubmitting(false);
         userPostMethod(`${DESIGN_LAYOUT_RSURL}`, formValue)
             .then((response) => {
@@ -653,6 +657,7 @@ const Add = (props) => {
                                                                 })}
                                                                 onChange={inputChangeHandler}
                                                                 value={formData.layout_id ? formData.layout_id : ''}
+                                                                disabled={formData.layout_id ? true : false}
                                                             />
                                                         </div>
                                                     </div>
@@ -1034,7 +1039,7 @@ const Add = (props) => {
                                                                     required: 'On text Field Required'
                                                                 })}
                                                             onChange={inputChangeHandler}
-                                                            value={layoutDetails.final_height != '' || layoutDetails.final_height != null || layoutDetails.final_height != undefined ? layoutDetails.final_height : ''}
+                                                            value={layoutDetails.final_height !== '' || layoutDetails?.final_height !== null || layoutDetails?.final_height !== undefined ? layoutDetails.final_height : ''}
                                                             />
                                                         </div>
                                                         <span style={{fontSize: '13px',paddingRight:'0px',paddingLeft:'0px'}} className="col-sm-6 col-form-label required">Width</span>
@@ -1048,7 +1053,7 @@ const Add = (props) => {
                                                                     required: 'On text Field Required'
                                                                 })}
                                                             onChange={inputChangeHandler}
-                                                            value={layoutDetails.final_width != '' || layoutDetails.final_width != null || layoutDetails.final_width != undefined ? layoutDetails.final_width : ''}
+                                                            value={layoutDetails.final_width !== '' || layoutDetails?.final_width !== null || layoutDetails?.final_width !== undefined ? layoutDetails.final_width : ''}
                                                             />
                                                         </div>
                                                     </div>
