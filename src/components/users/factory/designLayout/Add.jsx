@@ -23,7 +23,13 @@ const Add = (props) => {
     const [uploadImage, setUploadImage] = useState();
     const [layoutArr,setLayoutArr] = useState([]);
     const [isDisable,setIsDisable] = useState(false);
-    const [outSideClicked,setOutSideClicked] = useState(false);
+    const [layoutOnBlur,setLayoutOnBlur] = useState({
+        final_cir:'',
+        final_dia:'',
+        final_height:'',
+        final_width:'',
+        layout_id:''
+    });
     const [layoutDetails,setLayoutDetails] = useState({
         final_cir:'',
         final_dia:'',
@@ -33,7 +39,11 @@ const Add = (props) => {
 
     })
     const buttonRef = useRef(null);
-    const [isSubmitting, setIsSubmitting] = useState(false)
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [layoutIdDisable,setLayoutIdDisable] = useState(false);
+    const [layoutIdVal,setLayoutIdVal] = useState({
+        layout_id: ''
+    });
     const [formData, setFormData] = useState({
         // layout_date:  new Date().toLocaleDateString(),
         layout_date: '',
@@ -187,26 +197,66 @@ const Add = (props) => {
 
     const inputChangeHandler = (e) => {
 
+        const {name, value} = e.target;
+
         if(e.target.name == 'history_image'){
             setUploadImage({[e.target.name] : URL.createObjectURL(e.target.files[0])});
             setFormData({ ...formData, [e.target.name]: e.target.files[0]});
         }else{
            
-            setFormData({ ...formData, [e.target.name]: e.target.type == 'checkbox' ? (e.target.checked ? 1 : 0) : e.target.value });
-            // console.log('Input name:', e.target.name);
-            // console.log('Input value:', e.target.value);
+            
+            
+            if (e.target.name == 'layout_id' || e.target.name == 'ref_layout_id' && formData.layout_id == '') {
+                setLayoutIdVal({
+                    ...layoutIdVal,[e.target.name] : e.target.value
+                });
+                
+            }else{
+                setFormData({ ...formData, [e.target.name]: e.target.type == 'checkbox' ? (e.target.checked ? 1 : 0) : e.target.value });
+            }
+
+            
+            if (e.target.name == 'final_dia' || e.target.name == 'final_cir' || e.target.name == 'final_height' || e.target.name == 'final_width' && layoutDetails.final_dia == '' || layoutDetails.final_cir ==  '' || layoutDetails.final_height ==  '' || layoutDetails.final_width == '') {
+                setLayoutOnBlur({
+                    ...layoutOnBlur, [e.target.name] : e.target.value
+                })
+            }
+
+            
         }
     }
-    // console.log(formData);
+    // console.log(layoutIdVal)
 
+    const handleChangeOnBlur = (e) => {
+        
+            
+            if (e.target.name == 'layout_id' || e.target.name == 'ref_layout_id' && formData.layout_id == '') {
+                setLayoutIdVal({
+                    ...layoutIdVal,[e.target.name] : e.target.value
+                });
+                
+            }
+            if (e.target.name == 'final_dia' || e.target.name == 'final_cir' || e.target.name == 'final_height' || e.target.name == 'final_width' && layoutDetails.final_dia == '' || layoutDetails.final_cir ==  '' || layoutDetails.final_height ==  '' || layoutDetails.final_width == '') {
+                setLayoutOnBlur({
+                    ...layoutOnBlur, [e.target.name] : e.target.value
+                })
+            // console.log(e.target.value);
+
+            
+        }
+    }
+
+    // console.log(layoutOnBlur);
+    // console.log(layoutIdVal)
     // console.log(formData);
 
     
         const  getLayoutInfo = async () => {
             try{
                
-                    const response = await userGetMethod(`${DESIGN_LAYOUT_HISTORY}?ref_layout_id=${formData.ref_layout_id}`);
-                    console.log(response.data);
+                    if (formData.ref_layout_id) {
+                        const response = await userGetMethod(`${DESIGN_LAYOUT_HISTORY}?ref_layout_id=${formData.ref_layout_id}`);
+                    // console.log(response.data);
                     setLayoutArr(response.data?.layoutHistory);
                     setLayoutDetails({
                         ...layoutDetails,
@@ -224,20 +274,26 @@ const Add = (props) => {
                         layout_id: formData?.ref_layout_id
                     });
                 }
+                    }
             
             catch(error) {
                 console.error(error)
             }
         }
-        console.log(layoutDetails);
+        // console.log(layoutDetails);
         useEffect(() => {
             
                 getLayoutInfo();
+           
+                // getLayoutInfo();
             
         },[formData.ref_layout_id])
     
-    // console.log(formData);
+    // console.log(formData.layout_id);
     // console.log(layoutArr);
+    const isUpdate = () =>{
+
+    }
 
     const engOrderHandler = (e, index) => {
         setEngraveOrder(
@@ -284,7 +340,8 @@ const Add = (props) => {
                     [stateName]: selectedValue,
                 })
             );
-            userGetMethod(`${JOB_ORDER_DETAILS}?jobOrderId=${selectedValue}`)
+            if (selectedValue == null || selectedValue !== undefined) {
+                userGetMethod(`${JOB_ORDER_DETAILS}?jobOrderId=${selectedValue}`)
                 .then(response => {
                     console.log(response.data)
                     userGetMethod(`${JOB_SUPPLIERS}?jobOrderId=${selectedValue}`)
@@ -307,7 +364,7 @@ const Add = (props) => {
                     if (response?.data) {
                         let { 
                             // layout_date,
-                            ref_layout_id,cir,client_email,dia,fl,id,job_name,job_no,job_type,printer_id,printer_mark,mark_as_complete,total_cylinder_qty,remarks,ups,rpt,operator_info,station,printer_name,printing_status,design_height,design_width,client_name
+                            ref_layout_id,cir,client_email,dia,fl,id,job_name,job_no,job_type,printer_id,printer_mark,mark_as_complete,total_cylinder_qty,remarks,ups,rpt,operator_info,station,printer_name,printing_status,design_height,design_width,client_name,marketing_p_name
                         } = response.data.jobOrderDetails;
                         setFormData({
                             // 'layout_date': layout_date,
@@ -333,7 +390,8 @@ const Add = (props) => {
                             'station' : station,
                             'design_height': design_height,
                             'design_width' : design_width,
-                            'client_name' : client_name
+                            'client_name' : client_name,
+                            'marketing_p_name' : marketing_p_name
                         });
                         setTypeColorOptions(response.data.colors);
                         if (response.data.colors.length > 0) {
@@ -350,6 +408,7 @@ const Add = (props) => {
                         }
                     }
                 });
+            }
                
         }
     }
@@ -368,12 +427,13 @@ const Add = (props) => {
     } else {
         menuId = props.location.state.params.menuId;
     }
+    // console.log(layoutDetails?.final_dia == '' ||  layoutDetails?.final_cir == '' || layoutDetails.final_height == '' || layoutDetails?.final_width == ''? true:false);
 
-   
+  
 
     const onSubmit = (data, e) => {
         e.preventDefault();
-        // console.log(data);
+        console.log(data);
         setIsSubmitting(true)
 
         const keysToInclude = ['layout', 'layout_date','layout_id','layout_time','machine_location','mark_as_complete','r_fl_cut','r_reg_mark','ref_layout_id','remarks','station','axial_ups','axl_image_area','axl_start_point','final_cir','final_dia','final_height','final_width','designer','design_w','operator_info','l_fl_cut','l_reg_mark','printer_mark' ];
@@ -395,7 +455,7 @@ const Add = (props) => {
      formValue.append("engraveOrder", JSON.stringify(engraveOrder));
      
     //  console.log(formValue)
-    // console.log(Array.from(formValue.entries()));
+  console.log(Array.from(formValue.entries()));
     // setIsSubmitting(false);
         userPostMethod(`${DESIGN_LAYOUT_RSURL}`, formValue)
             .then((response) => {
@@ -459,6 +519,24 @@ const Add = (props) => {
             'design_height' : '',
             'design_width' : ''
         });
+        setLayoutDetails({
+        final_cir:'',
+        final_dia:'',
+        final_height:'',
+        final_width:'',
+        layout_id:''
+        });
+        setLayoutOnBlur({
+        final_cir:'',
+        final_dia:'',
+        final_height:'',
+        final_width:'',
+        layout_id:''
+        });
+        setLayoutIdVal({
+            layout_id: ''
+        })
+
     }
 
     return (
@@ -656,8 +734,15 @@ const Add = (props) => {
                                                                     required: 'On text Field Required'
                                                                 })}
                                                                 onChange={inputChangeHandler}
-                                                                value={formData.layout_id ? formData.layout_id : ''}
-                                                                disabled={formData.layout_id ? true : false}
+                                                                onBlur={handleChangeOnBlur}
+                                                                value={formData?.layout_id ? formData?.layout_id :layoutIdVal.layout_id}
+                                                                disabled={formData?.layout_id ? true : false}
+
+
+
+                                                                // value={formData?.layout_id  ? formData?.layout_id : ''}
+                                                                // disabled={formData?.layout_id && layoutIdVal == '' ? true : false}
+                                                                // readOnly={formData?.layout_id ? true : false}
                                                             />
                                                         </div>
                                                     </div>
@@ -952,7 +1037,10 @@ const Add = (props) => {
                                                                     required: 'On text Field Required'
                                                                 })}
                                                                 onChange={inputChangeHandler}
-                                                                value={layoutDetails.final_dia != '' || layoutDetails.final_dia != undefined || layoutDetails.final_dia != null ? layoutDetails.final_dia : ''}
+                                                                onBlur={handleChangeOnBlur}
+                                                                value={layoutDetails?.final_dia ? layoutDetails?.final_dia : layoutOnBlur.final_dia}
+                                                                disabled={!layoutDetails?.final_dia ? false : true}
+                                                            
                                                             />
                                                         </div>
 
@@ -984,7 +1072,10 @@ const Add = (props) => {
                                                                     required: 'On text Field Required'
                                                                 })}
                                                             onChange={inputChangeHandler}
-                                                            value={layoutDetails.final_cir != undefined || layoutDetails.final_cir != null || layoutDetails.final_cir != '' ? layoutDetails.final_cir : ''}
+                                                            onBlur={handleChangeOnBlur}
+                                                                value={layoutDetails?.final_cir ? layoutDetails?.final_cir : layoutOnBlur.final_cir}
+                                                                disabled={!layoutDetails?.final_cir ? false : true}
+                                                            // value={layoutDetails.final_cir ? layoutDetails.final_cir : ''}
                                                             />
                                                         </div>
                                                     </div>
@@ -1039,7 +1130,10 @@ const Add = (props) => {
                                                                     required: 'On text Field Required'
                                                                 })}
                                                             onChange={inputChangeHandler}
-                                                            value={layoutDetails.final_height !== '' || layoutDetails?.final_height !== null || layoutDetails?.final_height !== undefined ? layoutDetails.final_height : ''}
+                                                            onBlur={handleChangeOnBlur}
+                                                                value={layoutDetails?.final_height ? layoutDetails?.final_height : layoutOnBlur.final_height}
+                                                                disabled={!layoutDetails?.final_height ? false : true}
+                                                            // value={layoutDetails.final_height ? layoutDetails.final_height : ''}
                                                             />
                                                         </div>
                                                         <span style={{fontSize: '13px',paddingRight:'0px',paddingLeft:'0px'}} className="col-sm-6 col-form-label required">Width</span>
@@ -1053,7 +1147,10 @@ const Add = (props) => {
                                                                     required: 'On text Field Required'
                                                                 })}
                                                             onChange={inputChangeHandler}
-                                                            value={layoutDetails.final_width !== '' || layoutDetails?.final_width !== null || layoutDetails?.final_width !== undefined ? layoutDetails.final_width : ''}
+                                                            onBlur={handleChangeOnBlur}
+                                                                value={layoutDetails?.final_width ? layoutDetails?.final_width : layoutOnBlur.final_width}
+                                                                disabled={!layoutDetails?.final_width ? false : true}
+                                                            // value={layoutDetails.final_width ? layoutDetails.final_width : ''}
                                                             />
                                                         </div>
                                                     </div>
@@ -1083,16 +1180,26 @@ const Add = (props) => {
                                                 <div className="col-md-12 row">
                                                         <label className="col-sm-4 text-left col-form-label" style={{whiteSpace : 'nowrap'}}>Employee</label>
                                                         <div className="col-md-8">
-                                                            <select className="form-control" name="employee_id" id="employee_id"  onChange={inputChangeHandler}   ref={register({
-                                                                    required: 'On text Field Required'
-                                                                })}>
-                                                                <option value="">Select....</option>
-                                                                {typeheadOptions['employees'].map((item,index) => (
-                                                                    <option key={index} value={item?.id}>
-                                                                        {item?.name}
-                                                                    </option>
-                                                                ))}
-                                                            </select>
+                                                            
+                                                               <input
+                                                            type="text"
+                                                            id="employee_id"
+                                                            className="form-control"
+                                                            name="employee_id"
+                                                            required
+                                                            ref={register({
+                                                                required: 'On text Field Required'
+                                                            })}
+                                                            readOnly
+                                                            // onChange={inputChangeHandler}
+                                                            value={formData.marketing_p_name ? formData.marketing_p_name : ''}
+                                                            disabled={formData.marketing_p_name != '' ? true : false}
+                                                        />
+
+
+
+                                                               
+                                                           
 
                                                         </div>
 
@@ -1201,23 +1308,33 @@ const Add = (props) => {
                                                                     return (
                                                                         <tr>
                                                                             <td>
-                                                                                <input className="form-control" type="text" value={item.id + 1}  name="er_id" id="er_id" onChange={(e) => engOrderHandler(e, index)}/>
+                                                                                <input className="form-control" type="text" value={item.id + 1}  name="er_id" id="er_id" onChange={(e) => engOrderHandler(e, index)} ref={register({
+                                                                    required: 'On text Field Required'
+                                                                })}/>
                                                                                 </td>
 
                                                                             <td>
-                                                                                <input className="form-control" type="text" value={item.name} name="er_color_id" id="er_color_id" onChange={(e) => engOrderHandler(e, index)}/>
+                                                                                <input className="form-control" type="text" value={item.name} name="er_color_id" id="er_color_id" onChange={(e) => engOrderHandler(e, index)} ref={register({
+                                                                    required: 'On text Field Required'
+                                                                })}/>
                                                                                 </td>
 
                                                                             <td>
-                                                                                <input className="form-control" type="text"  name="er_desired_screen" id="er_desired_screen" onChange={(e) =>engOrderHandler(e, index)} />
+                                                                                <input className="form-control" type="text"  name="er_desired_screen" id="er_desired_screen" onChange={(e) =>engOrderHandler(e, index)} ref={register({
+                                                                    required: 'On text Field Required'
+                                                                })}/>
                                                                                 </td>
 
                                                                             <td>
-                                                                                <input className="form-control" type="text"  name="er_desired_angle" id="er_desired_angle" onChange={(e) =>engOrderHandler(e, index)} />
+                                                                                <input className="form-control" type="text"  name="er_desired_angle" id="er_desired_angle" onChange={(e) =>engOrderHandler(e, index)} ref={register({
+                                                                    required: 'On text Field Required'
+                                                                })}/>
                                                                                 </td>
 
                                                                             <td>
-                                                                                <input className="form-control" type="text"  name="er_engraving_machine" id="er_engraving_machine" onChange={(e) =>engOrderHandler(e, index)} />
+                                                                                <input className="form-control" type="text"  name="er_engraving_machine" id="er_engraving_machine" onChange={(e) =>engOrderHandler(e, index)} ref={register({
+                                                                    required: 'On text Field Required'
+                                                                })} />
 
                                                                                 
                                                                                 {/* <select className="form-control" name="machine_id" id="machine_id" onChange={inputChangeHandler}   ref={register({
