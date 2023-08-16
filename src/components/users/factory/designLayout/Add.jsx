@@ -699,7 +699,7 @@ const Add = (props) => {
 
                                     <div className="d-flex col-md-12 pl-0">
 
-                                        <div className="col-md-3">
+                                        <div id="layout_col" className="col-md-3">
                                             <fieldset className="border p-2">
                                                 <legend className="w-auto text-left">Layout</legend>
                                                 <div className="form-row" style={{marginRight:'-30px'}}>
@@ -936,7 +936,7 @@ const Add = (props) => {
                                         </div>
 
 
-                                        <div className="col-md-3 pl-0">
+                                        <div id="layout_history" className="col-md-3 pl-0">
                                             <fieldset className="border">
                                                 <legend className="w-auto text-left">Layout history</legend>
                                                 <div className="col-md-12">
@@ -989,7 +989,7 @@ const Add = (props) => {
                                         </div>
 
 
-                                        <div className="col-md-3 pl-0">
+                                        <div id="base_area" className="col-md-3 pl-0">
                                             <fieldset className="border p-2">
                                                 <legend className="w-auto text-left">Base</legend>
                                                 <div className="form-row">
@@ -1288,7 +1288,7 @@ const Add = (props) => {
                                         </div>
 
 
-                                        <div className="col-md-3 pl-0 pr-0">
+                                        <div id="engravers_order" className="col-md-3 pl-0 pr-0">
                                             <fieldset className="border p-1">
                                                 <legend className="w-auto text-left">Engravers Order</legend>
                                                 <div className="col-md-12 pl-0 pr-0">

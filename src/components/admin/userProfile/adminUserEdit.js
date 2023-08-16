@@ -84,9 +84,11 @@ class AdminUserEdit extends Component {
 
 
         let adminToken = sessionStorage.getItem('adminToken');
+        // console.log("token get from adminUserEdit: ",adminToken)
         axios.post(`${process.env.REACT_APP_BASEURL}/api/admin/profileUpdate`,formData,{ headers: {"Authorization" : `Bearer ${adminToken}`} })
         .then(response=>{       
             if (response.data.status == 1) {
+                console.log('admin token from : ',response.data)
                 toast.success(response.data.message);
             } else {
                 toast.error(response.data.message);

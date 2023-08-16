@@ -181,7 +181,7 @@ const Report = () => {
                                                             
                                                             {/* <ArrowDown style={ {marginTop : '0px'}}  color="black" size={10}/> */}
                                                         </div>
-                                                        <div className={`children active`}>
+                                                        <div className={`children active pointer`}>
                                                             <ul className='subDropdown'>
                                                                 {
                                                                     dropdown?.children?.map( (submultiMenu) => (

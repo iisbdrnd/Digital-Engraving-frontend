@@ -196,7 +196,7 @@ export default function ListData(props) {
                                                     <th scope="col" width="5%">Dia</th>
                                                     <th scope="col" width="12%"> Plating Order</th>
                                                     <th scope="col" width="10%"> Client</th>   
-                                                    <th scope="col" width="6%">Rework</th>
+                                                    <th scope="col" width="6%">Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -227,7 +227,7 @@ export default function ListData(props) {
                                                                                         } }
                                                                                     }}
                                                                                 className="btn btn-secondary btn-xs">
-                                                                                    Rework
+                                                                                    Q C
                                                                                 </Link>
                                                                             ) : (
                                                                                 <span className="text-danger">Pending</span>
