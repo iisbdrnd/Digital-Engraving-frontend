@@ -162,13 +162,14 @@ export default function ListData(props) {
                                         <table className="table table-border-horizontal">
                                             <thead>
                                                 <tr>
-                                                    <th scope="col" width="8%" onClick={() => sortHandler(1)} ><i className="fa fa-sort"></i> SL.</th>
-                                                    <th scope="col" width="10%" onClick={() => sortHandler(2)} ><i className="fa fa-sort"></i> Job No.</th>
-                                                    <th scope="col" width="15%" onClick={() => sortHandler(3)} ><i className="fa fa-sort"></i> Job Name</th>                                                      
-                                                    <th scope="col" width="15%" onClick={() => sortHandler(4)} ><i className="fa fa-sort"></i> Client</th>
-                                                    <th scope="col" width="15%" onClick={() => sortHandler(5)}><i className="fa fa-sort"></i> Marketing Person</th>
-                                                    <th scope="col" width="15%" onClick={() => sortHandler(6)}><i className="fa fa-sort"></i> Printer Name</th>
-                                                    <th scope="col" width="15%" onClick={() => sortHandler(7)}><i className="fa fa-sort"></i> Job Type</th>
+                                                    <th scope="col" width="8%" > SL.</th>
+                                                    {/* <th scope="col" width="8%" onClick={() => sortHandler(1)} ><i className="fa fa-sort"></i> SL.</th> */}
+                                                    <th scope="col" width="10%" > Job No.</th>
+                                                    <th scope="col" width="15%" > Job Name</th>                                                      
+                                                    <th scope="col" width="15%" > Client</th>
+                                                    <th scope="col" width="15%" > Marketing Person</th>
+                                                    <th scope="col" width="15%"> Printer Name</th>
+                                                    <th scope="col" width="15%"> Job Type</th>
                                                     <th scope="col" width="12%">Action</th>
                                                 </tr>
                                             </thead>

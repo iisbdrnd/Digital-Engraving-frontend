@@ -149,13 +149,13 @@ export default function ListData(props) {
                                         <table className="table table-border-horizontal">
                                             <thead>
                                                 <tr>
-                                                    <th scope="col" width="8%"><i className="fa fa-sort"></i> SL.</th>
-                                                    <th scope="col" width="10%"><i className="fa fa-sort"></i> Job No.</th>
-                                                    <th scope="col" width="10%"><i className="fa fa-sort"></i> Job Name</th>                                                      
-                                                    <th scope="col" width="10%"><i className="fa fa-sort"></i> Client</th>
-                                                    <th scope="col" width="15%"><i className="fa fa-sort"></i> Marketing Person</th>
-                                                    <th scope="col" width="12%"><i className="fa fa-sort"></i> Printer Name</th>
-                                                    <th scope="col" width="10%"><i className="fa fa-sort"></i> Job Type</th>
+                                                    <th scope="col" width="8%">SL.</th>
+                                                    <th scope="col" width="10%">Job No.</th>
+                                                    <th scope="col" width="10%">Job Name</th>                                                      
+                                                    <th scope="col" width="10%">Client</th>
+                                                    <th scope="col" width="15%">Marketing Person</th>
+                                                    <th scope="col" width="12%">Printer Name</th>
+                                                    <th scope="col" width="10%">Job Type</th>
                                                     <th scope="col" width="15%">Action</th>
                                                 </tr>
                                             </thead>

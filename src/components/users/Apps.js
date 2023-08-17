@@ -4,6 +4,7 @@ import Footer from './common/apps/footer';
 import {UserApps} from '../../api/userUrl';
 import { userGetMethod } from '../../api/userAction';
 import Modules from './Modules';
+import './Apps.css';
 
 const Apps = () => {
     const [modules, setModules] = useState([]);
@@ -26,14 +27,14 @@ const Apps = () => {
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col-lg-12">
-                            <div className="card">
+                            <div id="card-column-area" className="card">
                                 <div className="card-header module-page">
                                     <Header />
                                 </div>
                                 
                                 <div className="card-body">
                                     <div className="col-md-11 offset-md-1">
-                                        <div className="row d-flex">
+                                        <div className="row d-flex  justify-content-center">
                                             {modulePanel}
                                         </div>
                                     </div>

@@ -120,6 +120,7 @@ const ListData = (props) =>  {
         // TABLE DATA READY
         userGetMethod(ascUrl)
             .then(response => {
+                console.log(response.data);
                 setCurrentPage(response.data.pendingGrindings.current_page)
                 setPerPage(response.data.pendingGrindings.per_page)
                 setTotalData(response.data.pendingGrindings.total)
@@ -190,12 +191,12 @@ const ListData = (props) =>  {
                                     <table className="table table-border-horizontal">
                                         <thead>
                                             <tr>
-                                                <th scope="col" width="5%"  ><i className="fa fa-sort"></i> SL.</th>
-                                                <th scope="col" width="10%"  ><i className="fa fa-sort"></i> Job No.</th>
-                                                <th scope="col" width="15%"  ><i className="fa fa-sort"></i> Job Name</th>
-                                                <th scope="col" width="5%"><i className="fa fa-sort"></i> Type</th>
-                                                <th scope="col" width="15%"><i className="fa fa-sort"></i> Client</th>   
-                                                <th scope="col" width="10%"><i className="fa fa-sort"></i> Approve</th>
+                                                <th scope="col" width="5%"  > SL.</th>
+                                                <th scope="col" width="10%" > Job No.</th>
+                                                <th scope="col" width="15%" > Job Name</th>
+                                                <th scope="col" width="5%"> Type</th>
+                                                <th scope="col" width="15%"> Client</th>   
+                                                <th scope="col" width="10%"> Approve</th>
                                             </tr>
                                         </thead>
                                         <tbody>
