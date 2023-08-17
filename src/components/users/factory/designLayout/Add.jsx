@@ -16,12 +16,14 @@ const Add = (props) => {
     const { handleSubmit, register, errors, reset } = useForm();
     const [isLayout, setIsLayout] = useState(true);
     const [isBase, setIsBase] = useState(false);
-    const [typeheadOptions, setTypeheadOptions] = useState({ job_orders: [],layout_references:[],employees:[],clients:[],suppliers:[] });
+    const [typeheadOptions, setTypeheadOptions] = useState({ job_orders: [],layout_references:[],employees:[],clients:[],suppliers:[],layout : [], layoutDetails : [],layoutMaster:[],polishMachines :[]});
     const [selectedJobOrder, setSelectedJobOrder] = useState([]);
     const [engraveOrder, setEngraveOrder] = useState([]);
     const [supplierArr, setSupplierArr] = useState([]);
     const [uploadImage, setUploadImage] = useState();
     const [layoutArr,setLayoutArr] = useState([]);
+    const [layoutDetals,setLayoutDetals] = useState([]);
+    const [layout,setLayout] = useState({});
     const [isDisable,setIsDisable] = useState(false);
     const [layoutOnBlur,setLayoutOnBlur] = useState({
         final_cir:'',
@@ -30,6 +32,7 @@ const Add = (props) => {
         final_width:'',
         layout_id:''
     });
+    const [layoutMaster,setLayoutMaster] = useState({});
     const [layoutDetails,setLayoutDetails] = useState({
         final_cir:'',
         final_dia:'',
@@ -100,6 +103,19 @@ const Add = (props) => {
             .then(response => {
                 // FOR JOB ORDER
                 console.log(response.data)
+                if (response.data.layout && response.data.layoutMaster && response.data.layoutDetails) {
+                    setLayoutMaster(response.data.layout)
+                    setLayout(response.data.layoutMaster)
+                    setLayoutDetals(response.data.layoutDetails)
+                }
+                
+                // ======================================
+
+               
+
+
+
+                // Demo for all create post
                 let jobOrderOptions = [];
                 if (response.data.jobOrder) {
                     let jobOrderObj = {};
@@ -182,8 +198,7 @@ const Add = (props) => {
                 // setIsLoading(false);
             });
     }
-
-    // console.log(typeheadOptions);
+console.log(layoutDetals)
 
     const toogleLtoB = (val) => {
         if (val == "layout") {
@@ -222,6 +237,12 @@ const Add = (props) => {
                 })
             }
 
+            if (e.target.name == 'l_reg_mark' || e.target.name == 'l_fl_cut' || e.target.name == 'design_w' || e.target.name == 'axial_ups' || e.target.name == 'r_reg_mark' || e.target.name == 'r_fl_cut' || e.target.name == 'axl_start_point' || e.target.name == 'axl_image_area' || e.target.name == 'layout_id' || e.target.name == 'station') {
+                setLayout({
+                    ...layout, [e.target.name]: e.target.value
+                })
+            }
+
             
         }
     }
@@ -248,7 +269,7 @@ const Add = (props) => {
 
     // console.log(layoutOnBlur);
     // console.log(layoutIdVal)
-    // console.log(formData);
+    console.log(typeColorOptions);
 
     
         const  getLayoutInfo = async () => {
@@ -300,8 +321,12 @@ const Add = (props) => {
             engraveOrder.map((item, i) =>
                 i == index ? { ...item, [e.target.name]: e.target.value } : item)
         );
+        setLayoutDetals(
+            layoutDetals.map((item, i) =>
+                i == index ? { ...item, [e.target.name]: e.target.value } : item)
+        );
     };
-
+    
     useEffect(() => {
         var img;
         if (formData?.l_reg_mark && formData?.l_fl_cut && formData?.design_w && formData?.axial_ups && formData?.r_reg_mark && formData?.r_fl_cut) {
@@ -428,8 +453,13 @@ const Add = (props) => {
         menuId = props.location.state.params.menuId;
     }
     // console.log(layoutDetails?.final_dia == '' ||  layoutDetails?.final_cir == '' || layoutDetails.final_height == '' || layoutDetails?.final_width == ''? true:false);
-
-  
+    console.log(typeColorOptions)
+    const matchedColors = layoutDetals.map((item) => {
+        console.log(item)
+        const matchingColor = typeColorOptions.find((color) => 
+            color.er_color_id === item.er_color_id);
+        return matchingColor ? matchingColor.name : 'Unknown';
+      });
 
     const onSubmit = (data, e) => {
         e.preventDefault();
@@ -735,8 +765,8 @@ const Add = (props) => {
                                                                 })}
                                                                 onChange={inputChangeHandler}
                                                                 onBlur={handleChangeOnBlur}
-                                                                value={formData?.layout_id ? formData?.layout_id :layoutIdVal.layout_id}
-                                                                disabled={formData?.layout_id ? true : false}
+                                                                value={formData?.layout_id || layoutMaster?.layout_id ? (formData?.layout_id || layoutMaster?.layout_id ):layoutIdVal.layout_id}
+                                                                disabled={formData?.layout_id || layoutMaster?.layout_id? true : false}
 
 
 
@@ -909,7 +939,7 @@ const Add = (props) => {
                                                         </div>
                                                         <label className="col-sm-4 text-left col-form-label">Station</label>
                                                         <div className="col-md-8">
-                                                            <select className="form-control" name="station" id="station" onChange={inputChangeHandler} ref={register({
+                                                            <select className="form-control" name="station" id="station" onChange={inputChangeHandler} value={layout?.station ? layout?.station: formData.station} ref={register({
                                                                 required: 'On text Field Required'
                                                             })}>
                                                                 <option value="1">opt 1</option>
@@ -1038,8 +1068,8 @@ const Add = (props) => {
                                                                 })}
                                                                 onChange={inputChangeHandler}
                                                                 onBlur={handleChangeOnBlur}
-                                                                value={layoutDetails?.final_dia ? layoutDetails?.final_dia : layoutOnBlur.final_dia}
-                                                                disabled={!layoutDetails?.final_dia ? false : true}
+                                                                value={layoutDetails?.final_dia || layoutMaster?.final_dia ? layoutDetails?.final_dia || layoutMaster?.final_dia : layoutOnBlur.final_dia}
+                                                                disabled={!(layoutDetails?.final_dia || layoutMaster?.final_dia) ? false : true}
                                                             
                                                             />
                                                         </div>
@@ -1073,8 +1103,8 @@ const Add = (props) => {
                                                                 })}
                                                             onChange={inputChangeHandler}
                                                             onBlur={handleChangeOnBlur}
-                                                                value={layoutDetails?.final_cir ? layoutDetails?.final_cir : layoutOnBlur.final_cir}
-                                                                disabled={!layoutDetails?.final_cir ? false : true}
+                                                                value={layoutDetails?.final_cir || layoutMaster?.final_cir ? (layoutDetails?.final_cir || layoutMaster.final_cir) : layoutOnBlur.final_cir}
+                                                                disabled={!(layoutDetails?.final_cir || layoutMaster?.final_cir) ? false : true}
                                                             // value={layoutDetails.final_cir ? layoutDetails.final_cir : ''}
                                                             />
                                                         </div>
@@ -1131,8 +1161,8 @@ const Add = (props) => {
                                                                 })}
                                                             onChange={inputChangeHandler}
                                                             onBlur={handleChangeOnBlur}
-                                                                value={layoutDetails?.final_height ? layoutDetails?.final_height : layoutOnBlur.final_height}
-                                                                disabled={!layoutDetails?.final_height ? false : true}
+                                                                value={layoutDetails?.final_height || layoutMaster?.final_height ? layoutDetails?.final_height || layoutMaster?.final_height : layoutOnBlur?.final_height}
+                                                                disabled={!(layoutDetails?.final_height || layoutMaster?.final_height) ? false : true}
                                                             // value={layoutDetails.final_height ? layoutDetails.final_height : ''}
                                                             />
                                                         </div>
@@ -1148,8 +1178,8 @@ const Add = (props) => {
                                                                 })}
                                                             onChange={inputChangeHandler}
                                                             onBlur={handleChangeOnBlur}
-                                                                value={layoutDetails?.final_width ? layoutDetails?.final_width : layoutOnBlur.final_width}
-                                                                disabled={!layoutDetails?.final_width ? false : true}
+                                                                value={layoutDetails?.final_width || layoutMaster?.final_width ? layoutDetails?.final_width || layoutMaster?.final_width : layoutOnBlur?.final_width}
+                                                                disabled={!(layoutDetails?.final_width || layoutMaster?.final_width) ? false : true}
                                                             // value={layoutDetails.final_width ? layoutDetails.final_width : ''}
                                                             />
                                                         </div>
@@ -1304,6 +1334,44 @@ const Add = (props) => {
                                                         </thead>
                                                         <tbody>
                                                             {
+                                                                layoutDetals.length > 0 ? 
+                                                                layoutDetals.map((item,index) => {
+                                                                    return (
+                                                                        <tr>
+                                                                            <td>
+                                                                                <input className="form-control" type="text" value={item.id + 1}  name="er_id" id="er_id" onChange={(e) => engOrderHandler(e, index)} ref={register({
+                                                                    required: 'On text Field Required'
+                                                                })}/>
+                                                                                </td>
+
+                                                                            <td>
+                                                                                <input className="form-control" type="text" value={matchedColors} name="er_color_id" id="er_color_id" onChange={(e) => engOrderHandler(e, index)} ref={register({
+                                                                    required: 'On text Field Required'
+                                                                })}/>
+                                                                                </td>
+
+                                                                            <td>
+                                                                                <input className="form-control" type="text"  name="er_desired_screen" id="er_desired_screen" value={item?.er_desired_screen} onChange={(e) =>engOrderHandler(e, index)} ref={register({
+                                                                    required: 'On text Field Required'
+                                                                })}/>
+                                                                                </td>
+
+                                                                            <td>
+                                                                                <input className="form-control" type="text"  name="er_desired_angle" id="er_desired_angle" value={item?.er_desired_angle} onChange={(e) =>engOrderHandler(e, index)} ref={register({
+                                                                    required: 'On text Field Required'
+                                                                })}/>
+                                                                                </td>
+
+                                                                            <td>
+                                                                                <input className="form-control" type="text"  name="er_engraving_machine" id="er_engraving_machine" value={item?.er_engraving_machine} onChange={(e) =>engOrderHandler(e, index)} ref={register({
+                                                                    required: 'On text Field Required'
+                                                                })} />
+                                                                        </td>
+                                                                        </tr>
+                                                                    )
+                                                                })
+                                                            
+                                                                :
                                                                 typeColorOptions.map((item,index) => {
                                                                     return (
                                                                         <tr>
@@ -1335,25 +1403,16 @@ const Add = (props) => {
                                                                                 <input className="form-control" type="text"  name="er_engraving_machine" id="er_engraving_machine" onChange={(e) =>engOrderHandler(e, index)} ref={register({
                                                                     required: 'On text Field Required'
                                                                 })} />
-
-                                                                                
-                                                                                {/* <select className="form-control" name="machine_id" id="machine_id" onChange={inputChangeHandler}   ref={register({
-                                                                                    required: 'On text Field Required'
-                                                                                })}>
-                                                                                <option value="">Select ...</option>
-                                                                                {typeheadOptions['machines'].map((item, index) => (
-                                                                                    <option key={index} value={item?.id}>{item?.name}</option>
-                                                                                ))}
-                                                                                </select> */}
-
-
-
-
-                                                                                </td>
+                                                                        </td>
                                                                         </tr>
                                                                     )
                                                                 })
                                                             }
+                                                            
+
+                                                                    
+
+
 
                                                         </tbody>
                                                     </table>
@@ -1383,7 +1442,9 @@ const Add = (props) => {
                                                                     required: 'On text Field Required'
                                                                 })}
                                                                 onChange={inputChangeHandler}
-                                                                value={formData.l_reg_mark}
+                                                                value={
+                                                                    layout?.l_reg_mark ? layout?.l_reg_mark : formData.l_reg_mark 
+                                                                }
                                                             />
                                                         </div>
                                                         <div className="col-md-3 pl-0">
@@ -1405,7 +1466,7 @@ const Add = (props) => {
                                                                     required: 'On text Field Required'
                                                                 })}
                                                                 onChange={inputChangeHandler}
-                                                                value={formData.l_fl_cut}
+                                                                value={layout?.l_fl_cut ? layout?.l_fl_cut : formData.l_fl_cut}
                                                             />
                                                         </div>
                                                         <div className="col-md-3 pl-0">
@@ -1427,7 +1488,7 @@ const Add = (props) => {
                                                                     required: 'On text Field Required'
                                                                 })}
                                                                 onChange={inputChangeHandler}
-                                                                value={formData.design_w}
+                                                                value={layout?.design_w ? layout?.design_w :formData.design_w}
                                                             />
                                                         </div>
                                                         <div className="col-md-3 pl-0">
@@ -1449,7 +1510,7 @@ const Add = (props) => {
                                                                     required: 'On text Field Required'
                                                                 })}
                                                                 onChange={inputChangeHandler}
-                                                                value={formData.axial_ups}
+                                                                value={layout?.axial_ups ? layout.axial_ups : formData.axial_ups}
                                                             />
                                                         </div>
                                                         <div className="col-md-3 pl-0">
@@ -1471,7 +1532,7 @@ const Add = (props) => {
                                                                     required: 'On text Field Required'
                                                                 })}
                                                                 onChange={inputChangeHandler}
-                                                                value={formData.r_reg_mark}
+                                                                value={layout?.r_reg_mark ? layout?.r_reg_mark :formData.r_reg_mark}
                                                             />
                                                         </div>
                                                         <div className="col-md-3 pl-0">
@@ -1493,7 +1554,7 @@ const Add = (props) => {
                                                                 })}
                                                                 type="number"
                                                                 onChange={inputChangeHandler}
-                                                                value={formData.r_fl_cut}
+                                                                value={layout?.r_fl_cut ? layout?.r_fl_cut :formData.r_fl_cut}
                                                             />
                                                         </div>
                                                         <div className="col-md-3 pl-0">
@@ -1515,7 +1576,7 @@ const Add = (props) => {
                                                                 })}
                                                                 type="number"
                                                                 onChange={inputChangeHandler}
-                                                                value={formData?.axl_start_point}
+                                                                value={layout?.axl_start_point ? layout?.axl_start_point :formData?.axl_start_point}
                                                             />
                                                         </div>
                                                     </div>
@@ -1533,7 +1594,7 @@ const Add = (props) => {
                                                                 })}
                                                                 type="number"
                                                                 onChange={inputChangeHandler}
-                                                                value={formData?.axl_image_area}
+                                                                value={layout?.axl_image_area ? layout?.axl_image_area:formData?.axl_image_area}
                                                             />
                                                         </div>
                                                     </div>

@@ -8,6 +8,15 @@ import './Apps.css';
 
 const Apps = () => {
     const [modules, setModules] = useState([]);
+    const cardColumn = {
+        flexDirection: 'column',
+        height:'100vh',
+        marginBottom: '0'
+    }
+    const pageBody = {
+        display: 'flex',
+        height: '100vh',
+    }
     useEffect(() => {
         userGetMethod(`${UserApps}`)
             .then(response => {
@@ -23,13 +32,15 @@ const Apps = () => {
     const modulePanel = <Modules clicked={moduleHandler} allModule={modules} />
     return (
         <Fragment>
-            <div className="page-body">
+            <div style={pageBody} className="page-body">
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col-lg-12">
-                            <div id="card-column-area" className="card">
+                            <div style={cardColumn} className="card">
+                                <div>
                                 <div className="card-header module-page">
                                     <Header />
+                                </div>
                                 </div>
                                 
                                 <div className="card-body">
@@ -39,7 +50,7 @@ const Apps = () => {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="card-footer">
+                                <div style={{marginTop:'auto'}} className="card-footer">
                                     <Footer />
                                 </div>
                             </div>
