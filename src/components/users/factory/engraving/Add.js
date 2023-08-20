@@ -287,18 +287,18 @@ const Add = (props) => {
 
                                                             <label className="col-md-5 col-form-label label-form ">Angle</label>
                                                             <div className="col-md-7">
-                                                                <input type="text" className="form-control" disabled required name="angle"  defaultValue={stateData?.angle} ref={register({})} />
+                                                                <input type="text" className="form-control" disabled={stateData?.angle ? true: false} required name="angle"  defaultValue={stateData?.angle} ref={register({})} />
                                                             </div>
 
                                                             <label className="col-md-5 col-form-label label-form  ">Image Area</label>
                                                             <div className="col-md-7">
-                                                                <input type="text" className="form-control" disabled required name="image_area" defaultValue={stateData?.image_area} ref={register({})} />
+                                                                <input type="text" className="form-control" disabled ={stateData?.image_area ? true : false} required name="image_area" defaultValue={stateData?.image_area} ref={register({})} />
                                                             </div>
                                                         </div>
 
                                                         <label className="col-md-3 col-form-label label-form">Remarks</label>
                                                         <div className="col-md-8">
-                                                            <textarea className="form-control" rows="3" name='remarks' disabled defaultValue={stateData?.remarks}  ref={register({})} ></textarea>
+                                                            <textarea className="form-control" rows="3" name='remarks' disabled ={stateData?.remarks ?true : false} defaultValue={stateData?.remarks}  ref={register({})} ></textarea>
                                                         </div>
                                                     </div>
                                                 </fieldset>
@@ -336,7 +336,7 @@ const Add = (props) => {
 
                                                                 <label className="col-md-5 col-form-label label-form">Shift</label>
                                                                 <div className="col-md-7">
-                                                                    <input type="text" disabled='disabled' value={stateData.shiftData.shift_type == 1 ? 'Day' : stateData.shiftData.shift_type == 2 ? 'Evening' : 'Night'} className="form-control" />
+                                                                    <input type="text" disabled={!(stateData.shiftData.shift_type == 1 ? 'Day' : stateData.shiftData.shift_type == 2 ? 'Evening' : 'Night') ? false : true} value={stateData.shiftData.shift_type == 1 ? 'Day' : stateData.shiftData.shift_type == 2 ? 'Evening' : 'Night'} className="form-control" />
 
                                                                     <input type="hidden" value={stateData.shiftData.shift_pk_id} className="form-control" name="shift_id" required  ref={register({})} />
                                                                 </div>

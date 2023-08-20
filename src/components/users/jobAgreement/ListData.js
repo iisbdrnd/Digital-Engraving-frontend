@@ -44,6 +44,7 @@ export default function ListData(props) {
     const handleSearchText = (e) => {
         setSearchText(e);
     }
+
     const searchHandler = (e) => {
         setIsLoading(true);
         userGetMethod(`${JOB_AGREEMENT_RSURL}?agreement_status=${jobActiveStatus}&page=${1}&perPage=${perPage}&searchText=${searchText}`)
@@ -55,6 +56,18 @@ export default function ListData(props) {
             setIsLoading(false);
         })
         .catch(error => console.log(error)); 
+    }
+    const handlePageChange = (pageNumber = 1) =>{
+        setIsLoading(true);
+        userGetMethod(`${JOB_AGREEMENT_RSURL}?agreement_status=${jobActiveStatus}&page=${pageNumber}&perPage=${perPage}&searchText=${searchText}`)
+        .then(response => {
+            setCurrentPage(response.data.pendingJobOrders.current_page)
+            setPerPage(response.data.pendingJobOrders.per_page)
+            setTotalData(response.data.pendingJobOrders.total)
+            setJobAgreementData(response.data.pendingJobOrders.data)
+            setIsLoading(false);
+        })
+        .catch(error => console.log(error));
     }
 
     const deleteHandler = (itemId, deleteLink) => {
@@ -224,6 +237,7 @@ export default function ListData(props) {
                                     activePage={currentPage}
                                     itemsCountPerPage={perPage}
                                     totalItemsCount={totalData}
+                                    onChange={handlePageChange}
                                     itemClass="page-item"
                                     linkClass="page-link"
                                     firstPageText="First"

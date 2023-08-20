@@ -94,7 +94,7 @@ export default function ListData(props) {
 
     const handlePageChange = (pageNumber = 1) => {
         setIsLoading(true);
-        console.log(pageNumber)
+        // console.log(pageNumber)
         // TABLE DATA READY
         userGetMethod(`${JOB_ORDER_RSURL}?page=${pageNumber}&perPage=${perPage}&searchText=${searchText}`)
             .then(response => {
