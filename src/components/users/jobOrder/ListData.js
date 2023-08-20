@@ -29,16 +29,18 @@ export default function ListData(props) {
         // ADD,EDIT,DELETE,SHOW ACCESS CHECK
         userGetMethod(`${userHasAccess}/${menuId}`)
             .then(response => {
+                console.log(response.data)
                 setHasAccess(response.data);
                 setAccLoad(false);
             });
-        
+            // handlePageChange();
        
     },[]);
     // console.log(hasAccess);
 
     useEffect(() => {
         perPageBoxChange();
+        // handlePageChange();
     },[perPage])
 
     const handleSearchText = (e) => {
@@ -80,11 +82,27 @@ export default function ListData(props) {
         // TABLE DATA READY
         userGetMethod(`${JOB_ORDER_RSURL}?perPage=${perPage}&searchText=${searchText}`)
             .then(response => {
+                console.log("current page",response.data);
                 setCurrentPage(response.data.jobOrders.current_page)
                 setPerPage(response.data.jobOrders.per_page)
                 setTotalData(response.data.jobOrders.total)
                 setJobOrderData(response.data.jobOrders.data)
                 setIsLoading(false)
+            })
+            .catch(error => console.log(error))
+    }
+
+    const handlePageChange = (pageNumber = 1) => {
+        setIsLoading(true);
+        console.log(pageNumber)
+        // TABLE DATA READY
+        userGetMethod(`${JOB_ORDER_RSURL}?page=${pageNumber}&perPage=${perPage}&searchText=${searchText}`)
+            .then(response => {
+                setCurrentPage(response.data.jobOrders.current_page)
+                setPerPage(response.data.jobOrders.per_page)
+                setTotalData(response.data.jobOrders.total)
+                setJobOrderData(response.data.jobOrders.data)
+                setIsLoading(false);
             })
             .catch(error => console.log(error))
     }
@@ -210,7 +228,7 @@ export default function ListData(props) {
                                     activePage={currentPage}
                                     itemsCountPerPage={perPage}
                                     totalItemsCount={totalData}
-                                    
+                                    onChange={handlePageChange}
                                     itemClass="page-item"
                                     linkClass="page-link"
                                     firstPageText="First"

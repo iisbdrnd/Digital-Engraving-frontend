@@ -31,6 +31,7 @@ export default function ListData(props) {
                 setHasAccess(response.data);
                 setAccLoad(false);
             });
+            
         
         // TABLE DATA READY
         handlePageChange();

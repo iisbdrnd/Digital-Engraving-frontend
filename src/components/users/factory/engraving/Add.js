@@ -260,12 +260,14 @@ const Add = (props) => {
 
                                                             <label className="col-md-5 col-form-label label-form ">Screen</label>
                                                             <div className="col-md-7">
-                                                                <input type="text" className="form-control" disabled required defaultValue={stateData?.screen} name="screen"  ref={register({})} />
+                                                                <input type="text" className="form-control"  required defaultValue={stateData?.screen} name="screen"  ref={register({})} 
+                                                                    disabled = {stateData?.screen ? true : false}
+                                                                />
                                                             </div>
 
                                                             <label className="col-md-5 col-form-label label-form  ">Start Point</label>
                                                             <div className="col-md-7">
-                                                                <input type="text" className="form-control" disabled required defaultValue={stateData?.start_point} id="start_point" name="start_point"  ref={register({})} />
+                                                                <input type="text" className="form-control" disabled = {stateData?.start_point ? true : false} required defaultValue={stateData?.start_point} id="start_point" name="start_point"  ref={register({})} />
                                                             </div>
                                                         </div>
 
@@ -446,6 +448,7 @@ const Add = (props) => {
                                                         </div>
                                                     </fieldset>
                                     </div>
+
                                     <div className="col-md-3">
                                         <pre className="helper-classes m-t-10">
                                             <div className="display-div">
@@ -496,6 +499,7 @@ const Add = (props) => {
                                             <img className='h-100 w-100'  src={"http://127.0.0.1:8000/uploads/"+`${stateData.history_image}`} />
                                         </div>)}
                                     </div>
+
                                     <SubmitButton link="engraving/index" menuId={ menuId } />
                                 </form>
                                 <fieldset className="border p-2" >

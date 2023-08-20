@@ -6,9 +6,10 @@ import 'react-toastify/dist/ReactToastify.css';
 import useForm from "react-hook-form";
 import { Typeahead } from 'react-bootstrap-typeahead';
 import { SubmitButton } from '../../../common/GlobalButton';
+import './Add.css'
 
 const Add = (props) => {
-    const { handleSubmit, register, errors } = useForm();
+    const { handleSubmit, register, errors,reset } = useForm();
     const {location} = props;
     const [isLoading, setIsLoading] = useState(true);
     const [typeHeadOptions, setTypeHeadOptions] = useState({});
@@ -275,7 +276,6 @@ const Add = (props) => {
     const submitHandler = (data, e) => {
         e.preventDefault();
         getGrinder()
-        console.log(data,grindingValues);
         if(markedComplete.length == 0){
             toast.warn("Please select mimnum one cylinder")
             return;
@@ -283,7 +283,9 @@ const Add = (props) => {
         data.job_order_pk_id = dropDownData.job_order_pk_id;
         data.grindingDetails = grindingInput;
         data.total_cylinder_qty = jobOrderData.total_cylinder_qty;
-        
+        console.log(data,grindingValues);
+        reset();
+        clearForm();
         userPostMethod(GRINDING_RSURL, data)
             .then(response => {
                 if (response.data.status == 1) {
@@ -632,13 +634,15 @@ const Add = (props) => {
                                             </fieldset>
                                         </div>
                                     </div>
+
+
                                     <div className="card p-2 mt-2">
                                         <div className="row">
                                             {/* FIRST COLUMN */}
-                                            <div className="col-sm-12 pl-2 p-1">
-                                                <fieldset className="border p-1">
+                                            <div className="col-sm-12">
+                                                <fieldset className="border" style={{padding: '10px'}}>
                                                     <legend className="w-auto text-left">Cylinder</legend>
-                                                    <div className="form-row">
+                                                    <div className="form-row" style={{marginRight: '-3px', marginLeft: '3px'}}>
                                                         <table style={{width: "100%"}}>
                                                             <thead>
                                                                 <tr className="dynamicFormByTotalCylQtyHeader">
@@ -661,8 +665,8 @@ const Add = (props) => {
                                                                     <td>Key Lock</td>
                                                                     <td>Cone Prob</td>
 
-                                                                    <td>Dia</td>
-                                                                    <td>#Pin Hole</td>
+                                                                    <td className="dia_td">Dia</td>
+                                                                    <td className="pin_td">#Pin Hole</td>
                                                                     <td>Base Down</td>
                                                                     <td>Key Lock</td>
                                                                     <td>Cone Prob</td>
@@ -694,7 +698,7 @@ const Add = (props) => {
                                                     {/* FIRST ROW */}
                                                     <div className="form-row">
                                                         <div className="col-md-4 mb-1">
-                                                            <div className="row">
+                                                            <div className="row align-items-center">
                                                                 <label className="col-sm-5 col-form-label" htmlFor="final_fl">Final FL</label>
                                                                 <div className="col-sm-7">
                                                                     <input className="form-control" name="final_fl" required id="final_fl" type="number" placeholder="Final FL" onChange={(e) => changeMasterGrinder(e)} value={grindingMaster?.final_fl ? grindingMaster?.final_fl : ''} ref={register({ required: true })} />
@@ -705,7 +709,7 @@ const Add = (props) => {
                                                         </div>
 
                                                         <div className="col-md-4 mb-1">
-                                                            <div className="row">
+                                                            <div className="row align-items-center">
                                                                 <label className="col-sm-5 col-form-label" htmlFor="final_dia">Final Dia</label>
                                                                 <div className="col-sm-7">
                                                                     <input className="form-control" name="final_dia" required id="final_dia" type="number" placeholder="Final Dia" onChange={(e) => changeMasterGrinder(e)} value={grindingMaster?.final_dia ? grindingMaster?.final_dia : ''} ref={register({ required: true })}/>
@@ -716,7 +720,7 @@ const Add = (props) => {
                                                         </div>
 
                                                         <div className="col-md-4 mb-1">
-                                                            <div className="row">
+                                                            <div className="row align-items-center">
                                                                 <label className="col-sm-5 col-form-label" htmlFor="final_cir">Final Cir</label>
                                                                 <div className="col-sm-7">
                                                                     <input  className="form-control" name="final_cir" required id="final_cir" type="number" placeholder="Final Cir" onChange={(e) => changeMasterGrinder(e)} ref={register({ required: true })} />

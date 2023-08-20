@@ -28,6 +28,7 @@ export default function ListData(props) {
         // ADD,EDIT,DELETE,SHOW ACCESS CHECK
         userGetMethod(`${userHasAccess}/${menuId}`)
             .then(response => {
+                console.log(response.data)
                 setHasAccess(response.data);
                 setAccLoad(false);
             });
