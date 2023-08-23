@@ -38,20 +38,7 @@ const Add = (props) => {
     'design_machine_id': []
 
   });
-  // const [calculationValue, setCalculationValue] = useState(
-    
-  //   {
-  //     'design_width': '0',
-  //     'ups': '0',
-  //     'design_height': '0',
-  //     'rpt': '0',
-  //     'printing_height': '0',
-  //     'circumference': '0',
-  //     'face_length': '0',
-  //     'total_cylinder_qty': '0',
-  //   }
-  // );
-
+  
 
   let [calculationValue, setCalculationValue] = useReducer(
     (state, newState) => ({ ...state, ...newState }),
