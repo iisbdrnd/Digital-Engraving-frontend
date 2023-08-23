@@ -79,6 +79,7 @@ const Add = (props) => {
                 setIsLoading(false);
             });
     }, []);
+    // console.log(typeHeadOptions);
 
     const dropDownChange = (e, fieldName) => {
         if(fieldName === 'job_order_id' && e[0].name){
@@ -87,7 +88,7 @@ const Add = (props) => {
         }
         if(e.length > 0){
             const selectedValueId = e[0].id;
-
+            console.log(selectedValueId);
             setDropdownData(
                 (prevstate) => ({
                     ...prevstate,

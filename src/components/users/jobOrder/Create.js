@@ -2,7 +2,7 @@ import React, { Fragment, useState, useEffect, useReducer } from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { SubmitButton } from '../../common/GlobalButton';
-import { JOB_ORDER_RSURL } from '../../../api/userUrl';
+import { JOB_ORDER_RSURL,GET_JOB_ORDER } from '../../../api/userUrl';
 import { userGetMethod, userPostMethod } from '../../../api/userAction';
 import useForm from "react-hook-form";
 import { Typeahead } from 'react-bootstrap-typeahead';
@@ -26,6 +26,7 @@ const Add = (props) => {
   const [flArea,setFlArea] = useState(0);
   const [cirArea,setCirArea] = useState(0);
   const [dirArea,setDirArea] = useState(0);
+  const [dropDownText,setDropDownText] = useState('');
   
   // const [jobId, setJobId] = useState(0);
   const [typeAheadValue, setTypeAheadValue] = useState({
@@ -118,7 +119,7 @@ const Add = (props) => {
             subClassOptions.push(subClassObj);
           })
         }
-        // FOR REFERENCE JOB
+        // // FOR REFERENCE JOB
         let referenceJobsOptions = [];
         if (response.data.referenceJobs && response.data.referenceJobs.length > 0) {
           response.data.referenceJobs.map(referenceJob => {
@@ -176,6 +177,7 @@ const Add = (props) => {
     
     if (event.length > 0) {
       const selectedValue = event[0].id;
+      // setDropDownText(stateName)
       setDropdownData(
         (prevstate) => ({
           ...prevstate,
@@ -184,7 +186,58 @@ const Add = (props) => {
       );
     }
   }
-  // console.log(dropdownData)
+
+  const handleTypeaheadInputChange = (text) => {
+    setDropDownText(text); // Store the typed text in the state
+  };
+
+  useEffect(()=>{
+    if (dropDownText.length > 3) {
+      // console.log(dropDownText)
+      // setIsLoading(true)
+      userGetMethod(`${GET_JOB_ORDER}?searchText=${dropDownText}`)
+      .then(response => {
+        console.log(response.data)
+        if(response.data.jobOrders){
+          let referenceJobsOptions = [];
+          if (response.data.jobOrders && response.data.jobOrders.length > 0) {
+            response.data.jobOrders.map(referenceJob => {
+              console.log(referenceJob.id)
+              console.log(referenceJob.job_name)
+            let referenceJobObj = {};
+            referenceJobObj.id = referenceJob.id;
+            referenceJobObj.job_no = referenceJob.job_no;
+            referenceJobObj.name = referenceJob.job_name;
+            referenceJobsOptions.push(referenceJobObj);
+          })
+        }
+
+        setTypeheadOptions(
+          (prevstate) => ({
+            ...prevstate,
+            
+            ['reference_jobs']: referenceJobsOptions
+          })
+        );
+        setIsLoading(false);
+        }
+      })
+    }
+    
+      // setIsLoading(false);
+    
+    // else if(dropDownText.length < 3){
+    //   setTypeheadOptions(
+    //     (prevstate) => ({
+    //       ...prevstate,
+          
+    //       ['reference_jobs']: ''
+    //     })
+    //   );
+
+    // }
+  },[dropDownText])
+  // console.log(typeheadOptions)
   // calculated area=================
  
   // console.log(printingWidth)
@@ -405,7 +458,7 @@ const Add = (props) => {
                                     <Typeahead
                                       id="reference_job"
                                       name="reference_job"
-                                      labelKey={(option) => `${option.name}`}
+                                      labelKey={(option) => `${option.job_no}-${option.name}`}
                                       options={
                                         typeheadOptions["reference_jobs"]
                                       }
@@ -413,7 +466,8 @@ const Add = (props) => {
                                       onChange={(e) =>
                                         dropDownChange(e, "reference_job")
                                       }
-                                      value={(option) => `${option.id}`}
+                                      onInputChange={(text) => handleTypeaheadInputChange(text)}
+                                      
                                       inputProps={{
                                         required:
                                           jobOrderType == "New" ? false : true,
@@ -424,6 +478,27 @@ const Add = (props) => {
                                       selected={typeAheadValue["reference_job"]}
                                       {...register("reference_job")}
                                     />
+
+
+                                                        {/* <Typeahead
+                                                        id="job_order_id"
+                                                        name="job_order_id"
+                                                        labelKey={option => `${option.name}`}
+                                                        options={typeHeadOptions['job_orders']}
+                                                        placeholder="Select Job No..."
+                                                        onChange={(e) => dropDownChange(e, 'job_order_id')}
+                                                        inputProps={{ required: true }}
+                                                        selected={jobNoValue}
+                                                        disabled={job_order_id != null ? 'disabled' : ''}
+                                                        // ref={register({
+                                                        //     required: 'Job No Field Required'
+                                                        // })}
+                                                        {...register('job_order_id')}
+                                                    /> */}
+
+
+
+
                                     {errors.reference_job && (
                                       <p className="text-danger">
                                         {errors.reference_job.message}

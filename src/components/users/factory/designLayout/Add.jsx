@@ -1482,7 +1482,7 @@ console.log(layoutDetals)
                                                             })} required>
                                                                 <option value={colorArrayErr}>Select Color</option>
                                                                 {typeColorOptions.map((color,index) =>(
-                                                                    <option value={color.er_color_id} key={index}>{color.name}</option>
+                                                                    <option value={color.er_color_id} key={index} >{color.name}</option>
 
                                                                 ))}
                                                                 
