@@ -24,7 +24,9 @@ const Add = (props) => {
     const [layoutArr,setLayoutArr] = useState([]);
     const [layoutDetals,setLayoutDetals] = useState([]);
     const [layout,setLayout] = useState({});
-    const [isDisable,setIsDisable] = useState(false);
+    const [colorArray,setColorArray] = useState([]);
+    const [colorArrayErr,setColorArrayErr] = useState('');
+    const [machineArray,setMachineArray] = useState([]);
     const [layoutOnBlur,setLayoutOnBlur] = useState({
         final_cir:'',
         final_dia:'',
@@ -86,6 +88,7 @@ const Add = (props) => {
         design_width:'',
         design_height:''
     });
+    const [layoutMachines,setLayoutMachines] = useState([])
     
     const [dropdownData, setDropdownData] = useState({});
     const [typeColorOptions, setTypeColorOptions] = useState([]);
@@ -103,11 +106,16 @@ const Add = (props) => {
             .then(response => {
                 // FOR JOB ORDER
                 console.log(response.data)
-                if (response.data.layout && response.data.layoutMaster && response.data.layoutDetails) {
-                    setLayoutMaster(response.data.layout)
-                    setLayout(response.data.layoutMaster)
+                setLayoutMachines(response.data.machines)
+                if (response.data.layoutMaster && response.data.layoutDetails) {
+                    // console.log(response.data.layout)
+                    // console.log(response.data.layoutMaster)
+                    // console.log(response.data.layoutDetails)
+                    // setLayoutMaster(response.data.layout)
+                    setLayoutMaster(response.data.layoutMaster)
                     setLayoutDetals(response.data.layoutDetails)
                 }
+               
                 
                 // ======================================
 
@@ -210,6 +218,8 @@ console.log(layoutDetals)
         }
     }
 
+    let colorAlert;
+
     const inputChangeHandler = (e) => {
 
         const {name, value} = e.target;
@@ -237,16 +247,35 @@ console.log(layoutDetals)
                 })
             }
 
-            if (e.target.name == 'l_reg_mark' || e.target.name == 'l_fl_cut' || e.target.name == 'design_w' || e.target.name == 'axial_ups' || e.target.name == 'r_reg_mark' || e.target.name == 'r_fl_cut' || e.target.name == 'axl_start_point' || e.target.name == 'axl_image_area' || e.target.name == 'layout_id' || e.target.name == 'station') {
-                setLayout({
-                    ...layout, [e.target.name]: e.target.value
+            if (e.target.name == 'l_reg_mark' || e.target.name == 'l_fl_cut' || e.target.name == 'design_w' || e.target.name == 'axial_ups' || e.target.name == 'r_reg_mark' || e.target.name == 'r_fl_cut' || e.target.name == 'axl_start_point' || e.target.name == 'axl_image_area' || e.target.name == 'station' || e.target.name == 'layout_id' || e.target.name == 'layout' || e.target.name == 'operator_info' || e.target.name == 'remarks' || e.target.name == 'designer' || e.target.name == 'layout_date' || e.target.name == 'layout_time') {
+                setLayoutMaster({
+                    ...layoutMaster, [e.target.name]: e.target.value
                 })
             }
+            
+            // if (e.target.name == 'er_color_id') {
+            //     const colorID = e.target.value;
+               
+            //     if (!colorArray.includes(colorID)) {
+            //         const updatedListArray = [...colorArray,colorID]
+            //         return setColorArray(updatedListArray);
+            //     }else{
+            //         colorAlert = 'Color was found previously selected, Please Enter another Color';
+            //         setColorArrayErr(colorArrayErr);
+            //         alert(`Error found: ${colorAlert}`)
+            //         e.preventDefault()
+
+                    
+            //     }
+                
+            // }
 
             
         }
     }
-    // console.log(layoutIdVal)
+   
+    // console.log(colorArrayErr);
+    // console.log(colorArray);
 
     const handleChangeOnBlur = (e) => {
         
@@ -261,15 +290,17 @@ console.log(layoutDetals)
                 setLayoutOnBlur({
                     ...layoutOnBlur, [e.target.name] : e.target.value
                 })
+
+           
             // console.log(e.target.value);
 
             
         }
     }
 
-    // console.log(layoutOnBlur);
-    // console.log(layoutIdVal)
-    console.log(typeColorOptions);
+    console.log(formData);
+    console.log(layoutIdVal)
+    // console.log(typeColorOptions);
 
     
         const  getLayoutInfo = async () => {
@@ -319,12 +350,50 @@ console.log(layoutDetals)
     const engOrderHandler = (e, index) => {
         setEngraveOrder(
             engraveOrder.map((item, i) =>
-                i == index ? { ...item, [e.target.name]: e.target.value } : item)
+                i == index ? { ...item, [e.target.name]: e.target.value } : item),
+            
         );
         setLayoutDetals(
             layoutDetals.map((item, i) =>
                 i == index ? { ...item, [e.target.name]: e.target.value } : item)
         );
+        setLayoutMachines(
+            layoutMachines.map((item, i) =>
+                i == index ? { ...item, [e.target.name]: e.target.value } : item)
+        );
+
+        if (e.target.name == 'er_color_id') {
+            const colorID = e.target.value;
+           
+            if (!colorArray.includes(colorID)) {
+                const updatedListArray = [...colorArray,{'er_color_id':colorID}]
+                return setColorArray(updatedListArray);
+            }else{
+                colorAlert = 'Color was found previously selected, Please Enter another Color';
+                setColorArrayErr(colorArrayErr);
+                alert(`Error found: ${colorAlert}`)
+                e.preventDefault()
+
+                
+            }
+            
+        }
+
+        if (e.target.name == 'er_engraving_machine') {
+            const machineID = e.target.value;
+           
+            if (!machineArray.includes(machineID)) {
+                const updatedListArray = [...machineArray,{'machine_er_id':machineID}]
+                setMachineArray(updatedListArray);
+            }else{
+                const mechineAlert = 'Machines was found previously selected, Please Enter another Machine Name'
+                return(
+                    alert(`Error found: ${mechineAlert}`)
+
+                )
+            }
+            
+        }
     };
     
     useEffect(() => {
@@ -423,7 +492,7 @@ console.log(layoutDetals)
                             let colorOptions = [];
                             response.data.colors.map((item, index) => {
                                 let colorObj = {};
-                                colorObj.id = index;
+                                colorObj.er_color_serial = index;
                                 colorObj.name = item.color_name;
                                 colorObj.er_color_id = item.id;
                                 colorOptions.push(colorObj);
@@ -437,6 +506,7 @@ console.log(layoutDetals)
                
         }
     }
+    console.log(engraveOrder)
 
     let checked;
     if (formData.printer_mark == "Yes") {
@@ -453,13 +523,15 @@ console.log(layoutDetals)
         menuId = props.location.state.params.menuId;
     }
     // console.log(layoutDetails?.final_dia == '' ||  layoutDetails?.final_cir == '' || layoutDetails.final_height == '' || layoutDetails?.final_width == ''? true:false);
-    console.log(typeColorOptions)
+    // console.log(typeColorOptions)
     const matchedColors = layoutDetals.map((item) => {
-        console.log(item)
+        
         const matchingColor = typeColorOptions.find((color) => 
             color.er_color_id === item.er_color_id);
         return matchingColor ? matchingColor.name : 'Unknown';
       });
+      
+
 
     const onSubmit = (data, e) => {
         e.preventDefault();
@@ -483,10 +555,12 @@ console.log(layoutDetals)
      formValue.append("history_image", formData.history_image);
      formValue.append("job_id", dropdownData.job_id);
      formValue.append("engraveOrder", JSON.stringify(engraveOrder));
+     formValue.append("er_color_id_list", JSON.stringify(colorArray));
+     formValue.append("er_machine_id_list", JSON.stringify(machineArray));
      
     //  console.log(formValue)
-  console.log(Array.from(formValue.entries()));
-    // setIsSubmitting(false);
+//   console.log(Array.from(formValue.entries()));
+    setIsSubmitting(false);
         userPostMethod(`${DESIGN_LAYOUT_RSURL}`, formValue)
             .then((response) => {
                 toast.success(response.data.message);
@@ -765,8 +839,8 @@ console.log(layoutDetals)
                                                                 })}
                                                                 onChange={inputChangeHandler}
                                                                 onBlur={handleChangeOnBlur}
-                                                                value={formData?.layout_id || layoutMaster?.layout_id ? (formData?.layout_id || layoutMaster?.layout_id ):layoutIdVal.layout_id}
-                                                                disabled={formData?.layout_id || layoutMaster?.layout_id? true : false}
+                                                                value={formData?.layout_id || layoutMaster?.layout_id ? (formData?.layout_id || layoutMaster?.layout_id):layoutIdVal.layout_id}
+                                                                disabled={formData?.layout_id ? true : false}
 
 
 
@@ -865,7 +939,7 @@ console.log(layoutDetals)
                                                                     
                                                                 })}
                                                                 onChange={inputChangeHandler}
-                                                                value={formData.mark_as_complete ? formData.mark_as_complete : ''}
+                                                                value={formData.mark_as_complete || layoutMaster.mark_as_complete ? formData.mark_as_complete || layoutMaster.mark_as_complete : ''}
                                                             />
                                                         </div>
                                                         
@@ -884,6 +958,7 @@ console.log(layoutDetals)
                                                                 ref={register({
                                                                     required: 'On text Field Required'
                                                                 })}
+                                                                value={layoutMaster?.layout_date ? layoutMaster.layout_date : (formData.layout_date ? formData.layout_date : '')}
                                                                 onChange={inputChangeHandler}
                                                                 defaultValue={moment().format("ll")}
                                                                 
@@ -900,13 +975,13 @@ console.log(layoutDetals)
                                                                     required: 'On text Field Required'
                                                                 })}
                                                                 onChange={inputChangeHandler}
-                                                                value={formData.layout_time}
+                                                                value={layoutMaster?.layout_time ? layoutMaster.layout_time : (formData?.layout_time ? formData.layout_time : '')}
                                                             />
                                                         </div>
                                                         <label className="col-md-4 text-left col-form-label">Layout</label>
                                                         <div className="col-md-8">
 
-                                                        <select className="form-control" name="layout" id="layout"  onChange={inputChangeHandler}   ref={register({
+                                                        <select className="form-control" name="layout" id="layout"  onChange={inputChangeHandler} value={layoutMaster?.layout ? layoutMaster?.layout: formData.layout}   ref={register({
                                                                     required: 'On text Field Required'
                                                                 })}>
                                                                 <option value="">Select....</option>
@@ -926,7 +1001,7 @@ console.log(layoutDetals)
                                                         </div>
                                                         <label className="col-sm-4 text-left col-form-label">info</label>
                                                         <div className="col-md-8">
-                                                        <select className="form-control" name="operator_info" id="operator_info"  onChange={inputChangeHandler}   ref={register({
+                                                        <select className="form-control" name="operator_info" id="operator_info" value={layoutMaster?.operator_info ? layoutMaster?.operator_info: (formData.operator_info ? formData.operator_info : '')} onChange={inputChangeHandler}   ref={register({
                                                                     required: 'On text Field Required'
                                                                 })}>
                                                                 <option value="">Select....</option>
@@ -939,7 +1014,7 @@ console.log(layoutDetals)
                                                         </div>
                                                         <label className="col-sm-4 text-left col-form-label">Station</label>
                                                         <div className="col-md-8">
-                                                            <select className="form-control" name="station" id="station" onChange={inputChangeHandler} value={layout?.station ? layout?.station: formData.station} ref={register({
+                                                            <select className="form-control" name="station" id="station" onChange={inputChangeHandler} value={layoutMaster?.station ? layoutMaster?.station: formData.station} ref={register({
                                                                 required: 'On text Field Required'
                                                             })}>
                                                                 <option value="1">opt 1</option>
@@ -957,6 +1032,7 @@ console.log(layoutDetals)
                                                                 ref={register({
                                                                     required: 'On text Field Required'
                                                                 })}
+                                                                value={layoutMaster?.remarks ? layoutMaster.remarks : (formData.remarks ? formData.remarks : '')}
                                                                 onChange={inputChangeHandler}
                                                             />
                                                         </div>
@@ -1052,7 +1128,7 @@ console.log(layoutDetals)
                                                                     required: 'On text Field Required'
                                                                 })}
                                                                 // onChange={inputChangeHandler}
-                                                                disabled={formData?.fl != '' ? true : false}
+                                                                disabled={formData?.dia != '' ? true : false}
                                                                 value={formData.dia ? formData.dia : ''}
                                                             />
                                                         </div>
@@ -1087,7 +1163,7 @@ console.log(layoutDetals)
                                                                     required: 'On text Field Required'
                                                                 })}
                                                                 onChange={inputChangeHandler}
-                                                                // disabled={formData?.d_cir != '' ? true : false}
+                                                                disabled={formData?.cir != '' ? true : false}
                                                                 value={formData.cir ? formData.cir : ''}
                                                             />
                                                         </div>
@@ -1246,6 +1322,7 @@ console.log(layoutDetals)
                                                                 ref={register({
                                                                     required: 'On text Field Required'
                                                                 })}
+                                                                value={layoutMaster?.designer ? layoutMaster.designer : (formData.designer ? formData.designer : '')}
                                                                 onChange={inputChangeHandler}
                                                                 // disabled={formData?.d_cir != '' ? true : false}
                                                                 // value={formData.d_cir ? formData.d_cir : ''}
@@ -1339,33 +1416,44 @@ console.log(layoutDetals)
                                                                     return (
                                                                         <tr>
                                                                             <td>
-                                                                                <input className="form-control" type="text" value={item.id + 1}  name="er_id" id="er_id" onChange={(e) => engOrderHandler(e, index)} ref={register({
-                                                                    required: 'On text Field Required'
-                                                                })}/>
+                                                                                <input className="form-control" type="text" value={item.er_color_id + 1}  name="er_color_serial" id="er_color_serial" onChange={(e) => engOrderHandler(e, index)} ref={register({
+                                                                                required: 'On text Field Required'})}/>
                                                                                 </td>
 
                                                                             <td>
-                                                                                <input className="form-control" type="text" value={matchedColors} name="er_color_id" id="er_color_id" onChange={(e) => engOrderHandler(e, index)} ref={register({
-                                                                    required: 'On text Field Required'
-                                                                })}/>
-                                                                                </td>
+                                                                                <input className="form-control" type="text" value={matchedColors} readOnly name="er_color_id" id="er_color_id" onChange={(e) => engOrderHandler(e, index)} ref={register({
+                                                                                required: 'On text Field Required'})} required/> </td>
 
                                                                             <td>
                                                                                 <input className="form-control" type="text"  name="er_desired_screen" id="er_desired_screen" value={item?.er_desired_screen} onChange={(e) =>engOrderHandler(e, index)} ref={register({
-                                                                    required: 'On text Field Required'
+                                                                     required: 'On text Field Required'
                                                                 })}/>
                                                                                 </td>
 
                                                                             <td>
                                                                                 <input className="form-control" type="text"  name="er_desired_angle" id="er_desired_angle" value={item?.er_desired_angle} onChange={(e) =>engOrderHandler(e, index)} ref={register({
-                                                                    required: 'On text Field Required'
+                                                                     required: 'On text Field Required'
                                                                 })}/>
                                                                                 </td>
 
                                                                             <td>
-                                                                                <input className="form-control" type="text"  name="er_engraving_machine" id="er_engraving_machine" value={item?.er_engraving_machine} onChange={(e) =>engOrderHandler(e, index)} ref={register({
+                                                                                {/* <input className="form-control" type="text"  name="er_engraving_machine" id="er_engraving_machine" value={item?.er_engraving_machine} onChange={(e) =>engOrderHandler(e, index)} ref={register({
                                                                     required: 'On text Field Required'
-                                                                })} />
+                                                                })} /> */}
+
+                                                                <select style={{width: '75px'}} className="form-control" name="er_engraving_machine" id="er_engraving_machine" onChange={(e) =>engOrderHandler(e, index)} ref={register({
+                                                                required: 'On text Field Required'
+                                                                    })} required>
+                                                                <option value=''>Select Machine</option>
+                                                                {layoutMachines.map((machine,index) =>(
+                                                                    <option value={machine.id} key={index}>{machine.machine_name}</option>
+
+                                                                ))}
+                                                                
+                                                            </select>
+
+
+
                                                                         </td>
                                                                         </tr>
                                                                     )
@@ -1376,33 +1464,58 @@ console.log(layoutDetals)
                                                                     return (
                                                                         <tr>
                                                                             <td>
-                                                                                <input className="form-control" type="text" value={item.id + 1}  name="er_id" id="er_id" onChange={(e) => engOrderHandler(e, index)} ref={register({
+                                                                                <input className="form-control" type="text" value={item.er_color_serial + 1}  name="er_color_serial" id="er_color_serial" onChange={(e) => engOrderHandler(e, index)} ref={register({
+                                                                    required: 'On text Field Required'
+                                                                })} required/>
+                                                                                </td>
+
+                                                                            <td>
+                                                                                
+                                                                                {/* <input className="form-control" type="text" value={item.name} name="er_color_id" id="er_color_id" onChange={(e) => engOrderHandler(e, index)} ref={register({
+                                                                    required: 'On text Field Required'
+                                                                })}/> */}
+
+                                                                <select style={{width: '75px'}} className="form-control" name="er_color_id" id="er_color_id"
+                                                                
+                                                                 onChange={engOrderHandler} ref={register({
+                                                                required: 'On text Field Required'
+                                                            })} required>
+                                                                <option value={colorArrayErr}>Select Color</option>
+                                                                {typeColorOptions.map((color,index) =>(
+                                                                    <option value={color.er_color_id} key={index}>{color.name}</option>
+
+                                                                ))}
+                                                                
+                                                            </select>
+                                                            
+                                                                                </td>
+
+                                                                            <td>
+                                                                                <input className="form-control" type="text"  name="er_desired_screen" id="er_desired_screen" value={layoutDetals ? layoutDetals.er_desired_screen : ''} onChange={(e) =>engOrderHandler(e, index)} ref={register({
+                                                                    required: 'On text Field Required'
+                                                                })} required/>
+                                                                                </td>
+
+                                                                            <td>
+                                                                                <input className="form-control" type="text"  name="er_desired_angle" id="er_desired_angle" value={layoutDetals ? layoutDetals.er_desired_angle : ''} onChange={(e) =>engOrderHandler(e, index)} ref={register({
                                                                     required: 'On text Field Required'
                                                                 })}/>
                                                                                 </td>
 
                                                                             <td>
-                                                                                <input className="form-control" type="text" value={item.name} name="er_color_id" id="er_color_id" onChange={(e) => engOrderHandler(e, index)} ref={register({
+                                                                                {/* <input className="form-control" type="text"  name="er_engraving_machine" id="er_engraving_machine" onChange={(e) =>engOrderHandler(e, index)} ref={register({
                                                                     required: 'On text Field Required'
-                                                                })}/>
-                                                                                </td>
+                                                                })} /> */}
+                                                                 <select style={{width: '75px'}} className="form-control" name="er_engraving_machine" id="er_engraving_machine" onChange={(e) =>engOrderHandler(e, index)} ref={register({
+                                                                required: 'On text Field Required'
+                                                                    })} required>
+                                                                <option value=''>Select Machine</option>
+                                                                {layoutMachines.map((machine,index) =>(
+                                                                    <option value={machine.id} key={index}>{machine.machine_name}</option>
 
-                                                                            <td>
-                                                                                <input className="form-control" type="text"  name="er_desired_screen" id="er_desired_screen" onChange={(e) =>engOrderHandler(e, index)} ref={register({
-                                                                    required: 'On text Field Required'
-                                                                })}/>
-                                                                                </td>
-
-                                                                            <td>
-                                                                                <input className="form-control" type="text"  name="er_desired_angle" id="er_desired_angle" onChange={(e) =>engOrderHandler(e, index)} ref={register({
-                                                                    required: 'On text Field Required'
-                                                                })}/>
-                                                                                </td>
-
-                                                                            <td>
-                                                                                <input className="form-control" type="text"  name="er_engraving_machine" id="er_engraving_machine" onChange={(e) =>engOrderHandler(e, index)} ref={register({
-                                                                    required: 'On text Field Required'
-                                                                })} />
+                                                                ))}
+                                                                
+                                                            </select>
                                                                         </td>
                                                                         </tr>
                                                                     )
@@ -1443,7 +1556,7 @@ console.log(layoutDetals)
                                                                 })}
                                                                 onChange={inputChangeHandler}
                                                                 value={
-                                                                    layout?.l_reg_mark ? layout?.l_reg_mark : formData.l_reg_mark 
+                                                                    layoutMaster?.l_reg_mark ? layoutMaster?.l_reg_mark : formData.l_reg_mark 
                                                                 }
                                                             />
                                                         </div>
@@ -1466,7 +1579,7 @@ console.log(layoutDetals)
                                                                     required: 'On text Field Required'
                                                                 })}
                                                                 onChange={inputChangeHandler}
-                                                                value={layout?.l_fl_cut ? layout?.l_fl_cut : formData.l_fl_cut}
+                                                                value={layoutMaster?.l_fl_cut ? layoutMaster?.l_fl_cut : formData.l_fl_cut}
                                                             />
                                                         </div>
                                                         <div className="col-md-3 pl-0">
@@ -1488,7 +1601,7 @@ console.log(layoutDetals)
                                                                     required: 'On text Field Required'
                                                                 })}
                                                                 onChange={inputChangeHandler}
-                                                                value={layout?.design_w ? layout?.design_w :formData.design_w}
+                                                                value={layoutMaster?.design_w ? layoutMaster?.design_w :formData.design_w}
                                                             />
                                                         </div>
                                                         <div className="col-md-3 pl-0">
@@ -1510,7 +1623,7 @@ console.log(layoutDetals)
                                                                     required: 'On text Field Required'
                                                                 })}
                                                                 onChange={inputChangeHandler}
-                                                                value={layout?.axial_ups ? layout.axial_ups : formData.axial_ups}
+                                                                value={layoutMaster?.axial_ups ? layout.axial_ups : formData.axial_ups}
                                                             />
                                                         </div>
                                                         <div className="col-md-3 pl-0">
@@ -1532,7 +1645,7 @@ console.log(layoutDetals)
                                                                     required: 'On text Field Required'
                                                                 })}
                                                                 onChange={inputChangeHandler}
-                                                                value={layout?.r_reg_mark ? layout?.r_reg_mark :formData.r_reg_mark}
+                                                                value={layoutMaster?.r_reg_mark ? layoutMaster?.r_reg_mark :formData.r_reg_mark}
                                                             />
                                                         </div>
                                                         <div className="col-md-3 pl-0">
@@ -1554,7 +1667,7 @@ console.log(layoutDetals)
                                                                 })}
                                                                 type="number"
                                                                 onChange={inputChangeHandler}
-                                                                value={layout?.r_fl_cut ? layout?.r_fl_cut :formData.r_fl_cut}
+                                                                value={layoutMaster?.r_fl_cut ? layoutMaster?.r_fl_cut :formData.r_fl_cut}
                                                             />
                                                         </div>
                                                         <div className="col-md-3 pl-0">
@@ -1576,7 +1689,7 @@ console.log(layoutDetals)
                                                                 })}
                                                                 type="number"
                                                                 onChange={inputChangeHandler}
-                                                                value={layout?.axl_start_point ? layout?.axl_start_point :formData?.axl_start_point}
+                                                                value={layoutMaster?.axl_start_point ? layoutMaster?.axl_start_point :formData?.axl_start_point}
                                                             />
                                                         </div>
                                                     </div>
@@ -1594,7 +1707,7 @@ console.log(layoutDetals)
                                                                 })}
                                                                 type="number"
                                                                 onChange={inputChangeHandler}
-                                                                value={layout?.axl_image_area ? layout?.axl_image_area:formData?.axl_image_area}
+                                                                value={layoutMaster?.axl_image_area ? layoutMaster?.axl_image_area:formData?.axl_image_area}
                                                             />
                                                         </div>
                                                     </div>
