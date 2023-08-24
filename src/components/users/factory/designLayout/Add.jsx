@@ -17,7 +17,7 @@ const Add = (props) => {
     const [isLayout, setIsLayout] = useState(true);
     const [isLoading, setIsLoading] = useState(true);
     const [isBase, setIsBase] = useState(false);
-    const [typeheadOptions, setTypeheadOptions] = useState({ job_orders: [],layout_references:[],employees:[],clients:[],suppliers:[],layout : [], layoutDetails : [],layoutMaster:[],polishMachines :[]});
+    const [typeheadOptions, setTypeheadOptions] = useState({ job_orders: [],layout_references:[],employees:[],clients:[],suppliers:[],layout : [], layoutDetails : [],layoutMaster:[],polishMachines :[],ref_layout:[]});
     const [selectedJobOrder, setSelectedJobOrder] = useState([]);
     const [engraveOrder, setEngraveOrder] = useState([]);
     const [supplierArr, setSupplierArr] = useState([]);
@@ -91,6 +91,7 @@ const Add = (props) => {
         design_height:''
     });
     const [layoutMachines,setLayoutMachines] = useState([])
+    const [selectedRefLayout,setSelectedRefLayout] = useState([])
     const [jobNoFilter,setJobNoFilter] = useState('')
     const [dropdownData, setDropdownData] = useState({});
     const [typeColorOptions, setTypeColorOptions] = useState([]);
@@ -133,9 +134,9 @@ const Add = (props) => {
                });
             setIsLoading(false);
             })
-            // console.log(jobNoFilter)
         }
     },[ref_text])
+    console.log(typeheadOptions)
 
     useEffect(()=>{
         if (job_id == null && jobNoFilter.length > 3) {
@@ -200,6 +201,7 @@ const Add = (props) => {
         .then(response =>{
             // console.log(response.data)
             let jobOrderOptions = [];
+           
             if (response.data.jobOrder) {
                 let jobOrderObj = {};
                 jobOrderObj.id = response.data.jobOrder.id;
@@ -218,25 +220,32 @@ const Add = (props) => {
                 dropDownChange([{ id: response.data.jobOrder.id }], 'job_id');
             }
 
+            
+
         setTypeheadOptions({ ...typeheadOptions, 
-            ['job_orders']: jobOrderOptions
+            ['job_orders']: jobOrderOptions,
            });
         setIsLoading(false);
         })
         }
+        let ref_layout = [];
+        setTypeheadOptions({ ...typeheadOptions, 
+          
+            ['ref_layout'] : ref_layout
+           });
 
         userGetMethod(`${DESIGN_LAYOUT_RSURL}/create?job_order_id=${job_id}`)
             .then(response => {
                 // FOR JOB ORDER
                 console.log(response.data)
-                setLayoutMachines(response.data.machines)
-                if (response.data.layoutMaster && response.data.layoutDetails) {
+                setLayoutMachines(response.data?.machines)
+                if (response.data?.layoutMaster && response.data?.layoutDetails) {
                     // console.log(response.data.layout)
                     // console.log(response.data.layoutMaster)
                     // console.log(response.data.layoutDetails)
                     // setLayoutMaster(response.data.layout)
-                    setLayoutMaster(response.data.layoutMaster)
-                    setLayoutDetals(response.data.layoutDetails)
+                    setLayoutMaster(response.data?.layoutMaster)
+                    setLayoutDetals(response.data?.layoutDetails)
                 }
                
                 
@@ -322,7 +331,8 @@ const Add = (props) => {
                  ['clients']: clientsOptions,
                  ['employees']: employeesOptions,
                  ['suppliers']: suppliersOptions,
-                 ['machines'] : machinesOptions
+                 ['machines'] : machinesOptions,
+                 
                 });
                 // setIsLoading(false);
             });
@@ -558,6 +568,9 @@ console.log(typeheadOptions)
     const dropDownChange = (event, stateName) => {
         if (stateName == 'job_id' && event[0]?.name) {
             setSelectedJobOrder(event);
+        }
+        if (stateName == 'ref_layout' && event[0]?.name) {
+            setSelectedRefLayout(event);
         }
         // console.log(event);
         if (event.length > 0) {
@@ -967,7 +980,7 @@ console.log(typeheadOptions)
                                                                 value={formData.ref_layout_id ? formData.ref_layout_id : ''}
                                                             >
                                                                 <option value=''>Select a option...</option>
-                                                                {typeheadOptions['layout_references'].map((item,index) => (
+                                                                {typeheadOptions['layout_references']?.map((item,index) => (
                                                                     <option key={index} value={item?.layout_id}>
                                                                         {item?.layout_id}
                                                                     </option>
@@ -976,12 +989,12 @@ console.log(typeheadOptions)
 
                                                             <Typeahead
                                                             // className="form-control"
-                                                            id="ref_layout_id"
-                                                            name="ref_layout_id"
+                                                            id="ref_id"
+                                                            name="ref_id"
                                                             labelKey={option => `${option.id}`}
                                                             options={typeheadOptions['ref_layout']}
                                                             placeholder="Select Job No..."
-                                                            onChange={inputChangeHandler}
+                                                            onChange={(e) => dropDownChange(e, 'ref_layout')}
                                                             // selected={selectedJobOrder}
                                                             onInputChange={(text) => handleref_layout_InputChange(text)}
                                                             ref={register({
