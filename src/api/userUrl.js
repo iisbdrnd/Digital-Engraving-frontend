@@ -145,10 +145,12 @@ export const AccountsReceivableReportActionApi = 'api/user/AccountsReceivableRep
 //------ FACTORY START------//
 //DESIGN LAYOUT
 export const DESIGN_LAYOUT_RSURL = 'api/user/layoutDesign';
+export const GET_DESIGN_LAYOUT_JOBORDER = 'api/user/getLayoutJobOrder';
 export const DESIGN_LAYOUT_HISTORY = 'api/user/layoutHistory';
 export const DESIGN_LAYOUT_DETAILS = 'api/user/layoutDetails';
 //GRINDING
 export const GRINDING_RSURL = 'api/user/grinding';
+export const GET_GRINDING_RSURL = 'api/user/getGrindingJobOrder';
 export const GRINDING_JOB_ORDER_DETAILS = 'api/user/jobOrderDetailsFromGrinding';
 export const GET_EMPLOYEE_BY_SHIFT = 'api/user/getEmployeeByShift';
 export const GRINDING_DETAILS = 'api/user/grindingDetails';

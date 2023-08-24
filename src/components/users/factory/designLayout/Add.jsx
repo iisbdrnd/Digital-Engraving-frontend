@@ -8,13 +8,14 @@ import './Add.css';
 
 import { PanelRefreshIcons, SubmitButton } from "../../../common/GlobalButton";
 import { Typeahead } from 'react-bootstrap-typeahead';
-import { JOB_ORDER_DETAILS, DESIGN_LAYOUT_RSURL, DESIGN_LAYOUT_HISTORY,JOB_SUPPLIERS } from "../../../../api/userUrl";
+import { JOB_ORDER_DETAILS, DESIGN_LAYOUT_RSURL, DESIGN_LAYOUT_HISTORY,JOB_SUPPLIERS,GET_DESIGN_LAYOUT_JOBORDER } from "../../../../api/userUrl";
 import { userGetMethod, userPostMethod } from "../../../../api/userAction";
 import { toast } from "react-toastify";
 
 const Add = (props) => {
     const { handleSubmit, register, errors, reset } = useForm();
     const [isLayout, setIsLayout] = useState(true);
+    const [isLoading, setIsLoading] = useState(true);
     const [isBase, setIsBase] = useState(false);
     const [typeheadOptions, setTypeheadOptions] = useState({ job_orders: [],layout_references:[],employees:[],clients:[],suppliers:[],layout : [], layoutDetails : [],layoutMaster:[],polishMachines :[]});
     const [selectedJobOrder, setSelectedJobOrder] = useState([]);
@@ -89,7 +90,7 @@ const Add = (props) => {
         design_height:''
     });
     const [layoutMachines,setLayoutMachines] = useState([])
-    
+    const [jobNoFilter,setJobNoFilter] = useState('')
     const [dropdownData, setDropdownData] = useState({});
     const [typeColorOptions, setTypeColorOptions] = useState([]);
 
@@ -99,9 +100,98 @@ const Add = (props) => {
         pageRefreshHandler(job_id);
     }, [])
 
+    const handleTypeaheadInputChange = (text)=>{
+        setJobNoFilter(text);
+    }
 
+    useEffect(()=>{
+        if (job_id == null && jobNoFilter.length > 3) {
+            
+            userGetMethod(`${GET_DESIGN_LAYOUT_JOBORDER}?searchText=${jobNoFilter}`)
+            .then(response => {
+                console.log(response.data)
+                let jobOrderOptions = [];
+                if (response.data.jobOrders && response.data.jobOrders.length > 0) {
+                response.data.jobOrders.map(job => {
+
+                    
+                        let jobOrderObj = {};
+                        jobOrderObj.id =job.id;
+                        jobOrderObj.job_no =job.job_no;
+                        jobOrderObj.name = job.job_name;
+                        jobOrderOptions.push(jobOrderObj);
+                    }
+                )
+            }
+
+            setTypeheadOptions({ ...typeheadOptions, 
+                ['job_orders']: jobOrderOptions
+               });
+            setIsLoading(false);
+            })
+            // console.log(jobNoFilter)
+        }
+    },[jobNoFilter])
+
+    
     const pageRefreshHandler = async(job_id = null) => {
         // setIsLoading(true);
+        // if (job_id == null && jobNoFilter.length > 3) {
+            
+        //     userGetMethod(`${GET_DESIGN_LAYOUT_JOBORDER}?searchText=${jobNoFilter}`)
+        //     .then(response => {
+        //         console.log(response.data)
+        //         let jobOrderOptions = [];
+        //     if (response.data.jobOrders && response.data.jobOrders.length > 0) {
+        //         response.data.jobOrders.map(job => {
+
+                    
+        //                 let jobOrderObj = {};
+        //                 jobOrderObj.id =job.id;
+        //                 jobOrderObj.job_no =job.job_no;
+        //                 jobOrderObj.name = job.job_name;
+        //                 jobOrderOptions.push(jobOrderObj);
+        //             }
+        //         )
+        //     }
+
+        //     setTypeheadOptions({ ...typeheadOptions, 
+        //         ['job_orders']: jobOrderOptions
+        //        });
+        //     setIsLoading(false);
+        //     })
+        //     // console.log(jobNoFilter)
+        // }
+        if (job_id != null) {
+            userGetMethod(`${GET_DESIGN_LAYOUT_JOBORDER}?job_order_id=${job_id}`)
+        .then(response =>{
+            // console.log(response.data)
+            let jobOrderOptions = [];
+            if (response.data.jobOrder) {
+                let jobOrderObj = {};
+                jobOrderObj.id = response.data.jobOrder.id;
+                jobOrderObj.job_no = response.data.jobOrder.job_no;
+                jobOrderObj.name = response.data.jobOrder.job_name;
+                jobOrderOptions.push(jobOrderObj);
+
+                // if (response.data.jobOrders != null) {
+                //     setFormData({
+                //         'job_id': [jobOrderObj]
+                //     })
+                // }
+                if (job_id != null) {
+                    setSelectedJobOrder([...selectedJobOrder, jobOrderObj])
+                }
+                dropDownChange([{ id: response.data.jobOrder.id }], 'job_id');
+            }
+
+        setTypeheadOptions({ ...typeheadOptions, 
+            ['job_orders']: jobOrderOptions
+           });
+        setIsLoading(false);
+        })
+        }
+
         userGetMethod(`${DESIGN_LAYOUT_RSURL}/create?job_order_id=${job_id}`)
             .then(response => {
                 // FOR JOB ORDER
@@ -118,10 +208,7 @@ const Add = (props) => {
                
                 
                 // ======================================
-
                
-
-
 
                 // Demo for all create post
                 let jobOrderOptions = [];
@@ -130,7 +217,7 @@ const Add = (props) => {
                     jobOrderObj.id = response.data.jobOrder.id;
                     jobOrderObj.name = `[${response.data.jobOrder.job_no}] ` + response.data.jobOrder.job_name;
                     jobOrderOptions.push(jobOrderObj);
-
+    
                     if (response.data.jobOrders != null) {
                         setFormData({
                             'job_id': [jobOrderObj]
@@ -141,6 +228,7 @@ const Add = (props) => {
                     }
                     dropDownChange([{ id: response.data.jobOrder.id }], 'job_id');
                 }
+                
                 if (response.data.jobOrders && response.data.jobOrders.length > 0) {
                     response.data.jobOrders.map(order => {
                         let jobOrderObj = {};
@@ -206,7 +294,7 @@ const Add = (props) => {
                 // setIsLoading(false);
             });
     }
-console.log(layoutDetals)
+console.log(typeheadOptions)
 
     const toogleLtoB = (val) => {
         if (val == "layout") {
@@ -298,8 +386,8 @@ console.log(layoutDetals)
         }
     }
 
-    console.log(formData);
-    console.log(layoutIdVal)
+    // console.log(formData);
+    // console.log(layoutIdVal)
     // console.log(typeColorOptions);
 
     
@@ -364,25 +452,37 @@ console.log(layoutDetals)
 
         if (e.target.name == 'er_color_id') {
             const colorID = e.target.value;
-           
-            if (!colorArray.includes(colorID)) {
+            const colorExists = colorArray.some(item => item.er_color_id === colorID);
+            if (!colorExists) {
                 const updatedListArray = [...colorArray,{'er_color_id':colorID}]
                 return setColorArray(updatedListArray);
             }else{
                 colorAlert = 'Color was found previously selected, Please Enter another Color';
                 setColorArrayErr(colorArrayErr);
-                alert(`Error found: ${colorAlert}`)
+                const tostval = toast.warning(`Error found: ${colorAlert}`)
+                if (tostval) {
+                    e.target.value=''
+                }
                 e.preventDefault()
+            }
+            // if (!colorArray.includes(colorID)) {
+            //     const updatedListArray = [...colorArray,{'er_color_id':colorID}]
+            //     return setColorArray(updatedListArray);
+            // }else{
+            //     colorAlert = 'Color was found previously selected, Please Enter another Color';
+            //     setColorArrayErr(colorArrayErr);
+            //     alert(`Error found: ${colorAlert}`)
+            //     e.preventDefault()
 
                 
-            }
+            // }
             
         }
 
         if (e.target.name == 'er_engraving_machine') {
             const machineID = e.target.value;
-           
-            if (!machineArray.includes(machineID)) {
+            const mechineExists = machineArray.some(item => item.machine_er_id === machineID);
+            if (!mechineExists) {
                 const updatedListArray = [...machineArray,{'machine_er_id':machineID}]
                 setMachineArray(updatedListArray);
             }else{
@@ -395,6 +495,7 @@ console.log(layoutDetals)
             
         }
     };
+    console.log(colorArray)
     
     useEffect(() => {
         var img;
@@ -506,7 +607,9 @@ console.log(layoutDetals)
                
         }
     }
-    console.log(engraveOrder)
+    
+
+    // console.log(engraveOrder)
 
     let checked;
     if (formData.printer_mark == "Yes") {
@@ -531,7 +634,9 @@ console.log(layoutDetals)
         return matchingColor ? matchingColor.name : 'Unknown';
       });
       
-
+      const typeColorOptionLength = typeColorOptions.length;
+      const er_colorLength = colorArray.length;
+      
 
     const onSubmit = (data, e) => {
         e.preventDefault();
@@ -557,10 +662,9 @@ console.log(layoutDetals)
      formValue.append("engraveOrder", JSON.stringify(engraveOrder));
      formValue.append("er_color_id_list", JSON.stringify(colorArray));
      formValue.append("er_machine_id_list", JSON.stringify(machineArray));
-     
-    //  console.log(formValue)
-//   console.log(Array.from(formValue.entries()));
-    setIsSubmitting(false);
+
+     if (typeColorOptionLength === er_colorLength) {
+        setIsSubmitting(false);
         userPostMethod(`${DESIGN_LAYOUT_RSURL}`, formValue)
             .then((response) => {
                 toast.success(response.data.message);
@@ -570,6 +674,13 @@ console.log(layoutDetals)
                 setIsSubmitting(false);
             })
             .catch((error) => {console.log(error)});
+     }
+     else{
+        toast.warning("Please fill all color name in Engravers Section")
+     }
+    //  console.log(formValue)
+//   console.log(Array.from(formValue.entries()));
+    
             
     }
 
@@ -672,11 +783,12 @@ console.log(layoutDetals)
                                                             // className="form-control"
                                                             id="job_id"
                                                             name="job_id"
-                                                            labelKey={option => `${option.name}`}
+                                                            labelKey={option => `${option.job_no}${option.name}`}
                                                             options={typeheadOptions['job_orders']}
                                                             placeholder="Select Job No..."
                                                             onChange={(e) => dropDownChange(e, 'job_id')}
                                                             selected={selectedJobOrder}
+                                                            onInputChange={(text) => handleTypeaheadInputChange(text)}
                                                             ref={register({
                                                                 required: 'On text Field Required'
                                                             })}

@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useEffect, useReducer } from 'react';
-import { JOB_ORDER_DETAILS, GRINDING_RSURL, GET_EMPLOYEE_BY_SHIFT, GRINDING_DETAILS } from '../../../../api/userUrl';
+import { JOB_ORDER_DETAILS, GRINDING_RSURL, GET_EMPLOYEE_BY_SHIFT, GRINDING_DETAILS,GET_GRINDING_RSURL } from '../../../../api/userUrl';
 import { userGetMethod, userPostMethod } from '../../../../api/userAction';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -14,7 +14,7 @@ const Add = (props) => {
     const [isLoading, setIsLoading] = useState(true);
     const [typeHeadOptions, setTypeHeadOptions] = useState({});
     const [dropDownData, setDropdownData] = useState();
-
+    const [jobNoFilter,setJobNoFilter] = useState('')
     // const [selectedJobOrders, setSelectedJobOrders] = useState({});
     const [markedComplete, setMarkedComplete] = useState([]);
     const [grindingValues, setGrindingValues] = useState([]);
@@ -94,7 +94,16 @@ const Add = (props) => {
                             jobNumber.push(jobOrderObj);
                         }
                     })
+
                 }
+                setTypeHeadOptions(
+                    (prevstate) => ({
+                        ...prevstate,
+                        ['job_orders']: jobOrderOptions,
+                    })
+                );
+
+
                 if(props.location.state.params.job_order_id)
                 { setDropdownData(
                     (prevstate) => ({
@@ -104,10 +113,14 @@ const Add = (props) => {
                 )
                 // setJobNumber([{'job_order_pk_id':props.location.state.params.job_order_id}])
                 }
+                
+
                 if(props.location.state.params.job_order_id) 
-                {userGetMethod(`${JOB_ORDER_DETAILS}?jobOrderId=${props.location.state.params.job_order_id}?`)
-                .then(response => {
+                {
+                    userGetMethod(`${JOB_ORDER_DETAILS}?jobOrderId=${props.location.state.params.job_order_id}?`)
+                    .then(response => {
                     let { job_no, job_type, fl, cir, dia, marketing_p_name, printer_name, total_cylinder_qty, client_name} = response.data.jobOrderDetails;
+                    
                     setJobOrderData({
                         'job_no'            : job_no,
                         'client_name'       : client_name,
@@ -119,19 +132,42 @@ const Add = (props) => {
                         'desired_cir'       : cir,
                         'desired_dia'       : dia
                     });
-                }) }
+                    
+                    let jobOrderNewOptions = [];
+                    let jobOrderObj = {};
+                    if (response.data.jobOrderDetails) {
+                        jobOrderObj.id = response.data.jobOrderDetails.job_no;
+                        jobOrderObj.name = response.data.jobOrderDetails.job_name;
+                        jobOrderNewOptions.push(jobOrderObj);
+                        console.log(jobOrderNewOptions);
 
-                setJobOrderData({
-                    'machines'      : response.data.machines,
-                    'polishMachines': response.data.polishMachines,
-                });
+
+                        setJobNumber([...jobNumber, jobOrderObj])
+                
+                        
+                    }
+                    setTypeHeadOptions({ ...typeHeadOptions, 
+                        ['job_orders']: jobOrderNewOptions,
+                        });
+                        
+                        
+                        
+                        // dropDownChange([{ id: props.location.state.params.job_order_id }], 'job_order_pk_id');
+                        // setJobNumber([
+                        //     ...jobNumber, response.data.jobOrderDetails.job_no]
+                        // )
+                  
+                }) 
+            
+            
+                
+            } 
+            setJobOrderData({
+                'machines'      : response.data.machines,
+                'polishMachines': response.data.polishMachines,
+            });
                 // dropDownChange([{ id: props.location.state.params.job_order_id }], 'job_order_pk_id');
-                setTypeHeadOptions(
-                    (prevstate) => ({
-                        ...prevstate,
-                        ['job_orders']: jobOrderOptions,
-                    })
-                );
+                
                 setIsLoading(false);
             });
         
@@ -144,6 +180,7 @@ const Add = (props) => {
                 });
         }
     }, []);
+    // console.log(typeHeadOptions)
 
     const getGrinder = () => {
         var cylinder_arr =[];
@@ -196,6 +233,41 @@ const Add = (props) => {
                 });
         }
     }
+    const handleTypeaheadInputChange = (text)=>{
+        setJobNoFilter(text);
+    }
+
+    useEffect(()=>{
+        if (!props.location.state.params.job_order_id && jobNoFilter.length > 3) {
+            
+            userGetMethod(`${GET_GRINDING_RSURL}?searchText=${jobNoFilter}`)
+            .then(response => {
+                console.log(response.data)
+                let jobOrderOptions = [];
+                if (response.data.jobOrders && response.data.jobOrders.length > 0) {
+                response.data.jobOrders.map(job => {
+
+                    
+                        let jobOrderObj = {};
+                        jobOrderObj.id =job.id;
+                        jobOrderObj.job_no =job.job_no;
+                        jobOrderObj.name = job.job_name;
+                        jobOrderOptions.push(jobOrderObj);
+                    }
+                )
+            }
+
+            setTypeHeadOptions((prevstate) => ({
+                ...prevstate,
+                ['job_orders']: jobOrderOptions,
+            }))
+            setIsLoading(false);
+            })
+            // console.log(jobNoFilter)
+        }
+    },[jobNoFilter])
+
+
     const updateGrindingInput = (values) => {
         Object.entries(grindingInput).map(([key, value]) => {
             var temp_obj = {};
@@ -224,6 +296,7 @@ const Add = (props) => {
     const  changeMasterGrinder = (e) => {
         setGrindingMaster({...grindingMaster,[e.target.name] : e.target.value});
     }
+    
 
     useEffect(() => {
         shiftChangeHandler(parseInt(grindingMaster?.shift))
@@ -443,9 +516,10 @@ const Add = (props) => {
                                                             placeholder="Select Job No..."
                                                             onChange={(e) => dropDownChange(e, 'job_order_pk_id')}
                                                             inputProps={{ required: true }}
+                                                            onInputChange={(text)=>handleTypeaheadInputChange(text)}
                                                             // defaultInputValue={selectedJobOrders?.name}
                                                             selected={jobNumber}
-                                                            // disabled={job_order_pk_id != null ? 'disabled' : ''}
+                                                            disabled={props.location.state.params.job_order_id ? true : false}
                                                             ref={register({
                                                                 required: 'Job No Field Required'
                                                             })}
@@ -585,12 +659,13 @@ const Add = (props) => {
                                                                 ref={register({
                                                                     required: 'Polishing Field Required'
                                                                 })} 
-                                                                value={grindingMaster?.polishing ? parseInt(grindingMaster?.polishing) : ''}
+                                                                value={grindingMaster?.polishing}
                                                                 onChange={(e) => changeMasterGrinder(e)}>
                                                                     <option value=''> Select Polishing </option>
-                                                                    {jobOrderData.polishMachines.map((item, index)=>( 
-                                                                        <option value={item.id} key={index}>{item.machine_name}</option>
-                                                                    ))}
+                                                                    <option value='Polish Master Only'> Polish Master Only </option>
+                                                                    <option value='CFM Only'> CFM Only </option>
+                                                                    <option value='Polish Master & CFM'> Polish Master & CFM </option>
+                                                                    
                                                                 </select>
                                                             </div>
                                                         </div>
