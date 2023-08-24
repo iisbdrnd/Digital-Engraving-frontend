@@ -119,7 +119,7 @@ const Add = (props) => {
                 setIsLoading(false);
             });
     }
-
+console.log(typeheadOptions.suppliers);
     // FOR Typeahead DATA INPUT
     const dropDownChange = (event, stateName) => {
         // console.log(event);
@@ -134,11 +134,11 @@ const Add = (props) => {
             if(stateName === 'job_order_id'){
                 setJobId(selectedValue)
             }
-            if(stateName == 'supplier_id' && (selectedValue == 7 || selectedValue == 8)){
-                selectedValue == 7 ? setStockdel(true) : setStockdel(false);
-                selectedValue == 8 ? setStockClient(true) : setStockClient(false);
+            if(stateName == 'supplier_id' && (selectedValue == 12 || selectedValue == 11)){
+                selectedValue == 12 ? setStockdel(true) : setStockdel(false);
+                selectedValue == 11 ? setStockClient(true) : setStockClient(false);
                 setRefDisabled(false);
-            }else if(stateName == 'supplier_id' && (selectedValue != 7 && selectedValue != 8)){
+            }else if(stateName == 'supplier_id' && (selectedValue != 12 && selectedValue != 11)){
                 userGetMethod(`${JOB_ORDER_DETAILS}?jobOrderId=${jobId}`)
                 .then(response => {
                     let { total_cylinder_qty } = response.data.jobOrderDetails;
