@@ -134,11 +134,11 @@ console.log(typeheadOptions.suppliers);
             if(stateName === 'job_order_id'){
                 setJobId(selectedValue)
             }
-            if(stateName == 'supplier_id' && (selectedValue == 12 || selectedValue == 11)){
-                selectedValue == 12 ? setStockdel(true) : setStockdel(false);
-                selectedValue == 11 ? setStockClient(true) : setStockClient(false);
+            if(stateName == 'supplier_id' && (selectedValue == 11 || selectedValue == 10)){
+                selectedValue == 11 ? setStockdel(true) : setStockdel(false);
+                selectedValue == 10 ? setStockClient(true) : setStockClient(false);
                 setRefDisabled(false);
-            }else if(stateName == 'supplier_id' && (selectedValue != 12 && selectedValue != 11)){
+            }else if(stateName == 'supplier_id' && (selectedValue != 11 && selectedValue != 10)){
                 userGetMethod(`${JOB_ORDER_DETAILS}?jobOrderId=${jobId}`)
                 .then(response => {
                     let { total_cylinder_qty } = response.data.jobOrderDetails;
