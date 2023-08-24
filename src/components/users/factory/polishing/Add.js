@@ -74,6 +74,7 @@ const Add = (props) => {
         userGetMethod(`${POLISHING_RS_URL}/create?polishing_id=${digPolishingCylinderId}`)
             .then(response => {
                 // FOR JOB ORDER
+                // console.log(response.data)
                 let jobOrderOptions = [];
                 if (response.data.jobOrder) {
                     let jobOrderObj = {};
@@ -195,7 +196,13 @@ const Add = (props) => {
         }else{
             setStateData({[e.target.name]: e.target.value});
         }
+        if (e.target.name == 'shift_id') {
+            setStateData({
+                ...stateData,[e.target.name] : e.target.value
+            });
+        }
     }
+    // console.log(stateData)
     
     useEffect(() => {
         if(stateData?.on_time != '' && stateData?.est_duration != '' ){
@@ -408,9 +415,21 @@ const Add = (props) => {
                                                         
                                                     <label className="col-md-5 col-form-label label-form">Shift</label>
                                                     <div className="col-md-7">
-                                                        <input type="text" disabled='disabled' value={stateData.shiftData.shift_type == 1 ? 'Day' : stateData.shiftData.shift_type == 2 ? 'Evening' : 'Night'} className="form-control"/>
+                                                        {/* <input type="text"  value={stateData.shiftData.shift_type == 1 ? 'Day' : stateData.shiftData.shift_type == 2 ? 'Evening' : 'Night'} className="form-control"/>
 
-                                                        <input type="hidden" value={stateData.shiftData.shift_pk_id} className="form-control" name="shift_id" ref={register({ required: true })}/>
+                                                        <input type="hidden" value={stateData.shiftData.shift_pk_id} className="form-control" name="shift_id" ref={register({ required: true })}/> */}
+
+                                                        <select className="form-control" name="shift_id" onChange={inputChangeHandler} ref={register({
+                                                        required: 'Shift Id Field Required'
+                                                    })} defaultValue=''>
+                                                        <option value=''>Select One ...</option>
+                                                        <option value='1'>Day</option>
+                                                        <option value='2'>Evening</option>
+                                                        <option value='3'>Night</option>
+                                                        
+                                                    </select>
+
+
                                                     </div>
                                                     
                                                         {/* </>

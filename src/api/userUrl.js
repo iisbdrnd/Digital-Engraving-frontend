@@ -148,6 +148,7 @@ export const DESIGN_LAYOUT_RSURL = 'api/user/layoutDesign';
 export const GET_DESIGN_LAYOUT_JOBORDER = 'api/user/getLayoutJobOrder';
 export const DESIGN_LAYOUT_HISTORY = 'api/user/layoutHistory';
 export const DESIGN_LAYOUT_DETAILS = 'api/user/layoutDetails';
+export const GET_DESIGN_LAYOUT_DETAILS = 'api/user/getLayoutReferences';
 //GRINDING
 export const GRINDING_RSURL = 'api/user/grinding';
 export const GET_GRINDING_RSURL = 'api/user/getGrindingJobOrder';
@@ -269,6 +270,7 @@ export const GET_POLISHING_DATA_BY_POLISHING_PK_ID= 'api/user/getPolishingDataBy
 
 //ENGRAVING
 export const ENGRAVING_RS_URL = 'api/user/engraving';
+export const GET_ENGRAVING_COLOR_URL = 'api/user/getColors';
 export const GET_ENGRAVING_DATA_BY_JOB_ID= 'api/user/getEngraveDataByJobId';
 
 //CHROME

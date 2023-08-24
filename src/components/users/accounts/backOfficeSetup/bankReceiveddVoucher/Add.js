@@ -316,7 +316,7 @@ const Add = (props) => {
                                                     </div>
                                                 </div>
 
-                                                <div className="form-group row">
+                                                <div className="form-group row mt-2">
                                                     <label htmlFor="main_code" className="col-md-3 col-form-label required">Payment By</label>
                                                     <div className="col-sm-9 col-md-9">
                                                         <Typeahead
@@ -334,7 +334,7 @@ const Add = (props) => {
                                                     </div>
                                                 </div>
 
-                                                <div className="form-group row">
+                                                <div className="form-group row mt-2">
                                                     <label className="col-sm-3 col-form-label required" htmlFor="check_no">Check No</label>
                                                     <div className="col-sm-9">
                                                         <input 
@@ -350,7 +350,7 @@ const Add = (props) => {
                                                     </div>
                                                 </div>
 
-                                                <div className="form-group row">
+                                                <div className="form-group row mt-2">
                                                     <label className="col-sm-3 col-form-label required" htmlFor="check_date">Check Date</label>
                                                     <div className="col-sm-9">
                                                         <input 
@@ -366,9 +366,9 @@ const Add = (props) => {
                                                     </div>
                                                 </div>
 
-                                                <div className="form-group row">
+                                                <div className="form-group row mt-2">
                                                     <label className="col-md-3 col-form-label required">Amount:</label>
-                                                    <div className="col-md-7 p-r-0">
+                                                    <div className="col-md-7 pr-0">
                                                         <div className="input-group">
                                                             <span className="input-group-addon"></span>
                                                             <input 
@@ -383,18 +383,18 @@ const Add = (props) => {
                                                             />
                                                         </div>
                                                     </div>
-                                                    <div className="col-lg-2 col-md-2 pl0 mt10-mbl">
-                                                        <button 
+                                                    <div className="col-lg-2 col-md-2 ">
+                                                        <button style={{marginLeft: '8px',height: '35px'}}
                                                             id="add_amount" 
                                                             type="button" 
-                                                            className="btn btn-block btn-default"
+                                                            className="btn btn-primary"
                                                             onClick={e=>addAmount(e)}
                                                         >Add
                                                         </button>
                                                     </div>
                                                 </div>
 
-                                                <div className="form-group row">
+                                                <div className="form-group row mt-2">
                                                     <label className="col-sm-3 col-form-label required" htmlFor="remark">Remarks</label>
                                                     <div className="col-sm-9">
                                                         <textarea 
@@ -410,7 +410,7 @@ const Add = (props) => {
                                                     </div>
                                                 </div>
 
-                                                <div className="form-group row">
+                                                <div className="form-group row mt-2">
                                                     <label className="col-sm-3 col-form-label required"><b>Total Amount</b></label>
                                                     <div className="col-sm-9">
                                                         <p style={{"font-size":"18px"}}>{totalAmount}</p>

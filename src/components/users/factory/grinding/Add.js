@@ -139,7 +139,7 @@ const Add = (props) => {
                         jobOrderObj.id = response.data.jobOrderDetails.job_no;
                         jobOrderObj.name = response.data.jobOrderDetails.job_name;
                         jobOrderNewOptions.push(jobOrderObj);
-                        console.log(jobOrderNewOptions);
+                        // console.log(jobOrderNewOptions);
 
 
                         setJobNumber([...jobNumber, jobOrderObj])
@@ -516,9 +516,9 @@ const Add = (props) => {
                                                             placeholder="Select Job No..."
                                                             onChange={(e) => dropDownChange(e, 'job_order_pk_id')}
                                                             inputProps={{ required: true }}
-                                                            onInputChange={(text)=>handleTypeaheadInputChange(text)}
+                                                            onInputChange={(e,text)=>handleTypeaheadInputChange(e,text)}
                                                             // defaultInputValue={selectedJobOrders?.name}
-                                                            selected={jobNumber}
+                                                            // selected={jobNumber}
                                                             disabled={props.location.state.params.job_order_id ? true : false}
                                                             ref={register({
                                                                 required: 'Job No Field Required'

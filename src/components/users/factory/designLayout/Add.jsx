@@ -8,7 +8,7 @@ import './Add.css';
 
 import { PanelRefreshIcons, SubmitButton } from "../../../common/GlobalButton";
 import { Typeahead } from 'react-bootstrap-typeahead';
-import { JOB_ORDER_DETAILS, DESIGN_LAYOUT_RSURL, DESIGN_LAYOUT_HISTORY,JOB_SUPPLIERS,GET_DESIGN_LAYOUT_JOBORDER } from "../../../../api/userUrl";
+import { JOB_ORDER_DETAILS, DESIGN_LAYOUT_RSURL, DESIGN_LAYOUT_HISTORY,JOB_SUPPLIERS,GET_DESIGN_LAYOUT_JOBORDER,GET_DESIGN_LAYOUT_DETAILS } from "../../../../api/userUrl";
 import { userGetMethod, userPostMethod } from "../../../../api/userAction";
 import { toast } from "react-toastify";
 
@@ -27,6 +27,7 @@ const Add = (props) => {
     const [layout,setLayout] = useState({});
     const [colorArray,setColorArray] = useState([]);
     const [colorArrayErr,setColorArrayErr] = useState('');
+    const [ref_text,setRef_text] = useState('');
     const [machineArray,setMachineArray] = useState([]);
     const [layoutOnBlur,setLayoutOnBlur] = useState({
         final_cir:'',
@@ -103,6 +104,38 @@ const Add = (props) => {
     const handleTypeaheadInputChange = (text)=>{
         setJobNoFilter(text);
     }
+    const handleref_layout_InputChange = (text)=>{
+        setRef_text(text)
+    }
+
+    useEffect(()=>{
+        if (job_id == null && ref_text.length > 3) {
+            
+            userGetMethod(`${GET_DESIGN_LAYOUT_DETAILS}?searchText=${ref_text}`)
+            .then(response => {
+                console.log(response.data)
+                let jobOrderOptions = [];
+                if (response.data.layout_references && response.data.layout_references.length > 0) {
+                response.data.layout_references.map(job => {
+
+                    
+                    let jobOrderObj = {};
+                    jobOrderObj.id =job.layout_id;
+                    // jobOrderObj.job_no =job.job_no;
+                    // jobOrderObj.name = job.job_name;
+                    jobOrderOptions.push(jobOrderObj);
+                    }
+                )
+            }
+
+            setTypeheadOptions({ ...typeheadOptions, 
+                ['ref_layout']: jobOrderOptions
+               });
+            setIsLoading(false);
+            })
+            // console.log(jobNoFilter)
+        }
+    },[ref_text])
 
     useEffect(()=>{
         if (job_id == null && jobNoFilter.length > 3) {
@@ -922,7 +955,9 @@ console.log(typeheadOptions)
                                                     <div className="col-md-12 row"> 
                                                     <label className="col-sm-5 col-form-label">Ref. Layout</label>
                                                         <div className="col-md-7">
-                                                            <select type="text"
+
+
+                                                            {/* <select type="text"
                                                                 className="form-control"
                                                                 name="ref_layout_id"
                                                                 ref={register({
@@ -937,7 +972,27 @@ console.log(typeheadOptions)
                                                                         {item?.layout_id}
                                                                     </option>
                                                                 ))}
-                                                            </select>
+                                                            </select> */}
+
+                                                            <Typeahead
+                                                            // className="form-control"
+                                                            id="ref_layout_id"
+                                                            name="ref_layout_id"
+                                                            labelKey={option => `${option.id}`}
+                                                            options={typeheadOptions['ref_layout']}
+                                                            placeholder="Select Job No..."
+                                                            onChange={inputChangeHandler}
+                                                            // selected={selectedJobOrder}
+                                                            onInputChange={(text) => handleref_layout_InputChange(text)}
+                                                            ref={register({
+                                                                required: 'On text Field Required'
+                                                            })}
+                                                            maxHeight={100}
+                                                            // disabled={job_id != null ? true : false}
+                                                        />
+
+
+
                                                         </div>
                                                         <label className="col-sm-5 text-left col-form-label required">Layout ID</label>
                                                         <div className="col-md-7">

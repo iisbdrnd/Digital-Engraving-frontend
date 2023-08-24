@@ -9,6 +9,63 @@ import swal from 'sweetalert2';
 
 
 
+// export const dropDownOption = (props)=>{
+
+//     const handleTypeaheadInputChange = (text)=>{
+//         setJobNoFilter(text);
+//     }
+
+//     useEffect(()=>{
+//         if (jobNoFilter.length > 3) {
+            
+//             userGetMethod(`${props.baseURL}?searchText=${jobNoFilter}`)
+//             .then(response => {
+//                 console.log(response.data)
+//                 let jobOrderOptions = [];
+//                 if (response.data.layout_references && response.data.layout_references.length > 0) {
+//                 response.data.layout_references.map(reference => {
+
+                    
+//                         let jobOrderObj = {};
+//                         jobOrderObj.id = reference.layout_id;
+//                         // jobOrderObj.job_no =reference.job_no;
+//                         // jobOrderObj.name = reference.job_name;
+//                         jobOrderOptions.push(jobOrderObj);
+//                     }
+//                 )
+//             }
+
+//             setTypeHeadOptions((prevstate) => ({
+//                 ...prevstate,
+//                 ['layout_id']: jobOrderOptions,
+//             }))
+//             setIsLoading(false);
+//             })
+//             // console.log(jobNoFilter)
+//         }
+//     },[jobNoFilter])
+
+
+//     return(
+//                                                         <Typeahead
+//                                                         id="layout_id"
+//                                                         name="layout_id"
+//                                                         labelKey={option => `${option.id}`}
+//                                                         options={typeHeadOptions['layout_id']}
+//                                                         placeholder="Select Job No..."
+//                                                         onChange={handleChange}
+//                                                         inputProps={{ required: true }}
+//                                                         onInputChange={(e)=>handleTypeaheadInputChange(e)}
+//                                                         // selected={designToFactoryInput.job_order_pk_id}
+//                                                         // disabled={job_order_pk_id != null ? 'disabled' : ''}
+//                                                         ref={register({
+//                                                             required: 'Job No Field Required'
+//                                                         })}
+//                                                         />
+//     )
+// }
+
+
 export const SubmitButton = props => {
     
 

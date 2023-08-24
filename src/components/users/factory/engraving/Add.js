@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState, useReducer } from 'react';
-import { DESIGN_LAYOUT_DETAILS, ENGRAVING_RS_URL, GET_ENGRAVING_DATA_BY_JOB_ID } from '../../../../api/userUrl';
+import { DESIGN_LAYOUT_DETAILS, ENGRAVING_RS_URL, GET_ENGRAVING_DATA_BY_JOB_ID,GET_DESIGN_LAYOUT_DETAILS,GET_ENGRAVING_COLOR_URL } from '../../../../api/userUrl';
 import { userGetMethod, userPutMethod } from '../../../../api/userAction';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -13,6 +13,8 @@ const Add = (props) => {
     const [isLoading, setIsLoading] = useState(true);
     const [typeHeadOptions, setTypeHeadOptions] = useState({});
     const [dropDownData, setDropdownData] = useState();
+    const [layoutText,setLayoutText] = useState('')
+    const [colorText,setColorText] = useState('')
     const [colors , setColors] = useState([]);
     const [layoutReferrence, setLayoutReferrence] = useState([]);
 
@@ -50,29 +52,109 @@ const Add = (props) => {
                         jobOrderOptions.push(jobOrderObj);
                     })
                 }
+                let jobLayoutReference = [];
+                
+                let layoutColors = []
                 let {polishMachines, digShift, shiftDutyPersons} = response.data;
                 setStateData({
                     'polishMachines'                : polishMachines,
                     'shiftData'                     : digShift, //GET DATA FROM dig_shift_master table
                     'shiftDutyPersons'              : shiftDutyPersons, //GET DATA FROM dig_shift_details table
                 });
+                setLayoutReferrence({...layoutReferrence, jobLayoutReference})
+                setColors({...colors,layoutColors})
                 setTypeHeadOptions(
                     (prevstate) => ({
                         ...prevstate,
                         ['job_orders']: jobOrderOptions,
+                        ['layout_id'] : jobLayoutReference,
+                        ['color'] : layoutColors
                     })
                 );
 
                 setIsLoading(false);
-                setColors(response?.data?.colors);
-                setLayoutReferrence(response?.data?.layout_references);
+                // setColors(response?.data?.colors);
+                // setLayoutReferrence(response?.data?.layout_references);
             });
     }, []);
     const handleChange = (event) => {
-        event.preventDefault();
+        // event.preventDefault();
         setStateData({...stateData,[event.target.name] : event.target.value});
        
     }
+
+    const handleOnChangeLayout = (text) =>{
+        setLayoutText(text)
+    }
+    const handleOnChangeColor = (text) =>{
+        setColorText(text)
+    }
+
+    useEffect(() =>{
+        if (layoutText.length >= 3) {
+            userGetMethod(`${GET_DESIGN_LAYOUT_DETAILS}?searchText=${layoutText}`)
+            .then(response =>{
+                console.log(response.data)
+                let layoutOptions = [];
+                if (response.data.layout_references && response.data.layout_references.length > 0) {
+                response.data.layout_references.map(job => {
+
+                    
+                        let jobOrderObj = {};
+                        jobOrderObj.id =job.layout_id;
+                        // jobOrderObj.job_no =job.job_no;
+                        // jobOrderObj.name = job.job_name;
+                        layoutOptions.push(jobOrderObj);
+                        // setLayoutReferrence({...layoutReferrence, jobOrderObj})
+                    }
+                )   
+            }
+            setTypeHeadOptions((prevstate) => ({
+                ...prevstate,
+                ['layout_id']: layoutOptions,
+            }))
+            setIsLoading(false);
+            
+            
+
+            })
+        }
+    },[layoutText])
+    // console.log(typeHeadOptions)
+
+
+
+    useEffect(() =>{
+        if (colorText.length >= 3) {
+            userGetMethod(`${GET_ENGRAVING_COLOR_URL}?searchText=${colorText}`)
+            .then(response =>{
+                console.log(response.data)
+                let colorOptions = [];
+                if (response.data.colors && response.data.colors.length > 0) {
+                response.data.colors.map(color => {
+
+                    
+                        let jobOrderObj = {};
+                        jobOrderObj.id =color.id;
+                        jobOrderObj.short_name =color.short_name;
+                        jobOrderObj.name = color.color_name;
+                        colorOptions.push(jobOrderObj);
+                        // setColors({...colors,jobOrderObj})
+                    }
+                )   
+            }
+            setTypeHeadOptions((prevstate) => ({
+                ...prevstate,
+                ['color']: colorOptions,
+            }))
+            setIsLoading(false);
+
+
+            })
+        }
+    },[colorText])
+
+
     // console.log(stateData);
 
     if(stateData?.on_time && stateData?.est_duration){
@@ -127,9 +209,30 @@ const Add = (props) => {
         }
        
     }, [stateData?.color, stateData?.layout_id, dropDownData?.job_order_pk_id])
+
+    const newOnChangeEvent = (e,fieldName) => {
+        if(e.length > 0){
+            const selectedValueId = e[0].id;
+            
+            setStateData(
+                (prevstate) => ({
+                    ...prevstate,
+                    [fieldName]: selectedValueId,
+                })
+            )}
+    }
    
     const dropDownChange = (e, fieldName) => {
         console.log('e', e);
+
+        // if (fieldName === 'layout_id') {
+        //     console.log(e[0].id)
+        //     setStateData({...stateData,[e[0].id] : e[0].id});
+        // }
+        // if (fieldName === 'color') {
+        //     setStateData({...stateData,[e.target.name] : e.target.value}); 
+        // }
+
         if(e.length > 0){
             const selectedValueId = e[0].id;
             
@@ -248,14 +351,21 @@ const Add = (props) => {
                                                             <label className="col-sm-5 col-form-label">Layout Id</label>
                                                             <div className="col-md-7">
                                                                 {/* <input type="text" className="form-control" name="layout_id" {...register("layout_id", { required: "Please enter your first name." })}/> */}
-                                                                <select className="form-control" onChange={handleChange} name="layout_id"  ref={register({})}>
-                                                                    <option value="">Select...</option>
-                                                                    {
-                                                                        layoutReferrence.map((item, index) => (
-                                                                            <option value={item?.layout_id}>{item?.layout_id}</option>
-                                                                        ))
-                                                                    }
-                                                                </select>
+                                                                <Typeahead
+                                                                id="job_order_pk_id"
+                                                                name="job_order_pk_id"
+                                                                labelKey={option => `${option.id}`}
+                                                                options={typeHeadOptions['layout_id']}
+                                                                placeholder="Select Layout No..."
+                                                                onChange={(e) => newOnChangeEvent(e,'layout_id')}
+                                                                inputProps={{ required: true }}
+                                                                onInputChange={(text)=>handleOnChangeLayout(text)}
+                                                                // selected={layoutReferrence}
+                                                                // disabled={job_order_pk_id != null ? 'disabled' : ''}
+                                                                ref={register({
+                                                                    required: 'Job No Field Required'
+                                                                })}
+                                                            />
                                                             </div>
 
                                                             <label className="col-md-5 col-form-label label-form ">Screen</label>
@@ -275,14 +385,21 @@ const Add = (props) => {
                                                             <label className="col-md-5 col-form-label label-form ">Color</label>
                                                             <div className="col-md-7">
                                                                 {/* <input type="text" className="form-control" name="color" {...register("color", { required: "Please enter your first name." })} /> */}
-                                                                <select className="form-control"  onChange={handleChange} name="color"  ref={register({})}>
-                                                                    <option value="">Select ...</option>
-                                                                    {
-                                                                        colors.map((item, index) => (
-                                                                            <option value={item?.id}>{item?.color_name}</option>
-                                                                        ))
-                                                                    }
-                                                                </select>
+                                                                <Typeahead
+                                                                id="job_order_pk_id"
+                                                                name="job_order_pk_id"
+                                                                labelKey={option => `${option.name}`}
+                                                                options={typeHeadOptions['color']}
+                                                                placeholder="Select Color..."
+                                                                onChange={(e) => newOnChangeEvent(e,'color')}
+                                                                inputProps={{ required: true }}
+                                                                onInputChange={(text)=>handleOnChangeColor(text)}
+                                                                // selected={colors}
+                                                                // disabled={job_order_pk_id != null ? 'disabled' : ''}
+                                                                ref={register({
+                                                                    required: 'Job No Field Required'
+                                                                })}
+                                                            />
                                                             </div>
 
                                                             <label className="col-md-5 col-form-label label-form ">Angle</label>

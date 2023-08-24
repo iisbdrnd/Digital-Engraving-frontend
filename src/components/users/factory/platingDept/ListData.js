@@ -237,7 +237,7 @@ export default function ListData(props) {
                                                                 {
                                                                     platingTankMaster.running_status == 0 ? (
                                                                       platingTankMaster.start_time == null ?  (<span className="btn btn-primary btn-sm m-r-5" onClick={()=>toggleModal('cycleStart', platingTankMaster.id, platingTankMaster.cycle_id)}>Start Cycle</span>) :
-                                                                      (<span className="btn btn-primary btn-sm m-r-5" onClick={()=>toggleModal('cycleStart', platingTankMaster.id, platingTankMaster.cycle_id)}>Complete Cycle</span>) 
+                                                                      (<span className="btn btn-primary btn-sm m-r-5" onClick={()=>toggleModal('cycleStart', platingTankMaster.id || platingTankMaster.cycle_id)}>Complete Cycle</span>) 
                                                                     ) : (
                                                                         <span className="btn bg-warning">Completed</span>
                                                                     )
