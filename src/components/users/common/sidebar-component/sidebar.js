@@ -265,7 +265,7 @@ const Sidebar = (props) => {
                     <div className="logo-wrapper compactLogo">
                         <Link to={`${process.env.PUBLIC_URL}/user/welcome`}>
                             <img className="blur-up lazyloaded" src={logo_compact} alt="" />
-                            <img className="blur-up lazyloaded" src={logo} width="120" alt="" />
+                            <img className="image-fluid" src={logo} width="75" alt="" />
                         </Link>
                     </div>
                 </div>

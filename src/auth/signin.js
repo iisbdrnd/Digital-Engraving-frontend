@@ -64,7 +64,7 @@ class Signin extends Component {
                                     <div className="auth-innerright">
                                         <div className="authentication-box">
                                             <div className="text-center">
-                                                <img src={logo} alt="" /></div>
+                                                <img style={{width: '280px'}} src={logo} alt="" /></div>
                                             <div className="card mt-4">
                                                 <div className="card-body">
                                                     <div className="text-center">
