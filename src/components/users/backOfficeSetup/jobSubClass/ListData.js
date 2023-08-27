@@ -180,8 +180,8 @@ export default function ListData(props) {
                                                 <tr>
                                                     <th scope="col" width="8%" onClick={() => sortHandler(1)} ><i className="fa fa-sort"></i> SL.</th>
                                                     <th scope="col" width="40%" onClick={() => sortHandler(2)} ><i className="fa fa-sort"></i> Job Class</th>
-                                                    <th scope="col" width="20%" onClick={() => sortHandler(3)} ><i className="fa fa-sort"></i> 
-                                                    Label2</th>
+                                                    {/* <th scope="col" width="20%" onClick={() => sortHandler(3)} ><i className="fa fa-sort"></i> 
+                                                    Label2</th> */}
                                                     <th scope="col" width="20%" onClick={() => sortHandler(3)} ><i className="fa fa-sort"></i> 
                                                     Sub Class</th>
                                                     <th scope="col" width="8%">Action</th>
@@ -196,7 +196,7 @@ export default function ListData(props) {
                                                                     <tr key={index}>
                                                                         <td scope="row">{ ((index+1) + (currentPage == 1 ? 0 : (currentPage*perPage - perPage))) }</td>
                                                                         <td>{item.job_class_code}</td>
-                                                                        <td>{item.label_2}</td>
+                                                                        {/* <td>{item.label_2}</td> */}
                                                                         <td>{item.sub_class}</td>
                                                                         
                                                                         <td className="">

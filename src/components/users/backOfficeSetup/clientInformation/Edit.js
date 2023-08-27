@@ -13,6 +13,7 @@ const Edit = (props) => {
     const [emailNotify, setEmailNotify] = useState(false);  
     const [smsNotify, setSmsNotify] = useState(false);  
     const [cylinderRate, setCylinderRate] = useState();
+    const [isLoading,setIsLoading] = useState(true);
 
     const [clientInformationInput, setClientInformationInput] = useReducer(
         (state, newState) => ({...state, ...newState}),
@@ -51,6 +52,11 @@ const Edit = (props) => {
         setClientInformationInput({[event.target.name]: event.target.value});
         if(event.target.name == 'sms_notify'){
             setSmsNotify(!smsNotify)
+        }
+        if(event.target.name == 'Designation'){
+            setEmployeeInfo({
+                ...employeeInfo,[event.target.name] : event.target.value
+            })
         }
     }
 
@@ -115,7 +121,9 @@ const Edit = (props) => {
             .then(response => {
                 setEmployeeInfo(response.data.employee);
             });
+            // setIsLoading(false)
     }
+    // console.log(employeeInfo)
 
     var menuId = 0;
     if (props.location.state === undefined) {
@@ -318,14 +326,14 @@ const Edit = (props) => {
                                                     <div className="col-md-8">
                                                         <input 
                                                             className="form-control"
-                                                            // name="email_notify" 
+                                                            name="Designation" 
                                                             type="text" 
-                                                            readOnly={'readonly'}
-                                                            // onChange={changeHandler}
-                                                            value={employeeInfo.designation_name != undefined ? employeeInfo.designation_name : ""}
-                                                            // ref={register({
-                                                            //     // required: 'Email Notify Field Required'
-                                                            // })}
+                                                            // disabled={employeeInfo !== null ? true : false}
+                                                            onChange={changeHandler}
+                                                            value={employeeInfo ||employeeInfo?.designation_name != undefined ? employeeInfo?.designation_name : ''}
+                                                            ref={register({
+                                                                required: 'Email Notify Field Required'
+                                                            })}
                                                         />
                                                     </div>
                                                 </div>
