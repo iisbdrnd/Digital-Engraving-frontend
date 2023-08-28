@@ -53,6 +53,7 @@ export const TEST_RSURL = 'api/user/test';
 
 //Client Stock
 export const CLIENT_STOCK_RSURL = 'api/user/clientStock';
+export const GET_CLIENT_STOCK_JOB_RSURL = 'api/user/getBillCompleteJobOrder';
 
 //Del Stock
 export const DEL_STOCK_RSURL = 'api/user/delStock';
@@ -63,8 +64,12 @@ export const CANCEL_ORDER_RSURL = 'api/user/cancelOrder';
 //JOB AGREEMENT
 export const JOB_AGREEMENT_RSURL = 'api/user/jobAgreement';
 export const JOB_ORDER_DETAILS = 'api/user/jobOrderDetails';
+export const GET_JOB_ORDER_DETAILS = 'api/user/getDesignToDesignJobOrder';
 //BASE ORDER
 export const BASE_ORDER_RSURL = 'api/user/baseOrder';
+export const BASE_ORDER_DEL_RSURL = 'api/user/getDelStockJobOrder';
+export const BASE_ORDER_CLIENT_RSURL = 'api/user/getClientStockJobOrder';
+export const GET_BASE_JOB_ORDER_RSURL = 'api/user/getBaseOrderJobOrder';
 export const BASE_ORDER_DETAILS = 'api/user/baseOrderDetails';
 //PRINTERS
 export const printersAPI = 'api/user/printers';

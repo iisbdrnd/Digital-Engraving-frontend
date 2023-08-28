@@ -2,7 +2,7 @@ import React, { Fragment, useState, useEffect, useReducer } from 'react';
 import useForm from "react-hook-form";
 import { SubmitButton } from '../../common/GlobalButton';
 import { userGetMethod, userPostMethod } from '../../../api/userAction';
-import { DESIGN_TO_DESIGN_RSURL, JOB_ORDER_DETAILS } from '../../../api/userUrl';
+import { DESIGN_TO_DESIGN_RSURL, GET_JOB_ORDER_DETAILS, JOB_ORDER_DETAILS } from '../../../api/userUrl';
 import { Typeahead } from 'react-bootstrap-typeahead';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -15,7 +15,9 @@ const Add = (props) => {
     const [status, setStatus] = useState(true);
     const [typeHeadOptions, setTypeHeadOptions] = useState({});
     const [dropDownData, setDropdownData] = useState();
+    const [jobNumberText,setJobNumberText] = useState('')
     const [jobNoValue,setJobNoValue] = useState([]);
+    // const [jobAgreementInput,setJobAgreementInput] = useState({})
 
     let [jobAgreementInput, setJobAgreementInput] = useReducer(
         (state, newState) => ({...state, ...newState}),
@@ -38,18 +40,42 @@ const Add = (props) => {
     }
 
     let job_order_id = props.location.state.params.job_order_id ? props.location.state.params.job_order_id : null;
+    console.log(job_order_id);
 
     useEffect(()=>{
-        userGetMethod(`${DESIGN_TO_DESIGN_RSURL}/create?job_order_id=${job_order_id}`)
+
+       if (job_order_id) {
+        userGetMethod(`${JOB_ORDER_DETAILS}?jobOrderId=${job_order_id}?`)
+                .then(response => {
+                    let { job_name, printer_name, printer_mark, total_cylinder_qty, client_name} = response.data.jobOrderDetails;
+
+                    const value ={
+                        id:response.data.jobOrderDetails.id,
+                        name: `${response.data.jobOrderDetails.job_no}` + response.data.jobOrderDetails.job_name
+                    }
+                    setJobNoValue([value]);
+                    setJobAgreementInput({
+                        'job_name'          : job_name,
+                        'printer_name'      : printer_name,
+                        'printer_mark'      : printer_mark,
+                        'client_name'       : client_name,
+                        'total_cylinder_qty': total_cylinder_qty
+                    });
+                });
+       }
+
+
+        userGetMethod(`${GET_JOB_ORDER_DETAILS}?searchText=${jobNumberText}`)
             .then(response => {
                 console.log('response', response.data);
                 // FOR JOB ORDER
                 let jobOrderOptions = [];
-                if (response.data.jobOrder) {
-                    console.log('response.data.jobOrder', response.data.jobOrder);
-                    let jobOrderObj = {};
-                    jobOrderObj.id = response.data.jobOrder.id;
-                    jobOrderObj.name = `[${response.data.jobOrder.job_no}] ` + response.data.jobOrder.job_name;
+                if (response.data.jobOrderDetails) {
+                    console.log('response.data.jobOrder', response.data.jobOrderDetails);
+                    response.data.jobOrderDetails.map(data =>{
+                        let jobOrderObj = {};
+                    jobOrderObj.id = data.id;
+                    jobOrderObj.name = `[${data.job_no}] ` + data.job_name;
                     jobOrderOptions.push(jobOrderObj);
 
                     if (response.data.jobOrder != null) { 
@@ -59,9 +85,11 @@ const Add = (props) => {
                     }
                     setJobNoValue([jobOrderObj]);
                     dropDownChange([{id : response.data.jobOrder.id}], 'job_order_id');
+                    })
+                    
                 }
-                if (response.data.jobOrders && response.data.jobOrders.length > 0) {
-                    response.data.jobOrders.map(order => 
+                if (response.data.jobOrderDetails && response.data.jobOrderDetails.length > 0) {
+                    response.data.jobOrderDetails.map(order => 
                     {
                         let jobOrderObj = {};
                         jobOrderObj.id = order.id;
@@ -79,6 +107,8 @@ const Add = (props) => {
                 setIsLoading(false);
             });
     }, []);
+
+
     // console.log(typeHeadOptions);
 
     const dropDownChange = (e, fieldName) => {
@@ -109,7 +139,40 @@ const Add = (props) => {
                 });
         }
     }
+    console.log(jobNoValue);
+    const handleInputChange = (text) => {
+        setJobNumberText(text)
+    }
+    useEffect(() => {
+        if (!job_order_id && jobNumberText.length > 3) {
+            userGetMethod(`${GET_JOB_ORDER_DETAILS}?searchText=${jobNumberText}`)
+            .then(response =>{
+                let jobOrderOptions = [];
+               if (response.data.jobOrders && response.data.jobOrders.length > 0) {
+                response.data.jobOrders.map(jobNumber =>{
+                    let jobOrderObj = {}
+                    jobOrderObj.id = jobNumber.id;
+                    jobOrderObj.name = `[${jobNumber.job_no}] ` + jobNumber.job_name;
+                    jobOrderOptions.push(jobOrderObj);
 
+                })
+                setJobAgreementInput({
+                   'job_order_id': jobOrderOptions
+               })
+            //    setJobNoValue(jobOrderOptions);
+            //     dropDownChange([{id : response.data.jobOrderDetails.id}], 'job_order_id');
+                 setTypeHeadOptions(
+                    (prevstate) => ({
+                        ...prevstate,
+                        ['job_orders']: jobOrderOptions,
+                    })
+                 )
+                
+               }
+            })
+            // setIsLoading(false);
+        }
+    },[jobNumberText])
     
     const submitHandler = (data, e) => {
         data.job_order_id = dropDownData.job_order_id;
@@ -168,8 +231,9 @@ const Add = (props) => {
                                                         name="job_order_id"
                                                         labelKey={option => `${option.name}`}
                                                         options={typeHeadOptions['job_orders']}
-                                                        placeholder="Select Job No..."
+                                                        placeholder="Type job (upto 4 word).."
                                                         onChange={(e) => dropDownChange(e, 'job_order_id')}
+                                                        onInputChange={(text) => handleInputChange(text)}
                                                         inputProps={{ required: true }}
                                                         selected={jobNoValue}
                                                         disabled={job_order_id != null ? 'disabled' : ''}
@@ -185,7 +249,7 @@ const Add = (props) => {
                                             <div className="form-group row">
                                                 <label className="col-sm-3 col-form-label" htmlFor="send_date">Send Date</label>
                                                 <div className="col-sm-9">
-                                                    <input className="form-control digits" id="send_date" name="send_date" required readOnly={'readonly'} type="text" value={jobAgreementInput.send_date} ref={register({ required: true })} />
+                                                    <input className="form-control digits" id="send_date" name="send_date" required readOnly={'readonly'} type="text" value={jobAgreementInput?.send_date} ref={register({ required: true })} />
                                                     {errors.send_date && 'Send Date is required'}
                                                     <div className="valid-feedback">Looks good!</div>
                                                 </div>
@@ -206,22 +270,22 @@ const Add = (props) => {
                                                             <tr>
                                                                 <td width="25%" align="right">Job Name</td>
                                                                 <td width="5%">:</td>
-                                                                <td width="70%">{jobAgreementInput.job_name}</td>
+                                                                <td width="70%">{jobAgreementInput?.job_name}</td>
                                                             </tr>
                                                             <tr>
                                                                 <td align="right">Client Name</td>
                                                                 <td>:</td>
-                                                                <td>{jobAgreementInput.client_name}</td>
+                                                                <td>{jobAgreementInput?.client_name}</td>
                                                             </tr>
                                                             <tr>
                                                                 <td align="right">Printer Name</td>
                                                                 <td>:</td>
-                                                                <td>{jobAgreementInput.printer_name}</td>
+                                                                <td>{jobAgreementInput?.printer_name}</td>
                                                             </tr>
                                                             <tr>
                                                                 <td align="right">No of Cylinder</td>
                                                                 <td>:</td>
-                                                                <td>{jobAgreementInput.total_cylinder_qty}</td>
+                                                                <td>{jobAgreementInput?.total_cylinder_qty}</td>
                                                             </tr>
 
                                                         </tbody>

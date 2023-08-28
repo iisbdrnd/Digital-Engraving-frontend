@@ -136,8 +136,8 @@ const Add = (props) => {
                     let jobOrderNewOptions = [];
                     let jobOrderObj = {};
                     if (response.data.jobOrderDetails) {
-                        jobOrderObj.id = response.data.jobOrderDetails.job_no;
-                        jobOrderObj.name = response.data.jobOrderDetails.job_name;
+                        jobOrderObj.id = response.data.jobOrderDetails.id;
+                        jobOrderObj.name = `${response.data.jobOrderDetails.job_no} / ` + response.data.jobOrderDetails.job_name;
                         jobOrderNewOptions.push(jobOrderObj);
                         // console.log(jobOrderNewOptions);
 
@@ -251,7 +251,7 @@ const Add = (props) => {
                         let jobOrderObj = {};
                         jobOrderObj.id =job.id;
                         jobOrderObj.job_no =job.job_no;
-                        jobOrderObj.name = job.job_name;
+                        jobOrderObj.name = `${job.job_no} / `+job.job_name;
                         jobOrderOptions.push(jobOrderObj);
                     }
                 )
@@ -513,12 +513,12 @@ const Add = (props) => {
                                                             name="job_order_pk_id"
                                                             labelKey={option => `${option.name}`}
                                                             options={typeHeadOptions['job_orders']}
-                                                            placeholder="Select Job No..."
+                                                            placeholder="Type job (upto 4 word).."
                                                             onChange={(e) => dropDownChange(e, 'job_order_pk_id')}
                                                             inputProps={{ required: true }}
                                                             onInputChange={(e,text)=>handleTypeaheadInputChange(e,text)}
                                                             // defaultInputValue={selectedJobOrders?.name}
-                                                            // selected={jobNumber}
+                                                            selected={jobNumber}
                                                             disabled={props.location.state.params.job_order_id ? true : false}
                                                             ref={register({
                                                                 required: 'Job No Field Required'

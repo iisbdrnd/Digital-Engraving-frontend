@@ -6,7 +6,7 @@ import { Typeahead } from 'react-bootstrap-typeahead';
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 import { PanelRefreshIcons, SubmitButton } from '../../common/GlobalButton';
 import { userGetMethod, userPostMethod } from '../../../api/userAction';
-import { CLIENT_STOCK_RSURL, JOB_ORDER_DETAILS } from '../../../api/userUrl';
+import { CLIENT_STOCK_RSURL, GET_CLIENT_STOCK_JOB_RSURL, JOB_ORDER_DETAILS } from '../../../api/userUrl';
 import SweetAlert from 'sweetalert2';
 
 const Add = (props) => {
@@ -16,6 +16,7 @@ const Add = (props) => {
     const [typeheadOptions, setTypeheadOptions] = useState({});
     const [clientStockDetails, setClientStockDetails] = useState([]);
     const [selectedValue,setSelectedValue] = useState([]);
+    const [clientText,setClientText] = useState('');
 
     let [jobOrderData, setJobOrderData] = useReducer(
         (state, newState) => ({ ...state, ...newState }),
@@ -41,12 +42,16 @@ const Add = (props) => {
     );
     let job_order_id = props.location.state.params.job_order_id ? props.location.state.params.job_order_id : null;
     useEffect(() => {
+       
         pageRefreshHandler(job_order_id);
     }, []);
-
-    const pageRefreshHandler = (job_order_id = null) => {
-        setIsLoading(true);
-        userGetMethod(`${CLIENT_STOCK_RSURL}/create`)
+    const handleOnChangeInput = (text) => {
+        setClientText(text)
+    }
+    useEffect(() => {
+        if (job_order_id == null && clientText.length > 3) {
+            // setIsLoading(true)
+            userGetMethod(`${GET_CLIENT_STOCK_JOB_RSURL}?searchText=${clientText}`)
             .then(response => {
                 // FOR JOB ORDER
                 let jobOrderOptions = [];
@@ -88,6 +93,54 @@ const Add = (props) => {
 
                 setIsLoading(false);
             });
+        }
+    },[clientText])
+    const pageRefreshHandler = (job_order_id = null) => {
+        if (job_order_id == null && clientText.length < 4 ) {
+            userGetMethod(`${CLIENT_STOCK_RSURL}/create`)
+            .then(response => {
+                // FOR JOB ORDER
+                let jobOrderOptions = [];
+                if (response.data.jobOrders && response.data.jobOrders.length > 0) {
+                    response.data.jobOrders.map(order => {
+                        let jobOrderObj = {};
+                        jobOrderObj.id = order.id;
+                        jobOrderObj.name = `[${order.job_no}] ` + order.job_name;
+                        jobOrderOptions.push(jobOrderObj);
+                        if (job_order_id === order.id) {
+                            setDropdownData({
+                                'job_order_id': []
+                            })
+                            setJobOrderData({
+                                //'job_name'           : order.job_name,
+                                //'job_no'             : order.job_no,
+                                //'printer_name'       : order.printer_name,
+                                //'job_type'           : order.job_type,
+                                //'fl'                 : order.fl,
+                                // 'cir'               : order.cir,
+                                //'total_surface_area' : order.total_surface_area,
+                                //'client_name'        : order.client_name,
+                                //'entry_date'         : order.entry_date,
+                                //'agreement_date'     : order.agreement_date,
+                                //'total_cylinder_qty' : order.total_cylinder_qty,
+                                'job_order_qty_limit': order.total_cylinder_qty
+                            })
+                        }
+                    })
+                }
+                setTypeheadOptions(
+                    (prevstate) => ({
+                        ...prevstate,
+                        ['job_orders']: [],
+                        // ['suppliers']: supplierOptions,
+                    })
+                );
+                setClientStockDetails([]);
+
+                setIsLoading(false);
+            });
+        }
+        
     }
     // FOR Typeahead DATA INPUT
     const dropDownChange = (event, stateName) => {
@@ -125,6 +178,7 @@ const Add = (props) => {
                         });
                     });
             }
+            
         }
 
     }
@@ -135,6 +189,8 @@ const Add = (props) => {
         );
     }
     console.log(jobOrderData);
+
+
     // FOR CLIENT STOCKS ARRAY READY
     const addOrderDetailsHandler = (event) => {
 
@@ -269,6 +325,7 @@ const Add = (props) => {
     } else {
         menuId = props.location.state.params.menuId;
     }
+    const text = <small>Type upto 4 word</small>
 
     return (
         <Fragment>
@@ -301,8 +358,9 @@ const Add = (props) => {
                                                                 name="job_order_id"
                                                                 labelKey={option => `${option.name}`}
                                                                 options={typeheadOptions['job_orders']}
-                                                                placeholder="Select Job No..."
+                                                                placeholder="Type job (upto 4 word).."
                                                                 onChange={(e) => { dropDownChange(e, 'job_order_id') }}
+                                                                onInputChange={(text)=>handleOnChangeInput(text)}
                                                                 inputProps={{ required: true }}
                                                                 selected={selectedValue}
                                                                 disabled={job_order_id != null ? 'disabled' : ''}

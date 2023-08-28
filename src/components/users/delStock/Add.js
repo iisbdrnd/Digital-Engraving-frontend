@@ -6,16 +6,19 @@ import { Typeahead,ClearButton } from 'react-bootstrap-typeahead';
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 import { PanelRefreshIcons, SubmitButton } from '../../common/GlobalButton';
 import { userGetMethod, userPostMethod } from '../../../api/userAction';
-import { DEL_STOCK_RSURL, JOB_ORDER_DETAILS } from '../../../api/userUrl';
+import { DEL_STOCK_RSURL, GET_CLIENT_STOCK_JOB_RSURL, JOB_ORDER_DETAILS } from '../../../api/userUrl';
 import SweetAlert from 'sweetalert2';
 
 const Add = (props) => {
     const { handleSubmit, register, errors, reset } = useForm();
     const [isLoading, setIsLoading] = useState(true);
     const [dropdownData, setDropdownData] = useState({});
-    const [typeheadOptions, setTypeheadOptions] = useState({});
+    const [typeheadOptions, setTypeheadOptions] = useState({
+        'job_orders' : []
+    });
     const [delStockDetails, setDelStockDetails] = useState([]);
     const [selectedValue,setSelectedValue] = useState([])
+    const [delStockText,setDelStockText] = useState([])
 
     let [jobOrderData, setJobOrderData] = useReducer(
         (state, newState) => ({...state, ...newState}),
@@ -44,9 +47,12 @@ const Add = (props) => {
         pageRefreshHandler(job_order_id);
     },[]);
 
-    const pageRefreshHandler = (job_order_id = null) => {
-        setIsLoading(true);
-        userGetMethod(`${DEL_STOCK_RSURL}/create`)
+    const handleOnChangeInput = (text) => {
+        setDelStockText(text)
+    }
+    useEffect(()=>{
+        if (job_order_id == null && delStockText.length > 3) {
+            userGetMethod(`${GET_CLIENT_STOCK_JOB_RSURL}?searchText=${delStockText}`)
             .then(response => {
                 // FOR JOB ORDER
                 let jobOrderOptions = [];
@@ -77,6 +83,46 @@ const Add = (props) => {
 
                 setIsLoading(false);
             });
+        }
+    },[delStockText])
+
+    const pageRefreshHandler = (job_order_id = null) => {
+        setIsLoading(true);
+        
+           if (job_order_id == null && delStockText.length < 4) {
+            userGetMethod(`${DEL_STOCK_RSURL}/create`)
+            .then(response => {
+                // FOR JOB ORDER
+                let jobOrderOptions = [];
+                if (response.data.jobOrders && response.data.jobOrders.length > 0) {
+                    response.data.jobOrders.map(order => 
+                    {
+                        let jobOrderObj = {};
+                        jobOrderObj.id = order.id;
+                        jobOrderObj.name = `[${order.job_no}] ` + order.job_name;
+                        jobOrderOptions.push(jobOrderObj);
+                        if (job_order_id === order.id) {
+                            setDropdownData({
+                                'job_order_id': [jobOrderObj]
+                            })
+                            setJobOrderData({
+                                'job_order_qty_limit': order.total_cylinder_qty
+                            })
+                        }
+                    })
+                }
+                setTypeheadOptions(
+                    (prevstate) => ({
+                        ...prevstate,
+                        ['job_orders']: [],
+                    })
+                );
+                setDelStockDetails([]);
+
+                setIsLoading(false);
+            });
+           }
+        
     }
     // FOR Typeahead DATA INPUT
     const dropDownChange = (event, stateName) => {
@@ -283,8 +329,9 @@ const Add = (props) => {
                                                             name="job_order_id"
                                                             labelKey={option => `${option.name}`}
                                                             options={typeheadOptions['job_orders']}
-                                                            placeholder="Select Job No..."
+                                                            placeholder="Type job (upto 4 word).."
                                                             onChange={(e) => { dropDownChange(e, 'job_order_id') }}
+                                                            onInputChange={(text)=>handleOnChangeInput(text)}
                                                             inputProps={{ required: true }}
                                                             selected={selectedValue}
                                                             disabled={job_order_id != null ? 'disabled' : ''}

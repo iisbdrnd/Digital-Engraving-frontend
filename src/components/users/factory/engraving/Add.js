@@ -356,7 +356,7 @@ const Add = (props) => {
                                                                 name="job_order_pk_id"
                                                                 labelKey={option => `${option.id}`}
                                                                 options={typeHeadOptions['layout_id']}
-                                                                placeholder="Select Layout No..."
+                                                                placeholder="Type job (upto 4 word).."
                                                                 onChange={(e) => newOnChangeEvent(e,'layout_id')}
                                                                 inputProps={{ required: true }}
                                                                 onInputChange={(text)=>handleOnChangeLayout(text)}
@@ -390,7 +390,7 @@ const Add = (props) => {
                                                                 name="job_order_pk_id"
                                                                 labelKey={option => `${option.name}`}
                                                                 options={typeHeadOptions['color']}
-                                                                placeholder="Select Color..."
+                                                                placeholder="Type job (upto 4 word).."
                                                                 onChange={(e) => newOnChangeEvent(e,'color')}
                                                                 inputProps={{ required: true }}
                                                                 onInputChange={(text)=>handleOnChangeColor(text)}

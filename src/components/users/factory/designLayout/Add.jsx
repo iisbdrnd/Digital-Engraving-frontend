@@ -831,7 +831,7 @@ console.log(typeheadOptions)
                                                             name="job_id"
                                                             labelKey={option => `${option.job_no}${option.name}`}
                                                             options={typeheadOptions['job_orders']}
-                                                            placeholder="Select Job No..."
+                                                            placeholder="Type job (upto 4 word).."
                                                             onChange={(e) => dropDownChange(e, 'job_id')}
                                                             selected={selectedJobOrder}
                                                             onInputChange={(text) => handleTypeaheadInputChange(text)}
@@ -993,7 +993,7 @@ console.log(typeheadOptions)
                                                             name="ref_id"
                                                             labelKey={option => `${option.id}`}
                                                             options={typeheadOptions['ref_layout']}
-                                                            placeholder="Select Job No..."
+                                                            placeholder="Type job (upto 4 word).."
                                                             onChange={(e) => dropDownChange(e, 'ref_layout')}
                                                             // selected={selectedJobOrder}
                                                             onInputChange={(text) => handleref_layout_InputChange(text)}
