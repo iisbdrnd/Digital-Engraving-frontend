@@ -61,7 +61,7 @@ class ListData extends Component {
                                             columns={columns}
                                             multiSelectOption={false}
                                             myData={allUsers}
-                                            pageSize={5}
+                                            pageSize={10}
                                             pagination={true}
                                             class="-striped -highlight"
                                             editLink="users/edit"

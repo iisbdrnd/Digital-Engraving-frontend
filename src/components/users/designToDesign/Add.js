@@ -13,7 +13,9 @@ const Add = (props) => {
     const [isLoading, setIsLoading] = useState(true);
     const [resource, setResource] = useState(false);
     const [status, setStatus] = useState(true);
-    const [typeHeadOptions, setTypeHeadOptions] = useState({});
+    const [typeHeadOptions, setTypeHeadOptions] = useState({
+
+    });
     const [dropDownData, setDropdownData] = useState();
     const [jobNumberText,setJobNumberText] = useState('')
     const [jobNoValue,setJobNoValue] = useState([]);
@@ -54,6 +56,12 @@ const Add = (props) => {
                         name: `${response.data.jobOrderDetails.job_no}` + response.data.jobOrderDetails.job_name
                     }
                     setJobNoValue([value]);
+                    setDropdownData(
+                        (prevstate) => ({
+                            ...prevstate,
+                            ['job_order_id']: value,
+                        })
+                    );
                     setJobAgreementInput({
                         'job_name'          : job_name,
                         'printer_name'      : printer_name,
@@ -61,51 +69,71 @@ const Add = (props) => {
                         'client_name'       : client_name,
                         'total_cylinder_qty': total_cylinder_qty
                     });
+                    setTypeHeadOptions(
+                        (prevstate) => ({
+                            ...prevstate,
+                            ['job_orders']: jobNoValue,
+                        })
+                    );
+                    setIsLoading(false)
                 });
        }
+// console.log(jobNoValue)
 
+        // if (!job_order_id) {
+        //     userGetMethod(`${GET_JOB_ORDER_DETAILS}?searchText=${jobNumberText}`)
+        //     .then(response => {
+        //         console.log('response', response.data);
+        //         // FOR JOB ORDER
+        //         let jobOrderOptions = [];
+        //         if (response.data.jobOrderDetails) {
+        //             console.log('response.data.jobOrder', response.data.jobOrderDetails);
+        //             response.data.jobOrderDetails.map(data =>{
+        //                 let jobOrderObj = {};
+        //             jobOrderObj.id = data.id;
+        //             jobOrderObj.name = `[${data.job_no}] ` + data.job_name;
+        //             jobOrderOptions.push(jobOrderObj);
 
-        userGetMethod(`${GET_JOB_ORDER_DETAILS}?searchText=${jobNumberText}`)
-            .then(response => {
-                console.log('response', response.data);
-                // FOR JOB ORDER
-                let jobOrderOptions = [];
-                if (response.data.jobOrderDetails) {
-                    console.log('response.data.jobOrder', response.data.jobOrderDetails);
-                    response.data.jobOrderDetails.map(data =>{
-                        let jobOrderObj = {};
-                    jobOrderObj.id = data.id;
-                    jobOrderObj.name = `[${data.job_no}] ` + data.job_name;
-                    jobOrderOptions.push(jobOrderObj);
-
-                    if (response.data.jobOrder != null) { 
-                        setJobAgreementInput({
-                            'job_order_id': [jobOrderObj]
-                        })
-                    }
-                    setJobNoValue([jobOrderObj]);
-                    dropDownChange([{id : response.data.jobOrder.id}], 'job_order_id');
-                    })
+        //             if (response.data.jobOrder != null) { 
+        //                 setJobAgreementInput({
+        //                     'job_order_id': [jobOrderObj]
+        //                 })
+        //             }
+        //             setJobNoValue([jobOrderObj]);
+        //             dropDownChange([{id : response.data.jobOrder.id}], 'job_order_id');
+        //             })
                     
-                }
-                if (response.data.jobOrderDetails && response.data.jobOrderDetails.length > 0) {
-                    response.data.jobOrderDetails.map(order => 
-                    {
-                        let jobOrderObj = {};
-                        jobOrderObj.id = order.id;
-                        jobOrderObj.name = `[${order.job_no}] ` + order.job_name;
-                        jobOrderOptions.push(jobOrderObj);
-                    })
-                }
-                setTypeHeadOptions(
-                    (prevstate) => ({
-                        ...prevstate,
-                        ['job_orders']: jobOrderOptions,
-                    })
-                );
+        //         }
+        //         if (response.data.jobOrderDetails && response.data.jobOrderDetails.length > 0) {
+        //             response.data.jobOrderDetails.map(order => 
+        //             {
+        //                 let jobOrderObj = {};
+        //                 jobOrderObj.id = order.id;
+        //                 jobOrderObj.name = `[${order.job_no}] ` + order.job_name;
+        //                 jobOrderOptions.push(jobOrderObj);
+        //             })
+        //         }
+        //         setTypeHeadOptions(
+        //             (prevstate) => ({
+        //                 ...prevstate,
+        //                 ['job_orders']: jobOrderOptions,
+        //             })
+        //         );
 
-                setIsLoading(false);
-            });
+        //         setIsLoading(false);
+        //     });
+        // }
+
+       if (!job_order_id) {
+        setTypeHeadOptions(
+                        (prevstate) => ({
+                            ...prevstate,
+                            ['job_orders']: [],
+                        })
+                    );
+                    setIsLoading(false)
+       }
+
     }, []);
 
 
@@ -139,7 +167,7 @@ const Add = (props) => {
                 });
         }
     }
-    console.log(jobNoValue);
+   
     const handleInputChange = (text) => {
         setJobNumberText(text)
     }
@@ -173,9 +201,12 @@ const Add = (props) => {
             // setIsLoading(false);
         }
     },[jobNumberText])
+    // console.log(jobNoValue[0]?.id);
+    // console.log(jobNoValue[0]);
+    // console.log(dropDownData.job_order_id.id);
     
     const submitHandler = (data, e) => {
-        data.job_order_id = dropDownData.job_order_id;
+        data.job_order_id = dropDownData?.job_order_id || jobNoValue[0]?.id
         userPostMethod(DESIGN_TO_DESIGN_RSURL, data)
             .then(response => {
                 console.log("response.data", response.data);

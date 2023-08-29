@@ -72,7 +72,7 @@ class Edit extends Component {
                     {
                         let designationObj = {};
                         designationObj.id = designation.id;
-                        designationObj.name = designation.name;
+                        designationObj.name = designation.role_name;
                         designationOption.push(designationObj);
                         if (response.data.user.designation_id === designation.id) {
                             this.state.designation.push(designationObj);
