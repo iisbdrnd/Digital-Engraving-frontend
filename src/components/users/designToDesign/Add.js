@@ -202,11 +202,17 @@ const Add = (props) => {
         }
     },[jobNumberText])
     // console.log(jobNoValue[0]?.id);
-    // console.log(jobNoValue[0]);
-    // console.log(dropDownData.job_order_id.id);
+    // // console.log(jobNoValue[0]);
+    // console.log(dropDownData?.job_order_id.id);
     
     const submitHandler = (data, e) => {
-        data.job_order_id = dropDownData?.job_order_id || jobNoValue[0]?.id
+        // data.job_order_id = dropDownData?.job_order_id || jobNoValue[0]?.id
+        if (dropDownData?.job_order_id.id == undefined) {
+            data.job_order_id = jobNoValue[0]?.id
+        }else{
+            data.job_order_id = dropDownData?.job_order_id.id
+        }
+        
         userPostMethod(DESIGN_TO_DESIGN_RSURL, data)
             .then(response => {
                 console.log("response.data", response.data);

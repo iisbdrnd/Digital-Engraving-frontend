@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useReducer, useState } from 'react';
 import Select from "react-select";
-import { receivedVoucherAPI, projectAccountCodeAPI } from '../../../../../api/userUrl';
+import { receivedVoucherAPI, projectAccountCodeAPI, GET_receivedVoucherAPI } from '../../../../../api/userUrl';
 import { userGetMethod, userDeleteMethod, userPostMethod } from '../../../../../api/userAction';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -22,6 +22,7 @@ const Add = (props) => {
     const [ totalAmount, setTotalAmount] = useState(0);
     const [ counter , setCounter] = useState(0);
     const [ projectName , setProjectName] = useState("");
+    const [ receiveText , setReceiveText] = useState("");
 
     //for right side
     const [tableRow, setTableRow] = useState([]);
@@ -41,6 +42,12 @@ const Add = (props) => {
     }else{
         menuId = props.location.state.params.menuId;
     }
+    useEffect(() => {
+        userGetMethod(`${GET_receivedVoucherAPI}?searchText=Suspense`)
+        .then(response =>{
+            console.log(response.data)
+        })
+    },[]);
 
     useEffect(() => {
         userGetMethod(`${receivedVoucherAPI}`)
@@ -119,6 +126,47 @@ const Add = (props) => {
 
         }
     }
+
+    const handleReceiveChange = (text) => {
+        setReceiveText(text)
+    }
+    useEffect(()=>{
+        if (receiveText.length > 3) {
+            userGetMethod(`${GET_receivedVoucherAPI}?searchText=${receiveText}`)
+            .then(response =>{
+                
+                let groupedOptionsCustom = [];
+            Object.keys(response.data.received_accounts).map(function(key, index) {
+                if (response.data.received_accounts.hasOwnProperty(key)) {
+                    var groupOptionObj = {};
+                    groupOptionObj.label = response.data.received_accounts[key].account_code + ' - ' + response.data.received_accounts[key].account_head;
+                    groupOptionObj.options = [];
+
+                    response.data.received_accounts_level_four[key].map( (account_levelFour, i) => {
+
+                        let groupSubOptionsObj = {};
+                        groupSubOptionsObj.label = account_levelFour.account_code+' - '+account_levelFour.account_head;
+                        groupSubOptionsObj.value = account_levelFour.account_code+'~'+account_levelFour.account_head;
+
+                        groupOptionObj.options.push(groupSubOptionsObj);
+                    });
+                }else{
+                    var groupOptionObj = {};
+                }
+                groupedOptionsCustom.push(groupOptionObj);
+            });
+
+            setTypeHeadOptions(
+                (prevstate) => ({
+                    ...prevstate,
+                    ['accountBy']: groupedOptionsCustom,
+                })
+            );
+            setIsLoading(false)
+
+            })
+        }
+    },[receiveText])
 
     const pageRefreshHandler = () => {
         console.log('groupedOptions', groupOption.groups);
@@ -289,10 +337,17 @@ const Add = (props) => {
                                                 <div className="form-group row">
                                                     <label htmlFor="main_code" className="col-md-3 col-form-label required">Account Code</label>
                                                     <div className="col-sm-9 col-md-9">
-                                                        <Select
-                                                            value={selectedOption}
-                                                            onChange={handleChange}
-                                                            options={groupOption.groups}
+                                                    <Typeahead
+                                                            id="paymentBy"
+                                                            name="paymentBy"
+                                                            labelKey={option => `${option.label}`}
+                                                            options={typeHeadOptions['accountBy']}
+                                                            placeholder="Select Payment By..."
+                                                            onChange={(e) => dropDownChange(e, 'accountBy', 'accountByName')}
+                                                            onInputChange={(text) => handleReceiveChange(text)}
+                                                            ref={register({
+                                                                required: 'Payment By Field Required'
+                                                            })}
                                                         />
                                                     </div>
                                                 </div>

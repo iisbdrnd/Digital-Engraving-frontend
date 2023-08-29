@@ -119,6 +119,7 @@ export const paymentVoucherAPI = 'api/user/paymentVoucher';
 export const GET_paymentVoucherAPI = 'api/user/getPaymentVoucherAccountCode';
 
 export const receivedVoucherAPI = 'api/user/receivedVoucher';
+export const GET_receivedVoucherAPI = 'api/user/getReceivedVoucherAccountCode';
 export const bankPaymentVoucherAPI = 'api/user/bankPaymentVoucher';
 export const bankReceivedVoucherAPI = 'api/user/bankReceiveVoucher';
 export const journalVoucherAPI = 'api/user/journalVoucher';
