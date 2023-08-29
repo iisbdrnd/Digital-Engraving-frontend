@@ -207,8 +207,9 @@ export default function ListData(props) {
                                             <thead>
                                                 <tr>
                                                     <th scope="col" width="5%" > SL.</th>
-                                                    <th scope="col" width="15%" > Job No.</th>
-                                                    <th scope="col" width="15%"> Job Name</th>
+                                                    <th scope="col" width="10%" > Job No.</th>
+                                                    <th scope="col" width="10%" > Agreement Date </th>
+                                                    <th scope="col" width="40%"> Job Name</th>
                                                     <th scope="col" width="10%" > Type</th>                                                        
                                                     <th scope="col" width="15%" > Client</th>
                                                     {/* <th scope="col" width="15%" onClick={() => sortHandler(5)}><i className="fa fa-sort"></i> Client</th> */}
@@ -225,6 +226,7 @@ export default function ListData(props) {
                                                                     <tr key={index}>
                                                                         <td scope="row">{ ((index+1) + (currentPage == 1 ? 0 : (currentPage*perPage - perPage))) }</td>
                                                                         <td>{item.job_no}</td>
+                                                                        <td>{item.agreement_date}</td>
                                                                         <td>{item.job_name}</td>
                                                                         <td>{item.job_type}</td>
                                                                         <td>{item.client_name}</td>

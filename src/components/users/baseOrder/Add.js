@@ -283,6 +283,7 @@ useEffect(() =>{
     
 },[delText,clientText])
 
+
 const handleDelStockDrop = () =>{
     if (delText.length > 3) {
                     
@@ -374,7 +375,7 @@ const handleClientDrop =() =>{
 
     }
 
-    
+    console.log(selectedValue)
     // console.log(jobId);
     // console.log(dropdownData['supplier_id']);
     // FOR ORDER DETAILS DATA INPUT
@@ -484,7 +485,7 @@ const handleClientDrop =() =>{
     // FINALLY SUBMIT FOR SAVE TO SERVER
     const submitHandler = (data, e) => {
         // console.log(data,e)
-        data.job_order_id = dropdownData.job_order_id[0].id;
+        data.job_order_id = selectedValue[0].id;
         data.order_date = jobOrderData.order_date;
         data.totalOrderQty = jobOrderData.orderQty;
         data.base_order_details = baseOrderDetails;

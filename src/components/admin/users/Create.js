@@ -86,7 +86,7 @@ class Create extends Component {
                 {
                     let designationObj = {};
                     designationObj.id = designation.id;
-                    designationObj.name = designation.name;
+                    designationObj.name = designation.role_name;
                     designationOption.push(designationObj);
                 })
             }

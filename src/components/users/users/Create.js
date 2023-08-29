@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { userPostMethod, userGetMethod, globalGetMethod } from '../../../api/userAction'
 import { timezoneList } from '../../../api/generalUrl'
-import { usersRsurl } from '../../../api/userUrl'
+import { usersRole_surl, usersRsurl } from '../../../api/userUrl'
 import { SubmitButton } from '../../common/GlobalButton';
 import { Typeahead } from 'react-bootstrap-typeahead';
 import 'react-bootstrap-typeahead/css/Typeahead.css';
@@ -78,7 +78,7 @@ class Create extends Component {
             });
         } 
     }
-    
+    // let selectedValue;
     componentDidMount() {
         userGetMethod(`${usersRsurl}/create`)
         .then(result => { 
@@ -89,7 +89,7 @@ class Create extends Component {
                 {
                     let designationObj = {};
                     designationObj.id = designation.id;
-                    designationObj.name = designation.name;
+                    designationObj.name = designation.role_name;
                     designationOption.push(designationObj);
                 })
             }
@@ -228,9 +228,11 @@ class Create extends Component {
                                                 <div className="col-sm-8">
                                                     <Typeahead
                                                         id="designation"
+                                                        name="designation"
                                                         labelKey={option => `${option.name}`}
                                                         options={this.state.designations}
                                                         placeholder="Select Designation..."
+                                                        selected=''
                                                         onChange={(e) => this.dropDownChange(e, 'designation')}
                                                     />
                                                 </div>

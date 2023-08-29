@@ -2,6 +2,7 @@
 export const UserMe = 'api/user/me';
 // USER URL
 export const usersRsurl = 'api/user/user';
+export const usersRole_surl = 'api/user/roles';
 //LOGIN
 export const UserLoginPost = 'api/user/postLogin';
 //APPS
@@ -115,6 +116,7 @@ export const batchAPI = 'api/user/batch';
 export const batchTransferAPI = 'api/user/batchTransfer';
 
 export const paymentVoucherAPI = 'api/user/paymentVoucher';
+export const GET_paymentVoucherAPI = 'api/user/getPaymentVoucherAccountCode';
 
 export const receivedVoucherAPI = 'api/user/receivedVoucher';
 export const bankPaymentVoucherAPI = 'api/user/bankPaymentVoucher';
