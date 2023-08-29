@@ -321,7 +321,7 @@ const Edit = (props) => {
                                                         />
                                                     </div>
                                                 </div> */}
-                                                <div className="form-group row">
+                                                {/* <div className="form-group row">
                                                     <label className="col-md-4 col-form-label" htmlFor="marketer_name">Designation</label>
                                                     <div className="col-md-8">
                                                         <input 
@@ -336,7 +336,7 @@ const Edit = (props) => {
                                                             })}
                                                         />
                                                     </div>
-                                                </div>
+                                                </div> */}
 
                                             </fieldset>
 
