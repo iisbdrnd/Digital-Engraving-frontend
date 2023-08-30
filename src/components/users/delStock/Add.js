@@ -8,6 +8,7 @@ import { PanelRefreshIcons, SubmitButton } from '../../common/GlobalButton';
 import { userGetMethod, userPostMethod } from '../../../api/userAction';
 import { DEL_STOCK_RSURL, GET_CLIENT_STOCK_JOB_RSURL, JOB_ORDER_DETAILS } from '../../../api/userUrl';
 import SweetAlert from 'sweetalert2';
+import { placeHolderText } from '../../common/GlobalComponent';
 
 const Add = (props) => {
     const { handleSubmit, register, errors, reset } = useForm();
@@ -329,7 +330,7 @@ const Add = (props) => {
                                                             name="job_order_id"
                                                             labelKey={option => `${option.name}`}
                                                             options={typeheadOptions['job_orders']}
-                                                            placeholder="Type job (upto 4 word).."
+                                                            placeholder={placeHolderText}
                                                             onChange={(e) => { dropDownChange(e, 'job_order_id') }}
                                                             onInputChange={(text)=>handleOnChangeInput(text)}
                                                             inputProps={{ required: true }}

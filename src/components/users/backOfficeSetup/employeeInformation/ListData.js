@@ -178,14 +178,14 @@ export default function ListData(props) {
                                         <table className="table table-border-horizontal">
                                             <thead>
                                                 <tr>
-                                                    <th scope="col" width="8%" onClick={() => sortHandler(1)} ><i className="fa fa-sort"></i> SL.</th>
-                                                    <th scope="col" width="12%" onClick={() => sortHandler(2)} ><i className="fa fa-sort"></i> Employee Id</th>
-                                                    <th scope="col" width="12%" onClick={() => sortHandler(3)} ><i className="fa fa-sort"></i> Name</th>
-                                                    <th scope="col" width="12%" onClick={() => sortHandler(4)} ><i className="fa fa-sort"></i> Designation</th>
-                                                    <th scope="col" width="12%" onClick={() => sortHandler(4)} ><i className="fa fa-sort"></i> Department</th>
-                                                    <th scope="col" width="10%" onClick={() => sortHandler(4)} ><i className="fa fa-sort"></i> Contact</th>
-                                                    <th scope="col" width="12%" onClick={() => sortHandler(4)} ><i className="fa fa-sort"></i> Email</th>
-                                                    <th scope="col" width="15%" onClick={() => sortHandler(4)} ><i className="fa fa-sort"></i> Working Status</th>
+                                                    <th scope="col" width="8%" onClick={() => sortHandler(1)} >SL.</th>
+                                                    <th scope="col" width="12%" onClick={() => sortHandler(2)} >Employee Id</th>
+                                                    <th scope="col" width="12%" onClick={() => sortHandler(3)} >Name</th>
+                                                    <th scope="col" width="12%" onClick={() => sortHandler(4)} >Designation</th>
+                                                    <th scope="col" width="12%" onClick={() => sortHandler(4)} >Department</th>
+                                                    <th scope="col" width="10%" onClick={() => sortHandler(4)} >Contact</th>
+                                                    <th scope="col" width="12%" onClick={() => sortHandler(4)} >Email</th>
+                                                    <th scope="col" width="15%" onClick={() => sortHandler(4)} >Working Status</th>
                                                     <th scope="col" width="5%">Action</th>
                                                 </tr>
                                             </thead>

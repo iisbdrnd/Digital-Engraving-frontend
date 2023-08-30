@@ -178,9 +178,9 @@ export default function ListData(props) {
                                         <table className="table table-border-horizontal">
                                             <thead>
                                                 <tr>
-                                                    <th scope="col" width="8%" onClick={() => sortHandler(1)} ><i className="fa fa-sort"></i> SL.</th>
-                                                    <th scope="col" width="60%" onClick={() => sortHandler(2)} ><i className="fa fa-sort"></i> Printer Name</th>
-                                                    <th scope="col" width="24%" onClick={() => sortHandler(2)} ><i className="fa fa-sort"></i> Short Name</th>
+                                                    <th scope="col" width="8%" onClick={() => sortHandler(1)} >SL.</th>
+                                                    <th scope="col" width="60%" onClick={() => sortHandler(2)} > Printer Name</th>
+                                                    <th scope="col" width="24%" onClick={() => sortHandler(2)} >Short Name</th>
                                                     <th scope="col" width="8%">Action</th>
                                                 </tr>
                                             </thead>

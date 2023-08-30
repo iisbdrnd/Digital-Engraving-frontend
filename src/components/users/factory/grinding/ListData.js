@@ -15,7 +15,7 @@ export default function ListData(props) {
     const [hasAccess, setHasAccess] = useState({});
     const [accLoad, setAccLoad] = useState(true);
     const [currentPage, setCurrentPage] = useState();
-    const [perPage, setPerPage] = useState(5);
+    const [perPage, setPerPage] = useState(10);
     const [totalData, setTotalData] = useState(0);
     const [ascDesc, setAscDesc] = useState(false);
     const [jobActiveStatus, setJobActiveStatus] = useState(0);

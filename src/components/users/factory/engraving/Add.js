@@ -7,6 +7,7 @@ import useForm from "react-hook-form";
 import { SubmitButton } from '../../../common/GlobalButton';
 import { Typeahead } from 'react-bootstrap-typeahead';
 import moment from 'moment';
+import { placeHolderText } from '../../../common/GlobalComponent';
 
 const Add = (props) => {
     const { handleSubmit, register, errors, reset} = useForm();
@@ -213,7 +214,6 @@ const Add = (props) => {
     const newOnChangeEvent = (e,fieldName) => {
         if(e.length > 0){
             const selectedValueId = e[0].id;
-            
             setStateData(
                 (prevstate) => ({
                     ...prevstate,
@@ -356,7 +356,7 @@ const Add = (props) => {
                                                                 name="job_order_pk_id"
                                                                 labelKey={option => `${option.id}`}
                                                                 options={typeHeadOptions['layout_id']}
-                                                                placeholder="Type job (upto 4 word).."
+                                                                placeholder={placeHolderText}
                                                                 onChange={(e) => newOnChangeEvent(e,'layout_id')}
                                                                 inputProps={{ required: true }}
                                                                 onInputChange={(text)=>handleOnChangeLayout(text)}
@@ -390,7 +390,7 @@ const Add = (props) => {
                                                                 name="job_order_pk_id"
                                                                 labelKey={option => `${option.name}`}
                                                                 options={typeHeadOptions['color']}
-                                                                placeholder="Type job (upto 4 word).."
+                                                                placeholder={placeHolderText}
                                                                 onChange={(e) => newOnChangeEvent(e,'color')}
                                                                 inputProps={{ required: true }}
                                                                 onInputChange={(text)=>handleOnChangeColor(text)}

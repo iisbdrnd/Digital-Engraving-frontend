@@ -11,6 +11,7 @@ import { Typeahead } from 'react-bootstrap-typeahead';
 import { JOB_ORDER_DETAILS, DESIGN_LAYOUT_RSURL, DESIGN_LAYOUT_HISTORY,JOB_SUPPLIERS,GET_DESIGN_LAYOUT_JOBORDER,GET_DESIGN_LAYOUT_DETAILS, DESIGN_LAYOUT_DETAILS } from "../../../../api/userUrl";
 import { userGetMethod, userPostMethod } from "../../../../api/userAction";
 import { toast } from "react-toastify";
+import { placeHolderText } from "../../../common/GlobalComponent";
 
 const Add = (props) => {
     const { handleSubmit, register, errors, reset } = useForm();
@@ -906,6 +907,7 @@ console.log(typeheadOptions)
         setLayoutIdVal({
             layout_id: ''
         })
+        setLayoutArr([])
 
     }
 
@@ -940,7 +942,7 @@ console.log(typeheadOptions)
                                                             name="job_id"
                                                             labelKey={option => `${option.job_no}${option.name}`}
                                                             options={typeheadOptions['job_orders']}
-                                                            placeholder="Type job (upto 4 word).."
+                                                            placeholder={placeHolderText}
                                                             onChange={(e) => dropDownChange(e, 'job_id')}
                                                             selected={selectedJobOrder}
                                                             onInputChange={(text) => handleTypeaheadInputChange(text)}
@@ -1102,7 +1104,7 @@ console.log(typeheadOptions)
                                                             name="ref_layout_id"
                                                             labelKey={option => `${option.id}`}
                                                             options={typeheadOptions['ref_layout']}
-                                                            placeholder="Type job (upto 4 word).."
+                                                            placeholder={placeHolderText}
                                                             onChange={(e) => dropDownChange(e, 'ref_layout')}
                                                             // selected={ref_selected}
                                                             onInputChange={(text) => handleref_layout_InputChange(text)}
@@ -1321,7 +1323,7 @@ console.log(typeheadOptions)
                                                                 ref={register({
                                                                     required: 'On text Field Required'
                                                                 })}
-                                                                value={layoutMaster?.remarks ? layoutMaster.remarks : (formData.remarks ? formData.remarks : '')}
+                                                               
                                                                 onChange={inputChangeHandler}
                                                             />
                                                         </div>
@@ -1602,7 +1604,7 @@ console.log(typeheadOptions)
                                                     <div className="col-md-12 row">
                                                         <label className="col-sm-4 text-left col-form-label" style={{whiteSpace:'nowrap'}}>Designer</label>
                                                         <div className="col-md-8">
-                                                            <input
+                                                            {/* <input
                                                                 type="text"
                                                                 className="form-control"
                                                                 name="designer"
@@ -1615,7 +1617,21 @@ console.log(typeheadOptions)
                                                                 onChange={inputChangeHandler}
                                                                 // disabled={formData?.d_cir != '' ? true : false}
                                                                 // value={formData.d_cir ? formData.d_cir : ''}
-                                                            />
+                                                            /> */}
+
+
+
+                                                                <select className="form-control" name="designer" id="designer_id" value={layoutMaster?.designer ? layoutMaster.designer : (formData.designer ? formData.designer : '')} onChange={inputChangeHandler}   ref={register({
+                                                                    required: 'On text Field Required'
+                                                                })}>
+                                                                <option value="">Select....</option>
+                                                                {typeheadOptions['employees'].map((item,index) => (
+                                                                    <option key={index} value={item?.id}>
+                                                                        {item?.name}
+                                                                    </option>
+                                                                ))}
+                                                            </select>
+
 
                                                         </div>
                                                     </div>

@@ -449,7 +449,7 @@ const Add = (props) => {
                                       options={
                                         typeheadOptions["reference_jobs"]
                                       }
-                                      placeholder="Type Job (upto 4 word).."
+                                      placeholder="Type Job (min. 4 chars)"
                                       onChange={(e) =>
                                         dropDownChange(e, "reference_job")
                                       }

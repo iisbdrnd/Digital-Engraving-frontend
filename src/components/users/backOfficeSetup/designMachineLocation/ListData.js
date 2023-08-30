@@ -175,13 +175,13 @@ export default function ListData(props) {
                                         <table className="table table-border-horizontal">
                                             <thead>
                                                 <tr>
-                                                    <th scope="col" width="6%" onClick={() => sortHandler(1)} ><i className="fa fa-sort"></i> SL.</th>
-                                                    <th scope="col" width="20%" onClick={() => sortHandler(2)} ><i className="fa fa-sort"></i> Machine Name</th>
-                                                    <th scope="col" width="10%" onClick={() => sortHandler(2)} ><i className="fa fa-sort"></i> Working Employee</th>
-                                                    <th scope="col" width="15%" ><i className="fa fa-sort"></i> Branch Name</th>
-                                                    <th scope="col" width="23%" ><i className="fa fa-sort"></i> Description</th>
-                                                    <th scope="col" width="14%" onClick={() => sortHandler(3)} ><i className="fa fa-sort"></i> Active Status</th>
-                                                    <th scope="col" width="12%" ><i className="fa fa-sort"></i> Off Reason</th>
+                                                    <th scope="col" width="6%" onClick={() => sortHandler(1)} > SL.</th>
+                                                    <th scope="col" width="20%" onClick={() => sortHandler(2)} >Machine Name</th>
+                                                    <th scope="col" width="10%" onClick={() => sortHandler(2)} >Working Employee</th>
+                                                    <th scope="col" width="15%" > Branch Name</th>
+                                                    <th scope="col" width="23%" > Description</th>
+                                                    <th scope="col" width="14%" onClick={() => sortHandler(3)} > Active Status</th>
+                                                    <th scope="col" width="12%" > Off Reason</th>
                                                     <th scope="col" width="10%">Action</th>
                                                 </tr>
                                             </thead>

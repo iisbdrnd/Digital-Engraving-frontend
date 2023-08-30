@@ -3,13 +3,17 @@ import {
     ENGRAVING_RS_URL,
     POLISHING_GET_POLISHING_DATA_BY_JOB_ID,
     DESIGN_LAYOUT_DETAILS,
+    GET_DESIGN_LAYOUT_DETAILS,
+    GET_ENGRAVING_COLOR_URL,
 } from "../../../../api/userUrl";
 import { userGetMethod, userPutMethod } from "../../../../api/userAction";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import useForm from "react-hook-form";
 import { SubmitButton } from "../../../common/GlobalButton";
+import { Typeahead } from 'react-bootstrap-typeahead';
 import moment from "moment";
+import { placeHolderText } from "../../../common/GlobalComponent";
 
 const Edit = (props) => {
     const { handleSubmit, register, errors, reset } = useForm();
@@ -17,7 +21,10 @@ const Edit = (props) => {
     const [colors, setColors] = useState([]);
     const [layoutReferrence, setLayoutReferrence] = useState([]);
     const [polishMachines, setPolishMachines] = useState([]);
+    const [typeHeadOptions, setTypeHeadOptions] = useState({});
     const [shiftDutyPersons, setShiftDutyPersons] = useState([]);
+    const [layoutText,setLayoutText] = useState('');
+    const [colorText,setColorText] = useState('');
 
     let [stateData, setStateData] = useReducer(
         (state, newState) => ({ ...state, ...newState }),
@@ -63,6 +70,7 @@ const Edit = (props) => {
         : null;
 
     useEffect(() => {
+
         userGetMethod(`${ENGRAVING_RS_URL}/${digEngravingCylinderId}/edit`).then(
             (response) => {
                 dropDownChange(
@@ -97,10 +105,18 @@ const Edit = (props) => {
                     shiftData: digShift, //GET DATA FROM dig_shift_master table
                     shiftDutyPersons: shiftDutyPersons, //GET DATA FROM dig_shift_details table
                 });
-                setColors(response?.data?.colors);
-                setLayoutReferrence(response?.data?.layout_references);
+                setTypeHeadOptions((prevstate) => ({
+                    ...prevstate,
+                    ['layout_id']: [],
+                }))
+                setTypeHeadOptions((prevstate) => ({
+                    ...prevstate,
+                    ['color']: [],
+                }))
+                // setColors(response?.data?.colors);
+                // setLayoutReferrence(response?.data?.layout_references);
                 setPolishMachines(response?.data?.polishMachines);
-                setShiftDutyPersons(response?.data?.shiftDutyPersons);
+                // setShiftDutyPersons(response?.data?.shiftDutyPersons);
                 setIsLoading(false);
             }
         );
@@ -110,8 +126,88 @@ const Edit = (props) => {
         setStateData({ [event.target.name]: event.target.value });
     };
 
+    const handleOnChangeLayout = (text) =>{
+        setLayoutText(text)
+    }
+
+    const handleOnChangeColor = (text) =>{
+        setColorText(text)
+    }
+
+    useEffect(() =>{
+        if (layoutText.length >= 3) {
+            userGetMethod(`${GET_DESIGN_LAYOUT_DETAILS}?searchText=${layoutText}`)
+            .then(response =>{
+                console.log(response.data)
+                let layoutOptions = [];
+                if (response.data.layout_references && response.data.layout_references.length > 0) {
+                response.data.layout_references.map(job => {
+
+                    
+                        let jobOrderObj = {};
+                        jobOrderObj.id =job.layout_id;
+                        // jobOrderObj.job_no =job.job_no;
+                        // jobOrderObj.name = job.job_name;
+                        layoutOptions.push(jobOrderObj);
+                        // setLayoutReferrence({...layoutReferrence, jobOrderObj})
+                    }
+                )   
+            }
+            setTypeHeadOptions((prevstate) => ({
+                ...prevstate,
+                ['layout_id']: layoutOptions,
+            }))
+            setIsLoading(false);
+            })
+        }
+    },[layoutText])
+
+    useEffect(() =>{
+        if (colorText.length >= 3) {
+            userGetMethod(`${GET_ENGRAVING_COLOR_URL}?searchText=${colorText}`)
+            .then(response =>{
+                console.log(response.data)
+                let colorOptions = [];
+                if (response.data.colors && response.data.colors.length > 0) {
+                response.data.colors.map(color => {
+
+                    
+                        let jobOrderObj = {};
+                        jobOrderObj.id =color.id;
+                        jobOrderObj.short_name =color.short_name;
+                        jobOrderObj.name = color.color_name;
+                        colorOptions.push(jobOrderObj);
+                        // setColors({...colors,jobOrderObj})
+                    }
+                )   
+            }
+            setTypeHeadOptions((prevstate) => ({
+                ...prevstate,
+                ['color']: colorOptions,
+            }))
+            setIsLoading(false);
+
+
+            })
+        }
+    },[colorText])
+
+    const newOnChangeEvent = (e,fieldName) => {
+        if(e.length > 0){
+            const selectedValueId = e[0].id;
+            console.log(selectedValueId)
+            setStateData(
+                (prevstate) => ({
+                    ...prevstate,
+                    [fieldName]: selectedValueId,
+                })
+            )}
+    }
+    console.log(stateData,stateData.color, stateData.layout_id)
+
+
     useEffect(() => {
-        if (stateData?.color !== '' && stateData?.layout_id !== '' && stateData?.job_order_pk_id) {
+        if (stateData?.color !== '' && stateData?.layout_id !== '' && stateData?.job_no) {
             getLayoutDetails();
         }
     }, [stateData?.color, stateData?.layout_id, stateData?.job_no]);
@@ -365,19 +461,21 @@ const Edit = (props) => {
                                                                 </label>
                                                                 <div className="col-md-7">
                                                                     {/* <input type="text" className="form-control" name="layout_id" {...register("layout_id", { required: "Please enter your first name." })}/> */}
-                                                                    <select
-                                                                        className="form-control"
-                                                                        onChange={onChangeHandler}
-                                                                        name="layout_id"
-                                                                        ref={register({})}
-                                                                    >
-                                                                        <option value="">Select...</option>
-                                                                        {layoutReferrence.map((item, index) => (
-                                                                            <option value={item?.layout_id}>
-                                                                                {item?.layout_id}
-                                                                            </option>
-                                                                        ))}
-                                                                    </select>
+                                                                <Typeahead
+                                                                id="job_order_pk_id"
+                                                                name="job_order_pk_id"
+                                                                labelKey={option => `${option.id}`}
+                                                                options={typeHeadOptions['layout_id']}
+                                                                placeholder={placeHolderText}
+                                                                onChange={(e) => newOnChangeEvent(e,'layout_id')}
+                                                                inputProps={{ required: true }}
+                                                                onInputChange={(text)=>handleOnChangeLayout(text)}
+                                                                // selected={layoutReferrence}
+                                                                // disabled={job_order_pk_id != null ? 'disabled' : ''}
+                                                                ref={register({
+                                                                    required: 'Job No Field Required'
+                                                                })}
+                                                            />
                                                                 </div>
 
                                                                 <label className="col-md-5 col-form-label label-form required ">
@@ -417,19 +515,20 @@ const Edit = (props) => {
                                                                 </label>
                                                                 <div className="col-md-7">
                                                                     {/* <input type="text" className="form-control" name="color" ref={register({})} /> */}
-                                                                    <select
-                                                                        className="form-control"
-                                                                        onChange={onChangeHandler}
-                                                                        name="color"
-                                                                        ref={register({})}
-                                                                    >
-                                                                        <option value="">Select ...</option>
-                                                                        {colors.map((item, index) => (
-                                                                            <option value={item?.id}>
-                                                                                {item?.color_name}
-                                                                            </option>
-                                                                        ))}
-                                                                    </select>
+                                                                    <Typeahead
+                                                                id="job_order_pk_id"
+                                                                name="job_order_pk_id"
+                                                                labelKey={option => `${option.name}`}
+                                                                options={typeHeadOptions['color']}
+                                                                placeholder={placeHolderText}
+                                                                onChange={(e) => newOnChangeEvent(e,'color')}
+                                                                inputProps={{ required: true }}
+                                                                onInputChange={(text)=>handleOnChangeColor(text)}
+                                                                // selected={colors}
+                                                                // disabled={job_order_pk_id != null ? 'disabled' : ''}
+                                                                ref={register({
+                                                                    required: 'Job No Field Required'
+                                                                })}/>
                                                                 </div>
 
                                                                 <label className="col-md-5 col-form-label label-form required ">

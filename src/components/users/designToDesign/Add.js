@@ -6,6 +6,7 @@ import { DESIGN_TO_DESIGN_RSURL, GET_JOB_ORDER_DETAILS, JOB_ORDER_DETAILS } from
 import { Typeahead } from 'react-bootstrap-typeahead';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { placeHolderText } from '../../common/GlobalComponent';
 
 const Add = (props) => {
     const { handleSubmit, register, errors } = useForm();
@@ -268,7 +269,7 @@ const Add = (props) => {
                                                         name="job_order_id"
                                                         labelKey={option => `${option.name}`}
                                                         options={typeHeadOptions['job_orders']}
-                                                        placeholder="Type job (upto 4 word).."
+                                                        placeholder={placeHolderText}
                                                         onChange={(e) => dropDownChange(e, 'job_order_id')}
                                                         onInputChange={(text) => handleInputChange(text)}
                                                         inputProps={{ required: true }}

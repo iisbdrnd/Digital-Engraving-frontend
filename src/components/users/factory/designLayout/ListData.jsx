@@ -14,7 +14,7 @@ const ListData = (props) =>  {
     const [accLoad, setAccLoad] = useState(true);
     const [layoutData, setLayoutData] = useState([]);
     const [currentPage, setCurrentPage] = useState();
-    const [perPage, setPerPage] = useState(5);
+    const [perPage, setPerPage] = useState(10);
     const [totalData, setTotalData] = useState(0);
     const [ascDesc, setAscDesc] = useState(false);
     const [jobActiveStatus, setJobActiveStatus] = useState(0);

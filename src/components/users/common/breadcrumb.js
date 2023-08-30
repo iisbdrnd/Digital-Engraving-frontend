@@ -27,7 +27,7 @@ const Breadcrumb = props => {
                             </div>
                         </div>
                         {/* <!-- Bookmark Start--> */}
-                       <Bookmark />
+                       {/* <Bookmark /> */}
                         {/* <!-- Bookmark Ends--> */}
                     </div>
                 </div>

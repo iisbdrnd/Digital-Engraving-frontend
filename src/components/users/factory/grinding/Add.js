@@ -7,6 +7,7 @@ import useForm from "react-hook-form";
 import { Typeahead } from 'react-bootstrap-typeahead';
 import { SubmitButton } from '../../../common/GlobalButton';
 import './Add.css'
+import { placeHolderText } from '../../../common/GlobalComponent';
 
 const Add = (props) => {
     const { handleSubmit, register, errors,reset } = useForm();
@@ -513,7 +514,7 @@ const Add = (props) => {
                                                             name="job_order_pk_id"
                                                             labelKey={option => `${option.name}`}
                                                             options={typeHeadOptions['job_orders']}
-                                                            placeholder="Type job (upto 4 word).."
+                                                            placeholder={placeHolderText}
                                                             onChange={(e) => dropDownChange(e, 'job_order_pk_id')}
                                                             inputProps={{ required: true }}
                                                             onInputChange={(e,text)=>handleTypeaheadInputChange(e,text)}

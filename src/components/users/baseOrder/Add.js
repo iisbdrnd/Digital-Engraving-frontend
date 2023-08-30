@@ -8,6 +8,7 @@ import { PanelRefreshIcons, SubmitButton } from '../../common/GlobalButton';
 import { userGetMethod, userPostMethod } from '../../../api/userAction';
 import { BASE_ORDER_RSURL, JOB_ORDER_DETAILS,GET_BASE_JOB_ORDER_RSURL, BASE_ORDER_DEL_RSURL, BASE_ORDER_CLIENT_RSURL } from '../../../api/userUrl';
 import SweetAlert from 'sweetalert2';
+import { placeHolderText } from '../../common/GlobalComponent';
 
 const Add = (props) => {
     const { handleSubmit, register, errors, reset } = useForm();
@@ -562,7 +563,7 @@ const handleClientDrop =() =>{
                                                             name="job_order_id"
                                                             labelKey={option => `${option.name}`}
                                                             options={typeheadOptions['job_orders']}
-                                                            placeholder="Type job (upto 4 word).."
+                                                            placeholder={placeHolderText}
                                                             onChange={(e) => dropDownChange(e, 'job_order_id')}
                                                             inputProps={{ required: true }}
                                                             onInputChange={(text)=>handleInputOnChange(text)}
@@ -664,7 +665,7 @@ const handleClientDrop =() =>{
                                                                 name="del_stocks_id"
                                                                 labelKey={option => `${option.name}`}
                                                                 options={typeheadOptions['del_stocks']}
-                                                                placeholder="Select Job No..."
+                                                                placeholder={placeHolderText}
                                                                 onChange={(e) => dropDownChange(e, 'del_stocks')}
                                                                 inputProps={{ required: true }}
                                                                 onInputChange={(text)=>handleInputDelOnChange(text)}
@@ -678,7 +679,7 @@ const handleClientDrop =() =>{
                                                                  name="client_stocks_id"
                                                                  labelKey={option => `${option.name}`}
                                                                  options={typeheadOptions['client_stocks']}
-                                                                 placeholder="Select Job No..."
+                                                                 placeholder={placeHolderText}
                                                                  onChange={(e) => dropDownChange(e, 'client_stocks')}
                                                                  inputProps={{ required: true }}
                                                                  onInputChange={(text)=>handleInputClientOnChange(text)}
