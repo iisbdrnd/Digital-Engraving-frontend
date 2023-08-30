@@ -8,7 +8,7 @@ import './Add.css';
 
 import { PanelRefreshIcons, SubmitButton } from "../../../common/GlobalButton";
 import { Typeahead } from 'react-bootstrap-typeahead';
-import { JOB_ORDER_DETAILS, DESIGN_LAYOUT_RSURL, DESIGN_LAYOUT_HISTORY,JOB_SUPPLIERS,GET_DESIGN_LAYOUT_JOBORDER,GET_DESIGN_LAYOUT_DETAILS } from "../../../../api/userUrl";
+import { JOB_ORDER_DETAILS, DESIGN_LAYOUT_RSURL, DESIGN_LAYOUT_HISTORY,JOB_SUPPLIERS,GET_DESIGN_LAYOUT_JOBORDER,GET_DESIGN_LAYOUT_DETAILS, DESIGN_LAYOUT_DETAILS } from "../../../../api/userUrl";
 import { userGetMethod, userPostMethod } from "../../../../api/userAction";
 import { toast } from "react-toastify";
 
@@ -29,6 +29,7 @@ const Add = (props) => {
     const [colorArrayErr,setColorArrayErr] = useState('');
     const [ref_text,setRef_text] = useState('');
     const [machineArray,setMachineArray] = useState([]);
+    const [ref_selected,setRef_selected] = useState([]);
     const [layoutOnBlur,setLayoutOnBlur] = useState({
         final_cir:'',
         final_dia:'',
@@ -109,33 +110,7 @@ const Add = (props) => {
         setRef_text(text)
     }
 
-    useEffect(()=>{
-        if (job_id == null && ref_text.length > 3) {
-            
-            userGetMethod(`${GET_DESIGN_LAYOUT_DETAILS}?searchText=${ref_text}`)
-            .then(response => {
-                console.log(response.data)
-                let jobOrderOptions = [];
-                if (response.data.layout_references && response.data.layout_references.length > 0) {
-                response.data.layout_references.map(job => {
-
-                    
-                    let jobOrderObj = {};
-                    jobOrderObj.id =job.layout_id;
-                    // jobOrderObj.job_no =job.job_no;
-                    // jobOrderObj.name = job.job_name;
-                    jobOrderOptions.push(jobOrderObj);
-                    }
-                )
-            }
-
-            setTypeheadOptions({ ...typeheadOptions, 
-                ['ref_layout']: jobOrderOptions
-               });
-            setIsLoading(false);
-            })
-        }
-    },[ref_text])
+    
     console.log(typeheadOptions)
 
     useEffect(()=>{
@@ -166,6 +141,35 @@ const Add = (props) => {
             // console.log(jobNoFilter)
         }
     },[jobNoFilter])
+
+    useEffect(()=>{
+        if (ref_text.length > 3) {
+            
+            userGetMethod(`${GET_DESIGN_LAYOUT_DETAILS}?searchText=${ref_text}`)
+            .then(response => {
+                console.log(response.data)
+                let jobOrderOptions = [];
+                if (response.data.layout_references && response.data.layout_references.length > 0) {
+                response.data.layout_references.map(job => {
+
+                    
+                    let jobOrderObj = {};
+                    jobOrderObj.id =job.layout_id;
+                    // jobOrderObj.job_no =job.job_no;
+                    // jobOrderObj.name = job.job_name;
+                    jobOrderOptions.push(jobOrderObj);
+                    // setRef_selected([...ref_selected,jobOrderObj]);
+                }
+                )
+            }
+
+            setTypeheadOptions({ ...typeheadOptions, 
+                ['ref_layout']: jobOrderOptions
+               });
+            setIsLoading(false);
+            })
+        }
+    },[ref_text])
 
     
     const pageRefreshHandler = async(job_id = null) => {
@@ -439,7 +443,7 @@ console.log(typeheadOptions)
                
                     if (formData.ref_layout_id) {
                         const response = await userGetMethod(`${DESIGN_LAYOUT_HISTORY}?ref_layout_id=${formData.ref_layout_id}`);
-                    // console.log(response.data);
+                    console.log(response.data);
                     setLayoutArr(response.data?.layoutHistory);
                     setLayoutDetails({
                         ...layoutDetails,
@@ -569,10 +573,11 @@ console.log(typeheadOptions)
         if (stateName == 'job_id' && event[0]?.name) {
             setSelectedJobOrder(event);
         }
-        if (stateName == 'ref_layout' && event[0]?.name) {
+        if (stateName == 'ref_layout' && event[0]?.id) {
             setSelectedRefLayout(event);
+            
         }
-        // console.log(event);
+        
         if (event.length > 0) {
             const selectedValue = event[0].id;
             setDropdownData(
@@ -581,7 +586,30 @@ console.log(typeheadOptions)
                     [stateName]: selectedValue,
                 })
             );
-            if (selectedValue == null || selectedValue !== undefined) {
+
+            if (stateName == 'ref_layout' && selectedValue) {
+                userGetMethod(`${DESIGN_LAYOUT_HISTORY}?ref_layout_id=${selectedValue}`)
+                .then(response => {
+                    console.log(response.data);
+                    setLayoutArr(response.data?.layoutHistory);
+                    setLayoutDetails({
+                        ...layoutDetails,
+                        final_cir: response.data?.layoutDetails?.final_cir,
+                        final_dia: response.data?.layoutDetails?.final_dia,
+                        final_height: response.data?.layoutDetails?.final_height,
+                        final_width: response.data?.layoutDetails?.final_width,
+                        layout_id: response.data?.layoutDetails?.layout_id
+                    });
+                    setFormData({
+                        ...formData,
+                        history_name: response.data?.layoutHistory?.job_name,
+                        history_remarks: response.data?.layoutHistory?.remarks,
+                        layout_history_date: response.data.layoutHistory[0]?.layout_date,
+                        layout_id: formData?.ref_layout_id
+                    });
+                })
+            }
+            if (stateName == 'job_id' && selectedValue) {
                 userGetMethod(`${JOB_ORDER_DETAILS}?jobOrderId=${selectedValue}`)
                 .then(response => {
                     console.log(response.data)
@@ -640,20 +668,90 @@ console.log(typeheadOptions)
                             response.data.colors.map((item, index) => {
                                 let colorObj = {};
                                 colorObj.er_color_serial = index;
-                                colorObj.name = item.color_name;
-                                colorObj.er_color_id = item.id;
+                                colorObj.name = item?.color_name;
+                                colorObj.er_color_id = item?.id;
                                 colorOptions.push(colorObj);
                             })
                             setEngraveOrder(colorOptions);
                             setTypeColorOptions(colorOptions);
                         }
                     }
-                });
+                })
             }
+
+            // if (selectedValue == null || selectedValue !== undefined) {
+            //     userGetMethod(`${JOB_ORDER_DETAILS}?jobOrderId=${selectedValue}`)
+            //     .then(response => {
+            //         console.log(response.data)
+            //         userGetMethod(`${JOB_SUPPLIERS}?jobOrderId=${selectedValue}`)
+            //         .then(response => {
+            //             setSupplierArr(response.data.suppliers);
+            //             if (response.data.suppliers.length > 0) {
+            //                 let supplierOption = [];
+            //                 response.data.suppliers.map((item, index) => {
+            //                     let supplierObj = {};
+            //                     supplierObj.id = index;
+            //                     supplierObj.name = item;
+            //                     supplierOption.push(supplierObj);
+            //                 })
+            //                 // setEngraveOrder(colorOptions);
+            //                 setSupplierArr(supplierOption);
+            //             }
+            //             console.log(response.data);
+            //         })
+            //         .catch(err => {console.log(err)})
+            //         if (response?.data) {
+            //             let { 
+            //                 // layout_date,
+            //                 ref_layout_id,cir,client_email,dia,fl,id,job_name,job_no,job_type,printer_id,printer_mark,mark_as_complete,total_cylinder_qty,remarks,ups,rpt,operator_info,station,printer_name,printing_status,design_height,design_width,client_name,marketing_p_name
+            //             } = response.data.jobOrderDetails;
+            //             setFormData({
+            //                 // 'layout_date': layout_date,
+            //                 'cir': cir,
+            //                 'client_email': client_email,
+            //                 'dia': dia,
+            //                 'fl': fl,
+            //                 'id': id,
+            //                 'job_name': job_name,
+            //                 'job_no': job_no,
+            //                 'job_type': job_type,
+            //                 'printer_id': printer_id,
+            //                 'printer_name': printer_name,
+            //                 'printing_status': printing_status,
+            //                 'printer_mark': printer_mark,
+            //                 'total_cylinder_qty': total_cylinder_qty,
+            //                 'remarks': remarks,
+            //                 'ups': ups,
+            //                 'rpt': rpt,
+            //                 'ref_layout_id' : ref_layout_id,
+            //                 'mark_as_complete' :  mark_as_complete,
+            //                 'operator_info' : operator_info ,
+            //                 'station' : station,
+            //                 'design_height': design_height,
+            //                 'design_width' : design_width,
+            //                 'client_name' : client_name,
+            //                 'marketing_p_name' : marketing_p_name
+            //             });
+            //             setTypeColorOptions(response.data.colors);
+            //             if (response.data.colors.length > 0) {
+            //                 let colorOptions = [];
+            //                 response.data.colors.map((item, index) => {
+            //                     let colorObj = {};
+            //                     colorObj.er_color_serial = index;
+            //                     colorObj.name = item?.color_name;
+            //                     colorObj.er_color_id = item?.id;
+            //                     colorOptions.push(colorObj);
+            //                 })
+            //                 setEngraveOrder(colorOptions);
+            //                 setTypeColorOptions(colorOptions);
+            //             }
+            //         }
+            //     });
+            // }
                
         }
     }
-    
+    console.log(dropdownData)
 
     // console.log(engraveOrder)
 
@@ -869,7 +967,7 @@ console.log(typeheadOptions)
                                                             })}
                                                             onChange={inputChangeHandler}
                                                             value={formData.remarks ? formData.remarks : ''}
-                                                            disabled={formData.remarks != '' ? true : false}
+                                                            disabled={formData.remarks != '' ? true : true}
                                                         />
                                                     </div>
                                                     <label className="col-sm-5 col-form-label required">Printer</label>
@@ -995,7 +1093,7 @@ console.log(typeheadOptions)
                                                             options={typeheadOptions['ref_layout']}
                                                             placeholder="Type job (upto 4 word).."
                                                             onChange={(e) => dropDownChange(e, 'ref_layout')}
-                                                            // selected={selectedJobOrder}
+                                                            selected={selectedRefLayout}
                                                             onInputChange={(text) => handleref_layout_InputChange(text)}
                                                             ref={register({
                                                                 required: 'On text Field Required'
@@ -1019,8 +1117,8 @@ console.log(typeheadOptions)
                                                                 })}
                                                                 onChange={inputChangeHandler}
                                                                 onBlur={handleChangeOnBlur}
-                                                                value={formData?.layout_id || layoutMaster?.layout_id ? (formData?.layout_id || layoutMaster?.layout_id):layoutIdVal.layout_id}
-                                                                disabled={formData?.layout_id ? true : false}
+                                                                value={layoutDetails?.layout_id || layoutMaster?.layout_id ? (layoutDetails?.layout_id || layoutMaster?.layout_id):layoutIdVal.layout_id}
+                                                                disabled={layoutDetails?.layout_id ? true : false}
 
 
 

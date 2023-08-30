@@ -127,46 +127,46 @@ const Add = (props) => {
         }
     }
 
-    const handleReceiveChange = (text) => {
-        setReceiveText(text)
-    }
-    useEffect(()=>{
-        if (receiveText.length > 3) {
-            userGetMethod(`${GET_receivedVoucherAPI}?searchText=${receiveText}`)
-            .then(response =>{
+    // const handleReceiveChange = (text) => {
+    //     setReceiveText(text)
+    // }
+    // useEffect(()=>{
+    //     if (receiveText.length > 3) {
+    //         userGetMethod(`${GET_receivedVoucherAPI}?searchText=${receiveText}`)
+    //         .then(response =>{
                 
-                let groupedOptionsCustom = [];
-            Object.keys(response.data.received_accounts).map(function(key, index) {
-                if (response.data.received_accounts.hasOwnProperty(key)) {
-                    var groupOptionObj = {};
-                    groupOptionObj.label = response.data.received_accounts[key].account_code + ' - ' + response.data.received_accounts[key].account_head;
-                    groupOptionObj.options = [];
+    //             let groupedOptionsCustom = [];
+    //         Object.keys(response.data.received_accounts).map(function(key, index) {
+    //             if (response.data.received_accounts.hasOwnProperty(key)) {
+    //                 var groupOptionObj = {};
+    //                 groupOptionObj.label = response.data.received_accounts[key].account_code + ' - ' + response.data.received_accounts[key].account_head;
+    //                 groupOptionObj.options = [];
 
-                    response.data.received_accounts_level_four[key].map( (account_levelFour, i) => {
+    //                 response.data.received_accounts_level_four[key].map( (account_levelFour, i) => {
 
-                        let groupSubOptionsObj = {};
-                        groupSubOptionsObj.label = account_levelFour.account_code+' - '+account_levelFour.account_head;
-                        groupSubOptionsObj.value = account_levelFour.account_code+'~'+account_levelFour.account_head;
+    //                     let groupSubOptionsObj = {};
+    //                     groupSubOptionsObj.label = account_levelFour.account_code+' - '+account_levelFour.account_head;
+    //                     groupSubOptionsObj.value = account_levelFour.account_code+'~'+account_levelFour.account_head;
 
-                        groupOptionObj.options.push(groupSubOptionsObj);
-                    });
-                }else{
-                    var groupOptionObj = {};
-                }
-                groupedOptionsCustom.push(groupOptionObj);
-            });
+    //                     groupOptionObj.options.push(groupSubOptionsObj);
+    //                 });
+    //             }else{
+    //                 var groupOptionObj = {};
+    //             }
+    //             groupedOptionsCustom.push(groupOptionObj);
+    //         });
 
-            setTypeHeadOptions(
-                (prevstate) => ({
-                    ...prevstate,
-                    ['accountBy']: groupedOptionsCustom,
-                })
-            );
-            setIsLoading(false)
+    //         setTypeHeadOptions(
+    //             (prevstate) => ({
+    //                 ...prevstate,
+    //                 ['accountBy']: groupedOptionsCustom,
+    //             })
+    //         );
+    //         setIsLoading(false)
 
-            })
-        }
-    },[receiveText])
+    //         })
+    //     }
+    // },[receiveText])
 
     const pageRefreshHandler = () => {
         console.log('groupedOptions', groupOption.groups);
@@ -337,17 +337,10 @@ const Add = (props) => {
                                                 <div className="form-group row">
                                                     <label htmlFor="main_code" className="col-md-3 col-form-label required">Account Code</label>
                                                     <div className="col-sm-9 col-md-9">
-                                                    <Typeahead
-                                                            id="paymentBy"
-                                                            name="paymentBy"
-                                                            labelKey={option => `${option.label}`}
-                                                            options={typeHeadOptions['accountBy']}
-                                                            placeholder="Select Payment By..."
-                                                            onChange={(e) => dropDownChange(e, 'accountBy', 'accountByName')}
-                                                            onInputChange={(text) => handleReceiveChange(text)}
-                                                            ref={register({
-                                                                required: 'Payment By Field Required'
-                                                            })}
+                                                    <Select
+                                                            value={selectedOption}
+                                                            onChange={handleChange}
+                                                            options={groupOption.groups}
                                                         />
                                                     </div>
                                                 </div>

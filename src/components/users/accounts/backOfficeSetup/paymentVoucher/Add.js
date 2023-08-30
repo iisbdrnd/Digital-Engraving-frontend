@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useReducer, useState } from 'react';
 import Select from "react-select";
-import { GET_paymentVoucherAPI, paymentVoucherAPI, projectAccountCodeAPI } from '../../../../../api/userUrl';
+import { paymentVoucherAPI, projectAccountCodeAPI } from '../../../../../api/userUrl';
 import { userGetMethod, userDeleteMethod, userPostMethod } from '../../../../../api/userAction';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -17,10 +17,7 @@ const Add = (props) => {
     const [submit, setSubmit] = useState(true);
     const [typeHeadOptions, setTypeHeadOptions] = useState({});
     const [dropDownData, setDropdownData] = useState();
-    const [groupOption, setGroupOption ] = useState({
-        'groups': [],
-        'account_code' : []
-    });
+    const [groupOption, setGroupOption ] = useState({'groups': []});
     const [ selectedOption, setSelectedOption] = useState(0);
     const [ totalAmount, setTotalAmount] = useState(0);
     const [ counter , setCounter] = useState(0);
@@ -109,44 +106,44 @@ const Add = (props) => {
         .catch(error => console.log(error))
     }, []);
 
-    const handleAccountCode = (text) => {
-        setAccountCodeText(text)
-    }
+    // const handleAccountCode = (text) => {
+    //     setAccountCodeText(text)
+    // }
 
-    useEffect(()=>{
-        if (accountCodeText.length > 3 ) {
-            userGetMethod(`${GET_paymentVoucherAPI}?searchText=${accountCodeText}`)
-            .then(response =>{
-                let accountOptions = [];
-            Object.keys(response.data.payment_accounts).map(function(key, index) {
-                if (response.data.payment_accounts.hasOwnProperty(key)) {
-                    var groupOptionObj = {};
-                    groupOptionObj.label = response.data.payment_accounts[key].account_code + ' - ' + response.data.payment_accounts[key].account_head;
-                    groupOptionObj.options = [];
+    // useEffect(()=>{
+    //     if (accountCodeText.length > 3 ) {
+    //         userGetMethod(`${GET_paymentVoucherAPI}?searchText=${accountCodeText}`)
+    //         .then(response =>{
+    //             let accountOptions = [];
+    //         Object.keys(response.data.payment_accounts).map(function(key, index) {
+    //             if (response.data.payment_accounts.hasOwnProperty(key)) {
+    //                 var groupOptionObj = {};
+    //                 groupOptionObj.label = response.data.payment_accounts[key].account_code + ' - ' + response.data.payment_accounts[key].account_head;
+    //                 groupOptionObj.options = [];
 
-                    response.data.payment_accounts_level_four[key].map( (account_levelFour, i) => {
+    //                 response.data.payment_accounts_level_four[key].map( (account_levelFour, i) => {
 
-                        let groupSubOptionsObj = {};
-                        groupSubOptionsObj.label = account_levelFour.account_code+' - '+account_levelFour.account_head;
-                        groupSubOptionsObj.value = account_levelFour.account_code+'~'+account_levelFour.account_head;
+    //                     let groupSubOptionsObj = {};
+    //                     groupSubOptionsObj.label = account_levelFour.account_code+' - '+account_levelFour.account_head;
+    //                     groupSubOptionsObj.value = account_levelFour.account_code+'~'+account_levelFour.account_head;
 
-                        groupOptionObj.options.push(groupSubOptionsObj);
-                    });
-                }else{
-                    var groupOptionObj = {};
-                }
-                accountOptions.push(groupOptionObj);
-            });
+    //                     groupOptionObj.options.push(groupSubOptionsObj);
+    //                 });
+    //             }else{
+    //                 var groupOptionObj = {};
+    //             }
+    //             accountOptions.push(groupOptionObj);
+    //         });
 
-            setGroupOption(
-                (prevstate) => ({
-                    ...prevstate,
-                    ['account_code']: accountOptions,
-                })
-            );
-            })
-        }
-    },[accountCodeText])
+    //         setGroupOption(
+    //             (prevstate) => ({
+    //                 ...prevstate,
+    //                 ['account_code']: accountOptions,
+    //             })
+    //         );
+    //         })
+    //     }
+    // },[accountCodeText])
 
     const dropDownChange = (e, fieldValue, fieldName) => {
         if(e.length > 0){
@@ -335,17 +332,10 @@ const Add = (props) => {
                                                     <div className="form-group row">
                                                         <label htmlFor="main_code" className="col-md-3 col-form-label required">Account Code</label>
                                                         <div className="col-sm-9 col-md-9">
-                                                        <Typeahead
-                                                                id="account_code"
-                                                                name="account_code"
-                                                                labelKey={option => `${option.label}`}
-                                                                options={groupOption['account_code']}
-                                                                placeholder="Find code (type to 4 word).."
-                                                                onChange={(e) => dropDownChange(e, 'accountBy', 'accountByName')}
-                                                                onInputChange={(text)=>handleAccountCode(text)}
-                                                                ref={register({
-                                                                    required: 'Payment By Field Required'
-                                                                })}
+                                                        <Select
+                                                                value={selectedOption}
+                                                                onChange={handleChange}
+                                                                options={groupOption.groups}
                                                             />
                                                         </div>
                                                     </div>
