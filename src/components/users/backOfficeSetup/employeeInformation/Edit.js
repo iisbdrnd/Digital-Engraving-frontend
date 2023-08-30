@@ -78,12 +78,12 @@ const Edit = (props) => {
 
     let designationOptions = [];
     if (employeeInformationInput && employeeInformationInput.designations.length > 0) {
-        designationOptions = employeeInformationInput.designations.map((designation) => (<option key={designation.id} value={designation.id}>{designation.name}</option>))
+        designationOptions = employeeInformationInput.designations.map((designation) => (<option key={designation.id} value={designation.id}>{designation.role_name}</option>))
     }
 
     let departmentOptions = [];
     if (employeeInformationInput && employeeInformationInput.departments.length > 0) {
-        departmentOptions = employeeInformationInput.departments.map((department) => (<option key={department.id} value={department.id}>{department.department}</option>))
+        departmentOptions = employeeInformationInput.departments.map((department) => (<option key={department.id} value={department.id}>{department.name}</option>))
     }
 
     let designMachine = [];

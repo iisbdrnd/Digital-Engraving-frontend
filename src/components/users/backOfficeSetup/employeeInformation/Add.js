@@ -33,12 +33,14 @@ const Add = (props) => {
 
     let designationOptions = [];
     if (employeeData && employeeData.designations.length > 0) {
-        designationOptions = employeeData.designations.map((designation) => (<option key={designation.id} value={designation.id}>{designation.name}</option>))
+        designationOptions = employeeData.designations.map((designation) => 
+        (
+        <option key={designation.id} value={designation.id}>{designation.role_name}</option>))
     }
 
     let departmentOptions = [];
     if (employeeData && employeeData.departments.length > 0) {
-        departmentOptions = employeeData.departments.map((department) => (<option key={department.id} value={department.id}>{department.department}</option>))
+        departmentOptions = employeeData.departments.map((department) => (<option key={department.id} value={department.id}>{department.name}</option>))
     }
 
     let designMachine = [];

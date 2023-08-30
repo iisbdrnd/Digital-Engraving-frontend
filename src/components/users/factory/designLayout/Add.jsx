@@ -63,6 +63,7 @@ const Add = (props) => {
         id: '',
         job_name: '',
         job_no: '',
+        
         ref_layout_id : '',
         job_type: '',
         printer_id: '',
@@ -92,7 +93,7 @@ const Add = (props) => {
         design_height:''
     });
     const [layoutMachines,setLayoutMachines] = useState([])
-    const [selectedRefLayout,setSelectedRefLayout] = useState([])
+    const [selectedRefLayout,setSelectedRefLayout] = useState([{id:''}])
     const [jobNoFilter,setJobNoFilter] = useState('')
     const [dropdownData, setDropdownData] = useState({});
     const [typeColorOptions, setTypeColorOptions] = useState([]);
@@ -114,6 +115,8 @@ const Add = (props) => {
     console.log(typeheadOptions)
 
     useEffect(()=>{
+        
+
         if (job_id == null && jobNoFilter.length > 3) {
             
             userGetMethod(`${GET_DESIGN_LAYOUT_JOBORDER}?searchText=${jobNoFilter}`)
@@ -143,6 +146,7 @@ const Add = (props) => {
     },[jobNoFilter])
 
     useEffect(()=>{
+        
         if (ref_text.length > 3) {
             
             userGetMethod(`${GET_DESIGN_LAYOUT_DETAILS}?searchText=${ref_text}`)
@@ -170,7 +174,7 @@ const Add = (props) => {
             })
         }
     },[ref_text])
-
+console.log(ref_selected);
     
     const pageRefreshHandler = async(job_id = null) => {
         // setIsLoading(true);
@@ -200,6 +204,7 @@ const Add = (props) => {
         //     })
         //     // console.log(jobNoFilter)
         // }
+        // setRef_selected([]);
         if (job_id != null) {
             userGetMethod(`${GET_DESIGN_LAYOUT_JOBORDER}?job_order_id=${job_id}`)
         .then(response =>{
@@ -363,9 +368,7 @@ console.log(typeheadOptions)
             setUploadImage({[e.target.name] : URL.createObjectURL(e.target.files[0])});
             setFormData({ ...formData, [e.target.name]: e.target.files[0]});
         }else{
-           
-            
-            
+     
             if (e.target.name == 'layout_id' || e.target.name == 'ref_layout_id' && formData.layout_id == '') {
                 setLayoutIdVal({
                     ...layoutIdVal,[e.target.name] : e.target.value
@@ -375,7 +378,11 @@ console.log(typeheadOptions)
                 setFormData({ ...formData, [e.target.name]: e.target.type == 'checkbox' ? (e.target.checked ? 1 : 0) : e.target.value });
             }
 
-            
+            if (e.target.name == 'ref_layout_id' && e.target.value == undefined || '') {
+                setFormData({
+                    ...layoutIdVal,[e.target.name] : e.target.value == null
+                });
+            }
             if (e.target.name == 'final_dia' || e.target.name == 'final_cir' || e.target.name == 'final_height' || e.target.name == 'final_width' && layoutDetails.final_dia == '' || layoutDetails.final_cir ==  '' || layoutDetails.final_height ==  '' || layoutDetails.final_width == '') {
                 setLayoutOnBlur({
                     ...layoutOnBlur, [e.target.name] : e.target.value
@@ -410,7 +417,7 @@ console.log(typeheadOptions)
     }
    
     // console.log(colorArrayErr);
-    // console.log(colorArray);
+    // console.log(selectedRefLayout.id);
 
     const handleChangeOnBlur = (e) => {
         
@@ -485,7 +492,7 @@ console.log(typeheadOptions)
     const engOrderHandler = (e, index) => {
         setEngraveOrder(
             engraveOrder.map((item, i) =>
-                i == index ? { ...item, [e.target.name]: e.target.value } : item),
+                i == index ? { ...item, [e.target.name]: e.target.value, job_id : dropdownData.job_id,job_no:  formData.job_no} : item),
             
         );
         setLayoutDetals(
@@ -580,6 +587,7 @@ console.log(typeheadOptions)
         
         if (event.length > 0) {
             const selectedValue = event[0].id;
+            console.log(selectedValue)
             setDropdownData(
                 (prevstate) => ({
                     ...prevstate,
@@ -633,7 +641,7 @@ console.log(typeheadOptions)
                     if (response?.data) {
                         let { 
                             // layout_date,
-                            ref_layout_id,cir,client_email,dia,fl,id,job_name,job_no,job_type,printer_id,printer_mark,mark_as_complete,total_cylinder_qty,remarks,ups,rpt,operator_info,station,printer_name,printing_status,design_height,design_width,client_name,marketing_p_name
+                            cir,client_email,dia,fl,id,job_name,job_no,job_type,printer_id,printer_mark,mark_as_complete,total_cylinder_qty,remarks,ups,rpt,operator_info,station,printer_name,printing_status,design_height,design_width,client_name,marketing_p_name
                         } = response.data.jobOrderDetails;
                         setFormData({
                             // 'layout_date': layout_date,
@@ -653,7 +661,7 @@ console.log(typeheadOptions)
                             'remarks': remarks,
                             'ups': ups,
                             'rpt': rpt,
-                            'ref_layout_id' : ref_layout_id,
+                            
                             'mark_as_complete' :  mark_as_complete,
                             'operator_info' : operator_info ,
                             'station' : station,
@@ -751,7 +759,7 @@ console.log(typeheadOptions)
                
         }
     }
-    console.log(dropdownData)
+    console.log(selectedRefLayout)
 
     // console.log(engraveOrder)
 
@@ -780,14 +788,15 @@ console.log(typeheadOptions)
       
       const typeColorOptionLength = typeColorOptions.length;
       const er_colorLength = colorArray.length;
-      
+    
 
     const onSubmit = (data, e) => {
         e.preventDefault();
         console.log(data);
+        
         setIsSubmitting(true)
 
-        const keysToInclude = ['layout', 'layout_date','layout_id','layout_time','machine_location','mark_as_complete','r_fl_cut','r_reg_mark','ref_layout_id','remarks','station','axial_ups','axl_image_area','axl_start_point','final_cir','final_dia','final_height','final_width','designer','design_w','operator_info','l_fl_cut','l_reg_mark','printer_mark' ];
+        const keysToInclude = ['layout', 'layout_date','layout_id','layout_time','machine_location','mark_as_complete','r_fl_cut','r_reg_mark','remarks','station','axial_ups','axl_image_area','axl_start_point','final_cir','final_dia','final_height','final_width','designer','design_w','operator_info','l_fl_cut','l_reg_mark','printer_mark' ];
         const b = {};
         keysToInclude.forEach(key => {
             b[key] = data[key];
@@ -803,9 +812,11 @@ console.log(typeheadOptions)
      })
      formValue.append("history_image", formData.history_image);
      formValue.append("job_id", dropdownData.job_id);
+     formValue.append("ref_layout_id", selectedRefLayout ? selectedRefLayout[0]?.id : '');
      formValue.append("engraveOrder", JSON.stringify(engraveOrder));
      formValue.append("er_color_id_list", JSON.stringify(colorArray));
      formValue.append("er_machine_id_list", JSON.stringify(machineArray));
+     
 
      if (typeColorOptionLength === er_colorLength) {
         setIsSubmitting(false);
@@ -1087,13 +1098,13 @@ console.log(typeheadOptions)
 
                                                             <Typeahead
                                                             // className="form-control"
-                                                            id="ref_id"
-                                                            name="ref_id"
+                                                            id="ref_layout_id"
+                                                            name="ref_layout_id"
                                                             labelKey={option => `${option.id}`}
                                                             options={typeheadOptions['ref_layout']}
                                                             placeholder="Type job (upto 4 word).."
                                                             onChange={(e) => dropDownChange(e, 'ref_layout')}
-                                                            selected={selectedRefLayout}
+                                                            // selected={ref_selected}
                                                             onInputChange={(text) => handleref_layout_InputChange(text)}
                                                             ref={register({
                                                                 required: 'On text Field Required'
