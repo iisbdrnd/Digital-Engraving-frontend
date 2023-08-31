@@ -81,10 +81,10 @@ export default function ListData(props) {
     }
 
     const perPageHandler = (e) => {
-        let perPage = e.target.value;
+        // let perPage = e.target.value;
         setIsLoading(true);
         // TABLE DATA READY
-        userGetMethod(`${TANK_CONFIG_RSURL}?perPage=${perPage}`)
+        userGetMethod(`${TANK_CONFIG_RSURL}?perPage=10`)
             .then(response => {
                 setCurrentPage(response.data.tanks.current_page)
                 setPerPage(response.data.tanks.per_page)

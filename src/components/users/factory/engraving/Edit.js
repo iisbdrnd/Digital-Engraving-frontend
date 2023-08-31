@@ -5,6 +5,8 @@ import {
     DESIGN_LAYOUT_DETAILS,
     GET_DESIGN_LAYOUT_DETAILS,
     GET_ENGRAVING_COLOR_URL,
+    ENGRAVING_JOB_ID,
+    ENGRAVING_LAYOUT_DETAILS,
 } from "../../../../api/userUrl";
 import { userGetMethod, userPutMethod } from "../../../../api/userAction";
 import { toast } from "react-toastify";
@@ -18,13 +20,13 @@ import { placeHolderText } from "../../../common/GlobalComponent";
 const Edit = (props) => {
     const { handleSubmit, register, errors, reset } = useForm();
     const [isLoading, setIsLoading] = useState(true);
-    const [colors, setColors] = useState([]);
+    const [colorsState, setColorsState] = useState([]);
     const [layoutReferrence, setLayoutReferrence] = useState([]);
     const [polishMachines, setPolishMachines] = useState([]);
     const [typeHeadOptions, setTypeHeadOptions] = useState({});
     const [shiftDutyPersons, setShiftDutyPersons] = useState([]);
     const [layoutText,setLayoutText] = useState('');
-    const [colorText,setColorText] = useState('');
+    const [jobId,setJobId] = useState('');
 
     let [stateData, setStateData] = useReducer(
         (state, newState) => ({ ...state, ...newState }),
@@ -62,6 +64,11 @@ const Edit = (props) => {
             layout_id          : '',
             color              : '',
             history_image      : '',
+            angle               : '',
+            screen              : '',
+            start_point         : '',
+            image_area          : '',
+            remarks             : '',
 
         }
     );
@@ -77,6 +84,7 @@ const Edit = (props) => {
                     [{ id: response.data.jobOrder.job_id }],
                     "job_order_pk_id"
                 );
+                setJobId(response.data.jobOrder.job_id);
 
                 let { engraving, polishMachines, digShift, shiftDutyPersons } =
                     response.data;
@@ -121,139 +129,77 @@ const Edit = (props) => {
             }
         );
     }, []);
-
+// console.log(jobId);
     const onChangeHandler = (event) => {
         setStateData({ [event.target.name]: event.target.value });
     };
 
-    const handleOnChangeLayout = (text) =>{
-        setLayoutText(text)
-    }
 
-    const handleOnChangeColor = (text) =>{
-        setColorText(text)
-    }
 
-    useEffect(() =>{
-        if (layoutText.length >= 3) {
-            userGetMethod(`${GET_DESIGN_LAYOUT_DETAILS}?searchText=${layoutText}`)
-            .then(response =>{
-                console.log(response.data)
-                let layoutOptions = [];
-                if (response.data.layout_references && response.data.layout_references.length > 0) {
-                response.data.layout_references.map(job => {
 
-                    
-                        let jobOrderObj = {};
-                        jobOrderObj.id =job.layout_id;
-                        // jobOrderObj.job_no =job.job_no;
-                        // jobOrderObj.name = job.job_name;
-                        layoutOptions.push(jobOrderObj);
-                        // setLayoutReferrence({...layoutReferrence, jobOrderObj})
-                    }
-                )   
-            }
-            setTypeHeadOptions((prevstate) => ({
-                ...prevstate,
-                ['layout_id']: layoutOptions,
-            }))
-            setIsLoading(false);
-            })
-        }
-    },[layoutText])
+    
+    
+    
 
-    useEffect(() =>{
-        if (colorText.length >= 3) {
-            userGetMethod(`${GET_ENGRAVING_COLOR_URL}?searchText=${colorText}`)
-            .then(response =>{
-                console.log(response.data)
-                let colorOptions = [];
+    const dropDownChange = (e, fieldName) => {
+        if (e.length > 0) {
+            const selectedValueId = e[0].id; //job_orders.job_order_pk_id
+            
+            
+            userGetMethod(`${ENGRAVING_JOB_ID}?job_id=${selectedValueId}`)
+            .then((response) => {
+                // console.log('GET_ENGRAVING_DATA_BY_JOB_ID', response.data);
+                    setLayoutText(response.data.layout);
+                    let colorOptions = [];
                 if (response.data.colors && response.data.colors.length > 0) {
-                response.data.colors.map(color => {
+                    response.data.colors.map(color => {
 
                     
                         let jobOrderObj = {};
                         jobOrderObj.id =color.id;
-                        jobOrderObj.short_name =color.short_name;
                         jobOrderObj.name = color.color_name;
                         colorOptions.push(jobOrderObj);
-                        // setColors({...colors,jobOrderObj})
                     }
-                )   
+                    )   
+                    // setColors({...colors,[jobOrderObj]})
             }
             setTypeHeadOptions((prevstate) => ({
                 ...prevstate,
                 ['color']: colorOptions,
             }))
-            setIsLoading(false);
-
-
-            })
+            setIsLoading(false)
+            });
         }
-    },[colorText])
+    };
+
+    useEffect(() => {
+        userGetMethod(`${ENGRAVING_LAYOUT_DETAILS}?job_id=${jobId}&color_id=${colorsState?.color}`)
+        .then(response => {
+            setStateData({
+                ...stateData,
+                'angle': response?.data?.layoutDetail[0]?.er_desired_angle,
+                'screen': response?.data?.layoutDetail[0]?.er_desired_screen,
+                // "des_machine": response?.data?.layoutDetails[0]?.er_engraving_machine,
+               'start_point': response?.data?.layoutDetail[0]?.axl_start_point,
+                'image_area': response?.data?.layoutDetail[0]?.axl_image_area,
+                'remarks': response?.data?.layoutDetail[0]?.remarks,
+                'history_image' : response?.data?.layoutDetail[0]?.history_image
+            })
+            setIsLoading(false)
+        })
+    },[colorsState?.color,jobId])
 
     const newOnChangeEvent = (e,fieldName) => {
         if(e.length > 0){
             const selectedValueId = e[0].id;
-            console.log(selectedValueId)
-            setStateData(
+            // console.log(selectedValueId)
+            setColorsState(
                 (prevstate) => ({
                     ...prevstate,
                     [fieldName]: selectedValueId,
                 })
             )}
     }
-    console.log(stateData,stateData.color, stateData.layout_id)
-
-
-    useEffect(() => {
-        if (stateData?.color !== '' && stateData?.layout_id !== '' && stateData?.job_no) {
-            getLayoutDetails();
-        }
-    }, [stateData?.color, stateData?.layout_id, stateData?.job_no]);
-
-    const getLayoutDetails = async() => {
-        await userGetMethod(`${DESIGN_LAYOUT_DETAILS}?layout_id=${stateData?.layout_id}&color_id=${stateData?.color}&job_id=${stateData?.job_order_pk_id}`)
-            .then((response) => {
-                console.log(response?.data);
-                setStateData({
-                    ...stateData,
-                    "angle": response?.data?.layoutDetails[0]?.er_desired_angle,
-                    "screen": response?.data?.layoutDetails[0]?.er_desired_screen,
-                    "des_machine": response?.data?.layoutDetails[0]?.er_engraving_machine,
-                    "start_point": response?.data?.layoutMaster?.axl_start_point,
-                    "image_area": response?.data?.layoutMaster?.axl_image_area,
-                    "remarks": response?.data?.layoutMaster?.remarks,
-                    "history_image": response?.data?.layoutMaster?.history_image
-                })
-            })
-            .catch((error) => {
-                console.log(error);
-            })
-    }
-
-    const dropDownChange = (e, fieldName) => {
-        if (e.length > 0) {
-            const selectedValueId = e[0].id; //job_orders.job_order_pk_id
-
-            userGetMethod(
-                `${POLISHING_GET_POLISHING_DATA_BY_JOB_ID}?jobOrderId=${selectedValueId}`
-            ).then((response) => {
-                let {
-                    jobOrderDetails,
-                    cylindersByJobId,
-                    platingData,
-                    completeEngraveData,
-                } = response.data;
-                setStateData({
-                    jobOrderDetailsData: jobOrderDetails, //CYLINDER DATA FROM 'job_orders' TABLE
-                    cylindersByJobId: cylindersByJobId, //CYLINDER DATA FROM 'factory_cylinder_supply_chains' TABLE
-                    platingData: platingData, //PLATING DATA FROM 'plating_tank_schedule_details' TABLE
-                    completeEngraveData: completeEngraveData, //PLATING DATA FROM 'plating_tank_schedule_details' TABLE
-                });
-            });
-        }
-    };
 
     if (stateData?.on_time && stateData?.est_duration) {
         let inputDate = moment(stateData?.on_time, "HH:mm").format("HH:mm:ss");
@@ -461,21 +407,11 @@ const Edit = (props) => {
                                                                 </label>
                                                                 <div className="col-md-7">
                                                                     {/* <input type="text" className="form-control" name="layout_id" {...register("layout_id", { required: "Please enter your first name." })}/> */}
-                                                                <Typeahead
-                                                                id="job_order_pk_id"
-                                                                name="job_order_pk_id"
-                                                                labelKey={option => `${option.id}`}
-                                                                options={typeHeadOptions['layout_id']}
-                                                                placeholder={placeHolderText}
-                                                                onChange={(e) => newOnChangeEvent(e,'layout_id')}
-                                                                inputProps={{ required: true }}
-                                                                onInputChange={(text)=>handleOnChangeLayout(text)}
-                                                                // selected={layoutReferrence}
-                                                                // disabled={job_order_pk_id != null ? 'disabled' : ''}
-                                                                ref={register({
-                                                                    required: 'Job No Field Required'
-                                                                })}
-                                                            />
+                                                                    <input type="text" className="form-control" name="layout" {...register("layout_id", { required: "Please enter layout name.." })}
+                                                                    value={layoutText? layoutText : ''}
+                                                                    disabled={layoutText ? true:false}
+                                                                    // onChange={handleChange}
+                                                                />
                                                                 </div>
 
                                                                 <label className="col-md-5 col-form-label label-form required ">
@@ -516,14 +452,14 @@ const Edit = (props) => {
                                                                 <div className="col-md-7">
                                                                     {/* <input type="text" className="form-control" name="color" ref={register({})} /> */}
                                                                     <Typeahead
-                                                                id="job_order_pk_id"
-                                                                name="job_order_pk_id"
+                                                                id="color_id"
+                                                                name="color_id"
                                                                 labelKey={option => `${option.name}`}
                                                                 options={typeHeadOptions['color']}
-                                                                placeholder={placeHolderText}
+                                                                placeholder="select Color.."
                                                                 onChange={(e) => newOnChangeEvent(e,'color')}
                                                                 inputProps={{ required: true }}
-                                                                onInputChange={(text)=>handleOnChangeColor(text)}
+                                                                // onInputChange={(text)=>handleOnChangeColor(text)}
                                                                 // selected={colors}
                                                                 // disabled={job_order_pk_id != null ? 'disabled' : ''}
                                                                 ref={register({
@@ -982,7 +918,7 @@ const Edit = (props) => {
                                             {stateData?.history_image != '' && (<div>
                                                 <img
                                                     style={{ width: "100%", height: "100%" }}
-                                                    src={"http://127.0.0.1:8000/uploads/"+`${stateData.history_image}`}
+                                                    src={"https://bic7.delbd.com/public/uploads/"+`${stateData.history_image}`}
                                                 />
                                             </div>)}
                                         </div>

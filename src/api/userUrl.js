@@ -280,6 +280,8 @@ export const GET_POLISHING_DATA_BY_POLISHING_PK_ID= 'api/user/getPolishingDataBy
 export const ENGRAVING_RS_URL = 'api/user/engraving';
 export const GET_ENGRAVING_COLOR_URL = 'api/user/getColors';
 export const GET_ENGRAVING_DATA_BY_JOB_ID= 'api/user/getEngraveDataByJobId';
+export const ENGRAVING_JOB_ID= 'api/user/findLayout';
+export const ENGRAVING_LAYOUT_DETAILS= 'api/user/layoutDetails';
 
 //CHROME
 export const CHROME_RS_URL = 'api/user/chrome';
