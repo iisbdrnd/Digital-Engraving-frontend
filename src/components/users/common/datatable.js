@@ -234,7 +234,7 @@ export class Datatable extends Component {
                                     </span> */}
                                 </div>
                                 {accessLink ? 
-                                    <Link to={`${process.env.PUBLIC_URL}/${accessLink}/${row.original.id}`} className="" style={{ textAlign:"center", padding:"5px", background: "lavender", cursor: "pointer" }}>Access</Link>
+                                    <Link to={`${process.env.PUBLIC_URL}/${accessLink}/${row.original.id}`} className="" style={{ textAlign:"center", padding:"5px", background: "lavender", cursor: "pointer", borderRadius: "25px", display: "flex", justifyContent: "center", boxShadow: "3px 2px 8px #AF7ABB", marginTop: "4px"}}>Access</Link>
                                 : ''
                                 
                                 }

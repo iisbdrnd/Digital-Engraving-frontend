@@ -46,8 +46,8 @@ class ListData extends Component {
                     <div className="row">
                         <div className="col-sm-12">
                             <div className="card">
-                                <div className="card-header">
-                                    <div className="col-xl-12">
+                                <div className="card-header d-flex justify-content-center align-items-center">
+                                    <div className="col-xl-12 ">
                                         <div className="contact-filter pull-right">
                                             <Link to={`${process.env.PUBLIC_URL}/users/add`} className="btn btn-primary ml-4">ADD</Link>
                                         </div>

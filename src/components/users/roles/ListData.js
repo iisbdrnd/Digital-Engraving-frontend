@@ -44,7 +44,7 @@ class ListData extends Component {
                     <div className="row">
                         <div className="col-sm-12">
                             <div className="card">
-                                <div className="card-header">
+                                <div className="card-header d-flex justify-content-center align-items-center">
                                     <div className="col-xl-12">
                                         <div className="contact-filter pull-right">
                                             <Link to={`${process.env.PUBLIC_URL}/role/add`} className="btn btn-primary ml-4">ADD</Link>
@@ -59,7 +59,7 @@ class ListData extends Component {
                                             columns={columns}
                                             multiSelectOption={false}
                                             myData={allRoles}
-                                            pageSize={5}
+                                            pageSize={10}
                                             pagination={true}
                                             class="-striped -highlight"
                                             editLink="role/edit"
