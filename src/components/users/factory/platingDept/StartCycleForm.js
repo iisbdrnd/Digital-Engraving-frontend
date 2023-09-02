@@ -47,7 +47,12 @@ export default function StartCycleForm(props) {
         // ADD,EDIT,DELETE,SHOW ACCESS CHECK
         userGetMethod(`${PLATING_SCHEDULE_START_CYCLE}/${props.platingTankMasterId}`)
             .then(response => {
+
+                
                 let {cycle_id, shift_operator, plating_date, shift_id, start_time, final_plating_order, est_end_time, actual_end_time, actual_cycle_duration, remarks, shift_type_id, shiftDutyPersons} = response.data.cycleData;
+                
+                console.log(response.data)
+                console.log(response.data.cycleData.shiftDutyPersons)
                 if(start_time != null) {
                     setIsStarted(true)
                 }
@@ -66,7 +71,7 @@ export default function StartCycleForm(props) {
                     shift_id             : shift_id != null ? shift_id : '',
                 });
               
-                // FOR DUTY PERSON START
+                // // FOR DUTY PERSON START
                 let shiftOperatorOptions = [];
                 if (shiftDutyPersons && shiftDutyPersons.length > 0) {
                     shiftDutyPersons.map(person => 
@@ -76,6 +81,10 @@ export default function StartCycleForm(props) {
                         shiftOperator.name = person.employee_name;
                         shiftOperatorOptions.push(shiftOperator);
                         if (shift_operator === person.employee_id) {
+                            setFormData({
+                                'shift_operator': [shiftOperator]
+                            })
+                        }else{
                             setFormData({
                                 'shift_operator': [shiftOperator]
                             })
@@ -92,6 +101,7 @@ export default function StartCycleForm(props) {
                 setIsLoading(false);
             });
     },[]);
+    console.log(formData.shift_operator)
     // FOR CYLINDER SCHEDULE DETAILS DATA INPUT
     const inputHandler = (event) => {
         if (event.target.name == 'start_time') {

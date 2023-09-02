@@ -17,6 +17,7 @@ export default function ListData(props) {
     const [modal, setModal] = useState(false); 
     const [cycleModal, setCycleModal] = useState(false); 
     const [editTankSchedule, setEditTankSchedule] = useState(false); 
+    const [plantingMasterId,setPlantingMasterId] = useState([]);
     const [progressVal, setProgressVal] = useReducer(
         (state, newState) => ({...state, ...newState}),
         {}
@@ -42,7 +43,7 @@ export default function ListData(props) {
     );
 
     let interval = useRef();
-    const startTimer = (startDate, estEndTime, platingTankScheduleMastersId) => {
+    const startTimer = (startDate = 0, estEndTime, platingTankScheduleMastersId) => {
         // START TIME FORMATION
         let startDateFinal = new Date(startDate);
         let startTimeFormation = format(startDateFinal, "MMM d, yyyy HH:mm:ss");
@@ -118,19 +119,28 @@ export default function ListData(props) {
         setClockData('');
         userGetMethod(`${PLATING_DEPT_RSURL}/${id}`)
             .then(response => {
+                console.log(response.data);
+                setPlantingMasterId(response.data);
                 setPlatingDeptData({scheduleLoading: false});
                 setPlatingDeptData({tankScheduleDetails: []});
                 setPlatingDeptData({platingTankScheduleMasters: response.data.platingTankScheduleMasters});
                 if (response.data.platingTankScheduleMasters && response.data.platingTankScheduleMasters.length > 0) {
                     response.data.platingTankScheduleMasters.map(scheduleMaster => {
-                        if (scheduleMaster.est_end_time != null  && scheduleMaster.running_status == 0) {
-                            startTimer(scheduleMaster.start_time, scheduleMaster.est_end_time, scheduleMaster.id);
+                        if (scheduleMaster.est_end_time != null  ) {
+                            startTimer(scheduleMaster?.start_time , scheduleMaster?.est_end_time, scheduleMaster?.id);
+                            
                         }
                     })
                 }
+                
+                
             })
+
+        console.log('first')
     };
-    // console.log(platingDeptData);
+
+
+    console.log(plantingMasterId);
     const toggle = (i, platingTankMasterId) => {
         if (isOpen == i) {
             return setIsOpen(null)
@@ -138,12 +148,13 @@ export default function ListData(props) {
         setPlatingDeptData({detailsLoading: true});
         userGetMethod(`${TANK_SCHEDULE_DETAILS}/${platingTankMasterId}`)
             .then(response => {
+                console.log(response.data)
                 setPlatingDeptData({tankScheduleDetails: response.data.tankScheduleDetails});
                 setPlatingDeptData({detailsLoading: false});
             });
         setIsOpen(i)
     }
-    const toggleModal = (modalName='', platingTankMasterId, platingTankMasterCycleId='') => {
+    const toggleModal = (modalName='', platingTankMasterId='', platingTankMasterCycleId='') => {
         setPlatingDeptData({singlePlatingTankMasterInfo: {id: platingTankMasterId, platingTankMasterCycleId: platingTankMasterCycleId}});
         if (modalName === 'addTankSchedule') {
             setModal(!modal);
@@ -153,7 +164,7 @@ export default function ListData(props) {
             setCycleModal(!cycleModal);
         }
     }
-   console.log(platingDeptData);
+//    console.log(platingDeptData.platingTankScheduleMasters);
     // console.log('platingDeptData', platingDeptData.tanks);
 
     return (
@@ -237,7 +248,7 @@ export default function ListData(props) {
                                                                 {
                                                                     platingTankMaster.running_status == 0 ? (
                                                                       platingTankMaster.start_time == null ?  (<span className="btn btn-primary btn-sm m-r-5" onClick={()=>toggleModal('cycleStart', platingTankMaster.id, platingTankMaster.cycle_id)}>Start Cycle</span>) :
-                                                                      (<span className="btn btn-primary btn-sm m-r-5" onClick={()=>toggleModal('cycleStart', platingTankMaster.id || platingTankMaster.cycle_id)}>Complete Cycle</span>) 
+                                                                      (<span className="btn btn-primary btn-sm m-r-5" onClick={()=>toggleModal('cycleStart', platingTankMaster?.id || platingTankMaster?.cycle_id)}>Complete Cycle</span>) 
                                                                     ) : (
                                                                         <span className="btn bg-warning">Completed</span>
                                                                     )
@@ -313,6 +324,8 @@ export default function ListData(props) {
                 </div>
             </div>
             {modal == true ? <TankSchedule tank_id={platingDeptData.currentTank.tank_id} tankId={platingDeptData.currentTank.id} modalTitle={platingDeptData.currentTank.tank_id} toggle={()=>toggleModal('addTankSchedule')} onChangeTank={onChangeTank} modal={modal} /> : ''} 
+
+            
             {cycleModal == true ? <StartCycleForm tankId={platingDeptData.currentTank.id} platingTankMasterId={platingDeptData.singlePlatingTankMasterInfo.id} modalTitle={platingDeptData.singlePlatingTankMasterInfo.platingTankMasterCycleId +' of #'+platingDeptData.currentTank.tank_id} toggle={()=>toggleModal('cycleStart')} modalName="cycleStart" modal={cycleModal} needReload={() => onChangeTank(platingDeptData.currentTank.id, platingDeptData.currentTank.tank_id)}/> : ''} 
             
             {editTankSchedule == true ? <TankScheduleEdit tankId={platingDeptData.currentTank.id} scheduleId={platingDeptData.singlePlatingTankMasterInfo.id} modalTitle={platingDeptData.currentTank.tank_id} toggle={()=>toggleModal('editTankSchedule')} modalName="cycleStart" modal={editTankSchedule} /> : ''} 

@@ -3,13 +3,15 @@ import Breadcrumb from '../common/breadcrumb';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
+import ConfirmPass from './ConfirmPass';
+import { Tab, Tabs } from 'react-bootstrap';
 
 class UserEdit extends Component {
     constructor(props){
         super(props);
         this.changeHandeler=this.changeHandeler.bind(this);
         this.submitHandeler=this.submitHandeler.bind(this);
-
+        
         this.state={
             adminUserImage:[],
             name:'',
@@ -27,6 +29,7 @@ class UserEdit extends Component {
             about: '',
             isFetch: false,
             isLoading:true,
+            
         };
     }
     componentDidMount(){
@@ -159,63 +162,69 @@ class UserEdit extends Component {
                             </div>
                             <div className="col-lg-8">
                                 <form className="card" onSubmit={this.submitHandeler}>
-                                    <div className="card-header">
-                                        <h4 className="card-title mb-0">Edit Profile</h4>
-                                        <div className="card-options"><a className="card-options-collapse" href="#javascript" data-toggle="card-collapse"><i className="fe fe-chevron-up"></i></a><a className="card-options-remove" href="#javascript" data-toggle="card-remove"><i className="fe fe-x"></i></a></div>
-                                    </div>
-                                    <div className="card-body">
-                                        <div className="row">
-                                            <div className="col-md-5">
-                                                <div className="form-group">
-                                                    <label className="form-label">Mobile</label>
-                                                    <input className="form-control" type="text" name='mobile' placeholder="Mobile" value={admindata.mobile} onChange={this.onHandleChangeNumeric}/>
+                                <div className="card-header">
+                                            <h4 className="card-title mb-0">Edit Profile</h4>
+                                            <div className="card-options"><a className="card-options-collapse" href="#javascript" data-toggle="card-collapse"><i className="fe fe-chevron-up"></i></a><a className="card-options-remove" href="#javascript" data-toggle="card-remove"><i className="fe fe-x"></i></a></div>
+                                        </div>
+                                        <div className="card-body">
+                                            <div className="row">
+                                                <div className="col-md-5">
+                                                    <div className="form-group">
+                                                        <label className="form-label">Mobile</label>
+                                                        <input className="form-control" type="text" name='mobile' placeholder="Mobile" value={admindata.mobile} onChange={this.onHandleChangeNumeric}/>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div className="col-sm-6 col-md-6">
-                                                <div className="form-group">
-                                                    <label className="form-label">Office Phone</label>
-                                                    <input className="form-control" type="text" name='office_phone' placeholder="Office Phone" value={admindata.office_phone} onChange={this.onHandleChangeNumeric}/>
+                                                <div className="col-sm-6 col-md-6">
+                                                    <div className="form-group">
+                                                        <label className="form-label">Office Phone</label>
+                                                        <input className="form-control" type="text" name='office_phone' placeholder="Office Phone" value={admindata.office_phone} onChange={this.onHandleChangeNumeric}/>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div className="col-md-5">
-                                                <div className="form-group">
-                                                    <label className="form-label">Fax</label>
-                                                    <input className="form-control" type="text" name='fax' placeholder="Fax" value={admindata.fax} onChange={this.changeHandeler}/>
+                                                <div className="col-md-5">
+                                                    <div className="form-group">
+                                                        <label className="form-label">Fax</label>
+                                                        <input className="form-control" type="text" name='fax' placeholder="Fax" value={admindata.fax} onChange={this.changeHandeler}/>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div className="col-sm-6 col-md-6">
-                                                <div className="form-group">
-                                                    <label className="form-label">Age</label>
-                                                    <input className="form-control" type="text" name='age' placeholder="Age" value={admindata.age} onChange={this.onHandleChangeNumeric}/>
+                                                <div className="col-sm-6 col-md-6">
+                                                    <div className="form-group">
+                                                        <label className="form-label">Age</label>
+                                                        <input className="form-control" type="text" name='age' placeholder="Age" value={admindata.age} onChange={this.onHandleChangeNumeric}/>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div className="col-md-5">
-                                                <div className="form-group">
-                                                    <label className="form-label">Address</label>
-                                                    <input className="form-control" type="text" name='address' placeholder="Home Address" value={admindata.address} onChange={this.changeHandeler}/>
+                                                <div className="col-md-5">
+                                                    <div className="form-group">
+                                                        <label className="form-label">Address</label>
+                                                        <input className="form-control" type="text" name='address' placeholder="Home Address" value={admindata.address} onChange={this.changeHandeler}/>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div className="col-md-6">
-                                                <div className="form-group">
-                                                    <label className="form-label">Gender</label>
-                                                    <select className="form-control btn-square" name='gender'
-                                                    value={admindata.gender} onChange={this.changeHandeler}
-                                                    >
-                                                      <option value="0">Select</option>
-                                                      <option value="1">Male</option>
-                                                      <option value="2">Female</option>
-                                                        {this.state.isFetch ? genderData : 'No Data Yet'}       
-                                                    </select>
+                                                <div className="col-md-6">
+                                                    <div className="form-group">
+                                                        <label className="form-label">Gender</label>
+                                                        <select className="form-control btn-square" name='gender'
+                                                        value={admindata.gender} onChange={this.changeHandeler}
+                                                        >
+                                                        <option value="0">Select</option>
+                                                        <option value="1">Male</option>
+                                                        <option value="2">Female</option>
+                                                            {this.state.isFetch ? genderData : 'No Data Yet'}       
+                                                        </select>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div className="col-md-12">
-                                                <div className="form-group mb-0">
-                                                    <label className="form-label">About Me</label>
-                                                    <textarea className="form-control" rows="5" name='about' placeholder="Enter About your description" value={admindata.about} onChange={this.changeHandeler}></textarea>
+                                                <div className="col-md-12">
+                                                    <div className="form-group mb-0">
+                                                        <label className="form-label">About Me</label>
+                                                        <textarea className="form-control" rows="5" name='about' placeholder="Enter About your description" value={admindata.about} onChange={this.changeHandeler}></textarea>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                
+                                    {/* <ConfirmPass></ConfirmPass> */}
+                                    
+
+
+
                                     <div className="card-footer text-right">
                                         <button className="btn btn-primary" type="submit">Update Profile</button>
                                     </div>
