@@ -24,7 +24,7 @@ const Edit = (props) => {
     const [layoutReferrence, setLayoutReferrence] = useState([]);
     const [polishMachines, setPolishMachines] = useState([]);
     const [typeHeadOptions, setTypeHeadOptions] = useState({});
-    const [shiftDutyPersons, setShiftDutyPersons] = useState([]);
+    const [editData, setEditData] = useState([]);
     const [layoutText,setLayoutText] = useState('');
     const [jobId,setJobId] = useState('');
     const [cylinderId,setCylinderId] = useState('');
@@ -87,11 +87,12 @@ const Edit = (props) => {
                     "job_order_pk_id"
                 );
                 setJobId(response.data.jobOrder.job_id);
+                setEditData(response.data);
 
                 let { engraving, polishMachines, digShift, shiftDutyPersons } =
                     response.data;
                     setCylinderId(engraving.cylinder_id)
-                setStateData({
+                    setStateData({
                     job_no: response.data.jobOrder.job_no,
                     job_order_pk_id: engraving.job_order_pk_id,
                     cylinder_id: engraving.cylinder_id,
@@ -131,7 +132,7 @@ const Edit = (props) => {
             }
         );
     }, []);
-// console.log(cylinderId);
+
     const onChangeHandler = (event) => {
         setStateData({ [event.target.name]: event.target.value });
     };
@@ -565,7 +566,7 @@ const Edit = (props) => {
                                                                         onChange={onChangeHandler}
                                                                     >
                                                                         <option>select one</option>
-                                                                        {stateData.polishMachines.map(
+                                                                        {editData.polishMachines.map(
                                                                             (machine, key) => (
                                                                                 <option value={machine.id} key={key}>
                                                                                     {machine.machine_name}
@@ -621,9 +622,9 @@ const Edit = (props) => {
                                                                         type="text"
                                                                         disabled="disabled"
                                                                         value={
-                                                                            stateData.shiftData.shift_type == 1
+                                                                            editData.digShift.shift_type == 1
                                                                                 ? "Day"
-                                                                                : stateData.shiftData.shift_type == 2
+                                                                                : editData.digShift.shift_type == 2
                                                                                     ? "Evening"
                                                                                     : "Night"
                                                                         }
@@ -632,7 +633,7 @@ const Edit = (props) => {
 
                                                                     <input
                                                                         type="hidden"
-                                                                        value={stateData.shiftData.shift_pk_id}
+                                                                        value={editData.digShift.shift_pk_id}
                                                                         className="form-control"
                                                                         name="shift_id"
                                                                         ref={register({})}
@@ -655,7 +656,7 @@ const Edit = (props) => {
                                                                         onChange={onChangeHandler}
                                                                     >
                                                                         <option>select one</option>
-                                                                        {stateData.shiftDutyPersons.map(
+                                                                        {editData.shiftDutyPersons.map(
                                                                             (dutyPerson, key) => (
                                                                                 <option
                                                                                     value={dutyPerson.employee_id}
@@ -684,7 +685,7 @@ const Edit = (props) => {
                                                                         onChange={onChangeHandler}
                                                                     >
                                                                         <option>select one</option>
-                                                                        {stateData.polishMachines.map(
+                                                                        {editData.polishMachines.map(
                                                                             (machine, key) => (
                                                                                 <option value={machine.id} key={key}>
                                                                                     {machine.machine_name}

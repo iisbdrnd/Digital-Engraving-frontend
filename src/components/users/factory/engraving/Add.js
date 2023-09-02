@@ -56,7 +56,7 @@ const Add = (props) => {
                     {
                         let jobOrderObj = {};
                         jobOrderObj.id = job.job_order_pk_id;
-                        jobOrderObj.name = job.job_order_job_no;
+                        jobOrderObj.name = `${job.job_order_pk_id}-${job.job_name}`;
                         jobOrderOptions.push(jobOrderObj);
                     })
                 }

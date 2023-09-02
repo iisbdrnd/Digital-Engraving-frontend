@@ -13,7 +13,7 @@ export default function ListData(props) {
     const [hasAccess, setHasAccess] = useState({});
     const [accLoad, setAccLoad] = useState(true);
     const [currentPage, setCurrentPage] = useState();
-    const [perPage, setPerPage] = useState();
+    const [perPage, setPerPage] = useState(10);
     const [totalData, setTotalData] = useState(0);
     const [ascDesc, setAscDesc] = useState(false);
 
@@ -68,7 +68,7 @@ export default function ListData(props) {
     const handlePageChange = (pageNumber = 1) => {
         setIsLoading(true);
         // TABLE DATA READY
-        userGetMethod(`${MACHINE_RSURL}?page=${pageNumber}`)
+        userGetMethod(`${MACHINE_RSURL}?page=${pageNumber}&perPage=${perPage}`)
             .then(response => {
                 setCurrentPage(response.data.machines.current_page)
                 setPerPage(response.data.machines.per_page)
@@ -164,9 +164,9 @@ export default function ListData(props) {
                                         <label className="mt-3">
                                             <span>
                                                 <select className="form-control pagi-select" onChange={perPageHandler}>
-                                                    <option value="5">5</option>
                                                     <option value="10">10</option>
-                                                    <option value="15">15</option>
+                                                    <option value="25">25</option>
+                                                    <option value="50">50</option>
                                                 </select>
                                             </span>
                                         </label>

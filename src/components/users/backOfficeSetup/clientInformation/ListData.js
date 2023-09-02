@@ -13,7 +13,7 @@ export default function ListData(props) {
     const [hasAccess, setHasAccess] = useState({});
     const [accLoad, setAccLoad] = useState(true);
     const [currentPage, setCurrentPage] = useState();
-    const [perPage, setPerPage] = useState(5);
+    const [perPage, setPerPage] = useState(10);
     const [totalData, setTotalData] = useState(0);
     const [ascDesc, setAscDesc] = useState(false);
 
@@ -35,6 +35,10 @@ export default function ListData(props) {
         // TABLE DATA READY
         pageChange();
     },[]);
+
+    // useEffect(() => {
+    //     perPageBoxChange();
+    // },[perPage])
 
     const handleSearchText = (e) => {
         setSearchText(e);
@@ -68,7 +72,7 @@ export default function ListData(props) {
     const pageChange = (pageNumber = 1) => {
         setIsLoading(true);
         // TABLE DATA READY
-        userGetMethod(`${clientInformation}?page=${pageNumber}`)
+        userGetMethod(`${clientInformation}?page=${pageNumber}&perPage=${perPage}`)
             .then(response => {
                 setCurrentPage(response.data.clientInfos.current_page)
                 setPerPage(response.data.clientInfos.per_page)
@@ -153,7 +157,7 @@ export default function ListData(props) {
 
                                 <div className="col-md-6 col-lg-6">
                                     <AddButton link="clientInformation/add" menuId={menuId} />
-                                    <PerPageBox pageBoxChange={perPageBoxChange}/>
+                                    <PerPageBox pageBoxChange={perPageBoxChange} perPage={perPage} setPerPage={setPerPage}/>
                                 </div>
                             </div>
                                 

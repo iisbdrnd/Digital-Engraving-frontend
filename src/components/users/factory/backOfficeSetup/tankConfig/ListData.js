@@ -13,7 +13,7 @@ export default function ListData(props) {
     const [hasAccess, setHasAccess] = useState({});
     const [accLoad, setAccLoad] = useState(true);
     const [currentPage, setCurrentPage] = useState();
-    const [perPage, setPerPage] = useState();
+    const [perPage, setPerPage] = useState(10);
     const [totalData, setTotalData] = useState(0);
     const [ascDesc, setAscDesc] = useState(false);
 
@@ -69,7 +69,7 @@ export default function ListData(props) {
     const handlePageChange = (pageNumber = 1) => {
         setIsLoading(true);
         // TABLE DATA READY
-        userGetMethod(`${TANK_CONFIG_RSURL}?page=${pageNumber}`)
+        userGetMethod(`${TANK_CONFIG_RSURL}?page=${pageNumber}&perPage=${perPage}`)
             .then(response => {
                 setCurrentPage(response.data.tanks.current_page)
                 setPerPage(response.data.tanks.per_page)
@@ -81,10 +81,10 @@ export default function ListData(props) {
     }
 
     const perPageHandler = (e) => {
-        // let perPage = e.target.value;
+        let perPage = e.target.value;
         setIsLoading(true);
         // TABLE DATA READY
-        userGetMethod(`${TANK_CONFIG_RSURL}?perPage=10`)
+        userGetMethod(`${TANK_CONFIG_RSURL}?perPage=${perPage}`)
             .then(response => {
                 setCurrentPage(response.data.tanks.current_page)
                 setPerPage(response.data.tanks.per_page)
@@ -159,9 +159,9 @@ export default function ListData(props) {
                                         <label className="mt-3">
                                             <span>
                                                 <select className="form-control pagi-select" onChange={perPageHandler}>
-                                                    <option value="5">5</option>
                                                     <option value="10">10</option>
-                                                    <option value="15">15</option>
+                                                    <option value="25">25</option>
+                                                    <option value="50">50</option>
                                                 </select>
                                             </span>
                                         </label>
