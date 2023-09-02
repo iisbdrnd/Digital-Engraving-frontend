@@ -27,6 +27,7 @@ const Edit = (props) => {
     const [shiftDutyPersons, setShiftDutyPersons] = useState([]);
     const [layoutText,setLayoutText] = useState('');
     const [jobId,setJobId] = useState('');
+    const [cylinderId,setCylinderId] = useState('');
 
     let [stateData, setStateData] = useReducer(
         (state, newState) => ({ ...state, ...newState }),
@@ -80,6 +81,7 @@ const Edit = (props) => {
 
         userGetMethod(`${ENGRAVING_RS_URL}/${digEngravingCylinderId}/edit`).then(
             (response) => {
+                console.log(response.data);
                 dropDownChange(
                     [{ id: response.data.jobOrder.job_id }],
                     "job_order_pk_id"
@@ -88,7 +90,7 @@ const Edit = (props) => {
 
                 let { engraving, polishMachines, digShift, shiftDutyPersons } =
                     response.data;
-
+                    setCylinderId(engraving.cylinder_id)
                 setStateData({
                     job_no: response.data.jobOrder.job_no,
                     job_order_pk_id: engraving.job_order_pk_id,
@@ -129,7 +131,7 @@ const Edit = (props) => {
             }
         );
     }, []);
-// console.log(jobId);
+// console.log(cylinderId);
     const onChangeHandler = (event) => {
         setStateData({ [event.target.name]: event.target.value });
     };
@@ -144,6 +146,8 @@ const Edit = (props) => {
     const dropDownChange = (e, fieldName) => {
         if (e.length > 0) {
             const selectedValueId = e[0].id; //job_orders.job_order_pk_id
+
+            
             
             
             userGetMethod(`${ENGRAVING_JOB_ID}?job_id=${selectedValueId}`)
@@ -167,6 +171,25 @@ const Edit = (props) => {
                 ...prevstate,
                 ['color']: colorOptions,
             }))
+            userGetMethod(
+                `${POLISHING_GET_POLISHING_DATA_BY_JOB_ID}?jobOrderId=${selectedValueId}`
+            ).then((response) => {
+
+                console.log(response.data)
+
+                let {
+                    jobOrderDetails,
+                    cylindersByJobId,
+                    platingData,
+                    completeEngraveData,
+                } = response.data;
+                setStateData({
+                    jobOrderDetailsData: jobOrderDetails, //CYLINDER DATA FROM 'job_orders' TABLE
+                    cylindersByJobId: cylindersByJobId, //CYLINDER DATA FROM 'factory_cylinder_supply_chains' TABLE
+                    platingData: platingData, //PLATING DATA FROM 'plating_tank_schedule_details' TABLE
+                    completeEngraveData: completeEngraveData, //PLATING DATA FROM 'plating_tank_schedule_details' TABLE
+                });
+            });
             setIsLoading(false)
             });
         }
@@ -349,7 +372,7 @@ const Edit = (props) => {
                                                         <input
                                                             type="text"
                                                             className="form-control"
-                                                            value={stateData.cylinder_id}
+                                                            value={cylinderId}
                                                             disabled={"disabled"}
                                                         />
                                                         {/* <input 
@@ -881,7 +904,7 @@ const Edit = (props) => {
                                                                 <tr>
                                                                     <td align="right">Cylinder Id</td>
                                                                     <td>:</td>
-                                                                    <td>{stateData.cylinder_id}</td>
+                                                                    <td>{cylinderId}</td>
                                                                 </tr>
                                                                 {/* <tr>
                                                                 <td align="right">Cyl</td>

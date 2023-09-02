@@ -192,6 +192,9 @@ const Add = (props) => {
     }
     
     const getLayoutDetails = async() => {
+
+        
+
         await userGetMethod(`${ENGRAVING_LAYOUT_DETAILS}?job_id=${dropDownData.job_order_pk_id}&color_id=${colorsState.color}`)
             .then((response) => {
                 console.log(response?.data);
@@ -251,10 +254,14 @@ const Add = (props) => {
                     [fieldName]: selectedValueId,
                 })
             );
+            
 
             userGetMethod(`${ENGRAVING_JOB_ID}?job_id=${selectedValueId}`)
                 .then(response => {
                     console.log('GET_ENGRAVING_DATA_BY_JOB_ID', response.data);
+
+                    
+
                     setLayoutText(response.data.layout);
                     let colorOptions = [];
                 if (response.data.colors && response.data.colors.length > 0) {
@@ -273,6 +280,16 @@ const Add = (props) => {
                 ...prevstate,
                 ['color']: colorOptions,
             }))
+            if (selectedValueId) {
+                userGetMethod(`${GET_ENGRAVING_DATA_BY_JOB_ID}?jobOrderPkId=${selectedValueId}`)
+                    .then(response =>{
+                    let { engraves, jobOrderDetails } = response.data;
+                    setStateData({
+                        'engraves'       : engraves,
+                        'jobOrderDetails': jobOrderDetails,
+                    });
+            })
+            }
             setIsLoading(false)
                 });
 
@@ -283,7 +300,7 @@ const Add = (props) => {
     }
 
 
-    // console.log(colorsState)
+    // console.log(stateData.engraves[0].cylinder_id)
    
     const submitHandler = (data ,e) => {
         console.log('dropDownData', dropDownData,data);
@@ -620,6 +637,7 @@ const Add = (props) => {
                                                             <tr>
                                                                 <td align="right">Cylinder Id</td>
                                                                 <td>:</td>
+                                                                
                                                                 <td>{stateData.cylinder_id}</td>
                                                             </tr>
                                                             <tr>
