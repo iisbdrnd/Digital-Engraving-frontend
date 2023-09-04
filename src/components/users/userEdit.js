@@ -11,6 +11,7 @@ class UserEdit extends Component {
         super(props);
         this.changeHandeler=this.changeHandeler.bind(this);
         this.submitHandeler=this.submitHandeler.bind(this);
+        this.errorState = ''
         
         this.state={
             adminUserImage:[],
@@ -29,6 +30,10 @@ class UserEdit extends Component {
             about: '',
             isFetch: false,
             isLoading:true,
+            confirm_password: '',
+            new_password: '',
+            old_password: '',
+            passwordMatchError: ''
             
         };
     }
@@ -57,10 +62,11 @@ class UserEdit extends Component {
         });
     }
         
-    changeHandeler= e => {
+    changeHandeler= e => { 
             this.setState({
                 [e.target.name]:e.target.value
             })
+            
         }
  
     submitHandeler= e => {
@@ -162,7 +168,7 @@ class UserEdit extends Component {
                             </div>
                             <div className="col-lg-8">
                                 <form className="card" onSubmit={this.submitHandeler}>
-                                <div className="card-header">
+                                {/* <div className="card-header">
                                             <h4 className="card-title mb-0">Edit Profile</h4>
                                             <div className="card-options"><a className="card-options-collapse" href="#javascript" data-toggle="card-collapse"><i className="fe fe-chevron-up"></i></a><a className="card-options-remove" href="#javascript" data-toggle="card-remove"><i className="fe fe-x"></i></a></div>
                                         </div>
@@ -218,9 +224,9 @@ class UserEdit extends Component {
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> */}
                                 
-                                    {/* <ConfirmPass></ConfirmPass> */}
+                                    <ConfirmPass onHandleChangeNumeric={this.onHandleChangeNumeric} admindata={admindata} changeHandeler={this.changeHandeler} state={this.state} genderData = {this.state.genderData}></ConfirmPass>
                                     
 
 

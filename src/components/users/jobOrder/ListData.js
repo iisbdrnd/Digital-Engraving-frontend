@@ -5,6 +5,9 @@ import { JOB_ORDER_RSURL, userHasAccess } from '../../../api/userUrl';
 import { userGetMethod, userDeleteMethod } from '../../../api/userAction';
 import { AddButton, EditButton, ShowButton, DeleteButton, PerPageBox } from '../../common/GlobalButton';
 import Pagination from "react-js-pagination";
+// import { Button, Modal } from 'reactstrap';
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
 
 
 export default function ListData(props) {
@@ -17,6 +20,10 @@ export default function ListData(props) {
     const [perPage, setPerPage] = useState(10);
     const [totalData, setTotalData] = useState(0);
     const [ascDesc, setAscDesc] = useState(false);
+    const [show, setShow] = useState(false);
+
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
 
     var menuId = 0;
     if (props.location.state === undefined) {
@@ -209,7 +216,9 @@ export default function ListData(props) {
                                                                             {
                                                                                 accLoad === false ? <>
                                                                                     {(hasAccess.edit === true && item?.agreement_status != 1) ? <EditButton link={`/jobOrder/edit/${item.id}`} menuId={ menuId } /> : ''} 
-                                                                                    {hasAccess.show === true ? <ShowButton link={`/jobOrder/show/${item.id}`} menuId={ menuId } /> : ''} 
+                                                                                    {hasAccess.show === true ? <ShowButton link={`/jobOrder/show/${item.id}`} onClick={handleShow}  menuId={ menuId }
+
+                                                                                    /> : ''} 
                                                                                     {(hasAccess.destroy === true  && item?.agreement_status != 1) ? <DeleteButton deleteLink={JOB_ORDER_RSURL} deleteHandler={ deleteHandler } menuId={ menuId } dataId={item.id} /> : ''} 
                                                                                 </> : ''
                                                                             }
@@ -239,6 +248,21 @@ export default function ListData(props) {
                     </div>
                 </div>
             </div>
+            {/* Modal======== */}
+            {/* <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Modal heading</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Woohoo, you are reading this text in a modal!</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={handleClose}>
+            Save Changes
+          </Button>
+        </Modal.Footer>
+      </Modal> */}
         </Fragment>
     )
 }
