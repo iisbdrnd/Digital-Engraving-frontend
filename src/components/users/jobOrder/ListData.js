@@ -8,6 +8,8 @@ import Pagination from "react-js-pagination";
 // import { Button, Modal } from 'reactstrap';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import Show from './Show';
+import './listData.css'
 
 
 export default function ListData(props) {
@@ -21,9 +23,13 @@ export default function ListData(props) {
     const [totalData, setTotalData] = useState(0);
     const [ascDesc, setAscDesc] = useState(false);
     const [show, setShow] = useState(false);
+    const [showId,setShowId] = useState(0)
 
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+  const handleClose = () => setShow(false);
+  const handleShow = (id) => {
+    setShow(true)
+    setShowId(id)
+};
 
     var menuId = 0;
     if (props.location.state === undefined) {
@@ -31,7 +37,7 @@ export default function ListData(props) {
     } else {
         menuId = props.location.state.params.menuId;
     }
-    
+    // console.log(menuId);
     useEffect(() => {
         // ADD,EDIT,DELETE,SHOW ACCESS CHECK
         userGetMethod(`${userHasAccess}/${menuId}`)
@@ -216,7 +222,7 @@ export default function ListData(props) {
                                                                             {
                                                                                 accLoad === false ? <>
                                                                                     {(hasAccess.edit === true && item?.agreement_status != 1) ? <EditButton link={`/jobOrder/edit/${item.id}`} menuId={ menuId } /> : ''} 
-                                                                                    {hasAccess.show === true ? <ShowButton link={`/jobOrder/show/${item.id}`} onClick={handleShow}  menuId={ menuId }
+                                                                                    {hasAccess.show === true ? <ShowButton handleShow={()=>handleShow(item.id)}   menuId={ menuId }
 
                                                                                     /> : ''} 
                                                                                     {(hasAccess.destroy === true  && item?.agreement_status != 1) ? <DeleteButton deleteLink={JOB_ORDER_RSURL} deleteHandler={ deleteHandler } menuId={ menuId } dataId={item.id} /> : ''} 
@@ -249,20 +255,18 @@ export default function ListData(props) {
                 </div>
             </div>
             {/* Modal======== */}
-            {/* <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
+            {/* <Button variant="primary" onClick={handleShow}>
+        Launch demo modal
+      </Button> */}
+        <div>
+        <Modal show={show} onHide={handleClose} >
+        <Modal.Header closeButton style={{maxWidth:'none', width:"90%"}}>
           <Modal.Title>Modal heading</Modal.Title>
         </Modal.Header>
-        <Modal.Body>Woohoo, you are reading this text in a modal!</Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={handleClose}>
-            Save Changes
-          </Button>
-        </Modal.Footer>
-      </Modal> */}
+        <Modal.Body><Show showId = {showId}></Show></Modal.Body>
+        
+      </Modal>
+        </div>
         </Fragment>
     )
 }

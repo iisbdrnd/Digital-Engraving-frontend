@@ -38,7 +38,8 @@ class ListData extends Component {
     }
 
     render() { 
-        let { isLoading, allUsers, columns } = this.state
+        let { isLoading, allUsers, columns } = this.state;
+        console.log(columns)
         return (
             <Fragment>
                 <Breadcrumb title="User List" parent="User" />
@@ -65,7 +66,7 @@ class ListData extends Component {
                                             pagination={true}
                                             class="-striped -highlight"
                                             editLink="users/edit"
-                                            deleteLink={usersRsurl}
+                                            // deleteLink={usersRsurl}
                                             accessLink="user-access-link"
                                         />
                                     )}

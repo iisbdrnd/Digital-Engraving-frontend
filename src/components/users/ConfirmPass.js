@@ -4,12 +4,12 @@ import { FaEye,FaEyeSlash } from "react-icons/fa";
 import './ConfirmPassword.css'
 
 
-const ConfirmPass = ({admindata,onHandleChangeNumeric,state,changeHandeler,genderData,passwordMatchError}) => {
+const ConfirmPass = ({handlerSelect,admindata,onHandleChangeNumeric,state,changeHandeler,genderData,passwordMatchError,setState}) => {
    
     const [text,setText] = useState('')
     const [newText,setNewText] = useState('')
     const [error,setError] = useState(false)
-    const [key,setKey] = useState('home')
+    // const [key,setKey] = useState('profile')
     const [newVisible, setNewVisible] = useState(false);
     const [visible, setVisible] = useState(false);
     const newEyeValue = newVisible ? <FaEye></FaEye> : <FaEyeSlash></FaEyeSlash>
@@ -36,6 +36,7 @@ const ConfirmPass = ({admindata,onHandleChangeNumeric,state,changeHandeler,gende
         
     }
     useEffect(() =>{
+        
         if (newText === text) {
             setError(true);
 
@@ -43,9 +44,29 @@ const ConfirmPass = ({admindata,onHandleChangeNumeric,state,changeHandeler,gende
             setError(false)
         }
     },[text,newText])
+    // useEffect(()=>{
+    //     if(key == 'profile'){
+    //        this.setState(
+    //         {[key]: 0}
+    //     )
+    //     }else{
+    //         this.setState(
+    //             {
+    //                 [key]:1
+    //             }
+    //         )
+    //     }
+    // },[key])
     
-    
-    console.log(newText,"-",text,error)
+    // const handlerSelect = (e) => {
+    //     setKey(e)
+    //     console.log(e)
+        
+    //     // setState({
+        
+    //     // })
+    // }
+    // console.log(newText,"-",text,error)
    
     
 
@@ -56,10 +77,10 @@ const ConfirmPass = ({admindata,onHandleChangeNumeric,state,changeHandeler,gende
 
 <Tabs
       id="controlled-tab-example"
-      activeKey={key}
-      onSelect={(k) => setKey(k)}
+      activeKey={state.key}
+      onSelect={(k) => handlerSelect(k)}
     >
-                                        <Tab eventKey="home" title="Edit Profile">
+                                        <Tab eventKey="profile" onChange title="Edit Profile">
                                             
                                         <div className="card-body">
                                             <div className="row">
@@ -120,13 +141,13 @@ const ConfirmPass = ({admindata,onHandleChangeNumeric,state,changeHandeler,gende
 
 
 
-                                    <Tab eventKey="profile" title="Change Password">
+                                    <Tab eventKey="password" title="Change Password">
                                     <div className="card-body">
                                             <div className="row d-flex justify-content-center">
                                                 <div className="col-md-9 ">
                                                     <div className="form-group">
                                                         <label className="form-label">Old Password:</label>
-                                                        <input className="form-control" type="password" name='old_password' placeholder="old password.." value={admindata.old_password} onChange={changeHandeler} />
+                                                        <input className="form-control" type="password" name='old_password' placeholder="old password.." value='' onChange={changeHandeler} />
                                                     </div>
                                                 </div>
 

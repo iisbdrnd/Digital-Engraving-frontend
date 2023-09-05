@@ -182,7 +182,8 @@ export default function ListData(props) {
                                             <thead>
                                                 <tr>
                                                     <th scope="col" width="6%">SL.</th>
-                                                    <th scope="col" width="40%" > Machine Name</th>
+                                                    <th scope="col" width="30%" > Machine Name</th>
+                                                    <th scope="col" width="10%" > Machine Type</th>
                                                     <th scope="col" width="24%">Branch Name</th>
                                                     <th scope="col" width="20%">Active Status</th>
                                                     {/* <th scope="col" width="20%"><i className="fa fa-sort"></i> Active Status</th> */}
@@ -198,6 +199,8 @@ export default function ListData(props) {
                                                                     <tr key={index}>
                                                                         <td scope="row">{ ((index+1) + (currentPage == 1 ? 0 : (currentPage*perPage - perPage))) }</td>
                                                                         <td>{item.machine_name}</td>
+                                                                        <td>{item.machine_type =="4" ? "Engraving Machine" : (item.machine_type =="3" ? "Polishing Machine" : item.machine_type =="1" ? 'Grinding Machine' : '') 
+                                                                        }</td>
                                                                         <td>{item.branch_name}</td>
                                                                         <td>{item.active_status == 1 ? 'Yes' : 'No'}</td>
                                                                         

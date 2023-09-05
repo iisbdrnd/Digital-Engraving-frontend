@@ -12,7 +12,9 @@ const Show = (props) => {
         "margin" : "2% 1% 2% 0%"
     }
     useEffect(()=>{
-        const id = props.match.params.id;
+        // const id = props.match.params.id;
+        const id = props.showId;
+        // console.log(id)
         userGetMethod(`${JOB_ORDER_RSURL}/${id}`)
         .then(response => {
             setColorInfo(response.data.colors);

@@ -153,6 +153,7 @@ export const EditButton = props => {
     )
 }
 export const ShowButton = props => {
+
     return (
         <Fragment>
             { 
@@ -161,6 +162,7 @@ export const ShowButton = props => {
                         pathname: props.link,
                         state: { params: {menuId: props.menuId} }
                     }}
+                    onClick={()=>props.handleShow(props.id)}
                     className="fas fa-eye" 
                     style={{ width: 25, fontSize: 16, padding: 0, color: 'rgb(40, 167, 69)', cursor: "pointer" }}>
                 </Link>

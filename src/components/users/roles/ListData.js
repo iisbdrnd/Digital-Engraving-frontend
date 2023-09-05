@@ -5,6 +5,8 @@ import Datatable from '../common/datatable';
 import 'react-toastify/dist/ReactToastify.css';
 import { userGetMethod } from '../../../api/userAction';
 import { rolesAPI } from '../../../api/userUrl'
+import { Button } from 'react-bootstrap';
+// import Datatable2 from '../common/datatable2';
 
 class ListData extends Component {
     constructor(props) {

@@ -348,7 +348,7 @@ const Add = (props) => {
                                                 <div className="form-group row">
                                                     <label htmlFor="main_code" className="col-md-3 col-form-label required">Payment By</label>
                                                     <div className="col-sm-9 col-md-9">
-                                                        <Typeahead
+                                                        {/* <Typeahead
                                                             id="paymentBy"
                                                             name="paymentBy"
                                                             labelKey={option => `${option.name}`}
@@ -358,6 +358,12 @@ const Add = (props) => {
                                                             ref={register({
                                                                 required: 'Payment By Field Required'
                                                             })}
+                                                        /> */}
+
+                                                        <Select
+                                                            value={selectedOption}
+                                                            onChange={handleChange}
+                                                            options={groupOption.groups}
                                                         />
                                                         {errors.paymentBy && 'Payment By is required'}
                                                     </div>

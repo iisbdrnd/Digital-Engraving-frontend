@@ -19,6 +19,7 @@ const UserAccess = () => {
     const [modulesloading,setModulesLoading] = useState(false);
     const [ tab, setTab] = useState(0);
     const {userId} = useParams();
+    const [disableBtn,setDisableBtn] = useState(false);
     // get current login user
     const stateStr = localStorage.getItem('state');
     const statePar = JSON.parse(stateStr)
@@ -901,6 +902,7 @@ const UserAccess = () => {
 
         let menus = [];
         let internalLinks = [];
+        setDisableBtn(true)
 
         
         for (const parentMenu of modulesData?.software_menus) {
@@ -987,6 +989,7 @@ const UserAccess = () => {
             // if data save successfull
             if(res.data.message){
                 toast.success('User access added successfully');
+                setDisableBtn(false)
             }
         })
 
@@ -1027,7 +1030,7 @@ const UserAccess = () => {
         
             {
                 tab === 1 && (
-                <UserAccessModules allMenuAndResourceChecked={allMenuAndResourceChecked} handleSelectMenu={handleSelectMenu} handleSelectChildMenu={handleSelectChildMenu} handleSelectParentInternalLinks={handleSelectParentInternalLinks} handleSelectSubChildMenu={handleSelectSubChildMenu} handleSelectSubChildInternalLinks={handleSelectSubChildInternalLinks} handleRoleChange={handleRoleChange} modulesData={modulesData} loading={modulesloading} saveData={saveData} />
+                <UserAccessModules allMenuAndResourceChecked={allMenuAndResourceChecked} handleSelectMenu={handleSelectMenu} handleSelectChildMenu={handleSelectChildMenu} handleSelectParentInternalLinks={handleSelectParentInternalLinks} handleSelectSubChildMenu={handleSelectSubChildMenu} handleSelectSubChildInternalLinks={handleSelectSubChildInternalLinks} handleRoleChange={handleRoleChange} modulesData={modulesData} loading={modulesloading} saveData={saveData} disableBtn={disableBtn}/>
                 )
             }
             

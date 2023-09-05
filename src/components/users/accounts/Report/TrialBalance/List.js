@@ -19,7 +19,7 @@ const Form = (props) => {
     }
 
     useEffect( () => {
-        userGetMethod(`${branches}`)
+        userGetMethod(`${branches}?page=1&perPage=10`)
         .then(response => {
             setBranchData(response.data.branches.data);
             setIsLoading(false);

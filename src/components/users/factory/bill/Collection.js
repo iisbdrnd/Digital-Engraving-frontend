@@ -6,7 +6,9 @@ import { userGetMethod, userPutMethod } from '../../../../api/userAction';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import useForm from "react-hook-form";
+import SweetAlert from 'react-bootstrap-sweetalert';
 import { SubmitButton } from '../../../common/GlobalButton';
+import Swal from 'sweetalert2';
 
 const Edit = (props) => {
     const { handleSubmit, register, errors } = useForm();
@@ -16,11 +18,14 @@ const Edit = (props) => {
     const [isLoading, setIsLoading] = useState(true);
 
     const [clientId, setClientId] = useState(0);
+    const [cashValue, setCashValue] = useState(0);
+    const [cashStore, setCashStore] = useState([]);
     const [ transactionBy, setTransactionBy] = useState(0);
     const [ amount, setAmount] = useState(0);
     const [ remarks, setRemarks] = useState('');
 
     const [ showCheckInfo, setShowCheckInfo] = useState(false);
+    const [ confirmToast, setConfirmToast] = useState(false);
     const [submitDisabled, setSubmitDisabled] = useState(false);
 
     const [ clientInfo, setClientInfo] = useState({
@@ -47,27 +52,33 @@ const Edit = (props) => {
         menuId = props.location.state.params.menuId;
     }
 
+   
+
     useEffect(() => {
+
+    
+
+
+
         userGetMethod(`${collectionFromApi}`)
             .then(response => {
+                // console.log(response.data.accountLevelOfFour['2201']);
+                // setCashStore(response.data.accountLevelOfFour['2201']);
 
-                let groupedOptionsCustom = [];
-                Object.keys(response.data.accountLevelOfFour).map(function(key, index) {
-                    if (response.data.accountLevelOfThree.hasOwnProperty(key)) {
-                        var groupOptionObj = {};
-                        groupOptionObj.label = response.data.accountLevelOfThree[key].account_code + ' - ' + response.data.accountLevelOfThree[key].account_head;
-                        groupOptionObj.options = [];
-                        response.data.accountLevelOfFour[key].map( (account_levelFour, i) => {
-                            let groupSubOptionsObj = {};
-                            groupSubOptionsObj.label = account_levelFour.account_code+' - '+account_levelFour.account_head;
-                            groupSubOptionsObj.value = account_levelFour.account_code;
-                            groupOptionObj.options.push(groupSubOptionsObj);
-                        });
-                    }else{
-                        var groupOptionObj = {};
-                    }
-                    groupedOptionsCustom.push(groupOptionObj);
+                if (cashValue == '2201') {
+                    setCashStore(response.data.accountLevelOfFour['2201']);
+
+
+                    let groupedOptionsCustom = [];
+                    response.data.accountLevelOfFour['2201'].map( (cash, i) => {
+                    let clientOptionsObj = {};
+                    clientOptionsObj.label = cash.account_code+' - '+cash.account_head;
+                    clientOptionsObj.value = cash.account_head;
+                    clientOptionsObj.id = cash.account_code;
+                    clientOptionsObj.isdisable = clientOptionsObj.id.endsWith('000')
+                    groupedOptionsCustom.push(clientOptionsObj);
                 });
+                // console.log(groupedOptionsCustom)
 
                 setGroupOption(
                     (prevstate) => ({
@@ -76,6 +87,72 @@ const Edit = (props) => {
                     })
                 );
 
+
+
+
+
+
+
+
+                //     let groupedOptionsCustom = [];
+                //     Object.keys(cashStore).map(function(key, index) {
+                //     if (response.data.accountLevelOfThree.hasOwnProperty(key)) {
+                //         var groupOptionObj = {};
+                //         groupOptionObj.label = response.data.accountLevelOfThree[key].account_code + ' - ' + response.data.accountLevelOfThree[key].account_head;
+                //         groupOptionObj.options = [];
+                //         response.data.accountLevelOfFour[key].map( (account_levelFour, i) => {
+                //             let groupSubOptionsObj = {};
+                //             groupSubOptionsObj.label = account_levelFour.account_code+' - '+account_levelFour.account_head;
+                //             groupSubOptionsObj.value = account_levelFour.account_code;
+                //             groupOptionObj.options.push(groupSubOptionsObj);
+                //         });
+                //     }else{
+                //         var groupOptionObj = {};
+                //     }
+                //     groupedOptionsCustom.push(groupOptionObj);
+                // });
+
+                // setGroupOption(
+                //     (prevstate) => ({
+                //         ...prevstate,
+                //         ['groups']: groupedOptionsCustom,
+                //     })
+                // );
+
+                }else if (cashValue == '2202'){
+                    setCashStore(response.data.accountLevelOfFour['2202']);
+                    let groupedOptionsCustom = [];
+                    response.data.accountLevelOfFour['2202'].map( (cash, i) => {
+                        let clientOptionsObj = {};
+                        clientOptionsObj.label = cash.account_code+' - '+cash.account_head;
+                        clientOptionsObj.value = cash.account_head;
+                        clientOptionsObj.id = cash.account_code;
+                        clientOptionsObj.isdisable = clientOptionsObj.id.endsWith('000')
+                        groupedOptionsCustom.push(clientOptionsObj);
+                    });
+
+                    console.log(groupedOptionsCustom)
+                    setGroupOption(
+                        (prevstate) => ({
+                            ...prevstate,
+                            ['groups']: groupedOptionsCustom,
+                        })
+                    );
+                }
+                else {
+                    setGroupOption(
+                        (prevstate) => ({
+                            ...prevstate,
+                            ['groups']: [],
+                        })
+                    );
+    
+
+                    
+
+            }
+
+                
                 //clients arrayish
 
                 let clientOptionsCustom = [];
@@ -98,8 +175,19 @@ const Edit = (props) => {
 
             })
             .catch(error => console.log(error))   
-    },[]);
+    },[cashValue]);
 
+    
+
+const handleSelectCash = (e) => {
+    setCashValue(e.target.value);
+    let result = e.target.value;
+    if (!result.includes('2201')) {
+        setShowCheckInfo(true);
+    }else{
+        setShowCheckInfo(false);
+    }
+}
     
     const amountChangeHandler = (e)=>{
         setSubmitDisabled(false);
@@ -124,17 +212,13 @@ const Edit = (props) => {
             })
             .catch(error => console.log(error))   
     }
-
+// console.log(cashValue)
     const transactionHandleChange = (transaction) => {
         setSubmitDisabled(false);
         setTransactionBy(transaction.value);
-
-        if(transaction.value == "2201000001"){
-            setShowCheckInfo(false);
-        }else{
-            setShowCheckInfo(true);
-        }
+        
     };
+    // console.log(transactionBy)
 
     const calculateCheck = (e) => {
         setSubmitDisabled(false);
@@ -159,7 +243,7 @@ const Edit = (props) => {
                 }else{
                    
 
-                    if(clientInfo.due >= amount && amount > 0){
+                    if( amount && amount > 0){
 
                         data.clientId = clientId;
                         data.transactionBy = transactionBy;
@@ -167,17 +251,53 @@ const Edit = (props) => {
                         data.check_no = checkInfo.check_no;
                         data.check_date = checkInfo.check_date;
                         data.remarks = remarks;
+                        if (amount > clientInfo.due) {
 
-                        userPutMethod(`${submitCollectionApi}/${clientId}`, data )
-                        .then(response => {
-                            if (response.data.status == 1) {
-                                e.target.reset();
-                                toast.success(response.data.message);
-                            } else {
-                                toast.error(response.data.message);
-                            }
-                        })
-                        .catch(error => toast.error(error))
+                            Swal.fire({
+                                title: 'Are you sure, you want to receive the advance amount!',
+                                showDenyButton: true,
+                                showCancelButton: true,
+                                confirmButtonText: 'Save',
+                                denyButtonText: `Don't save`,
+                              }).then((result) => {
+                                /* Read more about isConfirmed, isDenied below */
+                                if (result.isConfirmed) {
+                                    // setConfirmToast(!confirmToast)
+                                  Swal.fire('Saved!', '', 'success')
+                                  userPutMethod(`${submitCollectionApi}/${clientId}`, data )
+                            .then(response => {
+                                if (response.data.status == 1) {
+                                    e.target.reset();
+                                    toast.success(response.data.message);
+                                    setGroupOption(
+                                        (prevstate) => ({
+                                            ...prevstate,
+                                            ['groups']: [],
+                                        })
+                                    );
+                                    setClients(
+                                        (prevstate) => ({
+                                            ...prevstate,
+                                            ['groups']: [],
+                                        })
+                                    );
+                                } else {
+                                    toast.error(response.data.message);
+                                }
+                            })
+                            .catch(error => toast.error(error))
+                                } else if (result.isDenied) {
+                                  Swal.fire('Changes are not saved', '', 'info')
+                                  setSubmitDisabled(false);
+                                }
+                              })
+    
+    
+                            // alert('you give large amount')
+                            
+                        }
+
+                        
 
                     }else{
                         toast.error("amount greather than zero and can't be greater than due amount");
@@ -185,24 +305,63 @@ const Edit = (props) => {
                 }
             }else{
                 
-                if(clientInfo.due >= amount && amount > 0){
+                if( amount && amount > 0){
 
                     data.clientId = clientId;
                     data.transactionBy = transactionBy;
                     data.amount = amount;
                     data.check_no = checkInfo.check_no;
                     data.check_date = checkInfo.check_date;
+                    if (amount > clientInfo.due) {
 
-                    userPutMethod(`${submitCollectionApi}/${clientId}`, data )
-                    .then(response => {
-                        if (response.data.status == 1) {
-                            e.target.reset();
-                            toast.success(response.data.message);
-                        } else {
-                            toast.error(response.data.message);
-                        }
-                    })
-                    .catch(error => toast.error(error))
+                        Swal.fire({
+                            title: 'Are you sure, you want to receive the advance amount!',
+                            showDenyButton: true,
+                            showCancelButton: true,
+                            confirmButtonText: 'Save',
+                            denyButtonText: `Don't save`,
+                          }).then((result) => {
+                            /* Read more about isConfirmed, isDenied below */
+                            if (result.isConfirmed) {
+                                
+                              Swal.fire('Saved!', '', 'success')
+                              userPutMethod(`${submitCollectionApi}/${clientId}`, data )
+                              .then(response => {
+                                  if (response.data.status == 1) {
+                                      e.target.reset();
+                                      toast.success(response.data.message);
+                                      setGroupOption(
+                                          (prevstate) => ({
+                                              ...prevstate,
+                                              ['groups']: [],
+                                          })
+                                      );
+                                      setClients(
+                                          (prevstate) => ({
+                                              ...prevstate,
+                                              ['groups']: [],
+                                          })
+                                      );
+                                  } else {
+                                      toast.error(response.data.message);
+                                  }
+                              })
+                              .catch(error => toast.error(error))
+                            } else if (result.isDenied) {
+                              Swal.fire('Changes are not saved', '', 'info')
+                              setSubmitDisabled(false);
+                            }
+                          })
+
+
+                        // alert('you give large amount')
+                        
+                        
+                          
+                        
+                       
+                    }
+
 
                 }else{
                     toast.error("amount greather than zero and can't be greater than due amount");
@@ -263,6 +422,19 @@ const Edit = (props) => {
                                                     {errors.client_id && <p className='text-danger'>{errors.client_id.message}</p>}
                                                 </div>
                                             </div>
+                                            <div className="form-group row">
+                                                <label htmlFor="main_code" className="col-md-3 col-form-label required">Type  </label>
+                                                <div className="col-sm-9 col-md-9">
+                                                <select name="cash_system" id="cash_system"
+                                                 ref={register({required: true })} style={{width: '100%',height: '100%'}} onChange={handleSelectCash}>
+                                                <option value="">choose Cash system</option>
+                                                <option value="2202">Bank</option>
+                                                <option value="2201">Cash</option>
+                                               
+                                                </select>
+                                                    {errors.transaction_by && <p className='text-danger'>{errors.transaction_by.message}</p>}
+                                                </div>
+                                            </div>
 
                                             <div className="form-group row">
                                                 <label htmlFor="main_code" className="col-md-3 col-form-label required">Account Code</label>
@@ -273,6 +445,7 @@ const Edit = (props) => {
                                                         ref={register({required: true })}
                                                         onChange={transactionHandleChange}
                                                         options={groupOption.groups}
+                                                        isOptionDisabled={(option) => option.isdisable}
                                                     />
                                                     {errors.transaction_by && <p className='text-danger'>{errors.transaction_by.message}</p>}
                                                 </div>

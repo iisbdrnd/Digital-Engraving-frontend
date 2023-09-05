@@ -33,7 +33,8 @@ class UserEdit extends Component {
             confirm_password: '',
             new_password: '',
             old_password: '',
-            passwordMatchError: ''
+            passwordMatchError: '',
+            key: 'profile'
             
         };
     }
@@ -69,36 +70,68 @@ class UserEdit extends Component {
             
         }
  
+        handlerSelect = (e) => {
+           // setKey(e)
+           // console.log(e)
+           this.setState({ key:e})
+           // setState({
+           
+           // })
+       }
     submitHandeler= e => {
          e.preventDefault();
-        const userData={
-            name: this.state.name,
-            email: this.state.email,
-            designation: this.state.designation,
-            surname: this.state.surname,
-            address: this.state.address,
-            fax: this.state.fax,
-            mobile: this.state.mobile,
-            gender: this.state.gender,
-            office_phone: this.state.office_phone,
-            gen_project_id: this.state.gen_project_id,
-            age: this.state.age,
-            about: this.state.about,
-            isLoading:false
-        }
-
-        let userToken = sessionStorage.getItem('userToken');
-        axios.post(`${process.env.REACT_APP_BASEURL}/api/user/profileUpdate`,userData,{ headers: {"Authorization" : `Bearer ${userToken}`} })
-        .then(response=>{       
-            if (response.data.status == 1) {
-                toast.success(response.data.message);
-            } else {
-                toast.error(response.data.message);
+        if (this.state == 'profile') {
+            const userData={
+                name: this.state.name,
+                email: this.state.email,
+                designation: this.state.designation,
+                surname: this.state.surname,
+                address: this.state.address,
+                fax: this.state.fax,
+                mobile: this.state.mobile,
+                gender: this.state.gender,
+                office_phone: this.state.office_phone,
+                gen_project_id: this.state.gen_project_id,
+                age: this.state.age,
+                about: this.state.about,
+                isLoading:false
             }
-            console.log(response.data);
+    
+            let userToken = sessionStorage.getItem('userToken');
+            axios.post(`${process.env.REACT_APP_BASEURL}/api/user/profileUpdate`,userData,{ headers: {"Authorization" : `Bearer ${userToken}`} })
+            .then(response=>{       
+                if (response.data.status == 1) {
+                    toast.success(response.data.message);
+                } else {
+                    toast.error(response.data.message);
+                }
+                console.log(response.data);
+    
+            }) 
+        }else{
 
-        }) 
+            const userPass = {
+                password: this.state.new_password,
+                // confirm_pass: this.state.confirm_password,
+                old_password: this.state.old_password
+            }
+            // console.log(userPass);
+            let userToken = sessionStorage.getItem('userToken');
+            axios.post(`${process.env.REACT_APP_BASEURL}/api/user/changePassword`,userPass,{ headers: {"Authorization" : `Bearer ${userToken}`} })
+            .then(response=>{       
+                if (response.data.status == 1) {
+                    toast.success(response.data.message);
+                } else {
+                    toast.error(response.data.message);
+                }
+                console.log(response.data);
+    
+            }) 
+
+
+        }
     }
+
 
     onHandleChangeNumeric = e => {
         let value = e.target.value;
@@ -226,13 +259,13 @@ class UserEdit extends Component {
                                             </div>
                                         </div> */}
                                 
-                                    <ConfirmPass onHandleChangeNumeric={this.onHandleChangeNumeric} admindata={admindata} changeHandeler={this.changeHandeler} state={this.state} genderData = {this.state.genderData}></ConfirmPass>
+                                    <ConfirmPass onHandleChangeNumeric={this.onHandleChangeNumeric} admindata={admindata} changeHandeler={this.changeHandeler} state={this.state} genderData = {this.state.genderData} setState={this.setState} handlerSelect={this.handlerSelect}></ConfirmPass>
                                     
 
 
 
                                     <div className="card-footer text-right">
-                                        <button className="btn btn-primary" type="submit">Update Profile</button>
+                                        <button className="btn btn-primary" type="submit">{this.state.key == 'profile' ? "Update Profile" : "Update Password"}</button>
                                     </div>
                                 </form>
                             </div>

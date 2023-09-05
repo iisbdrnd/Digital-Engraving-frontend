@@ -38,7 +38,7 @@ const Report = (props) => {
     var branch_id = params.get('branch_id'); 
     var level_id = params.get('level_id'); 
 
-    const defaultPerPage = 5;
+    const defaultPerPage = 10;
 
     if(type == 1){
         var showPagination = 1;

@@ -7,7 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { userDeleteMethod } from '../../../api/userAction'
 import { EditButton, DeleteButton } from '../../common/GlobalButton';
 
-export class Datatable extends Component {
+export class Datatable2 extends Component {
     constructor(props) {
         super(props)
         this.deleteHandler = this.deleteHandler.bind(this);
@@ -105,7 +105,7 @@ export class Datatable extends Component {
     }
 
     render() {
-        const {pageSize, myClass, multiSelectOption, pagination, editLink, accessLink, menuId,deleteLink } = this.props;
+        const {pageSize, myClass, multiSelectOption, pagination, editLink, menuId ,accessLink } = this.props;
         const { myData, isColumn, isDelete, pages } = this.state;
         
         if (isColumn === false) {
@@ -170,7 +170,7 @@ export class Datatable extends Component {
             }
         }
         
-        if (multiSelectOption === true ) {
+        if (multiSelectOption === true) {
             columns.push(
                 {
                     Header: <button className="btn btn-danger btn-sm btn-delete mb-0 b-r-4"
@@ -202,7 +202,7 @@ export class Datatable extends Component {
                 }
             )
         } else {
-            if (!isDelete ) {
+            if (!isDelete) {
                 columns.push(
                     {
                         type: 'deletion',
@@ -220,7 +220,7 @@ export class Datatable extends Component {
                                         <EditButton link={`${process.env.PUBLIC_URL}/${editLink}/${row.original.id}`} menuId={ menuId } />
                                         {/* <Link to={`${process.env.PUBLIC_URL}/${editLink}/${row.original.id}`} className="fa fa-pencil" style={{ width: 35, fontSize: 16, padding: 11, color: 'rgb(40, 167, 69)', cursor: "pointer" }}></Link> */}
                                     </span>
-                                    {deleteLink && <DeleteButton deleteHandler = {this.deleteHandler} dataId={row.original.id} menuId={ menuId } />}
+                                    <DeleteButton deleteHandler = {this.deleteHandler} dataId={row.original.id} menuId={ menuId } />
                                     {/* <span onClick={() => {
                                         if (window.confirm('Are you sure you wish to delete this item?')) {
                                             this.deleteHandler(row.original.id)
@@ -229,15 +229,17 @@ export class Datatable extends Component {
                                             toast.error('Data Still Safe');
                                         }
                                     }}>
+                                    
                                         <i className="fa fa-trash" style={{ width: 35, fontSize: 16, padding: 11, color: '#e4566e', cursor: 'pointer' }}
                                         ></i>
                                     </span> */}
-                                </div>
-                                {accessLink ? 
+                                    {accessLink ? 
                                     <Link to={`${process.env.PUBLIC_URL}/${accessLink}/${row.original.id}`} className="" style={{ textAlign:"center", padding:"5px", background: "lavender", cursor: "pointer", borderRadius: "25px", display: "flex", justifyContent: "center", boxShadow: "3px 2px 8px #AF7ABB", marginTop: "4px"}}>Access</Link>
                                 : ''
                                 
                                 }
+                                </div>
+                                
                             </div>
                         )
                     }
@@ -262,4 +264,4 @@ export class Datatable extends Component {
     }
 }
 
-export default Datatable;
+export default Datatable2;

@@ -76,6 +76,31 @@ const Add = (props) => {
                                         </div>
                                     </div>
                                     <div className="form-group row">
+                                            <label className="col-sm-2 col-form-label required" htmlFor="machine_type">Machine Type</label>
+                                            <div className="col-sm-4">
+                                                <select 
+                                                    name="machine_type" 
+                                                    id="machine_type" 
+                                                    required 
+                                                    className="form-control" 
+                                                    
+                                                    // onChange={changeHandler}
+                                                    ref={register({
+                                                        required: 'Machine Type Field Required'
+                                                    })} 
+                                                >
+                                                <option value="">Select one</option>
+                                                <option value="1">Grinding Machine</option>
+                                                <option value="3">Polishing Machine</option>
+                                                <option value="4">Engraving Machine</option>
+                                                {/* {machineInput.branches.map((branch, key) => (
+                                                    <option value={branch.id} key={key}>{branch.branch_name}</option>
+                                                ))} */}
+                                                </select>
+                                                {errors.machine_type && <p className='text-danger'>{errors.machine_type.message}</p>}
+                                            </div>
+                                        </div>
+                                    <div className="form-group row">
                                         <label className="col-sm-2 col-form-label required" htmlFor="branch_id">Branch</label>
                                         <div className="col-sm-4">
                                             <select 

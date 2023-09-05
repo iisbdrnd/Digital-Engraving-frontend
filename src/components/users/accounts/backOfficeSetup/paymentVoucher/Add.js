@@ -48,7 +48,7 @@ const Add = (props) => {
         .then(response => {
 
             setProjectName(response.data.branch_name);
-            let paymentByOptions = [];
+            
             //account code
             let groupedOptionsCustom = [];
             Object.keys(response.data.payment_accounts_level_four).map(function(key, index) {
@@ -64,11 +64,13 @@ const Add = (props) => {
                         groupSubOptionsObj.value = account_levelFour.account_code+'~'+account_levelFour.account_head;
 
                         groupOptionObj.options.push(groupSubOptionsObj);
+                        // console.log(groupOptionObj)
                     });
                 }else{
                     var groupOptionObj = {};
                 }
                 groupedOptionsCustom.push(groupOptionObj);
+                console.log(groupedOptionsCustom)
             });
 
             setGroupOption(
@@ -80,6 +82,8 @@ const Add = (props) => {
             // end account code
 
             // for payment by
+            let paymentByOptions = [];
+            let isOptionDisabled;
             if (response.data.cash_accounts && response.data.cash_accounts.length > 0) {
 
                 console.log('cash_acc', typeof(response.data));
@@ -88,6 +92,9 @@ const Add = (props) => {
                 {
                     let paymentByObj = {};
                     paymentByObj.id = payment.account_code;
+                    // isOptionDisabled=(payment) => payment.account_code.endsWith("000")
+                    // console.log(isOptionDisabled)
+                    // paymentByObj.label = payment.account_code;
                     paymentByObj.name = `[${payment.account_code}] ` + payment.account_head;
                     paymentByOptions.push(paymentByObj);
                 })
@@ -353,7 +360,15 @@ const Add = (props) => {
                                                                 ref={register({
                                                                     required: 'Payment By Field Required'
                                                                 })}
-                                                            />
+                                                                isOptionDisabled={(option) => option.id.endsWith("000")}
+                                                                />
+
+                                                            {/* <Select
+                                                                value={selectedOption}
+                                                                onChange={handleChange}
+                                                                options={typeHeadOptions.paymentBy}
+                                                            /> */}
+
                                                             {errors.paymentBy && 'Payment By is required'}
                                                         </div>
                                                     </div>

@@ -40,14 +40,15 @@ const Edit = (props) => {
     useEffect(() => {
         userGetMethod(`${MACHINE_RSURL}/${machineId}/edit`)
             .then(response => {
-                let{machine_name, branch_id, description, active_status, reason} = response.data.machine;
+                let{machine_name, branch_id, description, active_status, reason,machine_type} = response.data.machine;
                 setMachineInput({
                     machine_name : machine_name,
                     branch_id    : branch_id,
                     description  : description,
                     active_status: active_status == 1 ? true: false,
                     branches     : response.data.branches,
-                    isLoading    : false
+                    isLoading    : false,
+                    machine_type :machine_type
                 });
             })
             .catch(error => console.log(error))   
@@ -82,7 +83,7 @@ const Edit = (props) => {
                                     <div className="card-body">
                                         
                                         <div className="form-group row">
-                                            <label className="col-sm-2 col-form-label" htmlFor="machine_name">Branch Name</label>
+                                            <label className="col-sm-2 col-form-label" htmlFor="machine_name">Machine Name</label>
                                             <div className="col-sm-4">
                                                 <input 
                                                     className="form-control"
@@ -97,6 +98,31 @@ const Edit = (props) => {
                                                     })}
                                                 />
                                                 {errors.machine_name && <p className='text-danger'>{errors.machine_name.message}</p>}
+                                            </div>
+                                        </div>
+                                        <div className="form-group row">
+                                            <label className="col-sm-2 col-form-label required" htmlFor="machine_type">Machine Type</label>
+                                            <div className="col-sm-4">
+                                                <select 
+                                                    name="machine_type" 
+                                                    id="machine_type" 
+                                                    required 
+                                                    className="form-control" 
+                                                    defaultValue={machineInput.machine_type}
+                                                    onChange={changeHandler}
+                                                    ref={register({
+                                                        required: 'Machine Type Field Required'
+                                                    })} 
+                                                >
+                                                <option value="">Select one</option>
+                                                <option value="1">Grinding Machine</option>
+                                                <option value="3">Polishing Machine</option>
+                                                <option value="4">Engraving Machine</option>
+                                                {/* {machineInput.branches.map((branch, key) => (
+                                                    <option value={branch.id} key={key}>{branch.branch_name}</option>
+                                                ))} */}
+                                                </select>
+                                                {errors.machine_type && <p className='text-danger'>{errors.machine_type.message}</p>}
                                             </div>
                                         </div>
                                         <div className="form-group row">
