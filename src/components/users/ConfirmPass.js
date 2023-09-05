@@ -147,7 +147,7 @@ const ConfirmPass = ({handlerSelect,admindata,onHandleChangeNumeric,state,change
                                                 <div className="col-md-9 ">
                                                     <div className="form-group">
                                                         <label className="form-label">Old Password:</label>
-                                                        <input className="form-control" type="password" name='old_password' placeholder="old password.." value='' onChange={changeHandeler} />
+                                                        <input className="form-control" type="password" name='old_password' placeholder="old password.." value={admindata.old_pass} onChange={changeHandeler} />
                                                     </div>
                                                 </div>
 

@@ -34,7 +34,8 @@ class UserEdit extends Component {
             new_password: '',
             old_password: '',
             passwordMatchError: '',
-            key: 'profile'
+            key: 'profile',
+            old_pass:''
             
         };
     }
@@ -67,6 +68,11 @@ class UserEdit extends Component {
             this.setState({
                 [e.target.name]:e.target.value
             })
+            if(e.target.name == 'old_password'){
+                this.setState({
+                    ...this.state,['old_pass']:e.target.value
+                })
+            }
             
         }
  
