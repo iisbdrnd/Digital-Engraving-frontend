@@ -119,7 +119,7 @@ class UserEdit extends Component {
             const userPass = {
                 password: this.state.new_password,
                 // confirm_pass: this.state.confirm_password,
-                old_password: this.state.old_password
+                old_password: this.state.old_pass
             }
             // console.log(userPass);
             let userToken = sessionStorage.getItem('userToken');
