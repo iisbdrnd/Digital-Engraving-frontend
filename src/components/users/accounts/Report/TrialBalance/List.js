@@ -35,8 +35,10 @@ const Form = (props) => {
 
         const branch_id = data.branch_id;
         const account_level = data.account_level;
+        console.log(branch_id, account_level)
         if(reportType == 'upto_date'){
             var url = `${process.env.PUBLIC_URL}/user/trial-balance-report-action?type=1&branch_id=${branch_id}&level_id=${account_level}`;
+            console.log(url);
             window.open(url, '_blank', 'height=800,width=1200');
         }
         if(reportType == 'date_range'){

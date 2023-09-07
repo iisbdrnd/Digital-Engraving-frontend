@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useReducer, useState } from 'react';
 import Select from "react-select";
-import { paymentVoucherAPI, projectAccountCodeAPI } from '../../../../../api/userUrl';
+import { GET_paymentVoucherAPI, paymentVoucherAPI, projectAccountCodeAPI } from '../../../../../api/userUrl';
 import { userGetMethod, userDeleteMethod, userPostMethod } from '../../../../../api/userAction';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -17,8 +17,9 @@ const Add = (props) => {
     const [submit, setSubmit] = useState(true);
     const [typeHeadOptions, setTypeHeadOptions] = useState({});
     const [dropDownData, setDropdownData] = useState();
-    const [groupOption, setGroupOption ] = useState({'groups': []});
+    const [groupOption, setGroupOption ] = useState({'groups': [],'account_code':[]});
     const [ selectedOption, setSelectedOption] = useState(0);
+    const [ selectedPaymentOption, setSelectedPaymentOption] = useState(0);
     const [ totalAmount, setTotalAmount] = useState(0);
     const [ counter , setCounter] = useState(0);
     const [ projectName , setProjectName] = useState("");
@@ -44,41 +45,42 @@ const Add = (props) => {
     }
 
     useEffect(() => {
+     
         userGetMethod(`${paymentVoucherAPI}`)
         .then(response => {
 
             setProjectName(response.data.branch_name);
             
             //account code
-            let groupedOptionsCustom = [];
-            Object.keys(response.data.payment_accounts_level_four).map(function(key, index) {
-                if (response.data.payment_accounts.hasOwnProperty(key)) {
-                    var groupOptionObj = {};
-                    groupOptionObj.label = response.data.payment_accounts[key].account_code + ' - ' + response.data.payment_accounts[key].account_head;
-                    groupOptionObj.options = [];
+            // let groupedOptionsCustom = [];
+            // Object.keys(response.data.payment_accounts_level_four).map(function(key, index) {
+            //     if (response.data.payment_accounts.hasOwnProperty(key)) {
+            //         var groupOptionObj = {};
+            //         groupOptionObj.label = response.data.payment_accounts[key].account_code + ' - ' + response.data.payment_accounts[key].account_head;
+            //         groupOptionObj.options = [];
 
-                    response.data.payment_accounts_level_four[key].map( (account_levelFour, i) => {
+            //         response.data.payment_accounts_level_four[key].map( (account_levelFour, i) => {
 
-                        let groupSubOptionsObj = {};
-                        groupSubOptionsObj.label = account_levelFour.account_code+' - '+account_levelFour.account_head;
-                        groupSubOptionsObj.value = account_levelFour.account_code+'~'+account_levelFour.account_head;
+            //             let groupSubOptionsObj = {};
+            //             groupSubOptionsObj.label = account_levelFour.account_code+' - '+account_levelFour.account_head;
+            //             groupSubOptionsObj.value = account_levelFour.account_code+'~'+account_levelFour.account_head;
 
-                        groupOptionObj.options.push(groupSubOptionsObj);
-                        // console.log(groupOptionObj)
-                    });
-                }else{
-                    var groupOptionObj = {};
-                }
-                groupedOptionsCustom.push(groupOptionObj);
-                console.log(groupedOptionsCustom)
-            });
+            //             groupOptionObj.options.push(groupSubOptionsObj);
+            //             // console.log(groupOptionObj)
+            //         });
+            //     }else{
+            //         var groupOptionObj = {};
+            //     }
+            //     groupedOptionsCustom.push(groupOptionObj);
+            //     console.log(groupedOptionsCustom)
+            // });
 
-            setGroupOption(
-                (prevstate) => ({
-                    ...prevstate,
-                    ['groups']: groupedOptionsCustom,
-                })
-            );
+            // setGroupOption(
+            //     (prevstate) => ({
+            //         ...prevstate,
+            //         ['groups']: groupedOptionsCustom,
+            //     })
+            // );
             // end account code
 
             // for payment by
@@ -92,10 +94,10 @@ const Add = (props) => {
                 {
                     let paymentByObj = {};
                     paymentByObj.id = payment.account_code;
-                    // isOptionDisabled=(payment) => payment.account_code.endsWith("000")
+                    paymentByObj.isdisable = paymentByObj.id.endsWith('000')
                     // console.log(isOptionDisabled)
                     // paymentByObj.label = payment.account_code;
-                    paymentByObj.name = `[${payment.account_code}] ` + payment.account_head;
+                    paymentByObj.label = `[${payment.account_code}] ` + payment.account_head;
                     paymentByOptions.push(paymentByObj);
                 })
             }
@@ -111,46 +113,57 @@ const Add = (props) => {
             setIsLoading(false);
         })
         .catch(error => console.log(error))
-    }, []);
 
-    // const handleAccountCode = (text) => {
+
+    }, []);
+    const handleInputChange = (text) => {
+        setAccountCodeText(text)
+    }
+    // const hand(leAccountCode = (text) => {
     //     setAccountCodeText(text)
     // }
 
-    // useEffect(()=>{
-    //     if (accountCodeText.length > 3 ) {
-    //         userGetMethod(`${GET_paymentVoucherAPI}?searchText=${accountCodeText}`)
-    //         .then(response =>{
-    //             let accountOptions = [];
-    //         Object.keys(response.data.payment_accounts).map(function(key, index) {
-    //             if (response.data.payment_accounts.hasOwnProperty(key)) {
-    //                 var groupOptionObj = {};
-    //                 groupOptionObj.label = response.data.payment_accounts[key].account_code + ' - ' + response.data.payment_accounts[key].account_head;
-    //                 groupOptionObj.options = [];
+    useEffect(()=>{
+        if (accountCodeText.length > 3 ) {
+            userGetMethod(`${GET_paymentVoucherAPI}?searchText=${accountCodeText}`)
+            .then(response =>{
+                let accountOptions = [];
+            Object.keys(response.data.payment_accounts).map(function(key, index) {
+                if (response.data.payment_accounts.hasOwnProperty(key)) {
+                    var groupOptionObj = {};
+                    groupOptionObj.label = response.data.payment_accounts[key].account_code + ' - ' + response.data.payment_accounts[key].account_head;
+                    groupOptionObj.options = [];
 
-    //                 response.data.payment_accounts_level_four[key].map( (account_levelFour, i) => {
+                    response.data.payment_accounts_level_four[key].map( (account_levelFour, i) => {
 
-    //                     let groupSubOptionsObj = {};
-    //                     groupSubOptionsObj.label = account_levelFour.account_code+' - '+account_levelFour.account_head;
-    //                     groupSubOptionsObj.value = account_levelFour.account_code+'~'+account_levelFour.account_head;
+                        let groupSubOptionsObj = {};
+                        groupSubOptionsObj.label = account_levelFour.account_code+' - '+account_levelFour.account_head;
+                        groupSubOptionsObj.value = account_levelFour.account_code+'~'+account_levelFour.account_head;
 
-    //                     groupOptionObj.options.push(groupSubOptionsObj);
-    //                 });
-    //             }else{
-    //                 var groupOptionObj = {};
-    //             }
-    //             accountOptions.push(groupOptionObj);
-    //         });
+                        groupOptionObj.options.push(groupSubOptionsObj);
+                    });
+                }else{
+                    var groupOptionObj = {};
+                }
+                accountOptions.push(groupOptionObj);
+            });
 
-    //         setGroupOption(
-    //             (prevstate) => ({
-    //                 ...prevstate,
-    //                 ['account_code']: accountOptions,
-    //             })
-    //         );
-    //         })
-    //     }
-    // },[accountCodeText])
+            setGroupOption(
+                (prevstate) => ({
+                    ...prevstate,
+                    ['account_code']: accountOptions,
+                })
+            );
+            setIsLoading(false);
+            })
+        }
+        if (accountCodeText.length <= 3) {
+            setGroupOption((prevstate) => ({
+                ...prevstate,
+                ['account_code']: [],
+            }))
+        }
+    },[accountCodeText])
 
     const dropDownChange = (e, fieldValue, fieldName) => {
         if(e.length > 0){
@@ -179,6 +192,10 @@ const Add = (props) => {
 
     const handleChange = (selectedOption) => {
         setSelectedOption(selectedOption);
+        console.log('selectedOption', selectedOption);
+    };
+    const handleChangePayment = (selectedOption) => {
+        setSelectedPaymentOption(selectedOption);
         console.log('selectedOption', selectedOption);
     };
 
@@ -342,7 +359,8 @@ const Add = (props) => {
                                                         <Select
                                                                 value={selectedOption}
                                                                 onChange={handleChange}
-                                                                options={groupOption.groups}
+                                                                options={groupOption.account_code}
+                                                                onInputChange={(text)=>handleInputChange(text)}
                                                             />
                                                         </div>
                                                     </div>
@@ -350,7 +368,7 @@ const Add = (props) => {
                                                     <div className="form-group row">
                                                         <label htmlFor="main_code" className="col-md-3 col-form-label required">Payment By</label>
                                                         <div className="col-sm-9 col-md-9">
-                                                            <Typeahead
+                                                            {/* <Typeahead
                                                                 id="paymentBy"
                                                                 name="paymentBy"
                                                                 labelKey={option => `${option.name}`}
@@ -361,13 +379,14 @@ const Add = (props) => {
                                                                     required: 'Payment By Field Required'
                                                                 })}
                                                                 isOptionDisabled={(option) => option.id.endsWith("000")}
-                                                                />
+                                                                /> */}
 
-                                                            {/* <Select
-                                                                value={selectedOption}
-                                                                onChange={handleChange}
+                                                            <Select
+                                                                value={selectedPaymentOption}
+                                                                onChange={handleChangePayment}
                                                                 options={typeHeadOptions.paymentBy}
-                                                            /> */}
+                                                                isOptionDisabled={(option) => option.isdisable}
+                                                            />
 
                                                             {errors.paymentBy && 'Payment By is required'}
                                                         </div>

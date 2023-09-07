@@ -47,6 +47,7 @@ const Add = (props) => {
         layout_id:''
 
     })
+    const [printerMark,setPrinterMark] = useState(0);
     const buttonRef = useRef(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [layoutIdDisable,setLayoutIdDisable] = useState(false);
@@ -95,6 +96,7 @@ const Add = (props) => {
     });
     const [layoutMachines,setLayoutMachines] = useState([])
     const [selectedRefLayout,setSelectedRefLayout] = useState([{id:''}])
+    // const [checked,setChecked] = useState()
     const [jobNoFilter,setJobNoFilter] = useState('')
     const [dropdownData, setDropdownData] = useState({});
     const [typeColorOptions, setTypeColorOptions] = useState([]);
@@ -175,7 +177,7 @@ const Add = (props) => {
             })
         }
     },[ref_text])
-console.log(ref_selected);
+// console.log(ref_selected);
     
     const pageRefreshHandler = async(job_id = null) => {
         // setIsLoading(true);
@@ -378,6 +380,10 @@ console.log(typeheadOptions)
             }else{
                 setFormData({ ...formData, [e.target.name]: e.target.type == 'checkbox' ? (e.target.checked ? 1 : 0) : e.target.value });
             }
+            if(e.target.name == 'printer_mark'){
+
+                setPrinterMark({...printerMark,[e.target.name]:e.target.checked})
+            }
 
             if (e.target.name == 'ref_layout_id' && e.target.value == undefined || '') {
                 setFormData({
@@ -416,8 +422,9 @@ console.log(typeheadOptions)
             
         }
     }
+    console.log(printerMark)
    
-    // console.log(colorArrayErr);
+    // console.log(formData.printer_mark);
     // console.log(selectedRefLayout.id);
 
     const handleChangeOnBlur = (e) => {
@@ -760,16 +767,17 @@ console.log(typeheadOptions)
                
         }
     }
-    console.log(selectedRefLayout)
+    console.log(formData.printer_mark)
 
     // console.log(engraveOrder)
 
-    let checked;
-    if (formData.printer_mark == "Yes") {
-        checked = true;
+   let formDataMark;
+   let checked;
+    if (formData.printer_mark == "Yes" ) {
+        formDataMark= 1 
     }
-    else{
-         checked = false;
+    else if(formData.printer_mark == "No" || formData.printer_mark == ''){
+        checked = printerMark;
     }
 
     var menuId = 0;
@@ -1217,8 +1225,9 @@ console.log(typeheadOptions)
                                                                     
                                                                 })}
                                                                 onChange={inputChangeHandler}
-                                                                checked={checked}
-                                                                value={formData.printer_mark ? formData.printer_mark : ''}
+                                                                checked={formData.printer_mark ? formDataMark : ''}
+                                                                value={formData.printer_mark ? formData.printer_mark : printerMark}
+                                                                // disabled={formData.printer_mark && printerMark == '' ? true : false}
                                                             />
                                                         </div>
                                                         <label className="col-md-8" style={{whiteSpace: 'nowrap'}}>Done</label>

@@ -224,8 +224,9 @@ export default function TankScheduleEdit(props) {
     }
 
     return (
-        <Modal isOpen={ props.modal && isOpenModalPrev } toggle={props.toggle} size="xlg">
-            <ModalHeader toggle={props.toggle}>Edit Manual Cycle Plan Form #{props.modalTitle} Tank *Test*</ModalHeader>
+        <Modal isOpen={ props.modal && isOpenModalPrev } toggle={props.toggle} size="xlg" >
+            <div id="modal-inside">
+            <ModalHeader  toggle={props.toggle}>Edit Manual Cycle Plan Form #{props.modalTitle} Tank *Test*</ModalHeader>
             <ModalBody>
             <div className="container-fluid">
                 <div className="row">
@@ -408,6 +409,7 @@ export default function TankScheduleEdit(props) {
             </div>
     
             </ModalBody>
+            </div>
         </Modal>
     );
 }

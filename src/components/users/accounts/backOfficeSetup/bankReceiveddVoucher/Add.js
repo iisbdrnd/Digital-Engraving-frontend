@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useReducer, useState } from 'react';
 import Select from "react-select";
-import { bankReceivedVoucherAPI, projectAccountCodeAPI } from '../../../../../api/userUrl';
+import { GET_bankReceivedVoucherAPI, bankReceivedVoucherAPI, projectAccountCodeAPI } from '../../../../../api/userUrl';
 import { userGetMethod, userDeleteMethod, userPostMethod } from '../../../../../api/userAction';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -19,11 +19,13 @@ const Add = (props) => {
     const [dropDownData, setDropdownData] = useState();
     const [groupOption, setGroupOption ] = useState({'groups': []});
     const [ selectedOption, setSelectedOption] = useState(0);
+    const [ selectedPaymentOption, setSelectedPaymentOption] = useState(0);
     const [ totalAmount, setTotalAmount] = useState(0);
     const [ counter , setCounter] = useState(0);
     const [ remarksValue, setRemarksValue ] = useState();
     const [ paymentRemark, setPaymentRemark] = useState();
     const [ projectName , setProjectName] = useState("");
+    const [ receiveBankText , setReceiveBankText] = useState("");
 
     //for right side
     const [tableRow, setTableRow] = useState([]);
@@ -61,7 +63,8 @@ const Add = (props) => {
                 {
                     let paymentByObj = {};
                     paymentByObj.id = payment.account_code;
-                    paymentByObj.name = `[${payment.account_code}] ` + payment.account_head;
+                    paymentByObj.isdisable = paymentByObj.id.endsWith('000')
+                    paymentByObj.label = `[${payment.account_code}] ` + payment.account_head;
                     paymentByOptions.push(paymentByObj);
                 })
             }
@@ -74,6 +77,46 @@ const Add = (props) => {
                 })
             );
 
+            // let groupedOptionsCustom = [];
+            // Object.keys(response.data.received_accounts_level_four).map(function(key, index) {
+            //     if (response.data.received_accounts.hasOwnProperty(key)) {
+            //         var groupOptionObj = {};
+            //         groupOptionObj.label = response.data.received_accounts[key].account_code + ' - ' + response.data.received_accounts[key].account_head;
+            //         groupOptionObj.options = [];
+
+            //         response.data.received_accounts_level_four[key].map( (account_levelFour, i) => {
+
+            //             let groupSubOptionsObj = {};
+            //             groupSubOptionsObj.label = account_levelFour.account_code+' - '+account_levelFour.account_head;
+            //             groupSubOptionsObj.value = account_levelFour.account_code+'~'+account_levelFour.account_head;
+
+            //             groupOptionObj.options.push(groupSubOptionsObj);
+            //         });
+            //     }else{
+            //         var groupOptionObj = {};
+            //     }
+            //     groupedOptionsCustom.push(groupOptionObj);
+            // });
+
+            // setGroupOption(
+            //     (prevstate) => ({
+            //         ...prevstate,
+            //         ['groups']: groupedOptionsCustom,
+            //     })
+            // );
+
+            setIsLoading(false);
+        })
+        .catch(error => console.log(error))
+    }, []);
+
+    const handleInputChange = (text) => {
+        setReceiveBankText(text)
+    }
+    useEffect(() => {
+        if (receiveBankText.length > 3) {
+            userGetMethod(`${GET_bankReceivedVoucherAPI}?searchText=${receiveBankText}`)
+        .then((response) => {
             let groupedOptionsCustom = [];
             Object.keys(response.data.received_accounts_level_four).map(function(key, index) {
                 if (response.data.received_accounts.hasOwnProperty(key)) {
@@ -104,8 +147,16 @@ const Add = (props) => {
 
             setIsLoading(false);
         })
-        .catch(error => console.log(error))
-    }, []);
+        }
+        if (receiveBankText.length <= 3) {
+            setGroupOption(
+                (prevstate) => ({
+                    ...prevstate,
+                    ['groups']: [],
+                })
+            );
+        }
+    },[receiveBankText])
 
     const dropDownChange = (e, fieldValue, fieldName) => {
         if(e.length > 0){
@@ -134,6 +185,10 @@ const Add = (props) => {
 
     const handleChange = (selectedOption) => {
         setSelectedOption(selectedOption);
+        console.log('selectedOption', selectedOption);
+    };
+    const handleChangePayment = (selectedOption) => {
+        setSelectedPaymentOption(selectedOption);
         console.log('selectedOption', selectedOption);
     };
 
@@ -312,6 +367,7 @@ const Add = (props) => {
                                                             value={selectedOption}
                                                             onChange={handleChange}
                                                             options={groupOption.groups}
+                                                            onInputChange={(text)=>handleInputChange(text)}
                                                         />
                                                     </div>
                                                 </div>
@@ -319,7 +375,7 @@ const Add = (props) => {
                                                 <div className="form-group row mt-2">
                                                     <label htmlFor="main_code" className="col-md-3 col-form-label required">Payment By</label>
                                                     <div className="col-sm-9 col-md-9">
-                                                        <Typeahead
+                                                        {/* <Typeahead
                                                             id="paymentBy"
                                                             name="paymentBy"
                                                             labelKey={option => `${option.name}`}
@@ -329,7 +385,15 @@ const Add = (props) => {
                                                             ref={register({
                                                                 required: 'Payment By Field Required'
                                                             })}
+                                                        /> */}
+
+                                                        <Select
+                                                            value={selectedPaymentOption}
+                                                            onChange={handleChangePayment}
+                                                            options={typeHeadOptions.paymentBy}
+                                                            isOptionDisabled={(option) => option.isdisable}
                                                         />
+
                                                         {errors.paymentBy && 'Payment By is required'}
                                                     </div>
                                                 </div>

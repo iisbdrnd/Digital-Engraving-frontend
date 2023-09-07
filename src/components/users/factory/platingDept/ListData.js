@@ -301,8 +301,8 @@ export default function ListData(props) {
                                                                             <td>{details.fl}</td>
                                                                             <td>{details.cir}</td>
                                                                             <td>{details.dia}</td>
-                                                                            <td>{details.slot}</td>
-                                                                            <td>{details.slot}</td>
+                                                                            <td>{details.est_plt_order}</td>
+                                                                            <td>{details.surface_area}</td>
                                                                             <td>{details.slot}</td>
                                                                             <td>{details.slot}</td>
                                                                             <td>{details.slot}</td>

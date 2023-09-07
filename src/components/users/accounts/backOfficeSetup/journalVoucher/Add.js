@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useReducer, useState } from 'react';
 import Select from "react-select";
-import { journalVoucherAPI } from '../../../../../api/userUrl';
+import { GET_journalVoucherAPI, journalVoucherAPI } from '../../../../../api/userUrl';
 import { userGetMethod, userDeleteMethod, userPostMethod } from '../../../../../api/userAction';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -20,6 +20,7 @@ const Add = (props) => {
     const [groupOption, setGroupOption ] = useState({'groups': []});
     const [ counter , setCounter] = useState(0);
     const [ projectName , setProjectName] = useState("");
+    const [ journalText , setJournalText] = useState("");
 
     //for right side
     const [debitTableRow, setDebitTableRow] = useState([]);
@@ -53,33 +54,7 @@ const Add = (props) => {
             let paymentByOptions = [];
             setProjectName(response.data.branch_name);
 
-            let groupedOptionsCustom = [];
-            Object.keys(response.data.accountLevelOfFour).map(function(key, index) {
-                if (response.data.accountLevelOfThree.hasOwnProperty(key)) {
-                    var groupOptionObj = {};
-                    groupOptionObj.label = response.data.accountLevelOfThree[key].account_code + ' - ' + response.data.accountLevelOfThree[key].account_head;
-                    groupOptionObj.options = [];
-
-                    response.data.accountLevelOfFour[key].map( (account_levelFour, i) => {
-
-                        let groupSubOptionsObj = {};
-                        groupSubOptionsObj.label = account_levelFour.account_code+' - '+account_levelFour.account_head;
-                        groupSubOptionsObj.value = account_levelFour.account_code+'~'+account_levelFour.account_head;
-
-                        groupOptionObj.options.push(groupSubOptionsObj);
-                    });
-                }else{
-                    var groupOptionObj = {};
-                }
-                groupedOptionsCustom.push(groupOptionObj);
-            });
-
-            setGroupOption(
-                (prevstate) => ({
-                    ...prevstate,
-                    ['groups']: groupedOptionsCustom,
-                })
-            );
+           
 
             setTypeHeadOptions(
                 (prevstate) => ({
@@ -92,6 +67,55 @@ const Add = (props) => {
         })
         .catch(error => console.log(error))
     }, []);
+
+
+    const handleInputChange = (text) => {
+        setJournalText(text)
+    }
+
+    useEffect(() => {
+        if (journalText.length > 3) {
+            userGetMethod(`${GET_journalVoucherAPI}?searchText=${journalText}`)
+            .then((response) => {
+                let groupedOptionsCustom = [];
+                Object.keys(response.data.accountLevelOfFour).map(function(key, index) {
+                    if (response.data.accountLevelOfThree.hasOwnProperty(key)) {
+                        var groupOptionObj = {};
+                        groupOptionObj.label = response.data.accountLevelOfThree[key].account_code + ' - ' + response.data.accountLevelOfThree[key].account_head;
+                        groupOptionObj.options = [];
+    
+                        response.data.accountLevelOfFour[key].map( (account_levelFour, i) => {
+    
+                            let groupSubOptionsObj = {};
+                            groupSubOptionsObj.label = account_levelFour.account_code+' - '+account_levelFour.account_head;
+                            groupSubOptionsObj.value = account_levelFour.account_code+'~'+account_levelFour.account_head;
+    
+                            groupOptionObj.options.push(groupSubOptionsObj);
+                        });
+                    }else{
+                        var groupOptionObj = {};
+                    }
+                    groupedOptionsCustom.push(groupOptionObj);
+                });
+    
+                setGroupOption(
+                    (prevstate) => ({
+                        ...prevstate,
+                        ['groups']: groupedOptionsCustom,
+                    })
+                );
+            })
+        }
+        if ((journalText.length <= 3)) {
+            setGroupOption(
+                (prevstate) => ({
+                    ...prevstate,
+                    ['groups']: [],
+                })
+            );
+        }
+    },[journalText])
+
 
     const dropDownChange = (e, fieldValue, fieldName) => {
         if(e.length > 0){
@@ -309,6 +333,7 @@ const Add = (props) => {
                                                             value={debitSelectedOption}
                                                             onChange={debitHandleChange}
                                                             options={groupOption.groups}
+                                                            onInputChange={(text)=>handleInputChange(text)}
                                                         />
                                                     </div>
                                                 </div>
@@ -402,6 +427,7 @@ const Add = (props) => {
                                                         value={creditSelectedOption}
                                                         onChange={creditHandleChange}
                                                         options={groupOption.groups}
+                                                        onInputChange={(text)=>handleInputChange(text)}
                                                     />
                                                 </div>
                                             </div>

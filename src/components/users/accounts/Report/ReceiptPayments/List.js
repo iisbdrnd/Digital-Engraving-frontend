@@ -83,7 +83,7 @@ const Form = (props) => {
                                 <div className="card-header">
                                     <div className="row">
                                         <div className="col-md-6">
-                                            <h5>Trial Balance</h5>
+                                            <h5>Receipt Payment</h5>
                                         </div>
                                         <div className="col-md-6">
                                             {/* <PanelRefreshIcons panelRefresh={pageRefreshHandler} /> */}

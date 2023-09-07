@@ -91,6 +91,9 @@ const Report = (props) => {
             .catch(error => console.log(error))
     }
 
+
+    console.log(voucherData)
+
     const viewAllData = () => {
 
         setIsLoading(true);
@@ -127,22 +130,23 @@ const Report = (props) => {
 
     var account_code;
     var particulars;
+    // console.log(account_code,particulars)
 
     const updateCodeParicular = (trial_balance) => {
-        console.log('trial', trial_balance);
-        if(accountLevel == 1) {
-            account_code = trial_balance.main_code+'000000000';
-            particulars = accountHead[account_code].account_head;
-        } else if(accountLevel == 2) {
-            account_code = trial_balance.main_code+''+trial_balance.classified_code+'00000000';
-            particulars = accountHead[account_code].account_head;
-        } else if(accountLevel==3) {
-            account_code = trial_balance.main_code+''+trial_balance.classified_code+''+trial_balance.control_code+'000000';
-            particulars  = accountHead[account_code].account_head;
-        } else {
-            account_code = trial_balance.account_code;
-            particulars = trial_balance.account_head;
-        }
+        // console.log('trial', trial_balance);
+        // if(accountLevel == 1) {
+        //     account_code = trial_balance.main_code+'000000000';
+        //     particulars = accountHead[account_code].account_head;
+        // } else if(accountLevel == 2) {
+        //     account_code = trial_balance.main_code+''+trial_balance.classified_code+'00000000';
+        //     particulars = accountHead[account_code].account_head;
+        // } else if(accountLevel == 3) {
+        //     // account_code = trial_balance.main_code+''+trial_balance.classified_code+''+trial_balance.control_code+'000000';
+        //     // particulars  = accountHead[account_code].account_head;
+        // } else {
+        //     account_code = trial_balance.account_code;
+        //     particulars = trial_balance.account_head;
+        // }
     }
 
     var debit_amount;
@@ -246,8 +250,8 @@ const Report = (props) => {
                                                                         { updateCodeParicular(item) }
                           
                                                                         <tr>
-                                                                            <td>{account_code}</td>
-                                                                            <td>{particulars}</td>
+                                                                            <td>{item.account_code }</td>
+                                                                            <td>{item.account_head }</td>
                                                                             <td align="left" valign="middle">{Debit(item.debit_amount)}</td>
                                                                             <td align="left" valign="middle">{Credit(item.credit_amount)}</td>
                                                                         </tr> 

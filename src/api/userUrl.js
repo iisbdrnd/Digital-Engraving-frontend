@@ -116,13 +116,17 @@ export const batchAPI = 'api/user/batch';
 export const batchTransferAPI = 'api/user/batchTransfer';
 
 export const paymentVoucherAPI = 'api/user/paymentVoucher';
+// export const GET_paymentVoucherAPI = 'api/user/getPaymentVoucherAccountCode';
 export const GET_paymentVoucherAPI = 'api/user/getPaymentVoucherAccountCode';
 
 export const receivedVoucherAPI = 'api/user/receivedVoucher';
 export const GET_receivedVoucherAPI = 'api/user/getReceivedVoucherAccountCode';
 export const bankPaymentVoucherAPI = 'api/user/bankPaymentVoucher';
+export const GET_bankPaymentVoucherAPI = 'api/user/getBankPaymentAccountCode';
 export const bankReceivedVoucherAPI = 'api/user/bankReceiveVoucher';
+export const GET_bankReceivedVoucherAPI = 'api/user/getBankReceiveAccountCode';
 export const journalVoucherAPI = 'api/user/journalVoucher';
+export const GET_journalVoucherAPI = 'api/user/getJournalVoucherAccountCode';
 
 export const printPreviousVoucherActionApi = 'api/user/printPreviousVoucherAction';
 export const TransactionPostingReportActionApi = 'api/user/TransactionPostingReportAction';

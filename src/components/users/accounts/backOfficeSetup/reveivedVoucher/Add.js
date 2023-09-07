@@ -19,6 +19,7 @@ const Add = (props) => {
     const [dropDownData, setDropdownData] = useState();
     const [groupOption, setGroupOption ] = useState({'groups': []});
     const [ selectedOption, setSelectedOption] = useState(0);
+    const [ selectedPaymentOption, setSelectedPaymentOption] = useState(0);
     const [ totalAmount, setTotalAmount] = useState(0);
     const [ counter , setCounter] = useState(0);
     const [ projectName , setProjectName] = useState("");
@@ -43,41 +44,9 @@ const Add = (props) => {
         menuId = props.location.state.params.menuId;
     }
     useEffect(() => {
-        userGetMethod(`${GET_receivedVoucherAPI}?searchText=Suspense`)
+        if (receiveText.length > 3) {
+            userGetMethod(`${GET_receivedVoucherAPI}?searchText=${receiveText}`)
         .then(response =>{
-            console.log(response.data)
-        })
-    },[]);
-
-    useEffect(() => {
-        userGetMethod(`${receivedVoucherAPI}`)
-        .then(response => {
-
-            setProjectName(response.data.branch_name);
-            let paymentByOptions = [];
-
-            // for payment by
-            if (response.data.cash_accounts && response.data.cash_accounts.length > 0) {
-
-                console.log('cash_acc', typeof(response.data));
-
-                response.data.cash_accounts.map(payment => 
-                {
-                    let paymentByObj = {};
-                    paymentByObj.id = payment.account_code;
-                    paymentByObj.name = `[${payment.account_code}] ` + payment.account_head;
-                    paymentByOptions.push(paymentByObj);
-                })
-            }
-            // end payment by
-
-            setTypeHeadOptions(
-                (prevstate) => ({
-                    ...prevstate,
-                    ['paymentBy']: paymentByOptions,
-                })
-            );
-
             let groupedOptionsCustom = [];
             Object.keys(response.data.received_accounts_level_four).map(function(key, index) {
                 if (response.data.received_accounts.hasOwnProperty(key)) {
@@ -108,8 +77,86 @@ const Add = (props) => {
 
             setIsLoading(false);
         })
+        }
+
+        if (receiveText.length <= 3) {
+            setGroupOption(
+                (prevstate) => ({
+                    ...prevstate,
+                    ['groups']: [],
+                })
+            );
+        }
+
+    },[receiveText]);
+
+    useEffect(() => {
+        userGetMethod(`${receivedVoucherAPI}`)
+        .then(response => {
+
+            setProjectName(response.data.branch_name);
+            let paymentByOptions = [];
+
+            // for payment by
+            if (response.data.cash_accounts && response.data.cash_accounts.length > 0) {
+
+                console.log('cash_acc', typeof(response.data));
+
+                response.data.cash_accounts.map(payment => 
+                {
+                    let paymentByObj = {};
+                    paymentByObj.label = `[${payment.account_code}]` + payment.account_head;
+                    paymentByObj.id = payment.account_code;
+                    paymentByObj.isdisable = paymentByObj.id.endsWith('000')
+                    paymentByObj.value = `[${payment.account_code}] ` + payment.account_head;
+                    paymentByOptions.push(paymentByObj);
+                })
+            }
+            // end payment by
+
+            setTypeHeadOptions(
+                (prevstate) => ({
+                    ...prevstate,
+                    ['paymentBy']: paymentByOptions,
+                })
+            );
+
+            // let groupedOptionsCustom = [];
+            // Object.keys(response.data.received_accounts_level_four).map(function(key, index) {
+            //     if (response.data.received_accounts.hasOwnProperty(key)) {
+            //         var groupOptionObj = {};
+            //         groupOptionObj.label = response.data.received_accounts[key].account_code + ' - ' + response.data.received_accounts[key].account_head;
+            //         groupOptionObj.options = [];
+
+            //         response.data.received_accounts_level_four[key].map( (account_levelFour, i) => {
+
+            //             let groupSubOptionsObj = {};
+            //             groupSubOptionsObj.label = account_levelFour.account_code+' - '+account_levelFour.account_head;
+            //             groupSubOptionsObj.value = account_levelFour.account_code+'~'+account_levelFour.account_head;
+
+            //             groupOptionObj.options.push(groupSubOptionsObj);
+            //         });
+            //     }else{
+            //         var groupOptionObj = {};
+            //     }
+            //     groupedOptionsCustom.push(groupOptionObj);
+            // });
+
+            // setGroupOption(
+            //     (prevstate) => ({
+            //         ...prevstate,
+            //         ['groups']: groupedOptionsCustom,
+            //     })
+            // );
+
+            setIsLoading(false);
+        })
         .catch(error => console.log(error))
     }, []);
+
+    const handleInputChange = (text) =>{
+        setReceiveText(text)
+    }
 
     const dropDownChange = (e, fieldValue, fieldName) => {
         if(e.length > 0){
@@ -179,6 +226,10 @@ const Add = (props) => {
 
     const handleChange = (selectedOption) => {
         setSelectedOption(selectedOption);
+        console.log('selectedOption', selectedOption);
+    };
+    const handleChangePayment = (selectedOption) => {
+        setSelectedPaymentOption(selectedOption);
         console.log('selectedOption', selectedOption);
     };
 
@@ -341,6 +392,7 @@ const Add = (props) => {
                                                             value={selectedOption}
                                                             onChange={handleChange}
                                                             options={groupOption.groups}
+                                                            onInputChange={(text)=>handleInputChange(text)}
                                                         />
                                                     </div>
                                                 </div>
@@ -361,9 +413,10 @@ const Add = (props) => {
                                                         /> */}
 
                                                         <Select
-                                                            value={selectedOption}
-                                                            onChange={handleChange}
-                                                            options={groupOption.groups}
+                                                            value={selectedPaymentOption}
+                                                            onChange={handleChangePayment}
+                                                            options={typeHeadOptions.paymentBy}
+                                                            isOptionDisabled={(option) => option.isdisable}
                                                         />
                                                         {errors.paymentBy && 'Payment By is required'}
                                                     </div>
