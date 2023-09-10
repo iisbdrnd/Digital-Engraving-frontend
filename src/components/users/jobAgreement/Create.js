@@ -104,7 +104,7 @@ const Add = (props) => {
 
             userGetMethod(`${JOB_ORDER_DETAILS}?jobOrderId=${selectedValue}`)
                 .then(response => {
-                    let { job_name, fixed_amount,per_square_amount,surface_area, job_type, printer_name, client_email, bill_config_type, printer_mark, marketing_p_name, cyl_rate_status, limit_square_cm, vat_status} = response.data.jobOrderDetails;
+                    let { job_name, fixed_amount,per_square_amount,surface_area, job_type, printer_name, client_email, bill_config_type, printer_mark, marketing_p_name, cyl_rate_status, limit_square_cm, vat_status,client_name} = response.data.jobOrderDetails;
                     setJobAgreementInput({
                         'job_name'         : job_name,
                         'printer_name'     : printer_name,
@@ -119,6 +119,7 @@ const Add = (props) => {
                         'surface_area'     : surface_area,
                         'fixed_amount'     : fixed_amount,
                         'per_square_amount'  : per_square_amount,
+                        'client_name'       : client_name
                     });
                 });
         } 
@@ -438,6 +439,11 @@ const Add = (props) => {
                                                 <div className="table-responsive display-div">
                                                     <table className="table table-bordernone">
                                                         <tbody>
+                                                            <tr>
+                                                                <td width="20%" align="right">Client Name</td>
+                                                                <td width="5%">:</td>
+                                                                <td width="75%">{jobAgreementInput?.client_name}</td>
+                                                            </tr>
                                                             <tr>
                                                                 <td width="20%" align="right">Job Name</td>
                                                                 <td width="5%">:</td>

@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
 import { BASE_ORDER_RSURL, userHasAccess } from '../../../api/userUrl';
 import { userGetMethod, userDeleteMethod } from '../../../api/userAction';
-import { AddButton, EditButton, DeleteButton, PerPageBox, PanelRefreshIcons } from '../../common/GlobalButton';
+import { AddButton, EditButton, DeleteButton, PerPageBox, PanelRefreshIcons, ShowButton } from '../../common/GlobalButton';
 import Pagination from "react-js-pagination";
 
 export default function ListData(props) {
@@ -85,6 +85,11 @@ export default function ListData(props) {
                 setIsLoading(false);
             })
             .catch(error => console.log(error))
+    }
+
+    const handleShow = (id) => {
+        var url = `${process.env.PUBLIC_URL}/baseCylinderOrder/${id}`;
+        window.open(url, '_blank', 'height=800,width=1200');
     }
 
     const perPageBoxChange = (e) => {
@@ -186,14 +191,16 @@ export default function ListData(props) {
                                             <thead>
                                                 <tr>
                                                     <th scope="col" width="5%">SL.</th>
-                                                    <th scope="col" width="10%" > Job No.</th>
+                                                    <th scope="col" width="5%" > Job No.</th>
+                                                    <th scope="col" width="10%" >Agreement Date</th>
+                                                    {jobActiveStatus == '1' ? <th scope="col" width="10%">Base order Date</th>:""}
                                                     <th scope="col" width="15%"> Job Name</th>
                                                     <th scope="col" width="10%"> Type</th>                                                        
                                                     <th scope="col" width="15%">Client</th>
                                                     {/* <th scope="col" width="15%" onClick={() => sortHandler(5)}><i className="fa fa-sort"></i> Client</th> */}
                                                     <th scope="col" width="10%" >Printer</th>
                                                     <th scope="col" width="10%" >Qty</th>
-                                                    <th scope="col" width="10%" >Per Sqr Amount</th>
+                                                    <th scope="col" width="5%" >Per Sqr Amount</th>
                                                     <th scope="col" width="10%" >Base Order</th>
                                                     {/* <th scope="col" width="7%">Action</th> */}
                                                 </tr>
@@ -207,6 +214,8 @@ export default function ListData(props) {
                                                                     <tr key={index}>
                                                                         <td scope="row">{ ((index+1) + (currentPage == 1 ? 0 : (currentPage*perPage - perPage))) }</td>
                                                                         <td>{item.job_no}</td>
+                                                                        <td>{item.agreement_date}</td>
+                                                                        {jobActiveStatus == '1' ? <td>{item.base_order_date ? item.base_order_date:'unknown'}</td>:''}
                                                                         <td>{item.job_name}</td>
                                                                         <td>{item.job_type}</td>
                                                                         <td>{item.client_name}</td>
@@ -223,7 +232,9 @@ export default function ListData(props) {
                                                                                 className="btn btn-secondary btn-xs">
                                                                                     Base Order
                                                                             </Link>
-                                                                            : 'Done'}
+                                                                            : <ShowButton handleShow={()=>handleShow(item.job_no)}   menuId={ menuId }
+
+                                                                            />}
                                                                         </td>
                                                                         {/* <td className="">
                                                                             {

@@ -101,14 +101,15 @@ const CylinderInfo = (props) => {
             userGetMethod(`${BASE_ORDER_DETAILS}?baseDetailId=${selectedValue}`)
                 .then(response => {
                     console.log(response.data,selectedValue)
-                    let { job_name, printer_name, client_name, total_cylinder_qty,supplier_name,job_order_id} = response.data.baseOrderDetails;
+                    let { job_name, printer_name, client_name, total_cylinder_qty,supplier_name,job_order_id,order_qty} = response.data.baseOrderDetails;
                     setBaseReceiveInput({
                         'job_name'          : job_name,
                         'printer_name'      : printer_name,
                         'client_name'       : client_name,
                         'total_cylinder_qty': total_cylinder_qty,
                         'supplier_name'     : supplier_name,
-                        'job_id'            : job_order_id
+                        'job_id'            : job_order_id,
+                        'order_qty'         : order_qty
                     });
                 });
         } 
@@ -138,7 +139,8 @@ const CylinderInfo = (props) => {
             client_name       : '',
             printer_mark      : '',
             total_cylinder_qty: '',
-            supplier_name     : ''
+            supplier_name     : '',
+            order_qty          : ''
         })
     }
 
@@ -183,7 +185,7 @@ const CylinderInfo = (props) => {
                                                         onChange={(e) => dropDownChange(e, 'base_detail_id')}
                                                         inputProps={{ required: true }}
                                                         selected={jobNoValue}
-                                                        disabled={base_detail_id != null ? 'disabled' : ''}
+                                                        disabled={base_detail_id != null ? true : false}
                                                         ref={register({
                                                             required: 'Job No Field Required'
                                                         })}
@@ -218,6 +220,14 @@ const CylinderInfo = (props) => {
                                                 </div>
                                             </div>
                                         
+                                            <div className="form-group row">
+                                                <label className="col-sm-3 col-form-label" htmlFor="initial_weight">Quantity No:</label>
+                                                <div className="col-sm-9">
+                                                    <input className="form-control" name="quantity_no" required id="quantity_no" type="text" placeholder="quantity_no" ref={register({ required: true })} value={baseReceiveInput.order_qty ? baseReceiveInput.order_qty : ''}/>
+                                                    <span>{errors.initial_weight && 'Quantity_no is required'}</span>
+                                                    <div className="valid-feedback">Looks good!</div>
+                                                </div>
+                                            </div>
                                             <div className="form-group row">
                                                 <label className="col-sm-3 col-form-label" htmlFor="initial_weight">Initial Weight</label>
                                                 <div className="col-sm-9">

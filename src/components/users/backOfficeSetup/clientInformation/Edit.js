@@ -134,7 +134,7 @@ const Edit = (props) => {
 
     let branchOptions = [];
     if (clientInformationInput && clientInformationInput.branch_data.length > 0) {
-        branchOptions = clientInformationInput.branch_data.map((branch) => (<option key={branch.id} value={branch.id} selected={branch.id == clientInformationInput.branch_id ? true : false}>{branch.branch_name}</option>))
+        branchOptions = clientInformationInput.branch_data.map((branch) => (<option key={branch.id} value={branch.id} selected={branch.id == clientInformationInput?.branch_id ? true : false}>{branch.branch_name}</option>))
     }
     
     let employeesOptions = [];
@@ -367,7 +367,7 @@ const Edit = (props) => {
                                                             required: 'Branch Field Required'
                                                         })} >
                                                         <option> Select One </option>
-                                                        {branchOptions}
+                                                        {branchOptions ? branchOptions : 'Select Branch'}
                                                         
                                                     </select>
                                                     {errors.branch_id && <p className='text-danger'>{errors.branch_id.message}</p>}

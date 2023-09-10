@@ -173,6 +173,7 @@ const Add = (props) => {
       );
     }
   }
+  console.log(dropdownData);
 
   const handleTypeaheadInputChange = (text) => {
     setDropDownText(text); // Store the typed text in the state

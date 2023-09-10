@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import { toast } from 'react-toastify';
 import { JOB_AGREEMENT_RSURL, userHasAccess } from '../../../api/userUrl';
 import { userGetMethod, userDeleteMethod } from '../../../api/userAction';
-import { AddButton, PerPageBox, PanelRefreshIcons } from '../../common/GlobalButton';
+import { AddButton, PerPageBox, PanelRefreshIcons, ShowButton } from '../../common/GlobalButton';
 import Pagination from "react-js-pagination";
 
 export default function ListData(props) {
@@ -44,6 +44,12 @@ export default function ListData(props) {
     const handleSearchText = (e) => {
         setSearchText(e);
     }
+
+    const handleShow = (id) =>{
+        var url = `${process.env.PUBLIC_URL}/jobAgreementReport/${id}`;
+        window.open(url, '_blank', 'height=800,width=1200');
+    }
+
 
     const searchHandler = (e) => {
         setIsLoading(true);
@@ -187,13 +193,14 @@ export default function ListData(props) {
                                                     <th scope="col" width="5%">SL.</th>
                                                     {/* <th scope="col" width="5%" onClick={() => sortHandler(1)} ><i className="fa fa-sort"></i> SL.</th> */}
                                                     <th scope="col" width="10%"> Job No.</th>
+                                                    <th scope="col" width="10%">{jobActiveStatus == '1' ? "Agreement Date" : "Order Date"}</th>
                                                     <th scope="col" width="15%" >Job Name</th>
                                                     <th scope="col" width="10%" >Type</th>                                                        
                                                     <th scope="col" width="10%" >Client</th>
                                                     <th scope="col" width="15%" >Printer</th>
                                                     <th scope="col" width="10%" > Qty</th>
                                                     <th scope="col" width="10%" > Per Sqr Amount</th>
-                                                    <th scope="col" width="10%" >Agreement</th>
+                                                    <th scope="col" width="5%" >Agreement</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -205,6 +212,7 @@ export default function ListData(props) {
                                                                     <tr key={index}>
                                                                         <td scope="row">{ ((index+1) + (currentPage == 1 ? 0 : (currentPage*perPage - perPage))) }</td>
                                                                         <td>{item.job_no}</td>
+                                                                        <td>{item.agreement_date || item.entry_date.split(" ")[0]}</td>
                                                                         <td>{item.job_name}</td>
                                                                         <td>{item.job_type}</td>
                                                                         <td>{item.client_name}</td>
@@ -221,7 +229,9 @@ export default function ListData(props) {
                                                                                 className="btn btn-secondary btn-xs">
                                                                                     Agreement
                                                                             </Link>
-                                                                            : 'Done'}
+                                                                            : <ShowButton handleShow={()=>handleShow(item.job_no)}   menuId={ menuId }
+
+                                                                            />}
                                                                         </td>
                                                                     </tr>
                                                                 )                

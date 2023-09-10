@@ -116,19 +116,19 @@ const Report = (props) => {
     const updateCodeParicular = (balance) => {
         console.log('balance', balance);
 
-        if(accountLevel == 1) {
-            asset_account_code = balance.main_code+'000000000';
-            asset_account_head = accountHead[asset_account_code].account_head;
-        } else if(accountLevel == 2) {
-            asset_account_code = balance.main_code+''+balance.classified_code+'00000000';
-            asset_account_head = accountHead[asset_account_code].account_head;
-        } else if(accountLevel==3) {
-            asset_account_code = balance.main_code+''+balance.classified_code+''+balance.control_code+'000000';
-            asset_account_head  = accountHead[asset_account_code].account_head;
-        } else {
-            asset_account_code = balance.account_code;
-            asset_account_head = balance.account_head;
-        }
+        // if(accountLevel == 1) {
+        //     asset_account_code = balance.main_code+'000000000';
+        //     asset_account_head = accountHead[asset_account_code].account_head;
+        // } else if(accountLevel == 2) {
+        //     asset_account_code = balance.main_code+''+balance.classified_code+'00000000';
+        //     asset_account_head = accountHead[asset_account_code].account_head;
+        // } else if(accountLevel==3) {
+        //     asset_account_code = balance.main_code+''+balance.classified_code+''+balance.control_code+'000000';
+        //     asset_account_head  = accountHead[asset_account_code].account_head;
+        // } else {
+        //     asset_account_code = balance.account_code;
+        //     asset_account_head = balance.account_head;
+        // }
     }
 
 

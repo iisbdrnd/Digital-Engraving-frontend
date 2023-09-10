@@ -722,15 +722,15 @@ const Add = (props) => {
                                                         <table style={{width: "100%"}}>
                                                             <thead>
                                                                 <tr className="dynamicFormByTotalCylQtyHeader">
-                                                                    <th colSpan="2" width="10%">Cylinder</th>
-                                                                    <th colSpan="7" width="30%">Before Grinding Check</th>
-                                                                    <th colSpan="6" width="40%">After Grinding Check</th>
-                                                                    <th colSpan="2" width="20%">Plating Order Remarks</th>
+                                                                    <th colSpan="2" width="13%">Cylinder</th>
+                                                                    <th colSpan="7" width="35%">Before Grinding Check</th>
+                                                                    <th colSpan="6" width="35%">After Grinding Check</th>
+                                                                    <th colSpan="2" width="17%">Plating Order Remarks</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
                                                                 <tr className="dynamicFormByTotalCylQtyBody">
-                                                                    <td>Serial</td>
+                                                                    <td id='sl_col'>Sl</td>
                                                                     <td>Cylinder</td>
                                                                     
                                                                     <td>FL</td>
@@ -799,7 +799,7 @@ const Add = (props) => {
                                                             <div className="row align-items-center">
                                                                 <label className="col-sm-5 col-form-label" htmlFor="final_cir">Final Cir</label>
                                                                 <div className="col-sm-7">
-                                                                    <input  className="form-control" name="final_cir" required id="final_cir" type="number" placeholder="Final Cir" onChange={(e) => changeMasterGrinder(e)} ref={register({ required: true })} />
+                                                                    <input  className="form-control" name="final_cir" required id="final_cir" type="number" placeholder="Final Cir" onChange={(e) => changeMasterGrinder(e)} ref={register({ required: true })} value={grindingMaster?.final_cir ? grindingMaster?.final_cir : ''} />
                                                                     <span>{errors.final_cir && 'Final Cir is required'}</span>
                                                                     <div className="valid-feedback">Looks good!</div>
                                                                 </div>

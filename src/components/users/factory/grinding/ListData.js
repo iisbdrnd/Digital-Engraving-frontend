@@ -243,7 +243,14 @@ export default function ListData(props) {
                                                                                 className="btn btn-secondary btn-xs">
                                                                                     Grinding
                                                                             </Link>
-                                                                            : 'Done'}
+                                                                            : <Link
+                                                                            to={{
+                                                                                pathname: `${process.env.PUBLIC_URL}/grinding/add`,
+                                                                                state: { params: {menuId: menuId, job_order_id : item.id} }
+                                                                            }}
+                                                                            className="btn btn-secondary btn-xs">
+                                                                            View
+                                                                        </Link>}
                                                                         </td>
                                                                         {/* <td className="">
                                                                             {
