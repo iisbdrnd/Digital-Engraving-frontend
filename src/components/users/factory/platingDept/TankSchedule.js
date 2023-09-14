@@ -220,10 +220,11 @@ export default function TankSchedule(props) {
                         e.target.reset();
                         props.toggle();
                         props.onChangeTank(props.tankId, props.modalTitle);
+                        props.callApi();
                     } else {
                         toast.error(response.data.message);
                     }
-                    setChangeUseEffect(changeUseEffect+1);
+                    // setChangeUseEffect(changeUseEffect+1);
                 })
                 .catch(error => toast.error(error))
         } else {
@@ -269,7 +270,7 @@ export default function TankSchedule(props) {
                                                     <select className="form-control" onChange={inputHandler} id="cylinder_id" name="cylinder_id" value={cylScheduleFormData.cylinder_id}>
                                                         <option value=''>Select One</option>
                                                         {cylScheduleFormData.job_cylinder_ids && cylScheduleFormData.job_cylinder_ids.map(cylinder => (
-                                                            <option value={cylinder.cylinder_id} key={cylinder}
+                                                            <option value={cylinder.cylinder_id} key={cylinder.cylinder_id}
                                                             data-grinding-id={cylinder.grinding_cylinder_id}>{cylinder.cylinder_id}</option>
                                                 
                                                         ))}
