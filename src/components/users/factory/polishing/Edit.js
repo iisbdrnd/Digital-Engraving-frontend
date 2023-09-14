@@ -67,6 +67,8 @@ const Edit = (props) => {
         }
     );
     let digPolishingCylinderId = props.match.params.dig_polishing_cylinder_id ? props.match.params.dig_polishing_cylinder_id : null;
+    let statusCode = props.location.state;
+    console.log(statusCode)
     
     useEffect(()=>{
         userGetMethod(`${POLISHING_RS_URL}/${digPolishingCylinderId}/edit`)

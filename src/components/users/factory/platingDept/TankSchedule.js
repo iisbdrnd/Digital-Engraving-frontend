@@ -74,7 +74,9 @@ export default function TankSchedule(props) {
     const  getPlatingOrder = async(cylinder_id) => {
         userGetMethod(`${EST_PLATING_ORDER_RSURL}?cylinder_id=${cylinder_id}`)
         .then((response) => {
+            
             setCylScheduleFormData(
+                
                 {'est_plating_order' : response?.data},
             );
         })
@@ -114,7 +116,9 @@ export default function TankSchedule(props) {
     // FOR CYCLE SCHEDULE DETAILS ARRAY READY
     const addCylSchedulHandler = (event) => {
         let {cylinder_id, job_type, fl, cir, dia, est_plating_order, surface_area} = cylScheduleFormData;
+        // console.log(cylScheduleFormData)
 
+        
         if (dropdownData.job_order_id === ''|| fl === '' || cir === '' || dia === '' || cylinder_id === '' || job_type == '' || est_plating_order === '' || surface_area === '') {
             SweetAlert.fire({title:"Warning", text:"Please Fill up all details", icon:"warning"});
         } else {
@@ -130,6 +134,7 @@ export default function TankSchedule(props) {
             if (check){
                 userGetMethod(`${CHECK_PLATING_CYL_EXIST_OR_NOT}?job_order_id=${dropdownData.job_order_id}&cylinder_id=${cylinder_id}`)
                     .then(response => {
+                        // console.log(response.data);
                         if (Object.keys(response.data).length === 1) {
                             SweetAlert.fire({title:"Warning", text:"Cylinder already in queue", icon:"warning"});
                         }else{
@@ -165,6 +170,9 @@ export default function TankSchedule(props) {
                             //Empty the job order typeahead
                             setJobOrderObj([]);
                         }
+                    })
+                    .catch(function (err) {
+                        console.error(err)
                     });
                 
             }
@@ -366,16 +374,16 @@ export default function TankSchedule(props) {
                                                                 (
                                                                 <tr key={index}>
                                                                     <th scope="row">{index+1}</th>
-                                                                    <td>{item.job_order_id_name}</td>
-                                                                    <td>{item.cylinder_id}</td>
-                                                                    <td>{item.job_type}</td>
-                                                                    <td>{item.fl}</td>
-                                                                    <td>{item.cir}</td>
-                                                                    <td>{item.dia}</td>
-                                                                    <td>{item.est_plating_order}</td>
-                                                                    <td>{item.surface_area}</td>
+                                                                    <td>{item?.job_order_id_name}</td>
+                                                                    <td>{item?.cylinder_id}</td>
+                                                                    <td>{item?.job_type}</td>
+                                                                    <td>{item?.fl}</td>
+                                                                    <td>{item?.cir}</td>
+                                                                    <td>{item?.dia}</td>
+                                                                    <td>{item?.est_plating_order ? item.est_plating_order : ''}</td>
+                                                                    <td>{item?.surface_area}</td>
                                                                     <td align="center">
-                                                                        <span onClick={()=>removeCycleHandler(item.cylinder_id)}>
+                                                                        <span onClick={()=>removeCycleHandler(item?.cylinder_id)}>
                                                                             <i className="icon-close" style={{ width: 25, fontSize: 16, padding: 0, color: '#e4566e', cursor: 'pointer' }}
                                                                             ></i>
                                                                         </span>

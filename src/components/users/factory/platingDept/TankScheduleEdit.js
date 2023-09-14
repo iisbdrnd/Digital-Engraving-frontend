@@ -318,7 +318,7 @@ export default function TankScheduleEdit(props) {
                                                 </div>
 
                                                 <div className="col-md-1 mb-3">
-                                                    <label htmlFor="est_plt_order">Est Plt. Order</label>
+                                                    <label htmlFor="est_plt_order" style={{width: "95px"}}>Est Plt. Order</label>
                                                     <input 
                                                         className="form-control" 
                                                         id="est_plt_order" 

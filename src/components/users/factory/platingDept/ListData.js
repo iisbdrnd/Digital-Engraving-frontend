@@ -6,6 +6,7 @@ import { userGetMethod } from '../../../../api/userAction';
 import TankSchedule from './TankSchedule';
 import StartCycleForm from './StartCycleForm';
 import TankScheduleEdit from './TankScheduleEdit';
+import Pagination from "react-js-pagination";
 import { Link } from 'react-router-dom'
 import 'react-light-accordion/demo/css/index.css';
 import ProgressBar from 'react-bootstrap/ProgressBar'
@@ -15,9 +16,15 @@ export default function ListData(props) {
     const [isOpen, setIsOpen] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [modal, setModal] = useState(false); 
+    const [currentPage,setCurrentPage] = useState();
+    const [perPage,setPerPage] = useState(5);
+    const [totalData,setTotalData] = useState(0)
+    const [jobActiveStatus,setJobActiveStatus] = useState(0)
+    const [platingData, setPlatingData] = useState([])
     const [cycleModal, setCycleModal] = useState(false); 
     const [editTankSchedule, setEditTankSchedule] = useState(false); 
     const [plantingMasterId,setPlantingMasterId] = useState([]);
+    const [tankId,setTankId] = useState(0)
     const [progressVal, setProgressVal] = useReducer(
         (state, newState) => ({...state, ...newState}),
         {}
@@ -112,35 +119,92 @@ export default function ListData(props) {
             })
     }, []);
     const onChangeTank = (id, tank_id) => {
+        setTankId(id)
         setProgressVal({});
         clearInterval(interval.current);
         setPlatingDeptData({currentTank: {id: id, tank_id: tank_id}, scheduleLoading: true});
         setIsOpen(null);
         setClockData('');
-        userGetMethod(`${PLATING_DEPT_RSURL}/${id}`)
-            .then(response => {
-                console.log(response.data);
-                setPlantingMasterId(response.data);
-                setPlatingDeptData({scheduleLoading: false});
-                setPlatingDeptData({tankScheduleDetails: []});
-                setPlatingDeptData({platingTankScheduleMasters: response.data.platingTankScheduleMasters});
-                if (response.data.platingTankScheduleMasters && response.data.platingTankScheduleMasters.length > 0) {
-                    response.data.platingTankScheduleMasters.map(scheduleMaster => {
-                        if (scheduleMaster.est_end_time != null  ) {
-                            startTimer(scheduleMaster?.start_time , scheduleMaster?.est_end_time, scheduleMaster?.id);
-                            
-                        }
-                    })
-                }
-                
-                
-            })
+        // userGetMethod(`${PLATING_DEPT_RSURL}/${id}?plating_complete_status=${jobActiveStatus}&perPage=5`)
+        //     .then(response => {
+        //         console.log(response.data);
+        //         setPlantingMasterId(response.data);
+        //         setPlatingDeptData({scheduleLoading: false});
+        //         setPlatingDeptData({tankScheduleDetails: []});
+        //         setPlatingData(response.data.platingTankScheduleMasters.data);
+        //         setPlatingDeptData({platingTankScheduleMasters: response.data.platingTankScheduleMasters});
+        //         // if (response.data.platingTankScheduleMasters && response.data.platingTankScheduleMasters.length > 0) {
+        //         //     response.data.platingTankScheduleMasters.map(scheduleMaster => {
 
-        console.log('first')
+        //         //         if (scheduleMaster.est_end_time != null  ) {
+        //         //             startTimer(scheduleMaster?.start_time , scheduleMaster?.est_end_time, scheduleMaster?.id);
+                            
+        //         //         }
+        //         //     })
+        //         // }
+                
+                
+        //     })
+
+        // console.log('first')
     };
 
+    useEffect(()=>{
+       if (tankId != 0) {
+        userGetMethod(`${PLATING_DEPT_RSURL}/${tankId}?plating_complete_status=${jobActiveStatus}&perPage=${perPage}`)
+        .then(response => {
+            console.log(response.data);
+            setPlantingMasterId(response.data);
+            setPlatingDeptData({scheduleLoading: false});
+            setPlatingDeptData({tankScheduleDetails: []});
+            setPlatingData(response.data.platingTankScheduleMasters.data);
+            setPlatingDeptData({platingTankScheduleMasters: response.data.platingTankScheduleMasters});
+            setPerPage(response.data.platingTankScheduleMasters.per_page);
+            setCurrentPage(response.data.platingTankScheduleMasters.current_page);
+            setTotalData(response.data.platingTankScheduleMasters.total);
+            // if (response.data.platingTankScheduleMasters && response.data.platingTankScheduleMasters.length > 0) {
+            //     response.data.platingTankScheduleMasters.map(scheduleMaster => {
 
-    console.log(plantingMasterId);
+            //         if (scheduleMaster.est_end_time != null  ) {
+            //             startTimer(scheduleMaster?.start_time , scheduleMaster?.est_end_time, scheduleMaster?.id);
+                        
+            //         }
+            //     })
+            // }
+            setIsLoading(false)
+            
+            
+        })
+       } 
+    },[jobActiveStatus,tankId])
+
+
+    console.log(platingData)
+    
+    useEffect(()=>{
+        pageChange();
+    },[])
+    const pageChange = (pageNumber = 1) => {
+        setIsLoading(true);
+        // TABLE DATA READY
+        userGetMethod(`${PLATING_DEPT_RSURL}/${tankId}?plating_complete_status=${jobActiveStatus}&page=${pageNumber}&perPage=${perPage}`)
+        // console.log('first')
+            .then(response => {
+            setPlantingMasterId(response.data);
+            setPlatingDeptData({scheduleLoading: false});
+            setPlatingDeptData({tankScheduleDetails: []});
+            setPlatingData(response.data.platingTankScheduleMasters.data);
+            setPlatingDeptData({platingTankScheduleMasters: response.data.platingTankScheduleMasters});
+            setPerPage(response.data.platingTankScheduleMasters.per_page);
+            setCurrentPage(response.data.platingTankScheduleMasters.current_page);
+            setTotalData(response.data.platingTankScheduleMasters.total);
+                setIsLoading(false);
+            })
+            .catch(error => console.log(error))
+    }
+
+
+    // console.log(plantingMasterId);
     const toggle = (i, platingTankMasterId) => {
         if (isOpen == i) {
             return setIsOpen(null)
@@ -232,16 +296,36 @@ export default function ListData(props) {
                                         </div>
 
                                         <div className="card-body">
-                                            {platingDeptData.currentTank.id != 0 ? <button className="btn btn-warning bt-xs" onClick={()=>toggleModal('addTankSchedule')}> Add New Cycle </button> : ''}
+
+                                            <div className="row" style={{alignItems:'center',justifyContent: 'flex-end',marginRight:'15px'}}>
+                                            {platingDeptData.currentTank.id != 0 ? <div>
+                                                <div className="custom-table-pagination m-r-10">
+                                                <label className="mt-3">
+                                                <span>
+                                                    <select className="form-control pagi-select" name="grinding_status" onChange={(e) => setJobActiveStatus(parseInt(e.target.value))} value={jobActiveStatus} >
+                                                        <option value="2">All Plating</option>
+                                                        <option value="0">Pending Plating</option>
+                                                        <option value="1">Done Plating</option>
+                                                    </select>
+                                                </span>
+                                                </label>
+                                                </div>
+
+                                            </div>:''}
+
+                                            {platingDeptData.currentTank.id != 0 ? <button className="btn btn-warning bt-xs" style={{width:"115px",height:"40px", padding:"0px"}} onClick={()=>toggleModal('addTankSchedule')}> Add New Cycle </button> : ''}
+                                           
+                                            </div>
                                             
-                                            {platingDeptData.platingTankScheduleMasters.length > 0 && platingDeptData.platingTankScheduleMasters.map((platingTankMaster, key) => 
+                                            
+                                            {platingData.length > 0 && platingData.map((platingTankMaster, key) => 
                                             
                                             (
                                                 <div className="card m-1" key={platingTankMaster.id}>
                                                     <div className="card-header">
                                                         <div className="row">
                                                             <div className="col-md-2">
-                                                                <h5>{++key}. {platingTankMaster.cycle_id}</h5>
+                                                                <h5>{((key+1) + (currentPage == 1 ? 0 : (currentPage*perPage - perPage)))}. {platingTankMaster.cycle_id}</h5>
                                                             </div>
                                                             <div className="col-md-8">
                                                                 <span className="btn btn-info btn-sm mr-1" onClick={()=>toggleModal('editTankSchedule', platingTankMaster.id)}><i className='fa fa-pencil'></i>Edit</span>
@@ -293,8 +377,8 @@ export default function ListData(props) {
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
-                                                                    {platingDeptData.tankScheduleDetails.length > 0 && platingDeptData.tankScheduleDetails.map((details, detailIndex) => (
-                                                                        <tr key={detailIndex}>
+                                                                    {platingData.length > 0 && platingData.map((details, detailIndex) => (
+                                                                        <tr key={ detailIndex}>
                                                                             <td>{details.slot}</td>
                                                                             <td>{details.cylinder_id}</td>
                                                                             <td>{details.job_order_id}</td>
@@ -316,13 +400,29 @@ export default function ListData(props) {
                                                 </div>
                                             ))}
                                         </div>
+
+                                        <Pagination 
+                                    activePage={currentPage}
+                                    itemsCountPerPage={perPage}
+                                    totalItemsCount={totalData}
+                                    onChange={pageChange}
+                                    itemClass="page-item"
+                                    linkClass="page-link"
+                                    firstPageText="First"
+                                    lastPageText="Last"
+                                />
                                     </div>
+
+                            
+
+
                                 )
                         ) : ''}
 
                     </div>
                 </div>
             </div>
+                                    
             {modal == true ? <TankSchedule tank_id={platingDeptData.currentTank.tank_id} tankId={platingDeptData.currentTank.id} modalTitle={platingDeptData.currentTank.tank_id} toggle={()=>toggleModal('addTankSchedule')} onChangeTank={onChangeTank} modal={modal} /> : ''} 
 
             

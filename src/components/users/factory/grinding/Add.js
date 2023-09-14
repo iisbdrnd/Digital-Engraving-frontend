@@ -78,6 +78,8 @@ const Add = (props) => {
     } else {
         menuId = props.location.state.params.menuId;
     }
+    var statusCode = props.location.state.params.statusState;
+    
 
     useEffect(()=>{
         userGetMethod(`${GRINDING_RSURL}/create`)
@@ -473,7 +475,7 @@ const Add = (props) => {
 
                         {/* Plating Order Remarks Start */}
                         <td>
-                            <input onChange={e=>changeInputHandler(i, e, 'plating_order')} className="form-control" value={grindingInput['plating_order'][i] ? parseInt(grindingInput['plating_order'][i]) : null} name="plating_order" id="plating_order" type="number" placeholder="Plating Order" />
+                            <input onChange={e=>changeInputHandler(i, e, 'plating_order')} className="form-control" value={grindingInput['plating_order'][i] ? parseInt(grindingInput['plating_order'][i]) : null} name="plating_order" id="plating_order" type="number" placeholder="Plating Order" required />
                         </td>
                         <td>
                             <input onChange={e=>changeInputHandler(i, e, 'remarks_for_cyl')} className="form-control" value={grindingInput['remarks_for_cyl'][i] ? parseInt(grindingInput['remarks_for_cyl'][i]) : null} name="remarks_for_cyl" id="remarks_for_cyl" type="number" placeholder="Remarks for Cylinder" />
@@ -823,7 +825,8 @@ const Add = (props) => {
                                             </div>
                                         </div>
                                     </div>
-                                    <SubmitButton link="grinding/index" menuId={ menuId } offset="5"/>
+                                    {statusCode != 1 ? <SubmitButton link="grinding/index" menuId={ menuId } offset="5"/>: ''}
+                                    
                                 </form>
                                 )}
                             </div>

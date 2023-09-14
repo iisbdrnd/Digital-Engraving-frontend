@@ -209,18 +209,20 @@ export default function ListData(props) {
                                                                         <td>{item.before_fl}</td>
                                                                         <td>{item.client_name}</td>
                                                                         <td>
+                                                                            {jobActiveStatus == 0?
                                                                             <Link 
-                                                                                to={{
-                                                                                    pathname: `${process.env.PUBLIC_URL}/polishing/edit/${item.cylinder_id}`, 
-                                                                                    state: { params: {menuId: menuId} }
-                                                                                }}
-                                                                            className="btn btn-secondary btn-xs">
-                                                                                Polishing
-                                                                            </Link>
+                                                                            to={{
+                                                                                pathname: `${process.env.PUBLIC_URL}/polishing/edit/${item.cylinder_id}`, 
+                                                                                state: { params: {menuId: menuId} }
+                                                                            }}
+                                                                        className="btn btn-secondary btn-xs">
+                                                                            Polishing
+                                                                        </Link>:'Done'}
+                                                                            
                                                                         </td>
                                                                         <td className="">
                                                                             {
-                                                                                accLoad === false ? <>
+                                                                                accLoad === false &&  jobActiveStatus == 0? <>
                                                                                     {hasAccess.edit === true ? <EditButton link={`/polishing/edit/${item.cylinder_id}`} menuId={ menuId } /> : ''} 
                                                                                 </> : ''
                                                                             }

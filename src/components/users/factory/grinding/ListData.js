@@ -246,7 +246,7 @@ export default function ListData(props) {
                                                                             : <Link
                                                                             to={{
                                                                                 pathname: `${process.env.PUBLIC_URL}/grinding/add`,
-                                                                                state: { params: {menuId: menuId, job_order_id : item.id} }
+                                                                                state: { params: {menuId: menuId, job_order_id : item.id, statusState : item.grinding_status } }
                                                                             }}
                                                                             className="btn btn-secondary btn-xs">
                                                                             View

@@ -9,6 +9,7 @@ import Pagination from "react-js-pagination";
 
 import ReportHeader from '../../../layouts/ReportHeader';
 import '../../../layouts/style.scss';
+import { fixedNumber } from '../../../../common/GlobalComponent';
 
 
 const Report = (props) => {
@@ -151,6 +152,7 @@ const Report = (props) => {
 
     var debit_amount;
     var credit_amount;
+    let debit;
 
     const Debit = (amount) => {
         if(amount == "zero"){
@@ -158,21 +160,29 @@ const Report = (props) => {
             return "";
         }else{
             debit_amount += amount;
-            return amount;
+           debit = fixedNumber(debit_amount)
+            const fixed_amount = fixedNumber(amount) ;
+            return fixed_amount;
         }
         
     }
-
+    // const debitFixed = fixedNumber(debit_amount)
+    let credit
     const Credit = (amount) => {
         if(amount == "zero"){
             credit_amount = 0;
             return "";
         }else{
             credit_amount += amount;
-            return amount;
+             credit= fixedNumber(credit_amount)
+            // console.log(creditaa)
+            const fixed_amount = fixedNumber(amount)
+            return fixed_amount;
         }
         
     }
+    // console.log(debit_amount,credit_amount);
+    // const creditFixed = fixedNumber(credit_amount)
 
     const printDocument = () => {
         window.print();
@@ -265,8 +275,8 @@ const Report = (props) => {
                                                             <tfoot>
                                                                 <tr>
                                                                     <td align="right" colSpan="2"><strong>Total:</strong></td>
-                                                                    <td align="left" valign="middle"><strong>{debit_amount}</strong></td>
-                                                                    <td align="left" valign="middle"><strong>{credit_amount}</strong></td>
+                                                                    <td align="left" valign="middle"><strong>{debit}</strong></td>
+                                                                    <td align="left" valign="middle"><strong>{credit}</strong></td>
                                                                 </tr>
                                                             </tfoot>
                                                         </table>

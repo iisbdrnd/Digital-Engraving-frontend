@@ -130,7 +130,8 @@ const Edit = (props) => {
                 // setShiftDutyPersons(response?.data?.shiftDutyPersons);
                 setIsLoading(false);
             }
-        );
+        )
+        .catch(errors =>{console.log(errors)});
     }, []);
 
     const onChangeHandler = (event) => {
@@ -192,7 +193,8 @@ const Edit = (props) => {
                 });
             });
             setIsLoading(false)
-            });
+            })
+            .catch(errors =>{console.log(errors)});
         }
     };
 
@@ -211,6 +213,7 @@ const Edit = (props) => {
             })
             setIsLoading(false)
         })
+        .catch(errors =>{console.log(errors)})
     },[colorsState?.color,jobId])
 
     const newOnChangeEvent = (e,fieldName) => {
@@ -892,14 +895,14 @@ const Edit = (props) => {
                                                                     </td>
                                                                     <td width="5%">:</td>
                                                                     <td width="50%">
-                                                                        {stateData.jobOrderDetailsData.job_name}
+                                                                        {stateData?.jobOrderDetailsData?.job_name}
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td align="right">Job Type</td>
                                                                     <td>:</td>
                                                                     <td>
-                                                                        {stateData.jobOrderDetailsData.job_type}
+                                                                        {stateData?.jobOrderDetailsData?.job_type}
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
@@ -915,23 +918,23 @@ const Edit = (props) => {
                                                                 <tr>
                                                                     <td align="right">FL</td>
                                                                     <td>:</td>
-                                                                    <td>{stateData.jobOrderDetailsData.fl}</td>
+                                                                    <td>{stateData?.jobOrderDetailsData?.fl}</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td align="right">Cir</td>
                                                                     <td>:</td>
-                                                                    <td>{stateData.jobOrderDetailsData.cir}</td>
+                                                                    <td>{stateData?.jobOrderDetailsData?.cir}</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td align="right">Dia</td>
                                                                     <td>:</td>
-                                                                    <td>{stateData.jobOrderDetailsData.dia}</td>
+                                                                    <td>{stateData?.jobOrderDetailsData?.dia}</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td align="right">S. Area</td>
                                                                     <td>:</td>
                                                                     <td>
-                                                                        {stateData.jobOrderDetailsData.surface_area}
+                                                                        {stateData?.jobOrderDetailsData?.surface_area}
                                                                     </td>
                                                                 </tr>
                                                             </tbody>

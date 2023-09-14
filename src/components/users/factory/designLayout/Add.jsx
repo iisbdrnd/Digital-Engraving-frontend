@@ -102,6 +102,8 @@ const Add = (props) => {
     const [typeColorOptions, setTypeColorOptions] = useState([]);
 
     let job_id = props.location.state.params.jobNo ? props.location.state.params.jobNo : null;
+    let job_status = props.location.state.params.status
+    console.log(props.location.state.params)
     
     useEffect(() => {
         pageRefreshHandler(job_id);
@@ -115,7 +117,7 @@ const Add = (props) => {
     }
 
     
-    console.log(typeheadOptions)
+    // console.log(typeheadOptions)
 
     useEffect(()=>{
         
@@ -180,6 +182,78 @@ const Add = (props) => {
 // console.log(ref_selected);
     
     const pageRefreshHandler = async(job_id = null) => {
+        // if (stateName == 'job_id' && selectedValue) {
+        //     userGetMethod(`${JOB_ORDER_DETAILS}?jobOrderId=${selectedValue}`)
+        //     .then(response => {
+        //         console.log(response.data)
+        //         userGetMethod(`${JOB_SUPPLIERS}?jobOrderId=${selectedValue}`)
+        //         .then(response => {
+        //             setSupplierArr(response.data.suppliers);
+        //             if (response.data.suppliers.length > 0) {
+        //                 let supplierOption = [];
+        //                 response.data.suppliers.map((item, index) => {
+        //                     let supplierObj = {};
+        //                     supplierObj.id = index;
+        //                     supplierObj.name = item;
+        //                     supplierOption.push(supplierObj);
+        //                 })
+        //                 // setEngraveOrder(colorOptions);
+        //                 setSupplierArr(supplierOption);
+        //             }
+        //             console.log(response.data);
+        //         })
+        //         .catch(err => {console.log(err)})
+        //         if (response?.data) {
+        //             let { 
+        //                 // layout_date,
+        //                 cir,client_email,dia,fl,id,job_name,job_no,job_type,printer_id,printer_mark,mark_as_complete,total_cylinder_qty,remarks,ups,rpt,operator_info,station,printer_name,printing_status,design_height,design_width,client_name,marketing_p_name
+        //             } = response.data.jobOrderDetails;
+        //             setFormData({
+        //                 // 'layout_date': layout_date,
+        //                 'cir': cir,
+        //                 'client_email': client_email,
+        //                 'dia': dia,
+        //                 'fl': fl,
+        //                 'id': id,
+        //                 'job_name': job_name,
+        //                 'job_no': job_no,
+        //                 'job_type': job_type,
+        //                 'printer_id': printer_id,
+        //                 'printer_name': printer_name,
+        //                 'printing_status': printing_status,
+        //                 'printer_mark': printer_mark,
+        //                 'total_cylinder_qty': total_cylinder_qty,
+        //                 'remarks': remarks,
+        //                 'ups': ups,
+        //                 'rpt': rpt,
+                        
+        //                 'mark_as_complete' :  mark_as_complete,
+        //                 'operator_info' : operator_info ,
+        //                 'station' : station,
+        //                 'design_height': design_height,
+        //                 'design_width' : design_width,
+        //                 'client_name' : client_name,
+        //                 'marketing_p_name' : marketing_p_name
+        //             });
+        //             setTypeColorOptions(response.data.colors);
+        //             if (response.data.colors.length > 0) {
+        //                 let colorOptions = [];
+        //                 response.data.colors.map((item, index) => {
+        //                     let colorObj = {};
+        //                     colorObj.er_color_serial = index;
+        //                     colorObj.name = item?.color_name;
+        //                     colorObj.er_color_id = item?.id;
+        //                     colorOptions.push(colorObj);
+        //                 })
+        //                 setEngraveOrder(colorOptions);
+        //                 setTypeColorOptions(colorOptions);
+        //             }
+        //         }
+        //     })
+        // }
+
+
+
         // setIsLoading(true);
         // if (job_id == null && jobNoFilter.length > 3) {
             
@@ -209,6 +283,80 @@ const Add = (props) => {
         // }
         // setRef_selected([]);
         if (job_id != null) {
+            if (job_status) {
+                userGetMethod(`${JOB_ORDER_DETAILS}?jobOrderId=${job_id}`)
+                .then(response => {
+                    console.log(response.data)
+                    userGetMethod(`${JOB_SUPPLIERS}?jobOrderId=${job_id}`)
+                    .then(response => {
+                        setSupplierArr(response.data.suppliers);
+                        if (response.data.suppliers.length > 0) {
+                            let supplierOption = [];
+                            response.data.suppliers.map((item, index) => {
+                                let supplierObj = {};
+                                supplierObj.id = index;
+                                supplierObj.name = item;
+                                supplierOption.push(supplierObj);
+                            })
+                            // setEngraveOrder(colorOptions);
+                            setSupplierArr(supplierOption);
+                        }
+                        console.log(response.data);
+                    })
+                    .catch(err => {console.log(err)})
+                    if (response?.data) {
+                        let { 
+                            // layout_date,
+                            cir,client_email,dia,fl,id,job_name,job_no,job_type,printer_id,printer_mark,mark_as_complete,total_cylinder_qty,remarks,ups,rpt,operator_info,station,printer_name,printing_status,design_height,design_width,client_name,marketing_p_name
+                        } = response.data.jobOrderDetails;
+                        setFormData({
+                            // 'layout_date': layout_date,
+                            'cir': cir,
+                            'client_email': client_email,
+                            'dia': dia,
+                            'fl': fl,
+                            'id': id,
+                            'job_name': job_name,
+                            'job_no': job_no,
+                            'job_type': job_type,
+                            'printer_id': printer_id,
+                            'printer_name': printer_name,
+                            'printing_status': printing_status,
+                            'printer_mark': printer_mark,
+                            'total_cylinder_qty': total_cylinder_qty,
+                            'remarks': remarks,
+                            'ups': ups,
+                            'rpt': rpt,
+                            
+                            'mark_as_complete' :  mark_as_complete,
+                            'operator_info' : operator_info ,
+                            'station' : station,
+                            'design_height': design_height,
+                            'design_width' : design_width,
+                            'client_name' : client_name,
+                            'marketing_p_name' : marketing_p_name
+                        });
+                        setTypeColorOptions(response.data.colors);
+                        if (response.data.colors.length > 0) {
+                            let colorOptions = [];
+                            response.data.colors.map((item, index) => {
+                                let colorObj = {};
+                                colorObj.er_color_serial = index;
+                                colorObj.name = item?.color_name;
+                                colorObj.er_color_id = item?.id;
+                                colorOptions.push(colorObj);
+                            })
+                            setEngraveOrder(colorOptions);
+                            setTypeColorOptions(colorOptions);
+                        }
+                    }
+                })
+            }
+
+
+
+
+
             userGetMethod(`${GET_DESIGN_LAYOUT_JOBORDER}?job_order_id=${job_id}`)
         .then(response =>{
             // console.log(response.data)
@@ -349,7 +497,7 @@ const Add = (props) => {
                 // setIsLoading(false);
             });
     }
-console.log(typeheadOptions)
+// console.log(typeheadOptions)
 
     const toogleLtoB = (val) => {
         if (val == "layout") {
@@ -458,7 +606,7 @@ console.log(typeheadOptions)
                
                     if (formData.ref_layout_id) {
                         const response = await userGetMethod(`${DESIGN_LAYOUT_HISTORY}?ref_layout_id=${formData.ref_layout_id}`);
-                    console.log(response.data);
+                    // console.log(response.data);
                     setLayoutArr(response.data?.layoutHistory);
                     setLayoutDetails({
                         ...layoutDetails,
@@ -602,6 +750,7 @@ console.log(typeheadOptions)
                     [stateName]: selectedValue,
                 })
             );
+            console.log(selectedValue)
 
             if (stateName == 'ref_layout' && selectedValue) {
                 userGetMethod(`${DESIGN_LAYOUT_HISTORY}?ref_layout_id=${selectedValue}`)

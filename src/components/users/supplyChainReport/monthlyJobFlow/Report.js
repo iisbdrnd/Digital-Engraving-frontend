@@ -3,6 +3,7 @@ import ReportHeader from './ReportHeader';
 import {MONTHLY_JOB_FLOW_REPORT} from '../../../../api/userUrl'
 import { userGetMethod } from '../../../../api/userAction';
 import './style.scss';
+import { fixedNumber } from '../../../common/GlobalComponent';
 
 const Report = (props) => {
     const [isLoading, setIsLoading] = useState(true);
@@ -84,9 +85,9 @@ const Report = (props) => {
                                                                             <td>{job.dc_rc_qty}</td>
                                                                             <td>{job.total_cyl_qty}</td>
                                                                             <td>{Math.round((job.total_cyl_qty * 100) / job.total_quantity)}%</td>
-                                                                            <td>{job.total_surface_area}</td>
+                                                                            <td>{fixedNumber(job.total_surface_area)}</td>
                                                                             <td>{job.billable_cylinder}</td>
-                                                                            <td>{job.billable_surface_area}</td>
+                                                                            <td>{fixedNumber(job.billable_surface_area)}</td>
                                                                             <td></td>
                                                                             <td></td>
                                                                             <td></td>
@@ -108,9 +109,9 @@ const Report = (props) => {
                                                                                     <td>{grandTotal.dc_rc_qty}</td>
                                                                                     <td>{grandTotal.total_cyl_qty}</td>
                                                                                     <td>100%</td>
-                                                                                    <td>{grandTotal.total_surface_area}</td>
+                                                                                    <td>{fixedNumber(grandTotal.total_surface_area)}</td>
                                                                                     <td>{grandTotal.billable_cylinder}</td>
-                                                                                    <td>{grandTotal.billable_surface_area}</td>
+                                                                                    <td>{fixedNumber(grandTotal.billable_surface_area)}</td>
                                                                                     <td></td>
                                                                                     <td></td>
                                                                                     <td></td>
@@ -146,7 +147,7 @@ const Report = (props) => {
                                                                             }
                                                                         </tr>
                                                                         <tr>
-                                                                            <td>Average Billiable Cylinder Per Day: {grandTotal.billable_cylinder / jobs.length}</td>
+                                                                            <td>Average Billiable Cylinder Per Day: {fixedNumber(grandTotal.billable_cylinder / jobs.length)}</td>
                                                                         </tr>
                                                                     </>
                                                                 ))

@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import { userGetMethod, userDeleteMethod } from "../../../../api/userAction";
 import { DESIGN_LAYOUT_RSURL,userHasAccess } from "../../../../api/userUrl";
 import { Link } from "react-router-dom";
+import { Button } from "reactstrap";
 const ListData = (props) =>  {
     const [isLoading, setIsLoading] =useState(false);
     const [hasAccess, setHasAccess] = useState({});
@@ -212,6 +213,20 @@ const ListData = (props) =>  {
                                                                     <td>{item.job_type}</td>
                                                                     <td>{item.client_name}</td>
                                                                     <td>
+                                                                    {jobActiveStatus == 1 || jobActiveStatus == 2? 
+                                                                    <Button className="btn btn-primary" disabled>
+                                                                        Done
+                                                                    </Button>
+                                                                    
+                                                                    // <Link
+                                                                    //     to={{
+                                                                    //         pathname: `${process.env.PUBLIC_URL}/designLayout/add`,
+                                                                    //         state: { params: { menuId: menuId, jobNo: item.id ,status: 1} }
+                                                                    //     }}
+                                                                    //     className="btn btn-secondary btn-xs" disabled>
+                                                                    //     Done
+                                                                    // </Link>
+                                                                    :
                                                                     <Link
                                                                         to={{
                                                                             pathname: `${process.env.PUBLIC_URL}/designLayout/add`,
@@ -219,7 +234,7 @@ const ListData = (props) =>  {
                                                                         }}
                                                                         className="btn btn-secondary btn-xs">
                                                                         Layout
-                                                                    </Link>
+                                                                    </Link>}
                                                                     </td>
                                                                 </tr>
                                                             )                

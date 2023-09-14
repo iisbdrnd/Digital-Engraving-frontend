@@ -16,6 +16,7 @@ export default function ListData(props) {
     const [currentPage, setCurrentPage] = useState();
     const [perPage, setPerPage] = useState(10);
     const [totalData, setTotalData] = useState(0);
+    const [engravingStatus, setEngravingStatus] = useState(0);
     const [ascDesc, setAscDesc] = useState(false);
     const [jobActiveStatus, setJobActiveStatus] = useState(0);
 
@@ -53,6 +54,7 @@ export default function ListData(props) {
             setPerPage(response.data.allCylinders.per_page)
             setTotalData(response.data.allCylinders.total)
             setCylinderData(response.data.allCylinders.data)
+            setEngravingStatus(response.data.engraving_status)
             setIsLoading(false);
         })
         .catch(error => console.log(error)); 
@@ -67,6 +69,7 @@ export default function ListData(props) {
                 setPerPage(response.data.allCylinders.per_page)
                 setTotalData(response.data.allCylinders.total)
                 setCylinderData(response.data.allCylinders.data)
+                setEngravingStatus(response.data.engraving_status)
                 setIsLoading(false);
             })
             .catch(error => console.log(error))
@@ -81,6 +84,7 @@ export default function ListData(props) {
                 setPerPage(response.data.allCylinders.per_page)
                 setTotalData(response.data.allCylinders.total)
                 setCylinderData(response.data.allCylinders.data)
+                setEngravingStatus(response.data.engraving_status)
                 setIsLoading(false)
             })
             .catch(error => console.log(error))
@@ -103,10 +107,12 @@ export default function ListData(props) {
                 setPerPage(response.data.allCylinders.per_page)
                 setTotalData(response.data.allCylinders.total)
                 setCylinderData(response.data.allCylinders.data)
+                setEngravingStatus(response.data.engraving_status)
                 setIsLoading(false)
             })
             .catch(error => console.log(error))
     }
+    // console.log(engravingStatus)
 
     return (
         <Fragment>
@@ -211,21 +217,22 @@ export default function ListData(props) {
                                                                         <td>{item.before_fl}</td>
                                                                         <td>{item.client_name}</td>
                                                                         <td>
-                                                                            <Link 
+                                                                            {engravingStatus == '0' ? <Link 
                                                                                 to={{
                                                                                     pathname: `${process.env.PUBLIC_URL}/engraving/edit/${item.cylinder_id}`,
                                                                                     state: { params: {
-                                                                                        menuId: menuId, 
+                                                                                        menuId: menuId,
                                                                                         // dig_polishing_cylinder_id : item.cylinder_id
                                                                                     } }
                                                                                 }}
                                                                             className="btn btn-secondary btn-xs">
                                                                                 Engrave
-                                                                            </Link>
+                                                                            </Link> : 'Done'}
+                                                                            
                                                                         </td>
                                                                         <td className="">
                                                                             {
-                                                                                accLoad === false ? <>
+                                                                                accLoad === false && engravingStatus == '0' ? <>
                                                                                     {hasAccess.edit === true ? <EditButton link={`/engraving/edit/${item.cylinder_id}`} menuId={ menuId } /> : ''} 
                                                                                     {/* {hasAccess.destroy === true ? <DeleteButton deleteLink={ENGRAVING_RS_URL} deleteHandler={ deleteHandler } menuId={ menuId } dataId={item.id} /> : ''}  */}
                                                                                 </> : ''

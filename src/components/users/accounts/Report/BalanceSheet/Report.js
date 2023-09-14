@@ -9,6 +9,7 @@ import Pagination from "react-js-pagination";
 
 import ReportHeader from '../../../layouts/ReportHeader';
 import '../../../layouts/style.scss';
+import { fixedNumber } from '../../../../common/GlobalComponent';
 
 
 const Report = (props) => {
@@ -138,19 +139,19 @@ const Report = (props) => {
     const updateCodeCapital = (balance) => {
         console.log('balance', balance);
 
-        if(accountLevel == 1) {
-            capital_account_code = balance.main_code+'000000000';
-            capital_account_head = accountHead[capital_account_code].account_head;
-        } else if(accountLevel == 2) {
-            capital_account_code = balance.main_code+''+balance.classified_code+'00000000';
-            capital_account_head = accountHead[capital_account_code].account_head;
-        } else if(accountLevel==3) {
-            capital_account_code = balance.main_code+''+balance.classified_code+''+balance.control_code+'000000';
-            capital_account_head  = accountHead[capital_account_code].account_head;
-        } else {
-            capital_account_code = balance.account_code;
-            capital_account_head = balance.account_head;
-        }
+        // if(accountLevel == 1) {
+        //     capital_account_code = balance.main_code+'000000000';
+        //     capital_account_head = accountHead[capital_account_code].account_head;
+        // } else if(accountLevel == 2) {
+        //     capital_account_code = balance.main_code+''+balance.classified_code+'00000000';
+        //     capital_account_head = accountHead[capital_account_code].account_head;
+        // } else if(accountLevel==3) {
+        //     capital_account_code = balance.main_code+''+balance.classified_code+''+balance.control_code+'000000';
+        //     capital_account_head  = accountHead[capital_account_code].account_head;
+        // } else {
+        //     capital_account_code = balance.account_code;
+        //     capital_account_head = balance.account_head;
+        // }
     }
 
     var totalAmount = 0;
@@ -230,7 +231,7 @@ const Report = (props) => {
                                                 <tfoot>
                                                     <tr>
                                                         <td colspan="2" class="text-right"><strong>Grand Total</strong></td>
-                                                        <td class="text-right"><strong>{asset_amount}</strong></td>
+                                                        <td class="text-right"><strong>{fixedNumber(asset_amount)}</strong></td>
                                                     </tr>
                                                 </tfoot>
 
@@ -289,7 +290,7 @@ const Report = (props) => {
                                                     </tr>
                                                     <tr>
                                                         <td colspan="2" class="text-right"><strong>Grand Total</strong></td>
-                                                        <td class="text-right"><strong>{liability_amount + totalAmount}
+                                                        <td class="text-right"><strong>{fixedNumber(liability_amount) + fixedNumber(totalAmount)}
                                                     </strong></td>
                                                     </tr>
                                                 </tfoot>
