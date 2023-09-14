@@ -150,6 +150,7 @@ export default function TankSchedule(props) {
                             cylScheduleDetails_obj.dia = dia;
                             cylScheduleDetails_obj.est_plating_order = est_plating_order;
                             cylScheduleDetails_obj.surface_area = surface_area;
+                            cylScheduleDetails_obj.grinding_cylinder_id = grindingCylinder;
             
                             cylScheduleDetails_arr.push(cylScheduleDetails_obj);
             
@@ -187,37 +188,38 @@ export default function TankSchedule(props) {
 
     const submitHandler = (data, e) => {
         data.cylScheduleArr = cylScheduleDetails;
-        data.grindingCylinder_id = grindingCylinder;
+        // data.grindingCylinder_id = grindingCylinder;
         data.tank_id = props.modalTitle;
         data.tankId = props.tankId;
         data.job_order_id = dropdownData.job_order_id;
-        if (data.cylScheduleArr.length > 0) {
-            userPostMethod(CHROME_RS_URL, data)
-                .then(response => {
-                    if (response.data.status == 1) {
-                        toast.success(response.data.message);
-                        e.target.reset();
-                        setCylScheduleFormData({
-                            cylinder_id           : '',
-                            job_type              : '',
-                            fl                    : '',
-                            cir                   : '',
-                            dia                   : '',
-                            est_plating_order     : '',
-                            surface_area          : '',
-                        });
-                        props.onChangeTank(props.tankId,props.modalTitle);
-                        props.toggle('addTankSchedule');
-                        setModal(false);
-                    } else {
-                        toast.error(response.data.message);
-                    }
-                    setChangeUseEffect(changeUseEffect+1);
-                })
-                .catch(error => toast.error(error))
-        } else {
-            SweetAlert.fire({title:"Warning", text:"Please Add atlist one cylinder schedule!", icon:"warning"});
-        }
+        console.log(data)
+        // if (data.cylScheduleArr.length > 0) {
+        //     userPostMethod(CHROME_RS_URL, data)
+        //         .then(response => {
+        //             if (response.data.status == 1) {
+        //                 toast.success(response.data.message);
+        //                 e.target.reset();
+        //                 setCylScheduleFormData({
+        //                     cylinder_id           : '',
+        //                     job_type              : '',
+        //                     fl                    : '',
+        //                     cir                   : '',
+        //                     dia                   : '',
+        //                     est_plating_order     : '',
+        //                     surface_area          : '',
+        //                 });
+        //                 props.onChangeTank(props.tankId,props.modalTitle);
+        //                 props.toggle('addTankSchedule');
+        //                 setModal(false);
+        //             } else {
+        //                 toast.error(response.data.message);
+        //             }
+        //             setChangeUseEffect(changeUseEffect+1);
+        //         })
+        //         .catch(error => toast.error(error))
+        // } else {
+        //     SweetAlert.fire({title:"Warning", text:"Please Add atlist one cylinder schedule!", icon:"warning"});
+        // }
     }
 
     return (

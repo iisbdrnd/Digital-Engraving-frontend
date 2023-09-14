@@ -21,6 +21,7 @@ export default function TankSchedule(props) {
     const [modal, setModal] = useState(false); 
     const [changeUseEffect, setChangeUseEffect] = useState(0); 
     const [jobOrderObj, setJobOrderObj] = useState([]);
+    const [grindingCylinder,setGrindingCylinder] = useState('')
 
     let [cylScheduleFormData, setCylScheduleFormData] = useReducer(
         (state, newState) => ({...state, ...newState}),
@@ -66,6 +67,8 @@ export default function TankSchedule(props) {
             {[event.target.name] : event.target.value},
         );
         if(event.target.name == 'cylinder_id') {
+            const selectedGrindingId = event.target.options[event.target.selectedIndex].getAttribute('data-grinding-id');
+            setGrindingCylinder(selectedGrindingId)
             getPlatingOrder(event.target.value);
         }
     }
@@ -146,6 +149,7 @@ export default function TankSchedule(props) {
                             cylScheduleDetails_obj.dia = dia;
                             cylScheduleDetails_obj.est_plating_order = est_plating_order;
                             cylScheduleDetails_obj.surface_area = surface_area;
+                            cylScheduleDetails_obj.grinding_cylinder_id = grindingCylinder;
             
                             cylScheduleDetails_arr.push(cylScheduleDetails_obj);
             
@@ -241,7 +245,7 @@ export default function TankSchedule(props) {
                                                     <select className="form-control" value={cylScheduleFormData.cylinder_id} onChange={inputHandler} id="cylinder_id" name="cylinder_id">
                                                         <option> Select One </option>
                                                         {cylScheduleFormData.cylinders && cylScheduleFormData.cylinders.map(cylinder => (
-                                                            <option value={cylinder.cylinder_id} key={cylinder.cylinder_id}>{cylinder.cylinder_id}</option>
+                                                            <option value={cylinder.cylinder_id} key={cylinder.cylinder_id} data-grinding-id={cylinder.grinding_cylinder_id}>{cylinder.cylinder_id}</option>
                                                         ))}
                                                     </select>
                                                 </div>

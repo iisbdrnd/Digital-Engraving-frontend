@@ -72,8 +72,12 @@ export default function TankSchedule(props) {
         if(event.target.name == 'cylinder_id') {
             getPlatingOrder(event.target.value);
             const selectedGrindingId = event.target.options[event.target.selectedIndex].getAttribute('data-grinding-id');
-           
-            setCyliderValue(selectedGrindingId)
+            
+            setCyliderValue( selectedGrindingId)
+            // setCylScheduleDetails(
+            //     [...cylScheduleDetails,
+            //         selectedGrindingId],
+            // );
         }
     }
    
@@ -157,6 +161,8 @@ export default function TankSchedule(props) {
                             cylScheduleDetails_obj.dia = dia;
                             cylScheduleDetails_obj.est_plating_order = est_plating_order;
                             cylScheduleDetails_obj.surface_area = surface_area;
+                            cylScheduleDetails_obj.grinding_cylinder_id = cyliderValue;
+
             
                             cylScheduleDetails_arr.push(cylScheduleDetails_obj);
             
@@ -197,32 +203,32 @@ export default function TankSchedule(props) {
     }
 
     const submitHandler = (data, e) => {
-        data.grinding_cylinder_id = cyliderValue;
-        data.cylinder_id = cylScheduleFormData.cylinder_id;
+        // data.grinding_cylinder_id = cyliderValue;
+        // data.cylinder_id = cylScheduleFormData.cylinder_id;
         data.cylScheduleArr = cylScheduleDetails;
         data.tankId = props.tankId;
         data.job_order_id = dropdownData.job_order_id;
         data.tank_id = props.tank_id;
-        // console.log(data)
+        console.log(data)
 
-        if (data.cylScheduleArr.length > 0) {
-            // props.onChangeTank(props.tankId, props.modalTitle);
-            userPostMethod(`${PLATING_DEPT_RSURL}`, data)
-                .then(response => {
-                    if (response.data.status == 1) {
-                        toast.success(response.data.message);
-                        e.target.reset();
-                        props.toggle();
-                        props.onChangeTank(props.tankId, props.modalTitle);
-                    } else {
-                        toast.error(response.data.message);
-                    }
-                    setChangeUseEffect(changeUseEffect+1);
-                })
-                .catch(error => toast.error(error))
-        } else {
-            SweetAlert.fire({title:"Warning", text:"Please Add at list one cylinder schedule!", icon:"warning"});
-        }
+        // if (data.cylScheduleArr.length > 0) {
+        //     // props.onChangeTank(props.tankId, props.modalTitle);
+        //     userPostMethod(`${PLATING_DEPT_RSURL}`, data)
+        //         .then(response => {
+        //             if (response.data.status == 1) {
+        //                 toast.success(response.data.message);
+        //                 e.target.reset();
+        //                 props.toggle();
+        //                 props.onChangeTank(props.tankId, props.modalTitle);
+        //             } else {
+        //                 toast.error(response.data.message);
+        //             }
+        //             setChangeUseEffect(changeUseEffect+1);
+        //         })
+        //         .catch(error => toast.error(error))
+        // } else {
+        //     SweetAlert.fire({title:"Warning", text:"Please Add at list one cylinder schedule!", icon:"warning"});
+        // }
     }
 
     return (
