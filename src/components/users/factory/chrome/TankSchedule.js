@@ -192,34 +192,34 @@ export default function TankSchedule(props) {
         data.tank_id = props.modalTitle;
         data.tankId = props.tankId;
         data.job_order_id = dropdownData.job_order_id;
-        console.log(data)
-        // if (data.cylScheduleArr.length > 0) {
-        //     userPostMethod(CHROME_RS_URL, data)
-        //         .then(response => {
-        //             if (response.data.status == 1) {
-        //                 toast.success(response.data.message);
-        //                 e.target.reset();
-        //                 setCylScheduleFormData({
-        //                     cylinder_id           : '',
-        //                     job_type              : '',
-        //                     fl                    : '',
-        //                     cir                   : '',
-        //                     dia                   : '',
-        //                     est_plating_order     : '',
-        //                     surface_area          : '',
-        //                 });
-        //                 props.onChangeTank(props.tankId,props.modalTitle);
-        //                 props.toggle('addTankSchedule');
-        //                 setModal(false);
-        //             } else {
-        //                 toast.error(response.data.message);
-        //             }
-        //             setChangeUseEffect(changeUseEffect+1);
-        //         })
-        //         .catch(error => toast.error(error))
-        // } else {
-        //     SweetAlert.fire({title:"Warning", text:"Please Add atlist one cylinder schedule!", icon:"warning"});
-        // }
+        // console.log(data)
+        if (data.cylScheduleArr.length > 0) {
+            userPostMethod(CHROME_RS_URL, data)
+                .then(response => {
+                    if (response.data.status == 1) {
+                        toast.success(response.data.message);
+                        e.target.reset();
+                        setCylScheduleFormData({
+                            cylinder_id           : '',
+                            job_type              : '',
+                            fl                    : '',
+                            cir                   : '',
+                            dia                   : '',
+                            est_plating_order     : '',
+                            surface_area          : '',
+                        });
+                        props.onChangeTank(props.tankId,props.modalTitle);
+                        props.toggle('addTankSchedule');
+                        setModal(false);
+                    } else {
+                        toast.error(response.data.message);
+                    }
+                    setChangeUseEffect(changeUseEffect+1);
+                })
+                .catch(error => toast.error(error))
+        } else {
+            SweetAlert.fire({title:"Warning", text:"Please Add atlist one cylinder schedule!", icon:"warning"});
+        }
     }
 
     return (
