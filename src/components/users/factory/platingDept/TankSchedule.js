@@ -22,6 +22,7 @@ export default function TankSchedule(props) {
     const [changeUseEffect, setChangeUseEffect] = useState(0);
     const [jobData, setJobData] = useState({});
     const [jobOrderObj, setJobOrderObj] = useState([]);
+    const [cyliderValue,setCyliderValue] = useState('');
 
     let [cylScheduleFormData, setCylScheduleFormData] = useReducer(
         (state, newState) => ({...state, ...newState}),
@@ -35,6 +36,7 @@ export default function TankSchedule(props) {
             dia              : '',
             est_plating_order: '',
             surface_area     : '',
+            grinding_cylinder_id: ''
         }
     );
 
@@ -69,9 +71,15 @@ export default function TankSchedule(props) {
         );
         if(event.target.name == 'cylinder_id') {
             getPlatingOrder(event.target.value);
+            const selectedGrindingId = event.target.options[event.target.selectedIndex].getAttribute('data-grinding-id');
+           
+            setCyliderValue(selectedGrindingId)
         }
     }
+   
+    // JSON.stringify({ cylinder_id: cylinder.cylinder_id, grinding_cylinder_id: cylinder.grinding_cylinder_id })
     const  getPlatingOrder = async(cylinder_id) => {
+        // setCylScheduleFormData({ ...cylScheduleFormData, [cylinder_id]: cylinder_id });
         userGetMethod(`${EST_PLATING_ORDER_RSURL}?cylinder_id=${cylinder_id}`)
         .then((response) => {
             
@@ -99,7 +107,7 @@ export default function TankSchedule(props) {
             );
             userGetMethod(`${JOB_DATA_FROM_PLATING_DEPT}?jobId=${selectedValueId}`)
                 .then(response => {
-                    // console.log("jahid");
+                    console.log(response.data);
                     let {fl, cir, dia, surface_area,job_type} = response.data.jobData;
                     setCylScheduleFormData({
                         'job_cylinder_ids': response.data.job_cylinder_ids,
@@ -189,10 +197,13 @@ export default function TankSchedule(props) {
     }
 
     const submitHandler = (data, e) => {
+        data.grinding_cylinder_id = cyliderValue;
+        data.cylinder_id = cylScheduleFormData.cylinder_id;
         data.cylScheduleArr = cylScheduleDetails;
         data.tankId = props.tankId;
         data.job_order_id = dropdownData.job_order_id;
         data.tank_id = props.tank_id;
+        // console.log(data)
 
         if (data.cylScheduleArr.length > 0) {
             // props.onChangeTank(props.tankId, props.modalTitle);
@@ -249,12 +260,17 @@ export default function TankSchedule(props) {
 
                                                 <div className="col-md-2 mb-3">
                                                     <label htmlFor="cylinder_id">Cylinder Id</label>
-                                                    <select className="form-control" onChange={inputHandler} id="cylinder_id" name="cylinder_id" value={cylScheduleFormData?.cylinder_id}>
+                                                    <select className="form-control" onChange={inputHandler} id="cylinder_id" name="cylinder_id" value={cylScheduleFormData.cylinder_id}>
                                                         <option value=''>Select One</option>
                                                         {cylScheduleFormData.job_cylinder_ids && cylScheduleFormData.job_cylinder_ids.map(cylinder => (
-                                                            <option value={cylinder} key={cylinder}>{cylinder}</option> // DATA PASS FROM CONTROLLER WITH PLUCK
+                                                            <option value={cylinder.cylinder_id} key={cylinder}
+                                                            data-grinding-id={cylinder.grinding_cylinder_id}>{cylinder.cylinder_id}</option>
+                                                
                                                         ))}
                                                     </select>
+                                                </div>
+                                                <div>
+                                                    <input type="hidden" name="grinding_cylinder_id" value=''></input>
                                                 </div>
 
                                                 <div className="col-md-2 mb-3">
@@ -314,7 +330,7 @@ export default function TankSchedule(props) {
                                                 </div>
 
                                                 <div className="col-md-1 mb-3">
-                                                    <label htmlFor="est_plating_order">Est Plt. Order</label>
+                                                    <label htmlFor="est_plating_order" style={{width: "95px"}}>Est Plt. Order</label>
                                                     <input 
                                                         className="form-control" 
                                                         id="est_plating_order" 
