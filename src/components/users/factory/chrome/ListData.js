@@ -127,6 +127,7 @@ export default function ListData(props) {
                 setStateData({currentTankSchedule: response.data.currentTankSchedules});
                 if (response.data.currentTankSchedules && response.data.currentTankSchedules.length > 0) {
                     response.data.currentTankSchedules.map(scheduleMaster => {
+                        
                         if (scheduleMaster.est_end_time != null  && scheduleMaster.running_status == 0) {
                             startTimer(scheduleMaster.start_time, scheduleMaster.est_end_time, scheduleMaster.id);
                         }

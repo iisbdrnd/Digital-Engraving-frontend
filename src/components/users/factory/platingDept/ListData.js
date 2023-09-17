@@ -127,7 +127,7 @@ export default function ListData(props) {
         setPlatingDeptData({currentTank: {id: id, tank_id: tank_id}, scheduleLoading: true});
         setIsOpen(null);
         setClockData('');
-        // userGetMethod(`${PLATING_DEPT_RSURL}/${id}?plating_complete_status=${jobActiveStatus}&perPage=5`)
+        // userGetMethod(`${PLATING_DEPT_RSURL}/${id}?plating_complete_status=${jobActiveStatus}&perPage=${perPage}`)
         //     .then(response => {
         //         console.log(response.data);
         //         setPlantingMasterId(response.data);
@@ -135,14 +135,16 @@ export default function ListData(props) {
         //         setPlatingDeptData({tankScheduleDetails: []});
         //         setPlatingData(response.data.platingTankScheduleMasters.data);
         //         setPlatingDeptData({platingTankScheduleMasters: response.data.platingTankScheduleMasters});
-        //         if (response.data.platingTankScheduleMasters && response.data.platingTankScheduleMasters.length > 0) {
+        //         if (response.data.platingTankScheduleMasters.data && response.data.platingTankScheduleMasters.data.length > 0) {
         //             response.data.platingTankScheduleMasters.data.map(scheduleMaster => {
-
+        //                 console.log('true')
         //                 if (scheduleMaster.est_end_time != null  ) {
         //                     startTimer(scheduleMaster?.start_time , scheduleMaster?.est_end_time, scheduleMaster?.id);
                             
         //                 }
         //             })
+        //         }else{
+        //             console.log('false');
         //         }
                 
                 
@@ -165,7 +167,7 @@ export default function ListData(props) {
             setCurrentPage(response.data.platingTankScheduleMasters.current_page);
             setTotalData(response.data.platingTankScheduleMasters.total);
             setClockData('');
-            if (response.data.platingTankScheduleMasters && response.data.platingTankScheduleMasters.length > 0) {
+            if (response.data.platingTankScheduleMasters.data && response.data.platingTankScheduleMasters.data.length > 0) {
                 response.data.platingTankScheduleMasters.data.map(scheduleMaster => {
 
                     if (scheduleMaster.est_end_time != null  ) {
@@ -197,7 +199,8 @@ export default function ListData(props) {
         pageChange();
     },[])
     const pageChange = (pageNumber = 1) => {
-        // setProgressVal({});
+        if (tankId !== 0) {
+            // setProgressVal({});
         // clearInterval(interval.current);
         // setPlatingDeptData({currentTank: {id: tankId, tank_id: tankId}, scheduleLoading: true});
         // setIsOpen(null);
@@ -215,7 +218,7 @@ export default function ListData(props) {
             setCurrentPage(response.data.platingTankScheduleMasters.current_page);
             setTotalData(response.data.platingTankScheduleMasters.total);
             setClockData('');
-            if (response.data.platingTankScheduleMasters && response.data.platingTankScheduleMasters.length > 0) {
+            if (response.data.platingTankScheduleMasters.data && response.data.platingTankScheduleMasters.data.length > 0) {
                 response.data.platingTankScheduleMasters.data.map(scheduleMaster => {
 
                     if (scheduleMaster.est_end_time != null  ) {
@@ -227,6 +230,7 @@ export default function ListData(props) {
             setIsLoading(false);
         })
         .catch(error => console.log(error))
+        }
     }
     
     
