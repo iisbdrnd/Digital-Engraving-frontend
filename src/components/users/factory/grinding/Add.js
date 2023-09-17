@@ -51,6 +51,7 @@ const Add = (props) => {
         {
             serial                : [],
             cylinder_id           : [],
+            cylinder_details_id    : [],
 
             before_fl             : [],
             before_dia            : [],
@@ -181,6 +182,8 @@ const Add = (props) => {
                     setGrindingValues(response?.data?.grindingDetails);
                     updateGrindingInput(response?.data?.grindingDetails);
                     setGrindingMaster(response?.data?.grindingMaster);
+                    
+                    // grinding_cylinderFunction();
                 });
                 // setIsLoading(false);
         }
@@ -189,13 +192,20 @@ const Add = (props) => {
 
     const getGrinder = () => {
         var cylinder_arr =[];
+        var cylinder_details_arr =[];
         var sr_arr = [];
         for(let i=0;i<jobOrderData.total_cylinder_qty;i++){
            var cy_id =  (jobOrderData.job_no).concat("-", (i+1).toString());
            cylinder_arr.push(cy_id);
            sr_arr.push(i+1);
         }
+
+        grindingValues.map(data =>{
+            cylinder_details_arr.push(data.id)
+        })
+
         setGrindingInput({['cylinder_id']:cylinder_arr});
+        setGrindingInput({['cylinder_details_id']:cylinder_details_arr});
         setGrindingInput({['serial']:sr_arr})
         setGrapped(true);
     }
@@ -235,17 +245,39 @@ const Add = (props) => {
                     setGrindingValues(response?.data?.grindingDetails);
                     updateGrindingInput(response?.data?.grindingDetails);
                     setGrindingMaster(response?.data?.grindingMaster);
-                    
+                    // grinding_cylinderFunction();
                 });
         }
     }
 
-        let cylinderIdDetails = []
-        if (grindingValues.length > 0) {
-            grindingValues.map(detail =>{
-                cylinderIdDetails.push(detail.id)
-            })
-        }
+    
+
+        
+        
+
+
+      
+          
+
+        
+       
+
+        // useEffect(() => {
+        //     // Log the updated state when it changes
+        //     console.log("grindingInput.cylinder_details_id:", grindingInput.cylinder_details_id);
+        //   }, [grindingInput.cylinder_details_id]);
+          
+        //   useEffect(() => {
+        //     // Update the state when grindingValues changes
+        //     setGrindingInput({ cylinder_details_id: cylinderIdDetails });
+        //   }, [grindingValues]);
+  
+
+    
+       
+        // setGrindingInput({['cylinder_details_id'] : cylinderIdDetails});
+    
+    
     
 
     const handleTypeaheadInputChange = (text)=>{
@@ -321,6 +353,8 @@ const Add = (props) => {
         if(!grapped){ 
             getGrinder();
         }
+        
+
         if(fieldName == 'after_mark_as_complete') {
             console.log(e.target.checked,e.target.value);
             if(e.target.checked == true) {
@@ -331,6 +365,7 @@ const Add = (props) => {
                 setMarkedComplete(markedComplete);
             }
         }
+       
         setGrindingInput(
             {
                 [fieldName]: {
@@ -372,7 +407,7 @@ const Add = (props) => {
         data.job_order_pk_id = dropDownData.job_order_pk_id;
         data.grindingDetails = grindingInput;
         data.total_cylinder_qty = jobOrderData.total_cylinder_qty;
-        data.cylinder_details_id = cylinderIdDetails;
+        // data.cylinder_details_id = cylinderIdDetails;
         console.log(data,grindingValues);
         reset();
         clearForm();
@@ -438,12 +473,11 @@ const Add = (props) => {
                         <td>
                             <input  defaultValue={i+1}  disabled className="form-control" name="serial" id="serial" type="text" placeholder="Serial" />
                         </td>
-                        {/* <td>
-                            <input type value={grindingValues.id} disabled className="form-" />
-                        </td> */}
+                        
                         <td>
                             <input onChange={e=>changeInputHandler(i, e, 'cylinder_id')} value={`${jobOrderData.job_no}-${i+1}`}  disabled className="form-control" name="cylinder_id" id="cylinder_id" type="text" placeholder="Cylinder Id" />
                         </td>
+                        
 
                         {/* Before Grinding Check Start */}
                         <td>
@@ -546,6 +580,9 @@ const Add = (props) => {
                                                         />
                                                     </div>
                                                 </div>
+
+                                                   
+
                                                 <pre className="helper-classes m-t-10">
                                                     <div className="display-div">
                                                         <div className='row'>
