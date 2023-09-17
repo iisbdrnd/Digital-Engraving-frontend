@@ -184,10 +184,6 @@ export default function ListData(props) {
 
     useEffect(()=>{
        if (tankId != 0) {
-        // setProgressVal({});
-        // clearInterval(interval.current);
-        // setPlatingDeptData({currentTank: {id: tankId, tank_id: tankId}, scheduleLoading: true});
-        // setIsOpen(null);
         callApi();
        } 
     },[jobActiveStatus,tankId])

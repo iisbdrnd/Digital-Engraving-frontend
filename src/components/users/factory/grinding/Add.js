@@ -20,6 +20,7 @@ const Add = (props) => {
     const [markedComplete, setMarkedComplete] = useState([]);
     const [grindingValues, setGrindingValues] = useState([]);
     const [grindingMaster, setGrindingMaster] = useState([]);
+    const [grindingCylinderId, setGrindingCylinderId] = useState([]);
     const [grapped,setGrapped] = useState(false);
     const [chk, setChk] = useState(true);
     const [jobNumber, setJobNumber] = useState([]);
@@ -181,6 +182,7 @@ const Add = (props) => {
                     updateGrindingInput(response?.data?.grindingDetails);
                     setGrindingMaster(response?.data?.grindingMaster);
                 });
+                // setIsLoading(false);
         }
     }, []);
     // console.log(typeHeadOptions)
@@ -233,9 +235,19 @@ const Add = (props) => {
                     setGrindingValues(response?.data?.grindingDetails);
                     updateGrindingInput(response?.data?.grindingDetails);
                     setGrindingMaster(response?.data?.grindingMaster);
+                    
                 });
         }
     }
+
+        let cylinderIdDetails = []
+        if (grindingValues.length > 0) {
+            grindingValues.map(detail =>{
+                cylinderIdDetails.push(detail.id)
+            })
+        }
+    
+
     const handleTypeaheadInputChange = (text)=>{
         setJobNoFilter(text);
     }
@@ -348,6 +360,7 @@ const Add = (props) => {
                 });
             });
     }
+    // console.log(grindingValues)
 
     const submitHandler = (data, e) => {
         e.preventDefault();
@@ -359,6 +372,7 @@ const Add = (props) => {
         data.job_order_pk_id = dropDownData.job_order_pk_id;
         data.grindingDetails = grindingInput;
         data.total_cylinder_qty = jobOrderData.total_cylinder_qty;
+        data.cylinder_details_id = cylinderIdDetails;
         console.log(data,grindingValues);
         reset();
         clearForm();
@@ -424,6 +438,9 @@ const Add = (props) => {
                         <td>
                             <input  defaultValue={i+1}  disabled className="form-control" name="serial" id="serial" type="text" placeholder="Serial" />
                         </td>
+                        {/* <td>
+                            <input type value={grindingValues.id} disabled className="form-" />
+                        </td> */}
                         <td>
                             <input onChange={e=>changeInputHandler(i, e, 'cylinder_id')} value={`${jobOrderData.job_no}-${i+1}`}  disabled className="form-control" name="cylinder_id" id="cylinder_id" type="text" placeholder="Cylinder Id" />
                         </td>
@@ -733,6 +750,7 @@ const Add = (props) => {
                                                             <tbody>
                                                                 <tr className="dynamicFormByTotalCylQtyBody">
                                                                     <td id='sl_col'>Sl</td>
+                                                                    {/* <td>Cylinder Id</td> */}
                                                                     <td>Cylinder</td>
                                                                     
                                                                     <td>FL</td>
