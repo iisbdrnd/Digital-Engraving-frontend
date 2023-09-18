@@ -8,6 +8,7 @@ import { PanelRefreshIcons } from '../../common/GlobalButton';
 import useForm from "react-hook-form";
 import { Typeahead } from 'react-bootstrap-typeahead';
 import 'react-bootstrap-typeahead/css/Typeahead.css';
+import Swal from 'sweetalert2';
 
 const Add = (props) => {
     const { handleSubmit, register, errors,reset } = useForm();
@@ -84,6 +85,13 @@ const Add = (props) => {
             });
     }
 
+    // const warningToast = Swal.fire({
+    //     icon: 'error',
+    //     title: 'Oops...',
+    //     text: 'Something went wrong!',
+    //     footer: '<a href="">Why do I have this issue?</a>'
+    //   })
+
     const dropDownChange = (event, stateName) => {
         if(stateName === 'job_order_id' && event[0]?.name){
             setJobNoValue(event);
@@ -121,10 +129,22 @@ const Add = (props) => {
                         'per_square_amount'  : per_square_amount,
                         'client_name'       : client_name
                     });
+                    if (cyl_rate_status == 0 || null) {
+                       toast.error('Please Configure rate in client information first!')
+                        
+                    }
+                    
+
+
                 });
+
+                
         } 
     }
-    console.log(jobAgreementInput);
+    // console.log(jobAgreementInput);
+    
+
+
 
     const calculateFormValue = (event) => {
         setJobAgreementInput(

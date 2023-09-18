@@ -499,9 +499,9 @@ const Edit = (props) => {
                                                             className="form-control"
                                                             name="per_square_amount" 
                                                             type="text" 
-                                                            readOnly={'readonly'}
-                                                            // onChange={changeHandler}
-                                                            value={(clientInformationInput.fixed_amount / clientInformationInput.limit_square_cm) ? clientInformationInput.fixed_amount / clientInformationInput.limit_square_cm : 0}
+                                                            // readOnly={'readonly'}
+                                                            onChange={calculateFormValue}
+                                                            value={clientInformationInput.per_square_amount}
                                                             ref={register({
                                                                 required: 'Per Square Cm Field Required'
                                                             })}

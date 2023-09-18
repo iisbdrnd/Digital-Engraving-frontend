@@ -412,7 +412,7 @@ export default function ListData(props) {
                                                                         <tr key={ detailIndex}>
                                                                             <td>{details.slot}</td>
                                                                             <td>{details.cylinder_id}</td>
-                                                                            <td>{details.job_order_id}</td>
+                                                                            <td>{details.job_name.length > 18 ? `${details.job_name.slice(0,18)} ...`:details.job_name}</td>
                                                                             <td>{details.fl}</td>
                                                                             <td>{details.cir}</td>
                                                                             <td>{details.dia}</td>

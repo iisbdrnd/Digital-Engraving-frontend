@@ -45,7 +45,7 @@ const Add = (props) => {
 
     let jobClassOptions = [];
     if (jobClassData && jobClassData.jobClasses.length > 0) {
-        jobClassOptions = jobClassData.jobClasses.map((jobClass) => (<option key={jobClass.id} value={jobClass.id}>{jobClass.job_class_code}</option>))
+        jobClassOptions = jobClassData.jobClasses.map((jobClass) => (<option key={jobClass.id} value={jobClass.id}>{jobClass.job_class_name}</option>))
     }
     
     return (
@@ -56,7 +56,7 @@ const Add = (props) => {
                     <div className="col-sm-12">
                         <div className="card">
                             <div className="card-header">
-                                <h5>Add Printer</h5>
+                                <h5>Add Job Sub Class</h5>
                             </div>
                             <div className="card-body">
                                 {isLoading ? (<img src={process.env.PUBLIC_URL+'/preloader.gif'} alt="Data Loading"/>):
@@ -69,7 +69,7 @@ const Add = (props) => {
                                                 ref={register({
                                                     required: 'Branch Field Required'
                                                 })} >
-                                                <option> Select One </option>
+                                                <option value=''> Select One </option>
                                                 {jobClassOptions}
                                             </select>
                                             {errors.job_class_id && <p className='text-danger'>{errors.job_class_id.message}</p>}

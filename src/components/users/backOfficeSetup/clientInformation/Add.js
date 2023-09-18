@@ -135,11 +135,11 @@ const Add = (props) => {
                                                         type="text" 
                                                         placeholder="Previous Client Id"
                                                         ref={register({
-                                                            required: 'this Field Required'
+                                                           
                                                         })}
            
                                                     />
-                                                    {errors.previous_client_id && <p className='text-danger'>{errors.previous_client_id.message}</p>}
+                                                    
                                                 </div>
                                             </div>
                                             

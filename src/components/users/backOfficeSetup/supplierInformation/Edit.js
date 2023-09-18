@@ -188,7 +188,7 @@ const Edit = (props) => {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="col-md-6">
+                                        {/* <div className="col-md-6">
                                             <fieldset className="border" >
                                                 <legend className="w-auto text-left">Billing Configuration</legend>
                                                 <div className="form-group row">
@@ -248,7 +248,7 @@ const Edit = (props) => {
                                                     null
                                                 }
                                             </fieldset>
-                                        </div>
+                                        </div> */}
                                         
                                     </div>
                                     <SubmitButton link="supplierInformation/index" menuId={ menuId } />

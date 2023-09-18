@@ -945,7 +945,7 @@ const Edit = (props) => {
                                             {stateData?.history_image != '' && (<div>
                                                 <img
                                                     style={{ width: "100%", height: "100%" }}
-                                                    src={"https://bic7.delbd.com/public/uploads/"+`${stateData.history_image}`}
+                                                    src={`${process.env.REACT_APP_BASEURL}/public/uploads/`+`${stateData.history_image}`}
                                                 />
                                             </div>)}
                                         </div>

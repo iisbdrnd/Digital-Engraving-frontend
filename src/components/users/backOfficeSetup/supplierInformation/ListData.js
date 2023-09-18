@@ -182,9 +182,9 @@ export default function ListData(props) {
                                                     <th scope="col" width="15%" onClick={() => sortHandler(4)} >Address</th>
                                                     <th scope="col" width="10%" onClick={() => sortHandler(6)} >Mobile</th>
                                                     <th scope="col" width="10%" onClick={() => sortHandler(7)} >Email</th>
-                                                    <th scope="col" width="10%" onClick={() => sortHandler(8)} >Bill Config Status</th>
+                                                    {/* <th scope="col" width="10%" onClick={() => sortHandler(8)} >Bill Config Status</th>
                                                     <th scope="col" width="7%" onClick={() => sortHandler(8)} >Sqr Inch Amount</th>
-                                                    <th scope="col" width="7%" onClick={() => sortHandler(8)} >Sqr CM Amount</th>
+                                                    <th scope="col" width="7%" onClick={() => sortHandler(8)} >Sqr CM Amount</th> */}
                                                     <th scope="col" width="5%">Action</th>
                                                 </tr>
                                             </thead>
@@ -201,9 +201,9 @@ export default function ListData(props) {
                                                                         <td>{item.address}</td>
                                                                         <td>{item.mobile}</td>
                                                                         <td>{item.email}</td>
-                                                                        <td>{item.config_status== 1 ? 'Square Inch' : 'Square CM'}</td>
+                                                                        {/* <td>{item.config_status== 1 ? 'Square Inch' : 'Square CM'}</td>
                                                                         <td>{item.sqr_inch_amount}</td>
-                                                                        <td>{item.sqr_cm_amount}</td>
+                                                                        <td>{item.sqr_cm_amount}</td> */}
                                                                         <td className="">
                                                                             {
                                                                                 accLoad === false ? <>

@@ -173,7 +173,7 @@ const Add = (props) => {
       );
     }
   }
-  console.log(dropdownData);
+  // console.log(dropdownData);
 
   const handleTypeaheadInputChange = (text) => {
     setDropDownText(text); // Store the typed text in the state
@@ -720,21 +720,15 @@ const Add = (props) => {
 
                           <div className="form-group row">
                             <label
-                              className="col-sm-4 col-form-label required"
-                              htmlFor="eye_mark_color"
-                            >
+                              className="col-sm-4 col-form-label" htmlFor="eye_mark_color">
                               Eye Mark Color
                             </label>
                             <div className="col-sm-8">
                               <select
                                 className="form-control"
-                                required
                                 id="eye_mark_color"
                                 name="eye_mark_color"
-                                ref={register({
-                                  required:
-                                    "Eye Mark Color Type Field Required",
-                                })}
+                                ref={register()}
                                 defaultValue=""
                               >
                                 <option value="">Select One</option>
@@ -742,17 +736,13 @@ const Add = (props) => {
                                 <option value="Black">Black</option>
                                 <option value="Red">Red</option>
                               </select>
-                              {errors.eye_mark_color && (
-                                <p className="text-danger">
-                                  {errors.eye_mark_color.message}
-                                </p>
-                              )}
+                              
                             </div>
                           </div>
 
                           <div className="form-group row">
                             <label
-                              className="col-sm-4 col-form-label required"
+                              className="col-sm-4 col-form-label"
                               htmlFor="eye_mark_size"
                             >
                               Eye Mark Size
@@ -768,19 +758,9 @@ const Add = (props) => {
                                   name="eye_mark_size_one"
                                   type="text"
                                   placeholder="Eye Mark Size"
-                                  required
-                                  ref={register({
-                                    required: "Eye Mark Size Field Required",
-                                    valueAsNumber: true,
-                                    
-                                    
-                                  })}
+                                  ref={register()}
                                 />
-                                {errors.eye_mark_size_one && (
-                                  <p className="text-danger">
-                                    {errors.eye_mark_size_one.message}
-                                  </p>
-                                )}
+                                
                               </div>
                               <span className="m-r-10">X</span>
                               <div className="col-sm-6">
@@ -790,15 +770,9 @@ const Add = (props) => {
                                   name="eye_mark_size_two"
                                   type="text"
                                   placeholder="Eye Mark Size"
-                                  ref={register({
-                                    required: "Eye Mark Size Field Required",
-                                  })}
+                                  ref={register()}
                                 />
-                                {errors.eye_mark_size_two && (
-                                  <p className="text-danger">
-                                    {errors.eye_mark_size_two.message}
-                                  </p>
-                                )}
+                                
                               </div>
                             </div>
                           </div>

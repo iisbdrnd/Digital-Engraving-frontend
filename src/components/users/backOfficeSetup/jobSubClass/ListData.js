@@ -195,7 +195,7 @@ export default function ListData(props) {
                                                                 (
                                                                     <tr key={index}>
                                                                         <td scope="row">{ ((index+1) + (currentPage == 1 ? 0 : (currentPage*perPage - perPage))) }</td>
-                                                                        <td>{item.job_class_code}</td>
+                                                                        <td>{item.job_class_name}</td>
                                                                         {/* <td>{item.label_2}</td> */}
                                                                         <td>{item.sub_class}</td>
                                                                         
