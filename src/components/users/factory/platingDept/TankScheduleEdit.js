@@ -5,7 +5,7 @@ import useForm from "react-hook-form";
 import { Typeahead } from 'react-bootstrap-typeahead';
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 import { toast } from 'react-toastify';
-import { PLATING_DEPT_RSURL, CHECK_PLATING_CYL_EXIST_OR_NOT, JOB_DATA_FROM_PLATING_DEPT } from '../../../../api/userUrl';
+import { PLATING_DEPT_RSURL, CHECK_PLATING_CYL_EXIST_OR_NOT, JOB_DATA_FROM_PLATING_DEPT, EST_PLATING_ORDER_RSURL } from '../../../../api/userUrl';
 import { userGetMethod, userPutMethod } from '../../../../api/userAction';
 import { ValidationAlerts } from '../../../common/GlobalButton';
 import SweetAlert from 'sweetalert2';
@@ -20,12 +20,13 @@ export default function TankScheduleEdit(props) {
     const [cylScheduleDetails, setCylScheduleDetails] = useState([]);
     const [modal, setModal] = useState(false); 
     const [changeUseEffect, setChangeUseEffect] = useState(0); 
-    const [jobData, setJobData] = useState({}); 
+    const [cyliderValue, setCyliderValue] = useState(''); 
 
     let [cylScheduleFormData, setCylScheduleFormData] = useReducer(
         (state, newState) => ({...state, ...newState}),
         {
             slot                    : 0,
+            job_cylinder_ids        : [],
             cylinder_id             : '',
             job_type                : '',
             fl                      : '',
@@ -72,7 +73,19 @@ export default function TankScheduleEdit(props) {
         setCylScheduleFormData(
             {[event.target.name] : event.target.value},
         );
+        if(event.target.name == 'cylinder_id') {
+            getPlatingOrder(event.target.value);
+            const selectedGrindingId = event.target.options[event.target.selectedIndex].getAttribute('data-grinding-id');
+            // console.log(selectedGrindingId)
+            
+            setCyliderValue( selectedGrindingId)
+            // setCylScheduleDetails(
+            //     [...cylScheduleDetails,
+            //         selectedGrindingId],
+            // );
+        }
     }
+    // console.log(cyliderValue);
     // FOR Typeahead DATA INPUT
     const dropDownChange = (event, stateName) => {
         if(event.length > 0){
@@ -87,16 +100,34 @@ export default function TankScheduleEdit(props) {
             );
             userGetMethod(`${JOB_DATA_FROM_PLATING_DEPT}?jobId=${selectedValueId}`)
                 .then(response => {
-                    let {fl, cir, dia} = response.data.jobData;
+                    let {fl, cir, dia,surface_area} = response.data.jobData;
                     setCylScheduleFormData({
+                        'job_cylinder_ids': response.data.job_cylinder_ids,
                         'fl' : fl,
                         'cir': cir,
-                        'dia': dia
+                        'dia': dia,
+                        'surface_area': surface_area,
                     })
                 });
         }
 
     }
+
+    const  getPlatingOrder = async(cylinder_id) => {
+        // setCylScheduleFormData({ ...cylScheduleFormData, [cylinder_id]: cylinder_id });
+        userGetMethod(`${EST_PLATING_ORDER_RSURL}?cylinder_id=${cylinder_id}`)
+        .then((response) => {
+            
+            setCylScheduleFormData(
+                
+                {'est_plt_order' : response?.data},
+            );
+        })
+        .catch((error) => {
+            console.log(error);
+        })
+    }
+
     // FOR CYCLE SCHEDULE DETAILS ARRAY READY
     const addCylSchedulHandler = (event) => {
         let {cylinder_id, job_type, fl, cir, dia, est_plt_order, surface_area} = cylScheduleFormData;
@@ -135,6 +166,7 @@ export default function TankScheduleEdit(props) {
                                     cylScheduleDetails_obj.dia = dia;
                                     cylScheduleDetails_obj.est_plt_order = est_plt_order;
                                     cylScheduleDetails_obj.surface_area = surface_area;
+                                    cylScheduleDetails_obj.grinding_cylinder_id = cyliderValue;
                     
                                     cylScheduleDetails_arr.push(cylScheduleDetails_obj);
                     
@@ -167,6 +199,7 @@ export default function TankScheduleEdit(props) {
                             cylScheduleDetails_obj.dia = dia;
                             cylScheduleDetails_obj.est_plt_order = est_plt_order;
                             cylScheduleDetails_obj.surface_area = surface_area;
+                            cylScheduleDetails_obj.grinding_cylinder_id = cyliderValue;
             
                             cylScheduleDetails_arr.push(cylScheduleDetails_obj);
             
@@ -204,6 +237,7 @@ export default function TankScheduleEdit(props) {
         data.cylScheduleArr = cylScheduleDetails;
         data.tankId = props.tankId;
         data.job_order_id = dropdownData.job_order_id;
+        console.log(data)
         if (data.cylScheduleArr.length > 0) {
             userPutMethod(`${PLATING_DEPT_RSURL}/${props.scheduleId}`, data)
                 .then(response => {
@@ -211,11 +245,12 @@ export default function TankScheduleEdit(props) {
                         toast.success(response.data.message);
                         e.target.reset();
                         props.toggle();
+                        props.callApi();
                         props.onChangeTank(props.tankId, props.modalTitle);
                     } else {
                         toast.error(response.data.message);
                     }
-                    setChangeUseEffect(changeUseEffect+1);
+                    // setChangeUseEffect(changeUseEffect+1);
                 })
                 .catch(error => toast.error(error))
         } else {
@@ -253,16 +288,15 @@ export default function TankScheduleEdit(props) {
                                                 </div>
 
                                                 <div className="col-md-2 mb-3">
-                                                    <label htmlFor="cylinder_id">Cylinder Id</label>
-                                                    <input 
-                                                        className="form-control" 
-                                                        id="cylinder_id" 
-                                                        name="cylinder_id"
-                                                        value={cylScheduleFormData.cylinder_id} 
-                                                        type="text" 
-                                                        placeholder="Cylinder Id"
-                                                        onChange={inputHandler}
-                                                    />
+                                                <label htmlFor="cylinder_id">Cylinder Id</label>
+                                                    <select className="form-control" onChange={inputHandler} id="cylinder_id" name="cylinder_id" value={cylScheduleFormData.cylinder_id}>
+                                                        <option value=''>Select One</option>
+                                                        {cylScheduleFormData.job_cylinder_ids && cylScheduleFormData.job_cylinder_ids.map(cylinder => (
+                                                            <option value={cylinder.cylinder_id} key={cylinder.cylinder_id}
+                                                            data-grinding-id={cylinder.grinding_cylinder_id}>{cylinder.cylinder_id}</option>
+                                                
+                                                        ))}
+                                                    </select>
                                                 </div>
 
                                                 <div className="col-md-2 mb-3">

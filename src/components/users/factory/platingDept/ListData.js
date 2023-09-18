@@ -457,9 +457,9 @@ export default function ListData(props) {
             {modal == true ? <TankSchedule callApi = {callApi} tank_id={platingDeptData.currentTank.tank_id} tankId={platingDeptData.currentTank.id} modalTitle={platingDeptData.currentTank.tank_id} toggle={()=>toggleModal('addTankSchedule')} onChangeTank={onChangeTank} modal={modal} /> : ''} 
 
             
-            {cycleModal == true ? <StartCycleForm tankId={platingDeptData.currentTank.id} platingTankMasterId={platingDeptData.singlePlatingTankMasterInfo.id} modalTitle={platingDeptData.singlePlatingTankMasterInfo.platingTankMasterCycleId +' of #'+platingDeptData.currentTank.tank_id} toggle={()=>toggleModal('cycleStart')} modalName="cycleStart" modal={cycleModal} needReload={() => onChangeTank(platingDeptData.currentTank.id, platingDeptData.currentTank.tank_id)}/> : ''} 
+            {cycleModal == true ? <StartCycleForm callApi = {callApi} tankId={platingDeptData.currentTank.id} platingTankMasterId={platingDeptData.singlePlatingTankMasterInfo.id} modalTitle={platingDeptData.singlePlatingTankMasterInfo.platingTankMasterCycleId +' of #'+platingDeptData.currentTank.tank_id} toggle={()=>toggleModal('cycleStart')} modalName="cycleStart" modal={cycleModal} needReload={() => onChangeTank(platingDeptData.currentTank.id, platingDeptData.currentTank.tank_id)}/> : ''} 
             
-            {editTankSchedule == true ? <TankScheduleEdit tankId={platingDeptData.currentTank.id} scheduleId={platingDeptData.singlePlatingTankMasterInfo.id} modalTitle={platingDeptData.currentTank.tank_id} toggle={()=>toggleModal('editTankSchedule')} modalName="cycleStart" modal={editTankSchedule} /> : ''} 
+            {editTankSchedule == true ? <TankScheduleEdit callApi = {callApi} tankId={platingDeptData.currentTank.id} scheduleId={platingDeptData.singlePlatingTankMasterInfo.id} modalTitle={platingDeptData.currentTank.tank_id} toggle={()=>toggleModal('editTankSchedule')} modalName="cycleStart" modal={editTankSchedule} /> : ''} 
         </Fragment>
     )
 }

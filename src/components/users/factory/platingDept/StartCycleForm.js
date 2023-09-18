@@ -176,11 +176,12 @@ export default function StartCycleForm(props) {
                     toast.success(response.data.message);
                     e.target.reset();
                     props.toggle();
+                    props.callApi();
                     props.needReload();
                 } else {
                     toast.error(response.data.message);
                 }
-                setChangeUseEffect(changeUseEffect+1);
+                // setChangeUseEffect(changeUseEffect+1);
             })
             .catch(error => toast.error(error))
     }
