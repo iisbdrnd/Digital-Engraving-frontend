@@ -261,7 +261,7 @@ export default function TankSchedule(props) {
                                                         ref={register({
                                                             required: 'Job Order Type Field Required'
                                                           })}
-                                                        selected={jobOrderObj}
+                                                        // selected={jobOrderObj}
                                                     />
                                                 </div>
 

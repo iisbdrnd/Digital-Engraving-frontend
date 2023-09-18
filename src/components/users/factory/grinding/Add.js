@@ -257,25 +257,6 @@ const Add = (props) => {
 
 
       
-          
-
-        
-       
-
-        // useEffect(() => {
-        //     // Log the updated state when it changes
-        //     console.log("grindingInput.cylinder_details_id:", grindingInput.cylinder_details_id);
-        //   }, [grindingInput.cylinder_details_id]);
-          
-        //   useEffect(() => {
-        //     // Update the state when grindingValues changes
-        //     setGrindingInput({ cylinder_details_id: cylinderIdDetails });
-        //   }, [grindingValues]);
-  
-
-    
-       
-        // setGrindingInput({['cylinder_details_id'] : cylinderIdDetails});
     
     
     
