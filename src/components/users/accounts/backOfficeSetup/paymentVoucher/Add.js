@@ -361,6 +361,11 @@ const Add = (props) => {
                                                                 onChange={handleChange}
                                                                 options={groupOption.account_code}
                                                                 onInputChange={(text)=>handleInputChange(text)}
+                                                                // menuIsOpen={groupOption.account_code.length > 0} // Open the menu when there are options
+                                                                components={{
+                                                                NoOptionsMessage: () =>
+                                                                accountCodeText.length <= 3 ? 'Type Min. 4 characters...' :'searching...'
+                                                                    }}
                                                             />
                                                         </div>
                                                     </div>

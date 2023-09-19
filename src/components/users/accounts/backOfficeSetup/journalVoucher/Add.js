@@ -334,6 +334,10 @@ const Add = (props) => {
                                                             onChange={debitHandleChange}
                                                             options={groupOption.groups}
                                                             onInputChange={(text)=>handleInputChange(text)}
+                                                            components={{
+                                                                NoOptionsMessage: () =>
+                                                                journalText.length <= 3 ? 'Type Min. 4 characters...' :'searching...'
+                                                                    }}
                                                         />
                                                     </div>
                                                 </div>
@@ -428,6 +432,10 @@ const Add = (props) => {
                                                         onChange={creditHandleChange}
                                                         options={groupOption.groups}
                                                         onInputChange={(text)=>handleInputChange(text)}
+                                                        components={{
+                                                            NoOptionsMessage: () =>
+                                                            journalText.length <= 3 ? 'Type Min. 4 characters...' :'searching...'
+                                                                }}
                                                     />
                                                 </div>
                                             </div>

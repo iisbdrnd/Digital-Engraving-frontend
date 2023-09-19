@@ -326,6 +326,10 @@ const Add = (props) => {
                                                             onChange={handleChange}
                                                             options={groupOption.groups}
                                                             onInputChange = {(text)=>handleInputChange(text)}
+                                                            components={{
+                                                                NoOptionsMessage: () =>
+                                                                bankPaymentText.length <= 3 ? 'Type Min. 4 characters...' :'searching...'
+                                                                    }}
                                                         />
                                                     </div>
                                                 </div>
