@@ -570,7 +570,7 @@ const Add = (props) => {
             
         }
     }
-    console.log(printerMark)
+    // console.log(printerMark)
    
     // console.log(formData.printer_mark);
     // console.log(selectedRefLayout.id);
@@ -662,19 +662,9 @@ const Add = (props) => {
 
         if (e.target.name == 'er_color_id') {
             const colorID = e.target.value;
-            const colorExists = colorArray.some(item => item.er_color_id === colorID);
-            if (!colorExists) {
-                const updatedListArray = [...colorArray,{'er_color_id':colorID}]
-                return setColorArray(updatedListArray);
-            }else{
-                colorAlert = 'Color was found previously selected, Please Enter another Color';
-                setColorArrayErr(colorArrayErr);
-                const tostval = toast.warning(`Error found: ${colorAlert}`)
-                if (tostval) {
-                    e.target.value=''
-                }
-                e.preventDefault()
-            }
+            // const updatedListArray = [...colorArray,colorID]
+             setColorArray([...colorArray,colorID]);
+            
             // if (!colorArray.includes(colorID)) {
             //     const updatedListArray = [...colorArray,{'er_color_id':colorID}]
             //     return setColorArray(updatedListArray);
@@ -916,7 +906,7 @@ const Add = (props) => {
                
         }
     }
-    console.log(formData.printer_mark)
+    // console.log(formData.printer_mark)
 
     // console.log(engraveOrder)
 
@@ -937,6 +927,7 @@ const Add = (props) => {
     }
     // console.log(layoutDetails?.final_dia == '' ||  layoutDetails?.final_cir == '' || layoutDetails.final_height == '' || layoutDetails?.final_width == ''? true:false);
     // console.log(typeColorOptions)
+    // console.log(engraveOrder)
     const matchedColors = layoutDetals.map((item) => {
         
         const matchingColor = typeColorOptions.find((color) => 
@@ -974,23 +965,64 @@ const Add = (props) => {
      formValue.append("engraveOrder", JSON.stringify(engraveOrder));
      formValue.append("er_color_id_list", JSON.stringify(colorArray));
      formValue.append("er_machine_id_list", JSON.stringify(machineArray));
-     
 
-     if (typeColorOptionLength === er_colorLength) {
+    //  const colorExists = colorArray.some(item => item.er_color_id === colorID);
+
+    let duplicated = colorArray.filter((item, index) => colorArray.indexOf(item) == index);
+    console.log(duplicated);
+    if (duplicated.length !== engraveOrder.length) {
+        setColorArray(duplicated);
+        // toast.error('Duplicate color found!')
+        colorAlert = 'Color was found previously selected, Please Enter another Color';
+        toast.warning(`Error found: ${colorAlert}`)
         setIsSubmitting(false);
+        // console.log('duplicated')
+        // console.log(duplicated)
+    }else{
+        
+        setColorArray(duplicated);
+        // setIsSubmitting(false);
         userPostMethod(`${DESIGN_LAYOUT_RSURL}`, formValue)
             .then((response) => {
                 toast.success(response.data.message);
                 clearForm();
                 reset();
                 // e.target.reset();
-                setIsSubmitting(false);
             })
             .catch((error) => {console.log(error)});
-     }
-     else{
-        toast.warning("Please fill all color name in Engravers Section")
-     }
+    }
+
+
+            
+            // if (!colorExists) {
+            //     const updatedListArray = [...colorArray,{'er_color_id':colorID}]
+            //     return setColorArray(updatedListArray);
+            // }else{
+            //     colorAlert = 'Color was found previously selected, Please Enter another Color';
+            //     setColorArrayErr(colorArrayErr);
+            //     const tostval = toast.warning(`Error found: ${colorAlert}`)
+            //     if (tostval) {
+            //         e.target.value=''
+            //     }
+            //     e.preventDefault()
+            // }
+     
+
+    //  if (typeColorOptionLength === er_colorLength) {
+    //     setIsSubmitting(false);
+    //     userPostMethod(`${DESIGN_LAYOUT_RSURL}`, formValue)
+    //         .then((response) => {
+    //             toast.success(response.data.message);
+    //             clearForm();
+    //             reset();
+    //             // e.target.reset();
+    //             setIsSubmitting(false);
+    //         })
+    //         .catch((error) => {console.log(error)});
+    //  }
+    //  else{
+    //     toast.warning("Please fill all color name in Engravers Section")
+    //  }
     //  console.log(formValue)
 //   console.log(Array.from(formValue.entries()));
     
@@ -1885,7 +1917,8 @@ const Add = (props) => {
 
                                                                             <td>
                                                                                 <input className="form-control" type="text" value={matchedColors} readOnly name="er_color_id" id="er_color_id" onChange={(e) => engOrderHandler(e, index)} ref={register({
-                                                                                required: 'On text Field Required'})} required/> </td>
+                                                                                required: 'On text Field Required'})} required/> 
+                                                                                </td>
 
                                                                             <td>
                                                                                 <input className="form-control" type="text"  name="er_desired_screen" id="er_desired_screen" value={item?.er_desired_screen} onChange={(e) =>engOrderHandler(e, index)} ref={register({

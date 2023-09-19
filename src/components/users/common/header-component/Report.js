@@ -20,6 +20,7 @@ const Report = () => {
      const menuObject = [];
      const [clicked, setClicked] = useState("0");
      const [showDropdown, setShowDropdown] = useState(false);
+     const [showDropdown2, setShowDropdown2] = useState(false);
 
     // MENUITEMS.map(item =>console.log(item));
     
@@ -51,9 +52,14 @@ const Report = () => {
      }
      const handlehoverOutDropDown = () => {
         setShowDropdown(false);
+        setShowDropdown2(false);
      }
+    
      const handleOpenDropDown = () => {
         setShowDropdown(true);
+     }
+     const handleOpenDropDown2 = () => {
+        setShowDropdown2(true);
      }
 
     useEffect(() => {
@@ -170,18 +176,18 @@ const Report = () => {
                                 </button>
                                 {/* ${showDropdown && 'show' } */}
                                 <div id="dropdown-hover-container" class={`dropdown-menu ${showDropdown && 'show' }`} aria-labelledby="dropdownMenuButton">
-                                    <div className={`dropdown-container ${autoOverflowClass}`}>
+                                    <div className={`dropdown-container ${autoOverflowClass} `}>
                                         {
                                             menu?.children?.map( (dropdown , index) => (
                                                 dropdown.type === 'sub' ? (
                                                     <li className='dropdown-item-hover'>
-                                                        <div className="d-flex align-items-center justify-content-between dropdown-item">
+                                                        <div className="d-flex align-items-center justify-content-between dropdown-item " onMouseOver={handleOpenDropDown2} >
                                                             <span >{dropdown.title}</span> 
                                                             &raquo;
                                                             
                                                             {/* <ArrowDown style={ {marginTop : '0px'}}  color="black" size={10}/> */}
                                                         </div>
-                                                        <div className={`children active pointer`}>
+                                                        <div className={`children active pointer ` } style={{ display: showDropdown2 == true ? 'block' : 'none'}}>
                                                             <ul className='subDropdown'>
                                                                 {
                                                                     dropdown?.children?.map( (submultiMenu) => (
