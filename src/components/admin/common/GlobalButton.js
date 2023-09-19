@@ -139,3 +139,5 @@ export const PerPageBox = props => {
         </Fragment>
     )
 }
+
+export const getYear = new Date().getFullYear();

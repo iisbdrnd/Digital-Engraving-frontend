@@ -11,6 +11,7 @@ import { userGetMethod } from '../../api/userAction';
 import store from '../../store/index';
 
 const Master = (props) => {
+    const [titleMenus,setTitleMenus] = useState('')
     // console.log(this.props.match.params.prefix);
     let prefix = props.match.params.prefix;
     // console.log(props);
@@ -19,6 +20,7 @@ const Master = (props) => {
     useEffect(() => {
         userGetMethod(`${PreMaster}?prefix=${prefix}`)
             .then(response => {
+                setTitleMenus(response.data.module.module_name);
                 store.dispatch({type: 'SET_USER_MENU', payload: response.data.software_menus});
             });
     },[]);
@@ -34,7 +36,7 @@ const Master = (props) => {
                                 <div className="table-responsive col-sm-9 offset-sm-2">
                                     <h3 className="">Hi Admin </h3>
                                     <hr/>
-                                    <h1>Welcome to Administration Panel</h1>
+                                    <h1>Welcome to {titleMenus} Dashboard</h1>
                                 </div>
                             </div>
                         </div>

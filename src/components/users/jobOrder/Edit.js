@@ -477,23 +477,21 @@ const Edit = (props) => {
                                                 </div>
 
                                                 <div className="form-group row">
-                                                    <label className="col-sm-4 col-form-label required" htmlFor="eye_mark_color">Eye Mark Color</label>
+                                                    <label className="col-sm-4 col-form-label" htmlFor="eye_mark_color">Eye Mark Color</label>
                                                     <div className="col-sm-8">
-                                                        <select className="form-control" required id="eye_mark_color" name="eye_mark_color"
-                                                            ref={register({
-                                                                required: 'Eye Mark Color Type Field Required'
-                                                            })}>
+                                                        <select className="form-control" id="eye_mark_color" name="eye_mark_color"
+                                                            ref={register()}>
                                                             <option>Select One</option>
                                                             <option selected={jobOrderInput.eye_mark_color == 'White' ? true : false} value="White">White</option>
                                                             <option selected={jobOrderInput.eye_mark_color == 'Black' ? true : false} value="Black">Black</option>
                                                             <option selected={jobOrderInput.eye_mark_color == 'Red' ? true : false} value="Red">Red</option>
                                                         </select>
-                                                        {errors.eye_mark_color && <p className='text-danger'>{errors.eye_mark_color.message}</p>}
+                                                       
                                                     </div> 
                                                 </div> 
 
                                                 <div className="form-group row">
-                                                    <label className="col-sm-4 col-form-label required" htmlFor="eye_mark_size">Eye Mark Size</label>
+                                                    <label className="col-sm-4 col-form-label" htmlFor="eye_mark_size">Eye Mark Size</label>
                                                     <div className="col-sm-8 row" style={{marginLeft: '1px'}}>
                                                         <div className="col-sm-5">
                                                             <input 
@@ -505,11 +503,9 @@ const Edit = (props) => {
                                                                 value={jobOrderInput.eye_mark_size_one}
                                                                 onChange={onChangeHandler}
                                                                 required
-                                                                ref={register({
-                                                                    required: 'Eye Mark Size Field Required'
-                                                                })}
+                                                                ref={register()}
                                                             />
-                                                            {errors.eye_mark_size_one && <p className='text-danger'>{errors.eye_mark_size_one.message}</p>}
+                                                            
                                                         </div>
                                                         <span className="m-r-10">X</span>
                                                         <div className="col-sm-6">
@@ -521,11 +517,9 @@ const Edit = (props) => {
                                                                 placeholder="Eye Mark Size" 
                                                                 value={jobOrderInput.eye_mark_size_two}
                                                                 onChange={onChangeHandler}
-                                                                ref={register({
-                                                                    required: 'Eye Mark Size Field Required'
-                                                                })}
+                                                                ref={register()}
                                                             />
-                                                            {errors.eye_mark_size_two && <p className='text-danger'>{errors.eye_mark_size_two.message}</p>}
+                                                           
                                                         </div>
                                                     </div>
                                                 </div>

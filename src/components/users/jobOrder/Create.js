@@ -91,8 +91,9 @@ const Add = (props) => {
         if (response.data.clients && response.data.clients.length > 0) {
           response.data.clients.map(client => {
             let clientObj = {};
+            let name = client.name;
             clientObj.id = client.id;
-            clientObj.name = `[${client.client_id}] ${client.name}`;
+            clientObj.name = `[${client.client_id}] ${name.slice(0,18)} /${client.address}`;
             clientOptions.push(clientObj);
           })
         }
