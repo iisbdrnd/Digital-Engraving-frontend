@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import useForm from "react-hook-form";
 import { SubmitButton } from '../../../common/GlobalButton';
+import { ToggleButton } from '../../../common/toggleBtn/toggleButton';
 
 const Edit = (props) => {
     const { handleSubmit, register, errors } = useForm();
@@ -13,7 +14,8 @@ const Edit = (props) => {
         (state, newState) => ({...state, ...newState}),
         {
             color_name: '',
-            isLoading   : true
+            isLoading   : true,
+            active_status:''
         }
     );
 
@@ -29,14 +31,16 @@ const Edit = (props) => {
                 setColorInput({
                     color_name : response.data.color.color_name,
                     short_name : response.data.color.short_name,
-                    isLoading: false
+                    active_status: response.data.color.active_status == 1 ? true: false,
+                    isLoading: false,
                 });
             })
             .catch(error => console.log(error))   
     },[]);
 
     const submitHandler = (data) => {
-        console.log("data", data);
+        data.active_status = colorInput.active_status == false ? 0 : 1;
+        // console.log("data", data);
         userPutMethod(`${colorAPI}/${colorId}`, data )
             .then(response => {
                 if (response.data.status == 1) {
@@ -104,6 +108,22 @@ const Edit = (props) => {
                                                     })}
                                                 />
                                                 {errors.short_name && <p className='text-danger'>{errors.short_name.message}</p>}
+                                            </div>
+                                        </div>
+
+                                        <div className="form-group row">
+                                            <label className="col-sm-2 col-form-label" htmlFor="inline-sqr-3">Active Status</label>
+                                            <div className="col-md-4">
+                                                <ToggleButton
+                                                    selected={colorInput.active_status}
+                                                    toggleSelected={() => {
+                                                        setColorInput({
+                                                            active_status : !colorInput.active_status
+                                                        });
+                                                    }}
+                                                    toggleYesMsg="Online"
+                                                    toggleNoMsg="Offline"
+                                                />
                                             </div>
                                         </div>
                                     

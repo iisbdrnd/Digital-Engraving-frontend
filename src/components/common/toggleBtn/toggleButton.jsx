@@ -11,6 +11,7 @@ export class ToggleButton extends Component {
 
   render() {
     const { selected, toggleSelected, name, toggleYesMsg, toggleNoMsg } = this.props;
+    // console.log(selected,toggleSelected,name,toggleYesMsg,toggleNoMsg);
     return (
       <div className="toggle-container" onClick={toggleSelected}>
         <div className={`dialog-button ${selected ? "" : "disabled"}`}>

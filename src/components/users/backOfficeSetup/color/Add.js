@@ -1,16 +1,20 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState,useReducer } from 'react';
 import { colorAPI } from '../../../../api/userUrl';
 import { userPostMethod } from '../../../../api/userAction';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import useForm from "react-hook-form";
 import { SubmitButton } from '../../../common/GlobalButton';
+import { ToggleButton } from '../../../common/toggleBtn/toggleButton';
+// import { ToggleButton } from 'react-bootstrap';
 
 const Add = (props) => {
+    const [colorInput, setColorInput] = useState(false)
     const { handleSubmit, register, errors } = useForm();
 
     const submitHandler = (data, e) => {
-        console.log(data);
+        data.active_status = colorInput == false ? 0 : 1;
+        // console.log(data);
         userPostMethod(colorAPI, data)
             .then(response => {
                 if (response.data.status == 1) {
@@ -29,6 +33,7 @@ const Add = (props) => {
     }else{
         menuId = props.location.state.params.menuId;
     }
+    // console.log(colorInput)
     
     return (
         <Fragment>
@@ -78,6 +83,21 @@ const Add = (props) => {
                                             {errors.short_name && <p className='text-danger'>{errors.short_name.message}</p>}
                                         </div>
                                     </div>
+
+                                    <div className="form-group row">
+                                            <label className="col-sm-2 col-form-label" htmlFor="inline-sqr-3">Active Status</label>
+                                            <div className="col-md-4">
+                                                <ToggleButton
+                                                    selected={colorInput}
+                                                    toggleSelected={() => {
+                                                        setColorInput( !colorInput);
+                                                    }}
+                                                    toggleYesMsg="Online"
+                                                    toggleNoMsg="Offline"
+                                                />
+                                            </div>
+                                        </div>
+
                                             
                                     <SubmitButton link="color/index" offset="2" menuId={ menuId } />
                                 </form>

@@ -179,8 +179,9 @@ export default function ListData(props) {
                                             <thead>
                                                 <tr>
                                                     <th scope="col" width="8%" onClick={() => sortHandler(1)} >SL.</th>
-                                                    <th scope="col" width="60%" onClick={() => sortHandler(2)} > Printer Name</th>
+                                                    <th scope="col" width="50%" onClick={() => sortHandler(2)} > Printer Name</th>
                                                     <th scope="col" width="24%" onClick={() => sortHandler(2)} >Short Name</th>
+                                                    <th scope="col" width="10%" onClick={() => sortHandler(2)} > Status</th>
                                                     <th scope="col" width="8%">Action</th>
                                                 </tr>
                                             </thead>
@@ -194,6 +195,7 @@ export default function ListData(props) {
                                                                         <td scope="row">{ ((index+1) + (currentPage == 1 ? 0 : (currentPage*perPage - perPage))) }</td>
                                                                         <td>{item.color_name}</td>
                                                                         <td>{item.short_name}</td>
+                                                                        <td>{item.status == 0 ? 'Inactive' : 'Active'}</td>
                                                                         
                                                                         <td className="">
                                                                             {
