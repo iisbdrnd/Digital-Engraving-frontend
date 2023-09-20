@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Fragment } from "react";
-import { AddButton, PanelRefreshIcons, PerPageBox, EditButton } from "../../../common/GlobalButton";
+import { AddButton, PanelRefreshIcons, PerPageBox, EditButton, ShowButton } from "../../../common/GlobalButton";
 import Pagination from "react-js-pagination";
 import { useState } from "react";
 import { toast } from "react-toastify";
@@ -8,6 +8,10 @@ import { userGetMethod, userDeleteMethod } from "../../../../api/userAction";
 import { DESIGN_LAYOUT_RSURL,userHasAccess } from "../../../../api/userUrl";
 import { Link } from "react-router-dom";
 import { Button } from "reactstrap";
+import Show from "../../jobOrder/Show";
+import Modal from 'react-bootstrap/Modal';
+import View from "./View";
+import './ListData.css';
 const ListData = (props) =>  {
     const [isLoading, setIsLoading] =useState(false);
     const [hasAccess, setHasAccess] = useState({});
@@ -19,6 +23,14 @@ const ListData = (props) =>  {
     const [totalData, setTotalData] = useState(0);
     const [ascDesc, setAscDesc] = useState(false);
     const [jobActiveStatus, setJobActiveStatus] = useState(0);
+    const [show, setShow] = useState(false);
+    const [showId,setShowId] = useState(0)
+
+  const handleClose = () => setShow(false);
+  const handleShow = (id) => {
+    setShow(true)
+    setShowId(id)
+};
 
     var menuId = 0;
     if (props.location.state === undefined) {
@@ -214,9 +226,10 @@ const ListData = (props) =>  {
                                                                     <td>{item.client_name}</td>
                                                                     <td>
                                                                     {jobActiveStatus == 1 || jobActiveStatus == 2? 
-                                                                    <Button className="btn btn-primary" disabled>
-                                                                        Done
-                                                                    </Button>
+                                                                    
+                                                                <ShowButton handleShow={()=>handleShow(item.id)}   menuId={ menuId }
+
+                                                                /> 
                                                                     
                                                                     // <Link
                                                                     //     to={{
@@ -260,6 +273,16 @@ const ListData = (props) =>  {
                     </div>
                 </div>
             </div>
+        </div>
+
+        <div>
+        <Modal show={show} onHide={handleClose} >
+        <Modal.Header closeButton style={{maxWidth:'none', width:"100%"}}>
+          <Modal.Title>Design Layout View Point</Modal.Title>
+        </Modal.Header>
+        <Modal.Body><View showId = {showId}></View></Modal.Body>
+        
+      </Modal>
         </div>
     </Fragment>
       );

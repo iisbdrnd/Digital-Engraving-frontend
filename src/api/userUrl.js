@@ -158,6 +158,7 @@ export const AccountsReceivableReportActionApi = 'api/user/AccountsReceivableRep
 //DESIGN LAYOUT
 export const DESIGN_LAYOUT_RSURL = 'api/user/layoutDesign';
 export const GET_DESIGN_LAYOUT_JOBORDER = 'api/user/getLayoutJobOrder';
+export const GET_DESIGN_LAYOUT_JOBORDER_DONE = 'api/user/layoutDesign';
 export const DESIGN_LAYOUT_HISTORY = 'api/user/layoutHistory';
 export const DESIGN_LAYOUT_DETAILS = 'api/user/layoutDetails';
 export const GET_DESIGN_LAYOUT_DETAILS = 'api/user/getLayoutReferences';
