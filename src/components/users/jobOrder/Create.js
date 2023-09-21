@@ -291,7 +291,7 @@ const Add = (props) => {
   // }
   // console.log(multipleDropdownData);
   const submitHandler = (data, e) => {
-    console.log(data)
+    // console.log(data)
     e.preventDefault();
     data.client_id = dropdownData.client_id;
     data.job_sub_class_id = dropdownData.job_sub_class_id;
@@ -729,7 +729,7 @@ const Add = (props) => {
                                 className="form-control"
                                 id="eye_mark_color"
                                 name="eye_mark_color"
-                                ref={register()}
+                                ref={register({})}
                                 defaultValue=""
                               >
                                 <option value="">Select One</option>
@@ -759,7 +759,7 @@ const Add = (props) => {
                                   name="eye_mark_size_one"
                                   type="text"
                                   placeholder="Eye Mark Size"
-                                  ref={register()}
+                                  ref={register({})}
                                 />
                                 
                               </div>
@@ -771,7 +771,7 @@ const Add = (props) => {
                                   name="eye_mark_size_two"
                                   type="text"
                                   placeholder="Eye Mark Size"
-                                  ref={register()}
+                                  ref={register({})}
                                 />
                                 
                               </div>
