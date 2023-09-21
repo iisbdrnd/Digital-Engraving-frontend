@@ -13,7 +13,7 @@ const Add = (props) => {
     const { handleSubmit, register, errors } = useForm();
 
     const submitHandler = (data, e) => {
-        data.active_status = colorInput == false ? 0 : 1;
+        data.status = colorInput == false ? 0 : 1;
         // console.log(data);
         userPostMethod(colorAPI, data)
             .then(response => {
@@ -92,8 +92,8 @@ const Add = (props) => {
                                                     toggleSelected={() => {
                                                         setColorInput( !colorInput);
                                                     }}
-                                                    toggleYesMsg="Online"
-                                                    toggleNoMsg="Offline"
+                                                    toggleYesMsg="Active"
+                                                    toggleNoMsg="Inactive"
                                                 />
                                             </div>
                                         </div>

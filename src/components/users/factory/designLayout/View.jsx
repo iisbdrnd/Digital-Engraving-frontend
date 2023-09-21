@@ -30,7 +30,7 @@ const View = (props) => {
     const [colorArrayErr,setColorArrayErr] = useState('');
     const [ref_text,setRef_text] = useState('');
     const [machineArray,setMachineArray] = useState([]);
-    const [ref_selected,setRef_selected] = useState([]);
+    const [colorInDone,setColorInDone] = useState([]);
     const [layoutOnBlur,setLayoutOnBlur] = useState({
         final_cir:'',
         final_dia:'',
@@ -123,67 +123,11 @@ const View = (props) => {
     
     // console.log(typeheadOptions)
 
-    useEffect(()=>{
-        
+    
 
-        if (job_id == null && jobNoFilter.length > 3) {
-            
-            userGetMethod(`${GET_DESIGN_LAYOUT_JOBORDER}?searchText=${jobNoFilter}`)
-            .then(response => {
-                console.log(response.data)
-                let jobOrderOptions = [];
-                if (response.data.jobOrders && response.data.jobOrders.length > 0) {
-                response.data.jobOrders.map(job => {
+   
 
-                    
-                        let jobOrderObj = {};
-                        jobOrderObj.id =job.id;
-                        jobOrderObj.job_no =job.job_no;
-                        jobOrderObj.name = job.job_name;
-                        jobOrderOptions.push(jobOrderObj);
-                    }
-                )
-            }
 
-            setTypeheadOptions({ ...typeheadOptions, 
-                ['job_orders']: jobOrderOptions
-               });
-            setIsLoading(false);
-            })
-            // console.log(jobNoFilter)
-        }
-    },[jobNoFilter])
-
-    useEffect(()=>{
-        
-        if (ref_text.length > 3) {
-            
-            userGetMethod(`${GET_DESIGN_LAYOUT_DETAILS}?searchText=${ref_text}`)
-            .then(response => {
-                console.log(response.data)
-                let jobOrderOptions = [];
-                if (response.data.layout_references && response.data.layout_references.length > 0) {
-                response.data.layout_references.map(job => {
-
-                    
-                    let jobOrderObj = {};
-                    jobOrderObj.id =job.layout_id;
-                    // jobOrderObj.job_no =job.job_no;
-                    // jobOrderObj.name = job.job_name;
-                    jobOrderOptions.push(jobOrderObj);
-                    // setRef_selected([...ref_selected,jobOrderObj]);
-                }
-                )
-            }
-
-            setTypeheadOptions({ ...typeheadOptions, 
-                ['ref_layout']: jobOrderOptions
-               });
-            setIsLoading(false);
-            })
-        }
-    },[ref_text])
-// console.log(ref_selected);
     
     const pageRefreshHandler = async(job_id = null) => {
        
@@ -271,13 +215,12 @@ const View = (props) => {
                 })
 
 
-
-
+                
 
         
     }
 
-
+    
 
 
         let ref_layout = [];
@@ -286,110 +229,111 @@ const View = (props) => {
             ['ref_layout'] : ref_layout
            });
 
-        userGetMethod(`${DESIGN_LAYOUT_RSURL}/create?job_order_id=${job_id}`)
-            .then(response => {
-                // FOR JOB ORDER
-                console.log(response.data)
-                setLayoutMachines(response.data?.machines)
-                if (response.data?.layoutMaster && response.data?.layoutDetails) {
-                    // console.log(response.data.layout)
-                    // console.log(response.data.layoutMaster)
-                    // console.log(response.data.layoutDetails)
-                    // setLayoutMaster(response.data.layout)
-                    setLayoutMaster(response.data?.layoutMaster)
-                    setLayoutDetals(response.data?.layoutDetails)
-                }
+        // userGetMethod(`${DESIGN_LAYOUT_RSURL}/create?job_order_id=${job_id}`)
+        //     .then(response => {
+        //         // FOR JOB ORDER
+        //         console.log(response.data)
+        //         setLayoutMachines(response.data?.machines)
+        //         if (response.data?.layoutMaster && response.data?.layoutDetails) {
+        //             // console.log(response.data.layout)
+        //             // console.log(response.data.layoutMaster)
+        //             // console.log(response.data.layoutDetails)
+        //             // setLayoutMaster(response.data.layout)
+        //             setLayoutMaster(response.data?.layoutMaster)
+        //             setLayoutDetals(response.data?.layoutDetails)
+        //         }
                
                 
-                // ======================================
+        //         // ======================================
                
 
-                // Demo for all create post
-                let jobOrderOptions = [];
-                if (response.data.jobOrder) {
-                    let jobOrderObj = {};
-                    jobOrderObj.id = response.data.jobOrder.id;
-                    jobOrderObj.name = `[${response.data.jobOrder.job_no}] ` + response.data.jobOrder.job_name;
-                    jobOrderOptions.push(jobOrderObj);
+        //         // Demo for all create post
+        //         let jobOrderOptions = [];
+        //         if (response.data.jobOrder) {
+        //             let jobOrderObj = {};
+        //             jobOrderObj.id = response.data.jobOrder.id;
+        //             jobOrderObj.name = `[${response.data.jobOrder.job_no}] ` + response.data.jobOrder.job_name;
+        //             jobOrderOptions.push(jobOrderObj);
     
-                    if (response.data.jobOrders != null) {
-                        setFormData({
-                            'job_id': [jobOrderObj]
-                        })
-                    }
-                    if (job_id != null) {
-                        setSelectedJobOrder([...selectedJobOrder, jobOrderObj])
-                    }
-                    dropDownChange([{ id: response.data.jobOrder.id }], 'job_id');
-                }
+        //             if (response.data.jobOrders != null) {
+        //                 setFormData({
+        //                     'job_id': [jobOrderObj]
+        //                 })
+        //             }
+        //             if (job_id != null) {
+        //                 setSelectedJobOrder([...selectedJobOrder, jobOrderObj])
+        //             }
+        //             dropDownChange([{ id: response.data.jobOrder.id }], 'job_id');
+        //         }
                 
-                if (response.data.jobOrders && response.data.jobOrders.length > 0) {
-                    response.data.jobOrders.map(order => {
-                        let jobOrderObj = {};
-                        jobOrderObj.id = order.id;
-                        jobOrderObj.name = `[${order.job_no}] ` + order.job_name;
-                        jobOrderOptions.push(jobOrderObj);
+        //         if (response.data.jobOrders && response.data.jobOrders.length > 0) {
+        //             response.data.jobOrders.map(order => {
+        //                 let jobOrderObj = {};
+        //                 jobOrderObj.id = order.id;
+        //                 jobOrderObj.name = `[${order.job_no}] ` + order.job_name;
+        //                 jobOrderOptions.push(jobOrderObj);
 
-                    })
-                }
+        //             })
+        //         }
 
-                let clientsOptions = [];
-                if(response.data.clients && response.data.clients.length > 0) {
-                    response.data.clients.map(client => {
-                        let clientObj = {};
-                        clientObj.id = client.id;
-                        clientObj.client_id = client.client_id;
-                        clientObj.name = client.name;
-                        clientsOptions.push(clientObj);
-                    })
-                }
+        //         let clientsOptions = [];
+        //         if(response.data.clients && response.data.clients.length > 0) {
+        //             response.data.clients.map(client => {
+        //                 let clientObj = {};
+        //                 clientObj.id = client.id;
+        //                 clientObj.client_id = client.client_id;
+        //                 clientObj.name = client.name;
+        //                 clientsOptions.push(clientObj);
+        //             })
+        //         }
 
-                let machinesOptions = [];
-                if(response.data.machines && response.data.machines.length > 0) {
-                    response.data.machines.map(machine => {
-                        let machineObj = {};
-                        machineObj.id = machine.id;
-                        // machineObj.client_id = machine.client_id;
-                        machineObj.name = machine.machine_name;
-                        machinesOptions.push(machineObj);
-                    })
-                }
+        //         let machinesOptions = [];
+        //         if(response.data.machines && response.data.machines.length > 0) {
+        //             response.data.machines.map(machine => {
+        //                 let machineObj = {};
+        //                 machineObj.id = machine.id;
+        //                 // machineObj.client_id = machine.client_id;
+        //                 machineObj.name = machine.machine_name;
+        //                 machinesOptions.push(machineObj);
+        //             })
+        //         }
 
-                let employeesOptions = [];
-                if(response.data.employees && response.data.employees.length > 0) {
-                    response.data.employees.map(employee => {
-                        let employeeObj = {};
-                        employeeObj.id = employee.id;
-                        employeeObj.client_id = employee.employee_id;
-                        employeeObj.name = employee.name;
-                        employeesOptions.push(employeeObj);
-                    })
-                }
+        //         let employeesOptions = [];
+        //         if(response.data.employees && response.data.employees.length > 0) {
+        //             response.data.employees.map(employee => {
+        //                 let employeeObj = {};
+        //                 employeeObj.id = employee.id;
+        //                 employeeObj.client_id = employee.employee_id;
+        //                 employeeObj.name = employee.name;
+        //                 employeesOptions.push(employeeObj);
+        //             })
+        //         }
 
-                let suppliersOptions = [];
-                if(response.data.suppliers && response.data.suppliers.length > 0) {
-                    response.data.suppliers.map(supplier => {
-                        let supplierObj = {};
-                        supplierObj.id = supplier.id;
-                        supplierObj.supplier_id = supplier.supplier_id;
-                        supplierObj.name = supplier.name;
-                        suppliersOptions.push(supplierObj)
-                    })
-                }
+        //         let suppliersOptions = [];
+        //         if(response.data.suppliers && response.data.suppliers.length > 0) {
+        //             response.data.suppliers.map(supplier => {
+        //                 let supplierObj = {};
+        //                 supplierObj.id = supplier.id;
+        //                 supplierObj.supplier_id = supplier.supplier_id;
+        //                 supplierObj.name = supplier.name;
+        //                 suppliersOptions.push(supplierObj)
+        //             })
+        //         }
 
-                setTypeheadOptions({ ...typeheadOptions, 
-                 ['job_orders']: jobOrderOptions,
-                 ['layout_references']: response?.data?.layout_references,
-                 ['clients']: clientsOptions,
-                 ['employees']: employeesOptions,
-                 ['suppliers']: suppliersOptions,
-                 ['machines'] : machinesOptions,
+        //         setTypeheadOptions({ ...typeheadOptions, 
+        //          ['job_orders']: jobOrderOptions,
+        //          ['layout_references']: response?.data?.layout_references,
+        //          ['clients']: clientsOptions,
+        //          ['employees']: employeesOptions,
+        //          ['suppliers']: suppliersOptions,
+        //          ['machines'] : machinesOptions,
                  
-                });
-                // setIsLoading(false);
-            });
+        //         });
+        //         // setIsLoading(false);
+        //     });
     }
-    console.log(layoutDetailsDone);
+    // console.log(typeColorOptions);
+    // console.log(layoutDetals);
 
     const toogleLtoB = (val) => {
         if (val == "layout") {
@@ -402,6 +346,9 @@ const View = (props) => {
     }
 
     let colorAlert;
+    
+    
+    // console.log(colorInDone)
 
     const inputChangeHandler = (e) => {
 
@@ -493,43 +440,43 @@ const View = (props) => {
     // console.log(typeColorOptions);
 
     
-        const  getLayoutInfo = async () => {
-            try{
+        // const  getLayoutInfo = async () => {
+        //     try{
                
-                    if (formData.ref_layout_id) {
-                        const response = await userGetMethod(`${DESIGN_LAYOUT_HISTORY}?ref_layout_id=${formData.ref_layout_id}`);
-                    // console.log(response.data);
-                    setLayoutArr(response.data?.layoutHistory);
-                    setLayoutDetails({
-                        ...layoutDetails,
-                        final_cir: response.data?.layoutDetails?.final_cir,
-                        final_dia: response.data?.layoutDetails?.final_dia,
-                        final_height: response.data?.layoutDetails?.final_height,
-                        final_width: response.data?.layoutDetails?.final_width,
-                        layout_id: response.data?.layoutDetails?.layout_id
-                    });
-                    setFormData({
-                        ...formData,
-                        history_name: response.data?.layoutHistory?.job_name,
-                        history_remarks: response.data?.layoutHistory?.remarks,
-                        layout_history_date: response.data.layoutHistory[0]?.layout_date,
-                        layout_id: formData?.ref_layout_id
-                    });
-                }
-                    }
+        //             if (formData.ref_layout_id) {
+        //                 const response = await userGetMethod(`${DESIGN_LAYOUT_HISTORY}?ref_layout_id=${formData.ref_layout_id}`);
+        //             // console.log(response.data);
+        //             setLayoutArr(response.data?.layoutHistory);
+        //             setLayoutDetails({
+        //                 ...layoutDetails,
+        //                 final_cir: response.data?.layoutDetails?.final_cir,
+        //                 final_dia: response.data?.layoutDetails?.final_dia,
+        //                 final_height: response.data?.layoutDetails?.final_height,
+        //                 final_width: response.data?.layoutDetails?.final_width,
+        //                 layout_id: response.data?.layoutDetails?.layout_id
+        //             });
+        //             setFormData({
+        //                 ...formData,
+        //                 history_name: response.data?.layoutHistory?.job_name,
+        //                 history_remarks: response.data?.layoutHistory?.remarks,
+        //                 layout_history_date: response.data.layoutHistory[0]?.layout_date,
+        //                 layout_id: formData?.ref_layout_id
+        //             });
+        //         }
+        //             }
             
-            catch(error) {
-                console.error(error)
-            }
-        }
+        //     catch(error) {
+        //         console.error(error)
+        //     }
+        // }
         // console.log(layoutDetails);
-        useEffect(() => {
+        // useEffect(() => {
             
-                getLayoutInfo();
+        //         getLayoutInfo();
            
-                // getLayoutInfo();
+        //         // getLayoutInfo();
             
-        },[formData.ref_layout_id])
+        // },[formData.ref_layout_id])
     
     // console.log(formData.layout_id);
     // console.log(layoutArr);
@@ -634,97 +581,97 @@ const View = (props) => {
             );
             console.log(selectedValue)
 
-            if (stateName == 'ref_layout' && selectedValue) {
-                userGetMethod(`${DESIGN_LAYOUT_HISTORY}?ref_layout_id=${selectedValue}`)
-                .then(response => {
-                    console.log(response.data);
-                    setLayoutArr(response.data?.layoutHistory);
-                    setLayoutDetails({
-                        ...layoutDetails,
-                        final_cir: response.data?.layoutDetails?.final_cir,
-                        final_dia: response.data?.layoutDetails?.final_dia,
-                        final_height: response.data?.layoutDetails?.final_height,
-                        final_width: response.data?.layoutDetails?.final_width,
-                        layout_id: response.data?.layoutDetails?.layout_id
-                    });
-                    setFormData({
-                        ...formData,
-                        history_name: response.data?.layoutHistory?.job_name,
-                        history_remarks: response.data?.layoutHistory?.remarks,
-                        layout_history_date: response.data.layoutHistory[0]?.layout_date,
-                        layout_id: formData?.ref_layout_id
-                    });
-                })
-            }
-            if (stateName == 'job_id' && selectedValue) {
-                userGetMethod(`${JOB_ORDER_DETAILS}?jobOrderId=${selectedValue}`)
-                .then(response => {
-                    console.log(response.data)
-                    userGetMethod(`${JOB_SUPPLIERS}?jobOrderId=${selectedValue}`)
-                    .then(response => {
-                        setSupplierArr(response.data.suppliers);
-                        if (response.data.suppliers.length > 0) {
-                            let supplierOption = [];
-                            response.data.suppliers.map((item, index) => {
-                                let supplierObj = {};
-                                supplierObj.id = index;
-                                supplierObj.name = item;
-                                supplierOption.push(supplierObj);
-                            })
-                            // setEngraveOrder(colorOptions);
-                            setSupplierArr(supplierOption);
-                        }
-                        console.log(response.data);
-                    })
-                    .catch(err => {console.log(err)})
-                    if (response?.data) {
-                        let { 
-                            // layout_date,
-                            cir,client_email,dia,fl,id,job_name,job_no,job_type,printer_id,printer_mark,mark_as_complete,total_cylinder_qty,remarks,ups,rpt,operator_info,station,printer_name,printing_status,design_height,design_width,client_name,marketing_p_name
-                        } = response.data.jobOrderDetails;
-                        setFormData({
-                            // 'layout_date': layout_date,
-                            'cir': cir,
-                            'client_email': client_email,
-                            'dia': dia,
-                            'fl': fl,
-                            'id': id,
-                            'job_name': job_name,
-                            'job_no': job_no,
-                            'job_type': job_type,
-                            'printer_id': printer_id,
-                            'printer_name': printer_name,
-                            'printing_status': printing_status,
-                            'printer_mark': printer_mark,
-                            'total_cylinder_qty': total_cylinder_qty,
-                            'remarks': remarks,
-                            'ups': ups,
-                            'rpt': rpt,
+            // if (stateName == 'ref_layout' && selectedValue) {
+            //     userGetMethod(`${DESIGN_LAYOUT_HISTORY}?ref_layout_id=${selectedValue}`)
+            //     .then(response => {
+            //         console.log(response.data);
+            //         setLayoutArr(response.data?.layoutHistory);
+            //         setLayoutDetails({
+            //             ...layoutDetails,
+            //             final_cir: response.data?.layoutDetails?.final_cir,
+            //             final_dia: response.data?.layoutDetails?.final_dia,
+            //             final_height: response.data?.layoutDetails?.final_height,
+            //             final_width: response.data?.layoutDetails?.final_width,
+            //             layout_id: response.data?.layoutDetails?.layout_id
+            //         });
+            //         setFormData({
+            //             ...formData,
+            //             history_name: response.data?.layoutHistory?.job_name,
+            //             history_remarks: response.data?.layoutHistory?.remarks,
+            //             layout_history_date: response.data.layoutHistory[0]?.layout_date,
+            //             layout_id: formData?.ref_layout_id
+            //         });
+            //     })
+            // }
+            // if (stateName == 'job_id' && selectedValue) {
+            //     userGetMethod(`${JOB_ORDER_DETAILS}?jobOrderId=${selectedValue}`)
+            //     .then(response => {
+            //         console.log(response.data)
+            //         userGetMethod(`${JOB_SUPPLIERS}?jobOrderId=${selectedValue}`)
+            //         .then(response => {
+            //             setSupplierArr(response.data.suppliers);
+            //             if (response.data.suppliers.length > 0) {
+            //                 let supplierOption = [];
+            //                 response.data.suppliers.map((item, index) => {
+            //                     let supplierObj = {};
+            //                     supplierObj.id = index;
+            //                     supplierObj.name = item;
+            //                     supplierOption.push(supplierObj);
+            //                 })
+            //                 // setEngraveOrder(colorOptions);
+            //                 setSupplierArr(supplierOption);
+            //             }
+            //             console.log(response.data);
+            //         })
+            //         .catch(err => {console.log(err)})
+            //         if (response?.data) {
+            //             let { 
+            //                 // layout_date,
+            //                 cir,client_email,dia,fl,id,job_name,job_no,job_type,printer_id,printer_mark,mark_as_complete,total_cylinder_qty,remarks,ups,rpt,operator_info,station,printer_name,printing_status,design_height,design_width,client_name,marketing_p_name
+            //             } = response.data.jobOrderDetails;
+            //             setFormData({
+            //                 // 'layout_date': layout_date,
+            //                 'cir': cir,
+            //                 'client_email': client_email,
+            //                 'dia': dia,
+            //                 'fl': fl,
+            //                 'id': id,
+            //                 'job_name': job_name,
+            //                 'job_no': job_no,
+            //                 'job_type': job_type,
+            //                 'printer_id': printer_id,
+            //                 'printer_name': printer_name,
+            //                 'printing_status': printing_status,
+            //                 'printer_mark': printer_mark,
+            //                 'total_cylinder_qty': total_cylinder_qty,
+            //                 'remarks': remarks,
+            //                 'ups': ups,
+            //                 'rpt': rpt,
                             
-                            'mark_as_complete' :  mark_as_complete,
-                            'operator_info' : operator_info ,
-                            'station' : station,
-                            'design_height': design_height,
-                            'design_width' : design_width,
-                            'client_name' : client_name,
-                            'marketing_p_name' : marketing_p_name
-                        });
-                        setTypeColorOptions(response.data.colors);
-                        if (response.data.colors.length > 0) {
-                            let colorOptions = [];
-                            response.data.colors.map((item, index) => {
-                                let colorObj = {};
-                                colorObj.er_color_serial = index;
-                                colorObj.name = item?.color_name;
-                                colorObj.er_color_id = item?.id;
-                                colorOptions.push(colorObj);
-                            })
-                            setEngraveOrder(colorOptions);
-                            setTypeColorOptions(colorOptions);
-                        }
-                    }
-                })
-            }
+            //                 'mark_as_complete' :  mark_as_complete,
+            //                 'operator_info' : operator_info ,
+            //                 'station' : station,
+            //                 'design_height': design_height,
+            //                 'design_width' : design_width,
+            //                 'client_name' : client_name,
+            //                 'marketing_p_name' : marketing_p_name
+            //             });
+            //             setTypeColorOptions(response.data.colors);
+            //             if (response.data.colors.length > 0) {
+            //                 let colorOptions = [];
+            //                 response.data.colors.map((item, index) => {
+            //                     let colorObj = {};
+            //                     colorObj.er_color_serial = index;
+            //                     colorObj.name = item?.color_name;
+            //                     colorObj.er_color_id = item?.id;
+            //                     colorOptions.push(colorObj);
+            //                 })
+            //                 setEngraveOrder(colorOptions);
+            //                 setTypeColorOptions(colorOptions);
+            //             }
+            //         }
+            //     })
+            // }
 
             // if (selectedValue == null || selectedValue !== undefined) {
             //     userGetMethod(`${JOB_ORDER_DETAILS}?jobOrderId=${selectedValue}`)
@@ -926,7 +873,7 @@ const View = (props) => {
         setSelectedJobOrder([]);
         setTypeColorOptions([]);
         setEngraveOrder([]);
-        setSupplierArr([]);
+        // setSupplierArr([]);
         setLayoutDetails({
         final_cir:'',
         final_dia:'',
@@ -1015,7 +962,7 @@ const View = (props) => {
                                             <legend className="w-auto text-left">Job Info</legend>
                                             <div className="form-row">
                                                 <div className="col-md-6 row">
-                                                    <label className="col-sm-5 col-form-label required" htmlFor="job_id">Job No</label>
+                                                    <label className="col-sm-5 col-form-label" htmlFor="job_id">Job No</label>
                                                     <div className="col-md-7">
                                                         {/* <Typeahead
                                                             // className="form-control"
@@ -1049,7 +996,7 @@ const View = (props) => {
 
 
                                                     </div>
-                                                    <label className="col-sm-5 col-form-label required">Job Name</label>
+                                                    <label className="col-sm-5 col-form-label">Job Name</label>
                                                     <div className="col-md-7">
                                                         <input
                                                             type="text"
@@ -1064,7 +1011,7 @@ const View = (props) => {
                                                             disabled={formData.job_name != '' ? true : false}
                                                         />
                                                     </div>
-                                                    <label className="col-sm-5 col-form-label required">Remarks</label>
+                                                    <label className="col-sm-5 col-form-label">Remarks</label>
                                                     <div className="col-md-7">
                                                         <input
                                                             type="text"
@@ -1079,7 +1026,7 @@ const View = (props) => {
                                                             disabled={formData.remarks != '' ? true : true}
                                                         />
                                                     </div>
-                                                    <label className="col-sm-5 col-form-label required">Printer</label>
+                                                    <label className="col-sm-5 col-form-label">Printer</label>
                                                     <div className="col-md-7">
                                                         <input
                                                             type="text"
@@ -1097,7 +1044,7 @@ const View = (props) => {
                                                     </div>
                                                 </div>
                                                 <div className="col-md-6 row">
-                                                    <label className="col-sm-5 col-form-label required">Job Type</label>
+                                                    <label className="col-sm-5 col-form-label">Job Type</label>
                                                     <div className="col-md-7">
                                                         <input
                                                             type="text"
@@ -1112,7 +1059,7 @@ const View = (props) => {
                                                             disabled={formData.job_type != '' ? true : false}
                                                         />
                                                     </div>
-                                                    <label className="col-sm-5 col-form-label required">Printing Type</label>
+                                                    <label className="col-sm-5 col-form-label">Printing Type</label>
                                                     <div className="col-md-7">
                                                         <input
                                                             type="text"
@@ -1127,7 +1074,7 @@ const View = (props) => {
                                                             disabled={formData.printing_status != '' ? true : false}
                                                         />
                                                     </div>
-                                                    <label className="col-sm-5 col-form-label required">No of Cyl</label>
+                                                    <label className="col-sm-5 col-form-label">No of Cyl</label>
                                                     <div className="col-md-7">
                                                         <input
                                                             type="text"
@@ -1142,7 +1089,7 @@ const View = (props) => {
                                                             disabled={formData.total_cylinder_qty != '' ? true : false}
                                                         />
                                                     </div>
-                                                    <label className="col-sm-5 col-form-label required">Color</label>
+                                                    <label className="col-sm-5 col-form-label">Color</label>
                                                     <div className="col-md-7">
                                                         <Typeahead
                                                             id="color"
@@ -1174,7 +1121,7 @@ const View = (props) => {
                                                 <div className="form-row" style={{marginRight:'-30px'}}>
                                                     <div className="col-md-12 row"> 
                                                     
-                                                        <label className="col-sm-5 text-left col-form-label required">Layout ID</label>
+                                                        <label className="col-sm-5 text-left col-form-label ">Layout ID</label>
                                                         <div className="col-md-7">
                                                             <input
                                                                 type="text"
@@ -1185,8 +1132,9 @@ const View = (props) => {
                                                                     required: 'On text Field Required'
                                                                 })}
                                                                 onChange={inputChangeHandler}
-                                                                onBlur={handleChangeOnBlur} readOnly
+                                                                 readOnly
                                                                 value={layoutDetailsDone?.layout?.layout_id}
+                                                                disabled
                                                                 // disabled={layoutDetails?.layout_id ? true : false}
 
 
@@ -1263,7 +1211,7 @@ const View = (props) => {
                                                                 ref={register({
                                                                     
                                                                 })}
-                                                                onChange={inputChangeHandler}
+                                                                // onChange={inputChangeHandler}
                                                                 checked={formData.printer_mark ? formDataMark : ''}
                                                                 value={formData.printer_mark ? formData.printer_mark : printerMark}
                                                                 // disabled={formData.printer_mark && printerMark == '' ? true : false}
@@ -1297,11 +1245,12 @@ const View = (props) => {
                                                                 name="layout_date"
                                                                 readOnly
                                                                 required
+                                                                disabled
                                                                 ref={register({
                                                                     required: 'On text Field Required'
                                                                 })}
                                                                 value={layoutDetailsDone?.layoutMaster?.layout_date}
-                                                                onChange={inputChangeHandler}
+                                                                
                                                                 defaultValue={moment().format("ll")}
                                                                 
                                                             />
@@ -1312,31 +1261,32 @@ const View = (props) => {
                                                                 type="time"
                                                                 className="form-control"
                                                                 name="layout_time"
-                                                                readOnly
+                                                                disabled
                                                                 required
                                                                 ref={register({
                                                                     required: 'On text Field Required'
                                                                 })}
-                                                                onChange={inputChangeHandler}
+                                                               
                                                                 value={layoutDetailsDone?.layoutMaster?.layout_time}
                                                             />
                                                         </div>
                                                         <label className="col-md-4 text-left col-form-label">Layout</label>
                                                         <div className="col-md-8">
-
-                                                        <select className="form-control" name="layout" id="layout"  onChange={inputChangeHandler} value={layoutMaster?.layout ? layoutMaster?.layout: formData.layout}   ref={register({
+                                                             <input
+                                                                type="text"
+                                                                className="form-control"
+                                                                name="layout"
+                                                                required
+                                                                ref={register({
                                                                     required: 'On text Field Required'
-                                                                })}>
-                                                                <option value="">Select....</option>
-                                                                {typeheadOptions['employees'].map((item,index) => (
-                                                                    <option key={index} value={item?.id}>
-                                                                        {item?.name}
-                                                                    </option>
-                                                                ))}
-                                                            </select>
+                                                                })}
+                                                                onChange={inputChangeHandler}
+                                                                onBlur={handleChangeOnBlur} disabled
+                                                                value={layoutDetailsDone?.layoutMaster?.layout}
+                                                            />
                                                             {/* 
 
-                                                            <select className="form-control" name="layout_id" id="	layout_id">
+                                                            <select className="form-control" name="layout_id" id="	layout_id"> operator_info
                                                                 <option value="1">opt 1</option>
                                                                 <option value="2">opt 2</option>
                                                                 <option value="3">opt 3</option>
@@ -1344,35 +1294,43 @@ const View = (props) => {
                                                         </div>
                                                         <label className="col-sm-4 text-left col-form-label">info</label>
                                                         <div className="col-md-8">
-                                                        <select className="form-control" name="operator_info" id="operator_info" value={layoutMaster?.operator_info ? layoutMaster?.operator_info: (formData.operator_info ? formData.operator_info : '')} onChange={inputChangeHandler}   ref={register({
+                                                        <input
+                                                                type="text"
+                                                                className="form-control"
+                                                                name="info"
+                                                                required
+                                                                ref={register({
                                                                     required: 'On text Field Required'
-                                                                })}>
-                                                                <option value="">Select....</option>
-                                                                {typeheadOptions['employees'].map((item,index) => (
-                                                                    <option key={index} value={item?.id}>
-                                                                        {item?.name}
-                                                                    </option>
-                                                                ))}
-                                                            </select>
+                                                                })}
+                                                                onChange={inputChangeHandler}
+                                                                onBlur={handleChangeOnBlur} readOnly disabled
+                                                                value={layoutDetailsDone?.layoutMaster?.operator_info}
+                                                            />
                                                         </div>
                                                         <label className="col-sm-4 text-left col-form-label">Station</label>
                                                         <div className="col-md-8">
-                                                            <select className="form-control" name="station" id="station" onChange={inputChangeHandler} readOnly value={layoutDetailsDone?.layoutMaster?.station} ref={register({
-                                                                required: 'On text Field Required'
-                                                            })}>
-                                                                <option value="1">opt 1</option>
-                                                                <option value="2">opt 2</option>
-                                                                <option value="3">opt 3</option>
-                                                            </select>
+                                                        <input
+                                                                type="text"
+                                                                className="form-control"
+                                                                name="station"
+                                                                required
+                                                                ref={register({
+                                                                    required: 'On text Field Required'
+                                                                })}
+                                                                onChange={inputChangeHandler}
+                                                                disabled
+                                                                value={layoutDetailsDone?.layoutMaster?.station}
+                                                            />
+                                                            
                                                         </div>
-                                                        <label className="col-sm-4 text-left col-form-label required" style={{paddingRight:'12px'}}>Remarks</label>
+                                                        <label className="col-sm-4 text-left col-form-label" style={{paddingRight:'12px'}}>Remarks</label>
                                                         <div className="col-md-8">
                                                             <textarea
                                                                 type="text"
                                                                 className="form-control"
                                                                 name="remarks"
                                                                 required
-                                                                readOnly
+                                                                disabled
                                                                 ref={register({
                                                                     required: 'On text Field Required'
                                                                 })}
@@ -1388,14 +1346,14 @@ const View = (props) => {
 
                                         <div id="layout_history" className="col-md-3 pl-0">
                                             <fieldset className="border">
-                                                <legend className="w-auto text-left">Layout history</legend>
+                                                <legend className="w-auto text-left">Layout Image</legend>
                                                 <div className="col-md-12">
                                                    
 
-                                                    <input type="file" className="form-control w-100" onChange={inputChangeHandler} name="history_image" id="history_image" ref={register({
+                                                    {/* <input type="file" className="form-control w-100" onChange={inputChangeHandler} name="history_image" id="history_image" ref={register({
                                                                     required: 'On text Field Required'
-                                                                })}/>
-                                                    <img src={layoutDetailsDone?.layoutMaster?.history_image} style={{width: '100%', height: '100%'}}/>
+                                                                })}/> */}
+                                                    <img src={`${process.env.REACT_APP_BASEURL}/public/uploads/`+`${layoutDetailsDone?.layoutMaster?.history_image}`} style={{width: '100%', height: '100%'}}/>
                                                 </div>
                                             </fieldset>
                                         </div>
@@ -1448,7 +1406,7 @@ const View = (props) => {
                                                                 ref={register({
                                                                     required: 'On text Field Required'
                                                                 })}
-                                                                readOnly
+                                                                disabled
                                                                 onChange={inputChangeHandler}
                                                                 onBlur={handleChangeOnBlur}
                                                                 value={layoutDetailsDone?.layout?.final_dia}
@@ -1483,7 +1441,7 @@ const View = (props) => {
                                                                 ref={register({
                                                                     required: 'On text Field Required'
                                                                 })}
-                                                                readOnly
+                                                                disabled
                                                             onChange={inputChangeHandler}
                                                             onBlur={handleChangeOnBlur}
                                                                 value={layoutDetailsDone?.layout?.final_cir}
@@ -1498,13 +1456,13 @@ const View = (props) => {
                                                 <div className="form-row">
                                                     <div className="col-md-6 row m-l-0 m-r-0">
                                                         <p className="text-center col-md-12" style={{marginBottom:'8px'}}>Desire Size</p>
-                                                        <span style={{fontSize: '13px',paddingRight:'0px',paddingLeft:'0px'}} className="col-sm-6 col-form-label required">Height</span>
+                                                        <span style={{fontSize: '13px',paddingRight:'0px',paddingLeft:'0px'}} className="col-sm-6 col-form-label ">Height</span>
                                                         <div className="col-md-6" style={{paddingRight:'7px',paddingLeft:'7px'}}>
                                                             <input
                                                                 type="text"
                                                                 className="form-control"
                                                                 name="on_text_height"
-                                                                required readOnly
+                                                                required
                                                                 ref={register({
                                                                     required: 'On text Field Required'
                                                                 })}
@@ -1513,25 +1471,25 @@ const View = (props) => {
                                                             disabled={formData?.design_height !== '' || formData?.design_height !== null || formData?.design_height !== undefined ? true : false}
                                                             />
                                                         </div>
-                                                        <span style={{fontSize: '13px',paddingRight:'0px',paddingLeft:'0px'}} className="col-sm-6 col-form-label required">Width</span>
+                                                        <span style={{fontSize: '13px',paddingRight:'0px',paddingLeft:'0px'}} className="col-sm-6 col-form-label">Width</span>
                                                         <div className="col-md-6" style={{paddingRight:'7px',paddingLeft:'7px'}}>
                                                         <input
                                                                 type="text"
                                                                 className="form-control"
                                                                 name="on_text_width"
-                                                                required
+                                                                required disabled
                                                                 ref={register({
                                                                     required: 'On text Field Required'
                                                                 })}
                                                             // onChange={inputChangeHandler}
                                                             value={formData?.design_width != '' || formData?.design_width !== null || formData?.design_width !== undefined? formData?.design_width : ''}
-                                                            disabled={formData?.design_width != '' || formData?.design_width !== null || formData?.design_width !== undefined ? true : false}
+                                                            
                                                             />
                                                         </div>
                                                     </div>
                                                     <div className="col-md-6 row">
                                                     <p className="text-center col-md-12" style={{marginBottom:'8px'}}>Final</p>
-                                                        <span style={{fontSize: '13px',paddingRight:'0px',paddingLeft:'0px'}} className="col-sm-6 col-form-label required">Height</span>
+                                                        <span style={{fontSize: '13px',paddingRight:'0px',paddingLeft:'0px'}} className="col-sm-6 col-form-label ">Height</span>
                                                         <div className="col-md-6 " style={{paddingRight:'7px',paddingLeft:'7px'}}>
                                                             <input
                                                                 type="text"
@@ -1540,20 +1498,20 @@ const View = (props) => {
                                                                 required
                                                                 ref={register({
                                                                     required: 'On text Field Required'
-                                                                })} readOnly
+                                                                })} disabled
                                                             onChange={inputChangeHandler}
                                                             onBlur={handleChangeOnBlur}
                                                                 value={layoutDetailsDone?.layout?.final_height}
                                                             // value={layoutDetails.final_height ? layoutDetails.final_height : ''}
                                                             />
                                                         </div>
-                                                        <span style={{fontSize: '13px',paddingRight:'0px',paddingLeft:'0px'}} className="col-sm-6 col-form-label required">Width</span>
+                                                        <span style={{fontSize: '13px',paddingRight:'0px',paddingLeft:'0px'}} className="col-sm-6 col-form-label">Width</span>
                                                         <div className="col-md-6" style={{paddingRight:'7px',paddingLeft:'7px'}} >
                                                             <input
                                                                 type="text"
                                                                 className="form-control"
                                                                 name="final_width"
-                                                                required readOnly
+                                                                required disabled
                                                                 ref={register({
                                                                     required: 'On text Field Required'
                                                                 })}
@@ -1571,7 +1529,7 @@ const View = (props) => {
                                                 <div className="col-md-12 row align-items-center">
                                                 <span className="col-sm-5 text-left col-form-label" style={{fontSize: '13px',paddingLeft: '35px',paddingRight: '5px'}}>M. Location</span>
                                                         <div className="col-md-7 p-2">
-                                                            <select className="form-control" name="machine_location" id="machine_location" readOnly onChange={inputChangeHandler} ref={register({
+                                                            <select className="form-control" name="machine_location" id="machine_location" disabled onChange={inputChangeHandler} ref={register({
                                                                 required: 'On text Field Required'
                                                             })} value={layoutDetailsDone?.layoutMaster?.machine_location}>
                                                                 <option value="1">opt 1</option>
@@ -1617,33 +1575,18 @@ const View = (props) => {
                                                     <div className="col-md-12 row">
                                                         <label className="col-sm-4 text-left col-form-label" style={{whiteSpace:'nowrap'}}>Designer</label>
                                                         <div className="col-md-8">
-                                                            {/* <input
+                                                                <input
                                                                 type="text"
                                                                 className="form-control"
-                                                                name="designer"
-                                                                id="designer_id"
-                                                                required
+                                                                name="info"
+                                                                required disabled
                                                                 ref={register({
                                                                     required: 'On text Field Required'
                                                                 })}
-                                                                value={layoutMaster?.designer ? layoutMaster.designer : (formData.designer ? formData.designer : '')}
                                                                 onChange={inputChangeHandler}
-                                                                // disabled={formData?.d_cir != '' ? true : false}
-                                                                // value={formData.d_cir ? formData.d_cir : ''}
-                                                            /> */}
-
-
-
-                                                                <select className="form-control" name="designer" id="designer_id" value={layoutMaster?.designer ? layoutMaster.designer : (formData.designer ? formData.designer : '')} onChange={inputChangeHandler}   ref={register({
-                                                                    required: 'On text Field Required'
-                                                                })}>
-                                                                <option value="">Select....</option>
-                                                                {typeheadOptions['employees'].map((item,index) => (
-                                                                    <option key={index} value={item?.id}>
-                                                                        {item?.name}
-                                                                    </option>
-                                                                ))}
-                                                            </select>
+                                                                onBlur={handleChangeOnBlur} readOnly
+                                                                value={layoutDetailsDone?.layoutMaster?.designer}
+                                                            />
 
 
                                                         </div>
@@ -1684,7 +1627,7 @@ const View = (props) => {
                                                             placeholder="Select Supplier..."
                                                             onChange={(e) => dropDownChange(e, 'supplier')}
                                                             selected={supplierArr}
-                                                            readOnly
+                                                            
                                                             ref={register({
                                                                 required: 'On text Field Required'
                                                             })}
@@ -1721,28 +1664,32 @@ const View = (props) => {
                                                         </thead>
                                                         <tbody>
                                                             {
-                                                                layoutDetals.length > 0 ? 
-                                                                layoutDetals.map((item,index) => {
+                                                                typeColorOptions.length > 0 ? 
+                                                                layoutDetailsDone?.layoutDetails?.map((item,index) => {
+                                                                        //  typeColorOptions.find((colorItem) => colorItem.er_color_id === item.er_color_id);
+                                                                        const colorC = typeColorOptions.find((colorItem) => colorItem.er_color_id === item.er_color_id);
+                                                                        // const machineId = 
+                                                                   
                                                                     return (
                                                                         <tr>
                                                                             <td>
-                                                                                <input className="form-control" type="text" value={item.er_color_id + 1}  name="er_color_serial" id="er_color_serial" onChange={(e) => engOrderHandler(e, index)} ref={register({
+                                                                                <input className="form-control" type="text" value={item.er_color_id + 1}  name="er_color_serial" id="er_color_serial" disabled readOnly onChange={(e) => engOrderHandler(e, index)} ref={register({
                                                                                 required: 'On text Field Required'})}/>
                                                                                 </td>
 
                                                                             <td>
-                                                                                <input className="form-control" type="text" value={matchedColors} readOnly name="er_color_id" id="er_color_id" onChange={(e) => engOrderHandler(e, index)} ref={register({
+                                                                                <input className="form-control" type="text" disabled value={colorC.name} readOnly name="er_color_id" id="er_color_id" onChange={(e) => engOrderHandler(e, index)} ref={register({
                                                                                 required: 'On text Field Required'})} required/> 
                                                                                 </td>
 
                                                                             <td>
-                                                                                <input className="form-control" type="text"  name="er_desired_screen" id="er_desired_screen" value={item?.er_desired_screen} onChange={(e) =>engOrderHandler(e, index)} ref={register({
+                                                                                <input className="form-control" type="text"  name="er_desired_screen" id="er_desired_screen" value={item?.er_desired_screen} disabled readOnly onChange={(e) =>engOrderHandler(e, index)} ref={register({
                                                                      required: 'On text Field Required'
                                                                 })}/>
                                                                                 </td>
 
                                                                             <td>
-                                                                                <input className="form-control" type="text"  name="er_desired_angle" id="er_desired_angle" value={item?.er_desired_angle} onChange={(e) =>engOrderHandler(e, index)} ref={register({
+                                                                                <input className="form-control" type="text"  name="er_desired_angle" id="er_desired_angle" value={item?.er_desired_angle} disabled readOnly onChange={(e) =>engOrderHandler(e, index)} ref={register({
                                                                      required: 'On text Field Required'
                                                                 })}/>
                                                                                 </td>
@@ -1752,17 +1699,11 @@ const View = (props) => {
                                                                     required: 'On text Field Required'
                                                                 })} /> */}
 
-                                                                <select style={{width: '75px'}} className="form-control" name="er_engraving_machine" id="er_engraving_machine" onChange={(e) =>engOrderHandler(e, index)} ref={register({
-                                                                required: 'On text Field Required'
-                                                                    })} required>
-                                                                <option value=''>Select Machine</option>
-                                                                {layoutMachines.map((machine,index) =>(
-                                                                    <option value={machine.id} key={index}>{machine.machine_name}</option>
-
-                                                                ))}
+                                                                            <input className="form-control" type="text"  name="er_desired_angle" id="er_desired_angle" disabled value={item?.er_engraving_machine} readOnly onChange={(e) =>engOrderHandler(e, index)} ref={register({
+                                                                            required: 'On text Field Required'
+                                                                                                                                                                                                    })}/>
                                                                 
-                                                            </select>
-
+                                                           
 
 
                                                                         </td>
@@ -1775,7 +1716,7 @@ const View = (props) => {
                                                                     return (
                                                                         <tr>
                                                                             <td>
-                                                                                <input className="form-control" type="text" value={item.er_color_serial + 1}  name="er_color_serial" id="er_color_serial" onChange={(e) => engOrderHandler(e, index)} ref={register({
+                                                                                <input className="form-control" type="text" disabled value={item.er_color_serial + 1}  name="er_color_serial"  readOnly id="er_color_serial" onChange={(e) => engOrderHandler(e, index)} ref={register({
                                                                     required: 'On text Field Required'
                                                                 })} required/>
                                                                                 </td>
@@ -1787,11 +1728,11 @@ const View = (props) => {
                                                                 })}/> */}
 
                                                                 <select style={{width: '75px'}} className="form-control" name="er_color_id" id="er_color_id"
-                                                                
+                                                                disabled
                                                                  onChange={engOrderHandler} ref={register({
                                                                 required: 'On text Field Required'
                                                             })} required>
-                                                                <option value={colorArrayErr}>Select Color</option>
+                                                                <option value={colorArrayErr} >Select Color</option>
                                                                 {typeColorOptions.map((color,index) =>(
                                                                     <option value={color.er_color_id} key={index} >{color.name}</option>
 
@@ -1802,13 +1743,13 @@ const View = (props) => {
                                                                                 </td>
 
                                                                             <td>
-                                                                                <input className="form-control" type="text"  name="er_desired_screen" id="er_desired_screen" value={layoutDetals ? layoutDetals.er_desired_screen : ''} onChange={(e) =>engOrderHandler(e, index)} ref={register({
+                                                                                <input className="form-control" type="text" readOnly  name="er_desired_screen" id="er_desired_screen" disabled value={layoutDetals ? layoutDetals.er_desired_screen : ''} onChange={(e) =>engOrderHandler(e, index)} ref={register({
                                                                     required: 'On text Field Required'
                                                                 })} required/>
                                                                                 </td>
 
                                                                             <td>
-                                                                                <input className="form-control" type="text"  name="er_desired_angle" id="er_desired_angle" value={layoutDetals ? layoutDetals.er_desired_angle : ''} onChange={(e) =>engOrderHandler(e, index)} ref={register({
+                                                                                <input className="form-control" type="text"  name="er_desired_angle" id="er_desired_angle" readOnly disabled value={layoutDetals ? layoutDetals.er_desired_angle : ''} onChange={(e) =>engOrderHandler(e, index)} ref={register({
                                                                     required: 'On text Field Required'
                                                                 })}/>
                                                                                 </td>
@@ -1817,7 +1758,7 @@ const View = (props) => {
                                                                                 {/* <input className="form-control" type="text"  name="er_engraving_machine" id="er_engraving_machine" onChange={(e) =>engOrderHandler(e, index)} ref={register({
                                                                     required: 'On text Field Required'
                                                                 })} /> */}
-                                                                 <select style={{width: '75px'}} className="form-control" name="er_engraving_machine" id="er_engraving_machine" onChange={(e) =>engOrderHandler(e, index)} ref={register({
+                                                                 <select style={{width: '75px'}} className="form-control" name="er_engraving_machine" id="er_engraving_machine" readOnly disabled onChange={(e) =>engOrderHandler(e, index)} ref={register({
                                                                 required: 'On text Field Required'
                                                                     })} required>
                                                                 <option value=''>Select Machine</option>
@@ -1865,7 +1806,7 @@ const View = (props) => {
                                                                 ref={register({
                                                                     required: 'On text Field Required'
                                                                 })} 
-                                                                readOnly
+                                                                disabled
                                                                 onChange={inputChangeHandler}
                                                                 value={layoutDetailsDone?.layoutMaster?.l_reg_mark}
                                                             />
@@ -1883,11 +1824,11 @@ const View = (props) => {
                                                                 className="form-control"
                                                                 id="l_fl_cut"
                                                                 name="l_fl_cut"
-                                                                // required
+                                                                // station
                                                                 type="number"
                                                                 ref={register({
                                                                     required: 'On text Field Required'
-                                                                })} readOnly
+                                                                })} disabled
                                                                 onChange={inputChangeHandler}
                                                                 value={layoutDetailsDone?.layoutMaster?.l_fl_cut}
                                                             />
@@ -1909,7 +1850,7 @@ const View = (props) => {
                                                                 type="number"
                                                                 ref={register({
                                                                     required: 'On text Field Required'
-                                                                })} readOnly
+                                                                })} disabled
                                                                 onChange={inputChangeHandler}
                                                                 value={layoutDetailsDone?.layoutMaster?.design_w}
                                                             />
@@ -1927,6 +1868,7 @@ const View = (props) => {
                                                                 className="form-control"
                                                                 id="axial_ups"
                                                                 name="axial_ups"
+                                                                disabled
                                                                 // required
                                                                 type="number"
                                                                 ref={register({
@@ -1953,7 +1895,7 @@ const View = (props) => {
                                                                 type="number"
                                                                 ref={register({
                                                                     required: 'On text Field Required'
-                                                                })} readOnly
+                                                                })} readOnly disabled
                                                                 onChange={inputChangeHandler}
                                                                 value={layoutDetailsDone?.layoutMaster?.r_reg_mark }
                                                             />
@@ -1974,7 +1916,7 @@ const View = (props) => {
                                                                 // required
                                                                 ref={register({
                                                                     required: 'On text Field Required'
-                                                                })} readOnly
+                                                                })} readOnly disabled
                                                                 type="number"
                                                                 onChange={inputChangeHandler}
                                                                 value={layoutDetailsDone?.layoutMaster?.r_fl_cut }
@@ -1996,7 +1938,7 @@ const View = (props) => {
                                                                 // required
                                                                 ref={register({
                                                                     required: 'On text Field Required'
-                                                                })} readOnly
+                                                                })} readOnly disabled
                                                                 type="number"
                                                                 onChange={inputChangeHandler}
                                                                 value={layoutDetailsDone?.layoutMaster?.axl_start_point}
@@ -2014,7 +1956,7 @@ const View = (props) => {
                                                                 name="axl_image_area"
                                                                 ref={register({
                                                                     required: 'On text Field Required'
-                                                                })} readOnly
+                                                                })} readOnly disabled
                                                                 type="number"
                                                                 onChange={inputChangeHandler}
                                                                 value={layoutDetailsDone?.layoutMaster?.axl_image_area}

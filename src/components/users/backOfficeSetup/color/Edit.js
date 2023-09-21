@@ -39,7 +39,7 @@ const Edit = (props) => {
     },[]);
 
     const submitHandler = (data) => {
-        data.active_status = colorInput.active_status == false ? 0 : 1;
+        data.status = colorInput.active_status == false ? 0 : 1;
         // console.log("data", data);
         userPutMethod(`${colorAPI}/${colorId}`, data )
             .then(response => {
@@ -121,8 +121,8 @@ const Edit = (props) => {
                                                             active_status : !colorInput.active_status
                                                         });
                                                     }}
-                                                    toggleYesMsg="Online"
-                                                    toggleNoMsg="Offline"
+                                                    toggleYesMsg="Active"
+                                                    toggleNoMsg="Inactive"
                                                 />
                                             </div>
                                         </div>
