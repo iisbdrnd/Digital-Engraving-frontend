@@ -337,20 +337,20 @@ const Add = (props) => {
       color_id_final_arr.push(item.id);
     })
     data.color_id = color_id_final_arr;
-    // userPostMethod(JOB_ORDER_RSURL, data)
-    //   .then(response => {
-    //     setIsLoading(true)
-    //     if (response.data.status == 1) {
-    //       // e.target.reset();
-    //       reset();
-    //       clearForm();
-    //       setIsLoading(false);
-    //       toast.success(response.data.message);
-    //     } else {
-    //       toast.error(response.data.message);
-    //     }
-    //   })
-    //   .catch(error => toast.error(error));
+    userPostMethod(JOB_ORDER_RSURL, data)
+      .then(response => {
+        setIsLoading(true)
+        if (response.data.status == 1) {
+          // e.target.reset();
+          reset();
+          clearForm();
+          setIsLoading(false);
+          toast.success(response.data.message);
+        } else {
+          toast.error(response.data.message);
+        }
+      })
+      .catch(error => toast.error(error));
   }
 
 
@@ -657,7 +657,7 @@ const Add = (props) => {
                           <div className="form-group row">
                             <label
                               className="col-sm-4 col-form-label required"
-                              htmlFor="marketing_person_id"
+                              htmlFor="design_machine_id"
                             >
                               Employees
                             </label>
@@ -676,7 +676,7 @@ const Add = (props) => {
                                 // ref={register({
                                 //   required: "Marketing Person Field Required",
                                 // })}
-                                {...register("marketing_person_id")}
+                                {...register("design_machine_id")}
                               />
                               {errors.marketing_person_id && (
                                 <p className="text-danger">
@@ -690,7 +690,7 @@ const Add = (props) => {
                           <div className="form-group row">
                             <label
                               className="col-sm-4 col-form-label required"
-                              htmlFor="design_machine_id"
+                              htmlFor="marketing_person_id"
                             >
                               Designer Name
                             </label>

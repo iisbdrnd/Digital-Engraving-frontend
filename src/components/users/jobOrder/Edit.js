@@ -482,7 +482,7 @@ const Edit = (props) => {
                                                             options={typeheadOptions['design_machines']}
                                                             placeholder="Select Person..."
                                                             onChange={(e) => dropDownChange(e, 'design_machine_id')}
-                                                            selected={jobOrderInput.design_machine_id}
+                                                            selected={typeheadOptions['design_machines']}
                                                             ref={register({
                                                                 required: 'Marketing Person Field Required'
                                                             })}
