@@ -2,7 +2,7 @@ import React, { Fragment, useState, useEffect, useReducer } from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { SubmitButton } from '../../common/GlobalButton';
-import { JOB_ORDER_RSURL,GET_JOB_ORDER, GET_JOB_CLIENT_MARKETING } from '../../../api/userUrl';
+import { JOB_ORDER_RSURL,GET_JOB_ORDER, GET_JOB_CLIENT_MARKETING, GET_JOB_CLIENT_ADDRESS } from '../../../api/userUrl';
 import { userGetMethod, userPostMethod } from '../../../api/userAction';
 import useForm from "react-hook-form";
 import { Typeahead } from 'react-bootstrap-typeahead';
@@ -28,6 +28,7 @@ const Add = (props) => {
   const [cirArea,setCirArea] = useState(0);
   const [dirArea,setDirArea] = useState(0);
   const [dropDownText,setDropDownText] = useState('');
+  const [clientAddress,setClientAddress] = useState('');
   
   // const [jobId, setJobId] = useState(0);
   const [typeAheadValue, setTypeAheadValue] = useState({
@@ -163,6 +164,11 @@ const Add = (props) => {
 
         setIsLoading(false);
       })
+      userGetMethod(`${GET_JOB_CLIENT_ADDRESS}?client_id=${clientId}`)
+      .then(response => {
+        setClientAddress(response.data.clientAddress);
+        setIsLoading(false);
+      })
       
     }
     
@@ -178,6 +184,12 @@ const Add = (props) => {
       );
     }
   }
+
+
+
+
+
+
   useEffect(() => {
     if (clientEmployee.length > 0) {
       let designMachineOptions = [];
@@ -206,7 +218,10 @@ const Add = (props) => {
    }
    
   },[clientEmployee]);
-  // console.log(clientEmployee)
+
+
+
+  // console.log(clientAddress)
   // console.log(typeAheadValue?.client_id);
 
   const handleTypeaheadInputChange = (text) => {
@@ -629,6 +644,37 @@ const Add = (props) => {
                               )}
                             </div>
                           </div>
+
+
+                          {clientAddress && <div className="form-group row">
+                            <label
+                              className="col-sm-4 col-form-label"
+                              htmlFor="client_id"
+                            >
+                              Client Address
+                            </label>
+                            <div className="col-sm-8">
+                            <input
+                                className="form-control"
+                                id="client_address"
+                                name="client_address"
+                                value={clientAddress?.address}
+                                required
+                                disabled={clientAddress?.address}
+                                type="text"
+                                placeholder="client_address"
+                                ref={register({
+                                  required: "Client_address Field Required",
+                                })}
+                              />
+                              {errors.client_address && (
+                                <p className="text-danger">
+                                  {errors.jclient_address.message}
+                                </p>
+                              )}
+                             
+                            </div>
+                          </div>}
 
                           <div className="form-group row">
                             <label

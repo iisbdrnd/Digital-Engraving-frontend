@@ -2,7 +2,7 @@ import React, { Fragment, useState, useEffect, useReducer } from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { SubmitButton } from '../../common/GlobalButton';
-import { GET_JOB_CLIENT_MARKETING, GET_JOB_ORDER, JOB_ORDER_RSURL } from '../../../api/userUrl';
+import { GET_JOB_CLIENT_ADDRESS, GET_JOB_CLIENT_MARKETING, GET_JOB_ORDER, JOB_ORDER_RSURL } from '../../../api/userUrl';
 import { userGetMethod, userPutMethod } from '../../../api/userAction';
 import useForm from "react-hook-form";
 import { Typeahead } from 'react-bootstrap-typeahead';
@@ -20,6 +20,7 @@ const Edit = (props) => {
         'reference_job': []
     })
     const [clientEmployee, setClientEmployee] = useState([])
+    const [clientAddress, setClientAddress] = useState('')
     const [jobOrderType, setJobOrderType] = useState(null)
 
     let [jobOrderInput, setJobOrderInput] = useReducer(
@@ -117,6 +118,17 @@ const Edit = (props) => {
                             setJobOrderInput({
                                 'client_id': [clientObj]
                             })
+
+
+                            userGetMethod(`${GET_JOB_CLIENT_ADDRESS}?client_id=${response.data.jobOrder.client_id}`)
+                            .then(response => {
+                            setClientAddress(response.data.clientAddress);
+                            setIsLoading(false);
+                          })
+
+
+
+
                         }
                     })
                 }
@@ -276,7 +288,12 @@ const Edit = (props) => {
       
               setIsLoading(false);
             })
-        }
+            userGetMethod(`${GET_JOB_CLIENT_ADDRESS}?client_id=${clientId}`)
+        .then(response => {
+        setClientAddress(response.data.clientAddress);
+        setIsLoading(false);
+      })
+      }
         if(event.length > 0){
             setJobOrderInput({
                 [stateName]: event
@@ -540,6 +557,36 @@ const Edit = (props) => {
                                                         {errors.client_id && <p className='text-danger'>{errors.client_id.message}</p>}
                                                     </div>
                                                 </div>
+
+                                                {clientAddress && <div className="form-group row">
+                            <label
+                              className="col-sm-4 col-form-label"
+                              htmlFor="client_id"
+                            >
+                              Client Address
+                            </label>
+                            <div className="col-sm-8">
+                            <input
+                                className="form-control"
+                                id="client_address"
+                                name="client_address"
+                                value={clientAddress?.address}
+                                required
+                                disabled={clientAddress?.address}
+                                type="text"
+                                placeholder="client_address"
+                                ref={register({
+                                  required: "Client_address Field Required",
+                                })}
+                              />
+                              {errors.client_address && (
+                                <p className="text-danger">
+                                  {errors.jclient_address.message}
+                                </p>
+                              )}
+                             
+                            </div>
+                          </div>}
 
                                                 <div className="form-group row">
                                                     <label className="col-sm-4 col-form-label required" htmlFor="printer_id">Printer Name</label>
