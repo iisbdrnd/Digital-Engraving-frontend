@@ -2,7 +2,7 @@ import React, { Fragment, useState, useEffect, useReducer } from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { SubmitButton } from '../../common/GlobalButton';
-import { JOB_ORDER_RSURL,GET_JOB_ORDER } from '../../../api/userUrl';
+import { JOB_ORDER_RSURL,GET_JOB_ORDER, GET_JOB_CLIENT_MARKETING } from '../../../api/userUrl';
 import { userGetMethod, userPostMethod } from '../../../api/userAction';
 import useForm from "react-hook-form";
 import { Typeahead } from 'react-bootstrap-typeahead';
@@ -13,6 +13,7 @@ const Add = (props) => {
   const [isLoading, setIsLoading] = useState(true);
   const [dropdownData, setDropdownData] = useState({});
   const [multipleDropdownData, setMultipleDropdownData] = useState([]);
+  const [clientEmployee, setClientEmployee] = useState([]);
   const [typeheadOptions, setTypeheadOptions] = useState({});
   const [linkjob, setLinkjob] = useState(false);
   const [jobOrderType, setJobOrderType] = useState(null);
@@ -129,16 +130,7 @@ const Add = (props) => {
           })
         }
 
-        // FOR DESIGN MACHINE
-        let designMachineOptions = [];
-        if (response.data.designMachines && response.data.designMachines.length > 0) {
-          response.data.designMachines.map(designMachine => {
-            let designMachineObj = {};
-            designMachineObj.id = designMachine.id;
-            designMachineObj.name = designMachine.machine_name;
-            designMachineOptions.push(designMachineObj);
-          })
-        }
+        
         setTypeheadOptions(
           (prevstate) => ({
             ...prevstate,
@@ -148,7 +140,7 @@ const Add = (props) => {
             ['job_sub_classes']: subClassOptions,
             ['reference_jobs']: referenceJobsOptions,
             ['additional_colors']: additionalColorOptions,
-            ['design_machines']: designMachineOptions,
+            ['design_machines']: [],
           })
         );
 
@@ -162,9 +154,21 @@ const Add = (props) => {
     if (stateName == 'reference_job' || stateName == 'job_sub_class_id' || stateName == 'client_id' || stateName == 'printer_id' || stateName == 'marketing_person_id' || stateName == 'design_machine_id') {
       setTypeAheadValue({ [stateName]: event })
     }
+    if (stateName == 'client_id' && event.length > 0) {
+      const clientId = event[0].id;
+      userGetMethod(`${GET_JOB_CLIENT_MARKETING}?client_id=${clientId}`)
+      .then(response => {
+        setClientEmployee([response.data.marketingPerson])
+        
+
+        setIsLoading(false);
+      })
+      
+    }
     
     if (event.length > 0) {
       const selectedValue = event[0].id;
+      // console.log(selectedValue);
       // setDropDownText(stateName)
       setDropdownData(
         (prevstate) => ({
@@ -174,7 +178,36 @@ const Add = (props) => {
       );
     }
   }
-  // console.log(dropdownData);
+  useEffect(() => {
+    if (clientEmployee.length > 0) {
+      let designMachineOptions = [];
+          if (clientEmployee &&clientEmployee.length > 0) {
+            clientEmployee.map(designMachine => {
+              let designMachineObj = {};
+              if (designMachine !== null) {
+                designMachineObj.id = designMachine.id;
+                designMachineObj.name = designMachine.name;
+                designMachineOptions.push(designMachineObj);
+              }
+              else{
+                toast.error('Employee Id not Set.Need to Config first!');
+
+              }
+            })
+          }
+          setTypeheadOptions(
+            (prevstate) => ({
+              ...prevstate,
+              
+              ['design_machines']: designMachineOptions,
+            })
+            );
+         
+   }
+   
+  },[clientEmployee]);
+  // console.log(clientEmployee)
+  // console.log(typeAheadValue?.client_id);
 
   const handleTypeaheadInputChange = (text) => {
     setDropDownText(text); // Store the typed text in the state
@@ -270,7 +303,7 @@ const Add = (props) => {
 
 
   },[calculateFormValue,calculationValue,setPrintingWidth,setPrintingHeight,setDirArea,setCirArea,setFlArea,setTotalSurfaceArea,setSurfaceArea,setExtraFaceLength,setCircumference,calculationValue.ups,calculationValue.design_width,calculationValue.design_height,calculationValue.rpt,calculationValue.face_length,multipleDropdownData.length]);
-  // console.log(calculationValue)
+  
 
   
   // console.log(calculationValue);
@@ -291,7 +324,7 @@ const Add = (props) => {
   // }
   // console.log(multipleDropdownData);
   const submitHandler = (data, e) => {
-    // console.log(data)
+    console.log(data)
     e.preventDefault();
     data.client_id = dropdownData.client_id;
     data.job_sub_class_id = dropdownData.job_sub_class_id;
@@ -304,20 +337,20 @@ const Add = (props) => {
       color_id_final_arr.push(item.id);
     })
     data.color_id = color_id_final_arr;
-    userPostMethod(JOB_ORDER_RSURL, data)
-      .then(response => {
-        setIsLoading(true)
-        if (response.data.status == 1) {
-          // e.target.reset();
-          reset();
-          clearForm();
-          setIsLoading(false);
-          toast.success(response.data.message);
-        } else {
-          toast.error(response.data.message);
-        }
-      })
-      .catch(error => toast.error(error));
+    // userPostMethod(JOB_ORDER_RSURL, data)
+    //   .then(response => {
+    //     setIsLoading(true)
+    //     if (response.data.status == 1) {
+    //       // e.target.reset();
+    //       reset();
+    //       clearForm();
+    //       setIsLoading(false);
+    //       toast.success(response.data.message);
+    //     } else {
+    //       toast.error(response.data.message);
+    //     }
+    //   })
+    //   .catch(error => toast.error(error));
   }
 
 
@@ -626,7 +659,40 @@ const Add = (props) => {
                               className="col-sm-4 col-form-label required"
                               htmlFor="marketing_person_id"
                             >
-                              Marketing Person
+                              Employees
+                            </label>
+                            <div className="col-sm-8">
+                              <Typeahead
+                                id="design_machine_id"
+                                name="design_machine_id"
+                                labelKey={(option) => `${option.name}`}
+                                options={typeheadOptions["design_machines"]}
+                                placeholder="Select Person..."
+                                onChange={(e) =>
+                                  dropDownChange(e, "design_machine_id")
+                                }
+                                inputProps={{ required: true }}
+                                selected={typeAheadValue["design_machine_id"]}
+                                // ref={register({
+                                //   required: "Marketing Person Field Required",
+                                // })}
+                                {...register("marketing_person_id")}
+                              />
+                              {errors.marketing_person_id && (
+                                <p className="text-danger">
+                                  {errors.marketing_person_id.message}
+                                </p>
+                              )}
+                            </div>
+                          </div>
+
+
+                          <div className="form-group row">
+                            <label
+                              className="col-sm-4 col-form-label required"
+                              htmlFor="design_machine_id"
+                            >
+                              Designer Name
                             </label>
                             <div className="col-sm-8">
                               <Typeahead
@@ -648,34 +714,6 @@ const Add = (props) => {
                               {errors.marketing_person_id && (
                                 <p className="text-danger">
                                   {errors.marketing_person_id.message}
-                                </p>
-                              )}
-                            </div>
-                          </div>
-                          <div className="form-group row">
-                            <label
-                              className="col-sm-4 col-form-label required"
-                              htmlFor="design_machine_id"
-                            >
-                              Designer Machine
-                            </label>
-                            <div className="col-sm-8">
-                              <Typeahead
-                                id="design_machine_id"
-                                name="design_machine_id"
-                                labelKey={(option) => `${option.name}`}
-                                options={typeheadOptions["design_machines"]}
-                                inputProps={{ required: true }}
-                                placeholder="Select Person..."
-                                onChange={(e) =>
-                                  dropDownChange(e, "design_machine_id")
-                                }
-                                selected={typeAheadValue["design_machine_id"]}
-                                {...register("design_machine_id")}
-                              />
-                              {errors.design_machine_id && (
-                                <p className="text-danger">
-                                  {errors.design_machine_id.message}
                                 </p>
                               )}
                             </div>
@@ -1320,7 +1358,8 @@ const Add = (props) => {
                           <legend className="w-auto text-left">Finished</legend>
                           <div className="form-group row">
                             <label
-                              className="col-sm-2 col-form-label required"
+                              className={`col-sm-2 col-form-label ${jobOrderType !== "New" ? 'required' : ''} `}
+
                               htmlFor="remarks"
                             >
                               Remarks
@@ -1330,13 +1369,13 @@ const Add = (props) => {
                                 className="form-control"
                                 id="remarks"
                                 name="remarks"
-                                required
+                                required={
+                                  jobOrderType == "New" ? false : true
+                                }
                                 type="text"
                                 placeholder="Remarks"
                                 // value={jobOrderData.remarks}
-                                ref={register({
-                                  required: "Remarks Field Required",
-                                })}
+                                ref={register({})}
                               />
                               {errors.remarks && (
                                 <p className="text-danger">

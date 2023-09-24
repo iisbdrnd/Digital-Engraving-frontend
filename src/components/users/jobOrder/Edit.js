@@ -2,7 +2,7 @@ import React, { Fragment, useState, useEffect, useReducer } from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { SubmitButton } from '../../common/GlobalButton';
-import { JOB_ORDER_RSURL } from '../../../api/userUrl';
+import { GET_JOB_CLIENT_MARKETING, JOB_ORDER_RSURL } from '../../../api/userUrl';
 import { userGetMethod, userPutMethod } from '../../../api/userAction';
 import useForm from "react-hook-form";
 import { Typeahead } from 'react-bootstrap-typeahead';
@@ -15,6 +15,7 @@ const Edit = (props) => {
     const [multipleDropdownData, setMultipleDropdownData] = useState([]);
     const [typeheadOptions, setTypeheadOptions] = useState({});
     const [linkjob, setLinkjob] = useState(false)
+    const [clientEmployee, setClientEmployee] = useState([])
     const [jobOrderType, setJobOrderType] = useState(null)
 
     let [jobOrderInput, setJobOrderInput] = useReducer(
@@ -102,6 +103,13 @@ const Edit = (props) => {
                         clientObj.name = `[${client.client_id}] ${client.name}`;
                         clientOptions.push(clientObj);
                         if (response.data.jobOrder.client_id === client.id) {
+                            
+                            userGetMethod(`${GET_JOB_CLIENT_MARKETING}?client_id=${response.data.jobOrder.client_id}`)
+                            .then(response => {
+                                setClientEmployee([response.data.marketingPerson])
+
+                            })
+                            // setIsLoading(false);
                             setJobOrderInput({
                                 'client_id': [clientObj]
                             })
@@ -127,21 +135,21 @@ const Edit = (props) => {
                 }
 
                 // FOR DESIGN MACHINE
-                let designMachineOptions = [];
-                if (response.data.designMachines && response.data.designMachines.length > 0) {
-                    response.data.designMachines.map(designMachine => 
-                    {
-                        let designMachineObj = {};
-                        designMachineObj.id = designMachine.id;
-                        designMachineObj.name = designMachine.machine_name;
-                        designMachineOptions.push(designMachineObj);
-                        if (response.data.jobOrder.design_machine_id === designMachine.id) {
-                            setJobOrderInput({
-                                'design_machine_id': [designMachineObj]
-                            })
-                        }
-                    })
-                }
+                // let designMachineOptions = [];
+                // if (response.data.designMachines && response.data.designMachines.length > 0) {
+                //     response.data.designMachines.map(designMachine => 
+                //     {
+                //         let designMachineObj = {};
+                //         designMachineObj.id = designMachine.id;
+                //         designMachineObj.name = designMachine.machine_name;
+                //         designMachineOptions.push(designMachineObj);
+                //         if (response.data.jobOrder.design_machine_id === designMachine.id) {
+                //             setJobOrderInput({
+                //                 'design_machine_id': [designMachineObj]
+                //             })
+                //         }
+                //     })
+                // }
                 
                 // FOR JOB SUB CLASS
                 let additionalColorOptions = [];
@@ -189,7 +197,7 @@ const Edit = (props) => {
                         ['job_sub_classes']: subClassOptions,
                         ['reference_jobs']: referenceJobsOptions,
                         ['additional_colors']: additionalColorOptions,
-                        ['design_machines']: designMachineOptions,
+                        ['design_machines']: [],
                     })
                 );
 
@@ -200,14 +208,65 @@ const Edit = (props) => {
                 setIsLoading(false);
             });
     },[]);
-    console.log(jobOrderInput);
     const dropDownChange = (event, stateName) => {
+        if (stateName === 'client_id' && event.length > 0) {
+            const clientId = event[0].id;
+            userGetMethod(`${GET_JOB_CLIENT_MARKETING}?client_id=${clientId}`)
+            .then(response => {
+              setClientEmployee([response.data.marketingPerson])
+              
+      
+              setIsLoading(false);
+            })
+        }
         if(event.length > 0){
             setJobOrderInput({
                 [stateName]: event
             })
         } 
     }
+    // console.log(jobOrderInput);
+
+    // if (jobOrderInput.client_id && jobOrderInput.client_id.length > 0) {
+    //     const clientId = jobOrderInput.client_id[0]?.id;
+    //         userGetMethod(`${GET_JOB_CLIENT_MARKETING}?client_id=${clientId}`)
+    //       .then(response => {
+    //         setClientEmployee([response.data.marketingPerson])
+
+    //     })
+    //     setIsLoading(false);
+    // }
+
+    useEffect(()=>{
+        if (clientEmployee.length > 0) {
+            
+            let designMachineOptions = [];
+              if (clientEmployee &&clientEmployee.length > 0) {
+                clientEmployee.map(designMachine => {
+                  let designMachineObj = {};
+                  if (designMachine !== null) {
+                    designMachineObj.id = designMachine.id;
+                    designMachineObj.name = designMachine.name;
+                    designMachineOptions.push(designMachineObj);
+                    // console.log(designMachineOptions)
+                  }
+                  else{
+                    toast.error('Employee Id not Set.Need to Config first!');
+    
+                  }
+                })
+              }
+              setTypeheadOptions(
+                (prevstate) => ({
+                  ...prevstate,
+                  
+                  ['design_machines']: designMachineOptions,
+                })
+                ); 
+        }
+    },[clientEmployee])
+        
+    
     
     const multipleDropDownChange = (event) => {
         // if(event.length > 0){
@@ -414,26 +473,7 @@ const Edit = (props) => {
                                                 </div>
 
                                                 <div className="form-group row">
-                                                    <label className="col-sm-4 col-form-label required" htmlFor="marketing_person_id">Marketing Person</label>
-                                                    <div className="col-sm-8">
-                                                        <Typeahead
-                                                            id="marketing_person_id"
-                                                            name="marketing_person_id"
-                                                            labelKey={option => `${option.name}`}
-                                                            options={typeheadOptions['marketing_persons']}
-                                                            placeholder="Select Person..."
-                                                            onChange={(e) => dropDownChange(e, 'marketing_person_id')}
-                                                            selected={jobOrderInput.marketing_person_id}
-                                                            ref={register({
-                                                                required: 'Marketing Person Field Required'
-                                                            })}
-                                                        />
-                                                        {errors.marketing_person_id && <p className='text-danger'>{errors.marketing_person_id.message}</p>}
-                                                    </div>
-                                                </div>
-                                                
-                                                <div className="form-group row">
-                                                    <label className="col-sm-4 col-form-label required" htmlFor="design_machine_id">Design Machine</label>
+                                                    <label className="col-sm-4 col-form-label required" htmlFor="marketing_person_id">Employees</label>
                                                     <div className="col-sm-8">
                                                         <Typeahead
                                                             id="design_machine_id"
@@ -448,6 +488,25 @@ const Edit = (props) => {
                                                             })}
                                                         />
                                                         {errors.design_machine_id && <p className='text-danger'>{errors.design_machine_id.message}</p>}
+                                                    </div>
+                                                </div>
+                                                
+                                                <div className="form-group row">
+                                                    <label className="col-sm-4 col-form-label required" htmlFor="design_machine_id">Designer Name</label>
+                                                    <div className="col-sm-8">
+                                                        <Typeahead
+                                                            id="marketing_person_id"
+                                                            name="marketing_person_id"
+                                                            labelKey={option => `${option.name}`}
+                                                            options={typeheadOptions['marketing_persons']}
+                                                            placeholder="Select Person..."
+                                                            onChange={(e) => dropDownChange(e, 'marketing_person_id')}
+                                                            selected={jobOrderInput.marketing_person_id}
+                                                            ref={register({
+                                                                required: 'Marketing Person Field Required'
+                                                            })}
+                                                        />
+                                                        {errors.marketing_person_id && <p className='text-danger'>{errors.marketing_person_id.message}</p>}
                                                     </div>
                                                 </div>
                                             </fieldset>
@@ -480,7 +539,7 @@ const Edit = (props) => {
                                                     <label className="col-sm-4 col-form-label" htmlFor="eye_mark_color">Eye Mark Color</label>
                                                     <div className="col-sm-8">
                                                         <select className="form-control" id="eye_mark_color" name="eye_mark_color"
-                                                            ref={register()}>
+                                                            ref={register({})}>
                                                             <option>Select One</option>
                                                             <option selected={jobOrderInput.eye_mark_color == 'White' ? true : false} value="White">White</option>
                                                             <option selected={jobOrderInput.eye_mark_color == 'Black' ? true : false} value="Black">Black</option>
@@ -502,8 +561,8 @@ const Edit = (props) => {
                                                                 placeholder="Eye Mark Size" 
                                                                 value={jobOrderInput.eye_mark_size_one}
                                                                 onChange={onChangeHandler}
-                                                                required
-                                                                ref={register()}
+                                                                
+                                                                ref={register({})}
                                                             />
                                                             
                                                         </div>
@@ -517,7 +576,7 @@ const Edit = (props) => {
                                                                 placeholder="Eye Mark Size" 
                                                                 value={jobOrderInput.eye_mark_size_two}
                                                                 onChange={onChangeHandler}
-                                                                ref={register()}
+                                                                ref={register({})}
                                                             />
                                                            
                                                         </div>
@@ -871,19 +930,18 @@ const Edit = (props) => {
                                             <fieldset className="border" >
                                                 <legend className="w-auto text-left">Finished</legend>
                                                     <div className="form-group row">
-                                                        <label className="col-sm-2 col-form-label required" htmlFor="remarks">Remarks</label>
+                                                        <label className={`col-sm-2 col-form-label ${jobOrderInput.job_type !== 'New' ? 'required' : ''}`} htmlFor="remarks">Remarks</label>
                                                         <div className="col-sm-10">
                                                             <input 
                                                                 className="form-control" 
                                                                 id="remarks" 
                                                                 name="remarks" 
                                                                 type="text" 
+                                                                required={jobOrderInput.job_type == 'New' ? false: true}
                                                                 placeholder="Remarks" 
                                                                 value={jobOrderInput.remarks}
                                                                 onChange={onChangeHandler}
-                                                                ref={register({
-                                                                    required: 'Remarks Field Required'
-                                                                })}
+                                                                ref={register({})}
                                                             />
                                                             {errors.remarks && <p className='text-danger'>{errors.remarks.message}</p>}
                                                         </div>
