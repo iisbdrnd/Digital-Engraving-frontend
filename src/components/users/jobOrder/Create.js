@@ -324,12 +324,12 @@ const Add = (props) => {
   // }
   // console.log(multipleDropdownData);
   const submitHandler = (data, e) => {
-    console.log(data)
+    // console.log(data)
     e.preventDefault();
     data.client_id = dropdownData.client_id;
     data.job_sub_class_id = dropdownData.job_sub_class_id;
     data.reference_job = dropdownData.reference_job;
-    data.marketing_person_id = dropdownData.marketing_person_id;
+    data.marketing_person_id = typeheadOptions.design_machines[0]?.id;
     data.printer_id = dropdownData.printer_id;
     data.design_machine_id = dropdownData.design_machine_id;
     let color_id_final_arr = [];
@@ -363,6 +363,14 @@ const Add = (props) => {
       'marketing_person_id': [],
       'design_machine_id': []
     })
+    setTypeheadOptions({
+    'marketing_persons': [],
+    'printers': [],
+    'clients': [],
+    'job_sub_classes': [],
+    'reference_jobs': [],
+    'additional_colors': [],
+  'design_machines': [],})
     setCalculationValue({
       'design_width': '',
       'ups': '',
@@ -663,20 +671,20 @@ const Add = (props) => {
                             </label>
                             <div className="col-sm-8">
                               <Typeahead
-                                id="design_machine_id"
-                                name="design_machine_id"
+                                id="marketing_person_id"
+                                name="marketing_person_id"
                                 labelKey={(option) => `${option.name}`}
                                 options={typeheadOptions["design_machines"]}
                                 placeholder="Select Person..."
                                 onChange={(e) =>
-                                  dropDownChange(e, "design_machine_id")
+                                  dropDownChange(e, "marketing_person_id")
                                 }
                                 inputProps={{ required: true }}
-                                selected={typeAheadValue["design_machine_id"]}
+                                selected={typeheadOptions["design_machines"]}
                                 // ref={register({
                                 //   required: "Marketing Person Field Required",
                                 // })}
-                                {...register("design_machine_id")}
+                                {...register("marketing_person_id")}
                               />
                               {errors.marketing_person_id && (
                                 <p className="text-danger">
@@ -690,7 +698,7 @@ const Add = (props) => {
                           <div className="form-group row">
                             <label
                               className="col-sm-4 col-form-label required"
-                              htmlFor="marketing_person_id"
+                              htmlFor="design_machine_id"
                             >
                               Designer Name
                             </label>
@@ -702,18 +710,18 @@ const Add = (props) => {
                                 options={typeheadOptions["marketing_persons"]}
                                 placeholder="Select Person..."
                                 onChange={(e) =>
-                                  dropDownChange(e, "marketing_person_id")
+                                  dropDownChange(e, "design_machine_id")
                                 }
                                 inputProps={{ required: true }}
-                                selected={typeAheadValue["marketing_person_id"]}
+                                selected={typeAheadValue["design_machine_id"]}
                                 // ref={register({
                                 //   required: "Marketing Person Field Required",
                                 // })}
                                 {...register("marketing_person_id")}
                               />
-                              {errors.marketing_person_id && (
+                              {errors.design_machine_id && (
                                 <p className="text-danger">
-                                  {errors.marketing_person_id.message}
+                                  {errors.design_machine_id.message}
                                 </p>
                               )}
                             </div>

@@ -2,7 +2,7 @@ import React, { Fragment, useState, useEffect, useReducer } from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { SubmitButton } from '../../common/GlobalButton';
-import { GET_JOB_CLIENT_MARKETING, JOB_ORDER_RSURL } from '../../../api/userUrl';
+import { GET_JOB_CLIENT_MARKETING, GET_JOB_ORDER, JOB_ORDER_RSURL } from '../../../api/userUrl';
 import { userGetMethod, userPutMethod } from '../../../api/userAction';
 import useForm from "react-hook-form";
 import { Typeahead } from 'react-bootstrap-typeahead';
@@ -15,6 +15,10 @@ const Edit = (props) => {
     const [multipleDropdownData, setMultipleDropdownData] = useState([]);
     const [typeheadOptions, setTypeheadOptions] = useState({});
     const [linkjob, setLinkjob] = useState(false)
+    const [dropDownText,setDropDownText] = useState('');
+    const [typeAheadValue,setTypeAheadValue] = useState({
+        'reference_job': []
+    })
     const [clientEmployee, setClientEmployee] = useState([])
     const [jobOrderType, setJobOrderType] = useState(null)
 
@@ -134,6 +138,16 @@ const Edit = (props) => {
                     })
                 }
 
+        //         let referenceJobsOptions = [];
+        // if (response.data.referenceJobs && response.data.referenceJobs.length > 0) {
+        //   response.data.referenceJobs.map(referenceJob => {
+        //     let referenceJobObj = {};
+        //     referenceJobObj.id = referenceJob.id;
+        //     referenceJobObj.name = referenceJob.job_name;
+        //     referenceJobsOptions.push(referenceJobObj);
+        //   })
+        // }
+
                 // FOR DESIGN MACHINE
                 // let designMachineOptions = [];
                 // if (response.data.designMachines && response.data.designMachines.length > 0) {
@@ -208,7 +222,51 @@ const Edit = (props) => {
                 setIsLoading(false);
             });
     },[]);
+
+    const handleTypeaheadInputChange = (text) => {
+        setDropDownText(text); // Store the typed text in the state
+      };
+
+      useEffect(()=>{
+        if (dropDownText.length > 3) {
+          // console.log(dropDownText)
+          // setIsLoading(true)
+          userGetMethod(`${GET_JOB_ORDER}?searchText=${dropDownText}`)
+          .then(response => {
+            console.log(response.data)
+            if(response.data.jobOrders){
+              let referenceJobsOptions = [];
+              if (response.data.jobOrders && response.data.jobOrders.length > 0) {
+                response.data.jobOrders.map(referenceJob => {
+                  console.log(referenceJob.id)
+                  console.log(referenceJob.job_name)
+                let referenceJobObj = {};
+                referenceJobObj.id = referenceJob.id;
+                referenceJobObj.job_no = referenceJob.job_no;
+                referenceJobObj.name = referenceJob.job_name;
+                referenceJobsOptions.push(referenceJobObj);
+              })
+            }
+    
+            setTypeheadOptions(
+              (prevstate) => ({
+                ...prevstate,
+                
+                ['reference_jobs']: referenceJobsOptions
+              })
+            );
+            setIsLoading(false);
+            }
+          })
+        }
+        
+      },[dropDownText])
+
+
     const dropDownChange = (event, stateName) => {
+        if (stateName == 'reference_job') {
+            setTypeAheadValue({ [stateName]: event })
+          }
         if (stateName === 'client_id' && event.length > 0) {
             const clientId = event[0].id;
             userGetMethod(`${GET_JOB_CLIENT_MARKETING}?client_id=${clientId}`)
@@ -224,6 +282,19 @@ const Edit = (props) => {
                 [stateName]: event
             })
         } 
+        if (event.length > 0) {
+            const selectedValue = event[0].id;
+            // console.log(selectedValue);
+            // setDropDownText(stateName)
+            setDropdownData(
+              (prevstate) => ({
+                ...prevstate,
+                [stateName]: selectedValue,
+              })
+            );
+          }
+
+
     }
     // console.log(jobOrderInput);
 
@@ -252,7 +323,7 @@ const Edit = (props) => {
                   }
                   else{
                     toast.error('Employee Id not Set.Need to Config first!');
-    
+                    
                   }
                 })
               }
@@ -265,6 +336,7 @@ const Edit = (props) => {
                 ); 
         }
     },[clientEmployee])
+    // console.log(typeheadOptions.design_machines);
         
     
     
@@ -283,17 +355,19 @@ const Edit = (props) => {
     }
    
     const submitHandler = (data,e) => {
+
         data.client_id = jobOrderInput.client_id[0].id;
         data.job_sub_class_id = jobOrderInput.job_sub_class_id[0].id;
-        data.marketing_person_id = jobOrderInput.marketing_person_id[0].id;
+        data.reference_job = dropdownData.reference_job;
+        data.design_machine_id = jobOrderInput.marketing_person_id[0].id;
         data.printer_id = jobOrderInput.printer_id[0].id;
-        data.design_machine_id = jobOrderInput.design_machine_id[0].id;
+        data.marketing_person_id = typeheadOptions.design_machines[0]?.id;
         if(  jobOrderInput.reference_job.length > 0){
             data.reference_job = jobOrderInput.reference_job[0].id;
         }else{
             delete jobOrderInput.reference_job;
         }
-        console.log(data);
+        // console.log(data);
         let color_id_final_arr = [];
         jobOrderInput.color_id.map(item => {
             color_id_final_arr.push(item.id);
@@ -381,15 +455,29 @@ const Edit = (props) => {
                                                     <label className="col-sm-4 col-form-label required" htmlFor="reference_job">Ref Job</label>
                                                     <div className="col-sm-8">
                                                     <Typeahead
-                                                            id="reference_job"
-                                                            name="reference_job"
-                                                            labelKey={option => `${option.name}`}
-                                                            options={typeheadOptions['reference_jobs']}
-                                                            placeholder="Select Reff jobs..."
-                                                            onChange={(e) => dropDownChange(e, 'reference_job')}
-                                                            selected={jobOrderInput.reference_job}
-                                                        />
+                                                        id="reference_job"
+                                                        name="reference_job"
+                                                        labelKey={(option) => `${option.job_no}-${option.name}`}
+                                                        options={
+                                                            typeheadOptions["reference_jobs"]
+                                                        }
+                                                        placeholder="Type Job (min. 4 chars)"
+                                                        onChange={(e) =>
+                                                            dropDownChange(e, "reference_job")
+                                                        }
+                                                        onInputChange={(text) => handleTypeaheadInputChange(text)}
                                                         
+                                                        inputProps={{
+                                                            required:
+                                                            jobOrderType == "New" ? false : true,
+                                                        }}
+                                                        // ref={register({
+                                                        //     required: 'Reference Job Field Required'
+                                                        // })}
+                                                        selected={typeAheadValue["reference_job"]}
+                                                        {...register("reference_job")}
+                                                        />
+                                                                            
                                                         {errors.reference_job && <p className='text-danger'>{errors.reference_job.message}</p>}
                                                     </div>
                                                 </div> }
@@ -476,18 +564,19 @@ const Edit = (props) => {
                                                     <label className="col-sm-4 col-form-label required" htmlFor="marketing_person_id">Employees</label>
                                                     <div className="col-sm-8">
                                                         <Typeahead
-                                                            id="design_machine_id"
-                                                            name="design_machine_id"
+                                                            id="marketing_person_id"
+                                                            name="marketing_person_id"
                                                             labelKey={option => `${option.name}`}
                                                             options={typeheadOptions['design_machines']}
                                                             placeholder="Select Person..."
-                                                            onChange={(e) => dropDownChange(e, 'design_machine_id')}
+                                                            inputProps={{ required: true }}
+                                                            onChange={(e) => dropDownChange(e, 'marketing_person_id')}
                                                             selected={typeheadOptions['design_machines']}
                                                             ref={register({
                                                                 required: 'Marketing Person Field Required'
                                                             })}
                                                         />
-                                                        {errors.design_machine_id && <p className='text-danger'>{errors.design_machine_id.message}</p>}
+                                                        {errors.marketing_person_id && <p className='text-danger'>{errors.marketing_person_id.message}</p>}
                                                     </div>
                                                 </div>
                                                 
@@ -495,18 +584,18 @@ const Edit = (props) => {
                                                     <label className="col-sm-4 col-form-label required" htmlFor="design_machine_id">Designer Name</label>
                                                     <div className="col-sm-8">
                                                         <Typeahead
-                                                            id="marketing_person_id"
-                                                            name="marketing_person_id"
+                                                            id="design_machine_id"
+                                                            name="design_machine_id"
                                                             labelKey={option => `${option.name}`}
                                                             options={typeheadOptions['marketing_persons']}
                                                             placeholder="Select Person..."
-                                                            onChange={(e) => dropDownChange(e, 'marketing_person_id')}
+                                                            onChange={(e) => dropDownChange(e, 'design_machine_id')}
                                                             selected={jobOrderInput.marketing_person_id}
                                                             ref={register({
                                                                 required: 'Marketing Person Field Required'
                                                             })}
                                                         />
-                                                        {errors.marketing_person_id && <p className='text-danger'>{errors.marketing_person_id.message}</p>}
+                                                        {errors.design_machine_id && <p className='text-danger'>{errors.design_machine_id.message}</p>}
                                                     </div>
                                                 </div>
                                             </fieldset>
