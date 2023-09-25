@@ -1,12 +1,15 @@
 import React, { Fragment, useState, useEffect, useReducer } from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { SubmitButton } from '../../common/GlobalButton';
+import { ShowButton, SubmitButton } from '../../common/GlobalButton';
 import { JOB_ORDER_RSURL,GET_JOB_ORDER, GET_JOB_CLIENT_MARKETING, GET_JOB_CLIENT_ADDRESS } from '../../../api/userUrl';
 import { userGetMethod, userPostMethod } from '../../../api/userAction';
 import useForm from "react-hook-form";
 import { Typeahead } from 'react-bootstrap-typeahead';
 import 'react-bootstrap-typeahead/css/Typeahead.css';
+import Modal from 'react-bootstrap/Modal';
+import Show from './Show';
+
 
 const Add = (props) => {
   const { handleSubmit, register,reset, errors } = useForm();
@@ -29,6 +32,24 @@ const Add = (props) => {
   const [dirArea,setDirArea] = useState(0);
   const [dropDownText,setDropDownText] = useState('');
   const [clientAddress,setClientAddress] = useState('');
+  const [show, setShow] = useState(false);
+  const [showId,setShowId] = useState(0)
+
+const handleClose = () => setShow(false);
+
+const handleShow = () => {
+  setShow(true)
+  
+};
+useEffect(()=>{
+  setShowId()
+},[setShowId])
+
+
+  
+
+
+// console.log(showId);
   
   // const [jobId, setJobId] = useState(0);
   const [typeAheadValue, setTypeAheadValue] = useState({
@@ -234,13 +255,13 @@ const Add = (props) => {
       // setIsLoading(true)
       userGetMethod(`${GET_JOB_ORDER}?searchText=${dropDownText}`)
       .then(response => {
-        console.log(response.data)
+        // console.log(response.data)
         if(response.data.jobOrders){
           let referenceJobsOptions = [];
           if (response.data.jobOrders && response.data.jobOrders.length > 0) {
             response.data.jobOrders.map(referenceJob => {
-              console.log(referenceJob.id)
-              console.log(referenceJob.job_name)
+              // console.log(referenceJob.id)
+              // console.log(referenceJob.job_name)
             let referenceJobObj = {};
             referenceJobObj.id = referenceJob.id;
             referenceJobObj.job_no = referenceJob.job_no;
@@ -355,12 +376,24 @@ const Add = (props) => {
     userPostMethod(JOB_ORDER_RSURL, data)
       .then(response => {
         setIsLoading(true)
-        if (response.data.status == 1) {
+        if (response.data.status == 1 && response.data.job_id) {
           // e.target.reset();
+          const job_id = response.data?.job_id;
+          // console.log(job_id);
+          setShowId(job_id)
           reset();
           clearForm();
           setIsLoading(false);
-          toast.success(response.data.message);
+          
+
+          if (job_id) {
+            toast.success(response.data.message);
+            setShowId(job_id)
+            handleShow();
+            
+          }
+          
+
         } else {
           toast.error(response.data.message);
         }
@@ -378,6 +411,7 @@ const Add = (props) => {
       'marketing_person_id': [],
       'design_machine_id': []
     })
+    setClientAddress('')
     setTypeheadOptions({
     'marketing_persons': [],
     'printers': [],
@@ -715,7 +749,7 @@ const Add = (props) => {
                             >
                               Employees
                             </label>
-                            <div className="col-sm-8">
+                            {/* <div className="col-sm-8">
                               <Typeahead
                                 id="marketing_person_id"
                                 name="marketing_person_id"
@@ -737,7 +771,27 @@ const Add = (props) => {
                                   {errors.marketing_person_id.message}
                                 </p>
                               )}
-                            </div>
+                            </div> */}
+
+                                                        <div className="col-sm-8">
+                                                        <input 
+                                                            className="form-control" 
+                                                            id="job_name" 
+                                                            name="job_name" 
+                                                            type="text" 
+                                                            disabled
+                                                            placeholder="Employee Name.." 
+                                                            value={typeheadOptions.design_machines[0]?.name}
+                                                            // onChange={onChangeHandler}
+                                                            ref={register({
+                                                                required: 'Job Name Field Required'
+                                                            })}
+                                                        />
+                                                        {errors.job_name && <p className='text-danger'>{errors.job_name.message}</p>}
+                                                    </div>
+
+
+
                           </div>
 
 
@@ -1450,6 +1504,16 @@ const Add = (props) => {
           </div>
         </div>
       </div>
+      <div>
+        <Modal show={show} onHide={handleClose} >
+        <Modal.Header closeButton style={{maxWidth:'none', width:"90%"}}>
+          <Modal.Title>Modal heading</Modal.Title>
+        </Modal.Header>
+        <Modal.Body><Show showId = {showId}></Show></Modal.Body>
+        
+      </Modal>
+        </div>
+
     </Fragment>
   );
 };

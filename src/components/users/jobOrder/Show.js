@@ -14,7 +14,7 @@ const Show = (props) => {
     useEffect(()=>{
         // const id = props.match.params.id;
         const id = props.showId;
-        // console.log(id)
+        console.log(id)
         userGetMethod(`${JOB_ORDER_RSURL}/${id}`)
         .then(response => {
             setColorInfo(response.data.colors);

@@ -353,7 +353,7 @@ const Edit = (props) => {
                 ); 
         }
     },[clientEmployee])
-    // console.log(typeheadOptions.design_machines);
+    console.log(typeheadOptions.design_machines);
         
     
     
@@ -609,7 +609,7 @@ const Edit = (props) => {
 
                                                 <div className="form-group row">
                                                     <label className="col-sm-4 col-form-label required" htmlFor="marketing_person_id">Employees</label>
-                                                    <div className="col-sm-8">
+                                                    {/* <div className="col-sm-8">
                                                         <Typeahead
                                                             id="marketing_person_id"
                                                             name="marketing_person_id"
@@ -624,7 +624,27 @@ const Edit = (props) => {
                                                             })}
                                                         />
                                                         {errors.marketing_person_id && <p className='text-danger'>{errors.marketing_person_id.message}</p>}
+                                                    </div> */}
+
+                                                    <div className="col-sm-8">
+                                                        <input 
+                                                            className="form-control" 
+                                                            id="job_name" 
+                                                            name="job_name" 
+                                                            type="text" 
+                                                            placeholder="Job Name" 
+                                                            value={typeheadOptions.design_machines[0]?.name}
+                                                            onChange={onChangeHandler}
+                                                            ref={register({
+                                                                required: 'Job Name Field Required'
+                                                            })}
+                                                        />
+                                                        {errors.job_name && <p className='text-danger'>{errors.job_name.message}</p>}
                                                     </div>
+
+
+
+
                                                 </div>
                                                 
                                                 <div className="form-group row">
