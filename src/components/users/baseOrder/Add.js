@@ -48,7 +48,7 @@ const Add = (props) => {
         }
     );
     let job_order_id = props.location.state.params.job_order_id ? props.location.state.params.job_order_id : null;
-    console.log(job_order_id);
+    // console.log(job_order_id);
     useEffect(() => {
         pageRefreshHandler(job_order_id);
         setJobId(job_order_id);
@@ -80,14 +80,14 @@ const Add = (props) => {
 
         userGetMethod(`${BASE_ORDER_RSURL}/create`)
             .then(response => {
-                console.log(response.data);
+                // console.log(response.data);
                
 
                 let jobOrderOptions = [];
                 if (job_order_id) {
                     userGetMethod(`${JOB_ORDER_DETAILS}?jobOrderId=${job_order_id}`)
                     .then(response => {
-                        console.log(response.data);
+                        // console.log(response.data);
                         // if (response.data.jobOrderDetails && response.data.jobOrderDetails.length > 0) {
                         //     console.log(response.data.jobOrders);
                         //     response.data.jobOrderDetails.map(order => 
@@ -103,6 +103,7 @@ const Add = (props) => {
                         // }
                         const jobObj = {
                             id : response.data.jobOrderDetails.id,
+                            base_id:response.data.jobOrderDetails.job_no,
                             name : `[${response.data.jobOrderDetails.job_no}] ` + response.data.jobOrderDetails.job_name
                         }
                         jobOrderOptions.push(jobObj)
@@ -185,6 +186,7 @@ const Add = (props) => {
                     {
                         let jobOrderObj = {};
                         jobOrderObj.id = order.id;
+                        jobOrderObj.base_id = order.job_no;
                         jobOrderObj.name = `[${order.job_no}] ` + order.job_name;
                         jobOrderOptions.push(jobOrderObj);
                         if (job_order_id === order.id) {
@@ -219,17 +221,17 @@ const Add = (props) => {
             })
         }
     },[jobNameField])
-console.log(typeheadOptions);
-console.log(jobOrderData)
+// console.log(typeheadOptions.job_orders.base_id);
+// console.log(jobOrderData)
 
 const handleInputDelOnChange = (text) =>{
     setDelText(text);
 }
-console.log(delText)
+// console.log(delText)
 const handleInputClientOnChange = (text) =>{
     setClientText(text);
 }
-console.log(clientText)
+// console.log(clientText)
 
 useEffect(() =>{
     
@@ -376,7 +378,7 @@ const handleClientDrop =() =>{
 
     }
 
-    console.log(selectedValue)
+    console.log(selectedValue[0]?.base_id)
     // console.log(jobId);
     // console.log(dropdownData['supplier_id']);
     // FOR ORDER DETAILS DATA INPUT
@@ -483,6 +485,12 @@ const handleClientDrop =() =>{
             ...availableBaseOrder
         ]);
     }
+
+    const handleShow = (id) => {
+        var url = `${process.env.PUBLIC_URL}/baseCylinderOrder/${id}`;
+        window.open(url, '_blank', 'height=800,width=1200');
+    }
+
     // FINALLY SUBMIT FOR SAVE TO SERVER
     const submitHandler = (data, e) => {
         // console.log(data,e)
@@ -498,6 +506,11 @@ const handleClientDrop =() =>{
                     // console.log(response);
                     if (response.data.status == 1) {
                         toast.success(response.data.message)
+
+                        if (selectedValue[0]?.base_id.length > 0) {
+                            handleShow(selectedValue[0]?.base_id)
+                         }
+
                         clearForm();
                         reset({
                             job_order_id: '',

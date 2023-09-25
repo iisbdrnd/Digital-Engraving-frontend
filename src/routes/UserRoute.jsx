@@ -135,6 +135,9 @@ import JobAgreement from './../components/users/jobAgreement/ListData';
 import JobAgreementAdd from './../components/users/jobAgreement/Create';
 import JobAgreementEdit from './../components/users/jobAgreement/Edit';
 
+// JOB SEARCH SECTION
+import CreateJob from './../components/users/jobSearch/Create'
+
 //Layouts
 import LayoutsList from './../components/users/layouts/ListData';
 import LayoutsAdd from './../components/users/layouts/Add';
@@ -987,6 +990,18 @@ class UserRoute extends Component {
                   path={`${process.env.PUBLIC_URL}/jobOrder/show/:id`}
                   component={JobOrderShow}
                 />
+
+
+              {/*================ jobSearch component ===================*/}
+              <UserAuthRoute
+                path={`${process.env.PUBLIC_URL}/jobSearch`}
+                component={CreateJob}
+              />
+
+
+
+
+
                 {/* TEST */}
                 <UserAuthRoute
                   path={`${process.env.PUBLIC_URL}/test/index`}

@@ -91,6 +91,9 @@ const Header = () => {
               <li>
 				          <Report />
               </li>
+              <li  className="dropdown">
+              <Link to={`${process.env.PUBLIC_URL}/jobSearch`}>Job Search</Link>
+              </li>
               {/* add dropdown to this  */}
               {/* report api https://del.uddoktahub.com/api/user/software-menus/3 */}
               <li>

@@ -1506,8 +1506,8 @@ useEffect(()=>{
       </div>
       <div>
         <Modal show={show} onHide={handleClose} >
-        <Modal.Header closeButton style={{maxWidth:'none', width:"90%"}}>
-          <Modal.Title>Modal heading</Modal.Title>
+        <Modal.Header closeButton style={{maxWidth:'none', width:"100%"}}>
+          <Modal.Title>Job Order Details</Modal.Title>
         </Modal.Header>
         <Modal.Body><Show showId = {showId}></Show></Modal.Body>
         
