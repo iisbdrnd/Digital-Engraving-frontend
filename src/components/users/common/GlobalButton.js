@@ -19,6 +19,17 @@ export const SubmitButton = props => {
         </Fragment>
     )
 }
+export const SubmitButtonSearch = props => {
+    return (
+        <Fragment>
+            <div className={`card-footer ${props.addClass} text-right`} >
+                <div className={`col-md-12 offset-sm-${props.offset}`}>
+                    <button className="btn btn-primary mr-1" type="submit">Search</button>
+                </div>
+            </div>
+        </Fragment>
+    )
+}
 
 export const AddButton = props => {
     const [hasAccess, setHasAccess] = useState({});

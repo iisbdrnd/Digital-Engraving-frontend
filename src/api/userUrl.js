@@ -47,6 +47,7 @@ export const employeeInformation = 'api/user/employeeInformation';
 //JOB ORDER
 export const JOB_ORDER_RSURL = 'api/user/jobOrder';
 export const GET_JOB_ORDER = 'api/user/getJobOrder';
+export const JOB_ORDER_SEARCH = 'api/user/searchJob';
 export const GET_JOB_CLIENT_MARKETING = 'api/user/getClientMarketingPerson';
 export const GET_JOB_CLIENT_ADDRESS = 'api/user/getClientAddress';
 

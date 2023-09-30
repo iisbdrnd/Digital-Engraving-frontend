@@ -14,12 +14,12 @@ const Show = (props) => {
     useEffect(()=>{
         // const id = props.match.params.id;
         const id = props.showId;
-        console.log(id)
+        // console.log(id)
         userGetMethod(`${JOB_ORDER_RSURL}/${id}`)
         .then(response => {
-            setColorInfo(response.data.colors);
-            setJobOrdersInfo(response.data.jobOrder);
-            console.log(response.data.jobOrder)
+            setColorInfo(response.data?.colors);
+            setJobOrdersInfo(response.data?.jobOrder);
+            // console.log(response.data.jobOrder)
             setIsLoading(false);
         })
         .catch(error => console.log(error))
