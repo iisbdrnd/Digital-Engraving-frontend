@@ -48,20 +48,20 @@ const Report = (props) => {
                                                         <table className="particulars table table-bordered table-stripped reportBody" cellSpacing="5" cellPadding="5" width="100%"  style={tableStyle}>
                                                             <thead>
                                                                 <tr>
-                                                                    <th width="15%">Job No</th>
-                                                                    <th width="30%" align="center">Issue To</th>
-                                                                    <th width="15%">Order Date</th>
-                                                                    <th width="10%">BCO</th>
-                                                                    <th width="30%" align="center">Delevery Date</th>
+                                                                    <th width="15%" style={{fontSize:"13px",fontWeight:'bold'}}>Job No</th>
+                                                                    <th width="30%" align="center" style={{fontSize:"13px",fontWeight:'bold'}}>Issue To</th>
+                                                                    <th width="15%" style={{fontSize:"13px",fontWeight:'bold'}}>Order Date</th>
+                                                                    <th width="10%" style={{fontSize:"13px",fontWeight:'bold'}}>BCO</th>
+                                                                    <th width="30%" align="center" style={{fontSize:"13px",fontWeight:'bold'}}>Delevery Date</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
                                                                 <tr>
-                                                                    <td>{job.job_no}</td>
-                                                                    <td>{job.supplier_name}</td>
-                                                                    <td>{job.base_order_date}</td>
-                                                                    <td></td>
-                                                                    <td>{job.base_receive_date}</td>
+                                                                    <td style={{fontSize:"13px",fontWeight:'bold'}}>{job.job_no}</td>
+                                                                    <td style={{fontSize:"13px",fontWeight:'bold'}}>{job.supplier_name}</td>
+                                                                    <td style={{fontSize:"13px",fontWeight:'bold'}}>{job.base_order_date}</td>
+                                                                    <td style={{fontSize:"13px",fontWeight:'bold'}}></td>
+                                                                    <td style={{fontSize:"13px",fontWeight:'bold'}}>{job.base_receive_date}</td>
                                                                 </tr>
                                                             </tbody>
                                                         </table>
@@ -74,48 +74,48 @@ const Report = (props) => {
                                                             </thead>
                                                             <tbody>
                                                                 <tr>
-                                                                    <td width="10%">Face Length</td>
-                                                                    <td width="1%" align="center">:</td>
-                                                                    <td width="14%">{job.face_length} mm</td>
+                                                                    <td width="10%"style={{fontSize:"13px",fontWeight:'bold'}}>Face Length</td>
+                                                                    <td width="1%" align="center"style={{fontSize:"13px",fontWeight:'bold'}}>:</td>
+                                                                    <td width="14%"style={{fontSize:"13px",fontWeight:'bold'}}>{job.face_length} mm</td>
 
                                                                     <td width="20%" align="center"></td>
 
-                                                                    <td width="10%">Job Name</td>
-                                                                    <td width="1%" align="center">:</td>
-                                                                    <td width="14%" >{job.job_name}</td>
+                                                                    <td width="10%"style={{fontSize:"13px",fontWeight:'bold'}}>Job Name</td>
+                                                                    <td width="1%" align="center"style={{fontSize:"13px",fontWeight:'bold'}}>:</td>
+                                                                    <td width="14%" style={{fontSize:"13px",fontWeight:'bold'}}>{job.job_name}</td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td width="10%">Circumference</td>
-                                                                    <td width="1%" align="center">:</td>
-                                                                    <td width="14%">{job.circumference} mm</td>
+                                                                    <td width="10%"style={{fontSize:"13px",fontWeight:'bold'}}>Circumference</td>
+                                                                    <td width="1%" align="center"style={{fontSize:"13px",fontWeight:'bold'}}>:</td>
+                                                                    <td width="14%"style={{fontSize:"13px",fontWeight:'bold'}}>{job.circumference} mm</td>
 
                                                                     <td width="20%" align="center"></td>
 
-                                                                    <td width="10%">Client Name</td>
-                                                                    <td width="1%" align="center">:</td>
-                                                                    <td width="14%" >{job.client_name}</td>
+                                                                    <td width="10%"style={{fontSize:"13px",fontWeight:'bold'}}>Client Name</td>
+                                                                    <td width="1%" align="center"style={{fontSize:"13px",fontWeight:'bold'}}>:</td>
+                                                                    <td width="14%" style={{fontSize:"13px",fontWeight:'bold'}}>{job.client_name}</td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td width="10%">Dia</td>
-                                                                    <td width="1%" align="center">:</td>
-                                                                    <td width="14%">{job.dia} mm</td>
+                                                                    <td width="10%"style={{fontSize:"13px",fontWeight:'bold'}}>Dia</td>
+                                                                    <td width="1%" align="center"style={{fontSize:"13px",fontWeight:'bold'}}>:</td>
+                                                                    <td width="14%"style={{fontSize:"13px",fontWeight:'bold'}}>{job.dia} mm</td>
 
                                                                     <td width="20%" align="center"></td>
 
-                                                                    <td width="10%">Printers Name</td>
-                                                                    <td width="1%" align="center">:</td>
-                                                                    <td width="14%" >{job.printer_name}</td>
+                                                                    <td width="10%"style={{fontSize:"13px",fontWeight:'bold'}}>Printers Name</td>
+                                                                    <td width="1%" align="center"style={{fontSize:"13px",fontWeight:'bold'}}>:</td>
+                                                                    <td width="14%" style={{fontSize:"13px",fontWeight:'bold'}}>{job.printer_name}</td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td width="10%">Qty</td>
-                                                                    <td width="1%" align="center">:</td>
-                                                                    <td width="14%">{job.base_order_cyl_qty}</td>
+                                                                    <td width="10%"style={{fontSize:"13px",fontWeight:'bold'}}>Qty</td>
+                                                                    <td width="1%" align="center"style={{fontSize:"13px",fontWeight:'bold'}}>:</td>
+                                                                    <td width="14%"style={{fontSize:"13px",fontWeight:'bold'}}>{job.base_order_cyl_qty}</td>
 
                                                                     <td width="20%" align="center"></td>
 
-                                                                    <td width="10%">Type Of Printing</td>
-                                                                    <td width="1%" align="center">:</td>
-                                                                    <td width="14%" >Surface</td>
+                                                                    <td width="10%"style={{fontSize:"13px",fontWeight:'bold'}}>Type Of Printing</td>
+                                                                    <td width="1%" align="center"style={{fontSize:"13px",fontWeight:'bold'}}>:</td>
+                                                                    <td width="14%" style={{fontSize:"13px",fontWeight:'bold'}}>Surface</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td colSpan="7">

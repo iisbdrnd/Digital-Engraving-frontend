@@ -44,11 +44,11 @@ const Report = (props) => {
                                                     <table className="particulars table table-bordered table-stripped reportBody" cellSpacing="5" cellPadding="5" width="100%"  style={tableStyle}>
                                                         <thead>
                                                             <tr>
-                                                                <th width="15%">Job No</th>
-                                                                <th width="30%" align="center">Issue To</th>
-                                                                <th width="15%">Order Date</th>
-                                                                <th width="10%">BCO</th>
-                                                                <th width="30%" align="center">Delevery Date</th>
+                                                                <th width="15%" style={{fontSize:"13px",fontWeight:'bold'}}>Job No</th>
+                                                                <th width="30%" align="center" style={{fontSize:"13px",fontWeight:'bold'}}>Issue To</th>
+                                                                <th width="15%" style={{fontSize:"13px",fontWeight:'bold'}}>Order Date</th>
+                                                                <th width="10%" style={{fontSize:"13px",fontWeight:'bold'}}>BCO</th>
+                                                                <th width="30%" align="center" style={{fontSize:"13px",fontWeight:'bold'}}>Delevery Date</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>

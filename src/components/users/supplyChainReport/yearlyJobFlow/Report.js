@@ -74,19 +74,19 @@ const Report = (props) => {
                                                         <thead>
                                                             {report_type == 'weekly' ? (
                                                                 <tr>
-                                                                    <th width="10%">Week</th>
-                                                                    <th width="5%" align="center">New</th>
-                                                                    <th width="10%">Remake</th>
-                                                                    <th width="5%">Redo</th>
-                                                                    <th width="5%">DC/RC</th>
-                                                                    <th width="10%" align="center">Total Cyl</th>
-                                                                    <th width="10%" align="center">% of Total</th>
-                                                                    <th width="10%" align="center">Total S.A</th>
-                                                                    <th width="10%" align="center">Billable Cyl</th>
-                                                                    <th width="10%" align="center">Billable S.A</th>
-                                                                    <th width="5%">Return</th>
-                                                                    <th width="10%" align="center">Base Stock</th>
-                                                                    <th width="10%" align="center">Cancel Cyl</th>
+                                                                    <th width="10%" style={{fontSize:"15px",fontWeight:'bold'}}>Week</th>
+                                                                    <th width="5%" align="center" style={{fontSize:"15px",fontWeight:'bold'}}>New</th>
+                                                                    <th width="10%" style={{fontSize:"15px",fontWeight:'bold'}}>Remake</th>
+                                                                    <th width="5%" style={{fontSize:"15px",fontWeight:'bold'}}>Redo</th>
+                                                                    <th width="5%" style={{fontSize:"15px",fontWeight:'bold'}}>DC/RC</th>
+                                                                    <th width="10%" align="center" style={{fontSize:"15px",fontWeight:'bold'}}>Total Cyl</th>
+                                                                    <th width="10%" align="center" style={{fontSize:"15px",fontWeight:'bold'}}>% of Total</th>
+                                                                    <th width="10%" align="center" style={{fontSize:"15px",fontWeight:'bold'}}>Total S.A</th>
+                                                                    <th width="10%" align="center" style={{fontSize:"15px",fontWeight:'bold'}}>Billable Cyl</th>
+                                                                    <th width="10%" align="center" style={{fontSize:"15px",fontWeight:'bold'}}>Billable S.A</th>
+                                                                    <th width="5%" style={{fontSize:"15px",fontWeight:'bold'}}>Return</th>
+                                                                    <th width="10%" align="center" style={{fontSize:"15px",fontWeight:'bold'}}>Base Stock</th>
+                                                                    <th width="10%" align="center" style={{fontSize:"15px",fontWeight:'bold'}}>Cancel Cyl</th>
                                                                 </tr>
                                                             ) : (
                                                                 <tr>
@@ -112,19 +112,19 @@ const Report = (props) => {
                                                                 jobs.length > 0 ? 
                                                                     jobs.map((job, key)=>(    
                                                                         <tr key={key}>
-                                                                            <td>Week {job.agreement_week_sl}</td>
-                                                                            <td>{job.new_qty}</td>
-                                                                            <td>{job.remake_qty}</td>
-                                                                            <td>{job.redo_qty}</td>
-                                                                            <td>{job.dc_rc_qty}</td>
-                                                                            <td>{job.total_cyl_qty}</td>
-                                                                            <td>{Math.round((job.total_cyl_qty * 100) / job.total_quantity)}%</td>
-                                                                            <td>{fixedNumber(job.total_surface_area)}</td>
-                                                                            <td>{job.billable_cylinder}</td>
-                                                                            <td>{fixedNumber(job.billable_surface_area)}</td>
-                                                                            <td></td>
-                                                                            <td></td>
-                                                                            <td></td>
+                                                                            <td style={{fontSize:"13px",fontWeight:'bold'}}>Week {job.agreement_week_sl}</td>
+                                                                            <td style={{fontSize:"13px",fontWeight:'bold'}}>{job.new_qty}</td>
+                                                                            <td style={{fontSize:"13px",fontWeight:'bold'}}>{job.remake_qty}</td>
+                                                                            <td style={{fontSize:"13px",fontWeight:'bold'}}>{job.redo_qty}</td>
+                                                                            <td style={{fontSize:"13px",fontWeight:'bold'}}>{job.dc_rc_qty}</td>
+                                                                            <td style={{fontSize:"13px",fontWeight:'bold'}}>{job.total_cyl_qty}</td>
+                                                                            <td style={{fontSize:"13px",fontWeight:'bold'}}>{Math.round((job.total_cyl_qty * 100) / job.total_quantity)}%</td>
+                                                                            <td style={{fontSize:"13px",fontWeight:'bold'}}>{fixedNumber(job.total_surface_area)}</td>
+                                                                            <td style={{fontSize:"13px",fontWeight:'bold'}}>{job.billable_cylinder}</td>
+                                                                            <td style={{fontSize:"13px",fontWeight:'bold'}}>{fixedNumber(job.billable_surface_area)}</td>
+                                                                            <td style={{fontSize:"13px",fontWeight:'bold'}}></td>
+                                                                            <td style={{fontSize:"13px",fontWeight:'bold'}}></td>
+                                                                            <td style={{fontSize:"13px",fontWeight:'bold'}}></td>
                                                                         </tr>
                                                                     ))
                                                                 : null
@@ -132,21 +132,21 @@ const Report = (props) => {
                                                                 
                                                                 jobs.length > 0 ? 
                                                                     jobs.map((job, key)=>(    
-                                                                            <tr key={key}>
+                                                                            <tr key={key} style={{fontSize:"13px",fontWeight:'bold'}}>
                                                                                 {handleTotalData(job.new_qty, job.remake_qty, job.redu_qty, job.total_cylinders, job.total_surface_area, job.billable_total_surface_area, job.total_billable_cyl)}
-                                                                                <td>{job.agreement_month}</td>
-                                                                                <td>{job.new_qty}</td>
-                                                                                <td>{job.remake_qty}</td>
-                                                                                <td>{job.redo_qty}</td>
-                                                                                <td>{job.dc_rc_qty}</td>
-                                                                                <td>{job.total_cyl_qty}</td>
-                                                                                <td>{Math.round((job.total_cyl_qty * 100) / job.total_quantity)}%</td>
-                                                                                <td>{fixedNumber(job.total_surface_area)}</td>
-                                                                                <td>{job.billable_cylinder}</td>
-                                                                                <td>{fixedNumber(job.billable_surface_area)}</td>
-                                                                                <td></td>
-                                                                                <td></td>
-                                                                                <td></td>
+                                                                                <td style={{fontSize:"13px",fontWeight:'bold'}}>{job.agreement_month}</td>
+                                                                                <td style={{fontSize:"13px",fontWeight:'bold'}}>{job.new_qty}</td>
+                                                                                <td style={{fontSize:"13px",fontWeight:'bold'}}>{job.remake_qty}</td>
+                                                                                <td style={{fontSize:"13px",fontWeight:'bold'}}>{job.redo_qty}</td>
+                                                                                <td style={{fontSize:"13px",fontWeight:'bold'}}>{job.dc_rc_qty}</td>
+                                                                                <td style={{fontSize:"13px",fontWeight:'bold'}}>{job.total_cyl_qty}</td>
+                                                                                <td style={{fontSize:"13px",fontWeight:'bold'}}>{Math.round((job.total_cyl_qty * 100) / job.total_quantity)}%</td>
+                                                                                <td style={{fontSize:"13px",fontWeight:'bold'}}>{fixedNumber(job.total_surface_area)}</td>
+                                                                                <td style={{fontSize:"13px",fontWeight:'bold'}}>{job.billable_cylinder}</td>
+                                                                                <td style={{fontSize:"13px",fontWeight:'bold'}}>{fixedNumber(job.billable_surface_area)}</td>
+                                                                                <td style={{fontSize:"13px",fontWeight:'bold'}}></td>
+                                                                                <td style={{fontSize:"13px",fontWeight:'bold'}}></td>
+                                                                                <td style={{fontSize:"13px",fontWeight:'bold'}}></td>
                                                                             </tr>
                                                                     ))
                                                                 : null
@@ -156,19 +156,19 @@ const Report = (props) => {
                                                                     grandTotals.length > 0 ? 
                                                                         grandTotals.map((grandTotal, key)=>(
                                                                                 <tr>
-                                                                                    <td align="right">Total</td>
-                                                                                    <td>{grandTotal.new_qty}</td>
-                                                                                    <td>{grandTotal.remake_qty}</td>
-                                                                                    <td>{grandTotal.redo_qty}</td>
-                                                                                    <td>{grandTotal.dc_rc_qty}</td>
-                                                                                    <td>{grandTotal.total_cyl_qty}</td>
-                                                                                    <td>100%</td>
-                                                                                    <td>{fixedNumber(grandTotal.total_surface_area)}</td>
-                                                                                    <td>{grandTotal.billable_cylinder}</td>
-                                                                                    <td>{fixedNumber(grandTotal.billable_surface_area)}</td>
-                                                                                    <td></td>
-                                                                                    <td></td>
-                                                                                    <td></td>
+                                                                                    <td align="right" style={{fontSize:"15px",fontWeight:'bold'}}>Total</td>
+                                                                                    <td style={{fontSize:"13px",fontWeight:'bold'}}>{grandTotal.new_qty}</td>
+                                                                                    <td style={{fontSize:"13px",fontWeight:'bold'}}>{grandTotal.remake_qty}</td>
+                                                                                    <td style={{fontSize:"13px",fontWeight:'bold'}}>{grandTotal.redo_qty}</td>
+                                                                                    <td style={{fontSize:"13px",fontWeight:'bold'}}>{grandTotal.dc_rc_qty}</td>
+                                                                                    <td style={{fontSize:"13px",fontWeight:'bold'}}>{grandTotal.total_cyl_qty}</td>
+                                                                                    <td style={{fontSize:"13px",fontWeight:'bold'}}>100%</td>
+                                                                                    <td style={{fontSize:"13px",fontWeight:'bold'}}>{fixedNumber(grandTotal.total_surface_area)}</td>
+                                                                                    <td style={{fontSize:"13px",fontWeight:'bold'}}>{grandTotal.billable_cylinder}</td>
+                                                                                    <td style={{fontSize:"13px",fontWeight:'bold'}}>{fixedNumber(grandTotal.billable_surface_area)}</td>
+                                                                                    <td style={{fontSize:"13px",fontWeight:'bold'}}></td>
+                                                                                    <td style={{fontSize:"13px",fontWeight:'bold'}}></td>
+                                                                                    <td style={{fontSize:"13px",fontWeight:'bold'}}></td>
                                                                                 </tr>
                                                                             ))
                                                                     : null

@@ -574,7 +574,7 @@ const handlePageChange = (pageNumber = 1) => {
                                                                         <td>{item.job_type}</td>
                                                                         <td className="">
                                                                             {
-                                                                               <ShowButton handleShow={()=>handleShow(item.job_no)}   menuId={ menuId }/>
+                                                                               <ShowButton handleShow={()=>handleShow(item.id)}   menuId={ menuId }/>
                                                                             }
                                                                         </td>
                                                                     </tr>

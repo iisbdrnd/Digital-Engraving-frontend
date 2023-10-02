@@ -65,21 +65,21 @@ const Report = (props) => {
                                                         (
                                                             <>
                                                                 <tr key={index1}>
-                                                                    <td colSpan="10">{orderType.job_type}</td>
+                                                                    <td colSpan="10" style={{fontSize:"13px",fontWeight:'bold'}}>{orderType.job_type}</td>
                                                                 </tr>
                                                                 { orderType.jobOrders.length > 0 ? 
                                                                     orderType.jobOrders.map((jobOrder, index2) => (
                                                                         <tr key={index2}>
-                                                                            <td>{jobOrder.job_no}</td>
-                                                                            <td>{jobOrder.agreement_date}</td>
-                                                                            <td>{jobOrder.job_name}</td>
-                                                                            <td>{jobOrder.client_name}</td>
-                                                                            <td>{jobOrder.printer_name}</td>
-                                                                            <td>{`${jobOrder.eye_mark_size_one} X ${jobOrder.eye_mark_size_one}`}</td>
-                                                                            <td className="text-center">{jobOrder.total_cylinder_qty}</td>
+                                                                            <td style={{fontSize:"13px",fontWeight:'bold'}}>{jobOrder.job_no}</td>
+                                                                            <td style={{fontSize:"13px",fontWeight:'bold'}}>{jobOrder.agreement_date}</td>
+                                                                            <td style={{fontSize:"13px",fontWeight:'bold'}}>{jobOrder.job_name}</td>
+                                                                            <td style={{fontSize:"13px",fontWeight:'bold'}}>{jobOrder.client_name}</td>
+                                                                            <td style={{fontSize:"13px",fontWeight:'bold'}}>{jobOrder.printer_name}</td>
+                                                                            <td style={{fontSize:"13px",fontWeight:'bold'}}>{`${jobOrder.eye_mark_size_one} X ${jobOrder.eye_mark_size_one}`}</td>
+                                                                            <td className="text-center" style={{fontSize:"13px",fontWeight:'bold'}}>{jobOrder.total_cylinder_qty}</td>
                                                                             <td></td>
-                                                                            <td className="text-center">{jobOrder.surface_area}</td>
-                                                                            <td>{jobOrder.remarks}</td>
+                                                                            <td className="text-center" style={{fontSize:"13px",fontWeight:'bold'}}>{jobOrder.surface_area}</td>
+                                                                            <td style={{fontSize:"13px",fontWeight:'bold'}}>{jobOrder.remarks}</td>
                                                                         </tr>
                                                                     ))
                                                                     : <tr><td colSpan="10" className="text-center">No data found</td></tr>
@@ -92,17 +92,17 @@ const Report = (props) => {
                                                                     <td ></td>
                                                                 </tr> */}
                                                                 <tr className="groupFont">
-                                                                    <td colSpan="5">
+                                                                    <td colSpan="5" style={{fontSize:"15px",fontWeight:'bold'}}>
                                                                         Total Number of Job: {orderType.jobOrders.length}
                                                                     </td>
-                                                                    <td className="text-right">
+                                                                    <td className="text-right" style={{fontSize:"15px",fontWeight:'bold'}}>
                                                                         Total
                                                                     </td>
-                                                                    <td className="text-center">
+                                                                    <td className="text-center" style={{fontSize:"15px",fontWeight:'bold'}}>
                                                                         {orderType.calculateTotalCyl}
                                                                     </td>
                                                                     <td></td>
-                                                                    <td className="text-center">
+                                                                    <td className="text-center" style={{fontSize:"15px",fontWeight:'bold'}}>
                                                                         {orderType.calculateTotalSurfaceArea}
                                                                     </td>
                                                                     <td colSpan="2"></td>
@@ -117,8 +117,8 @@ const Report = (props) => {
                                         </table>
                                         <table className="particulars table table-bordered table-stripped" cellSpacing="5" cellPadding="5" width="100%"  style={tableStyle}>
                                             <tr className="groupFont">
-                                                <td>Grand Total Cylinder: {grandTotalCylinder}</td>
-                                                <td>Grand Total Surface Area: {grandTotalSurfaceArea}</td>
+                                                <td style={{fontSize:"15px",fontWeight:'bold'}}>Grand Total Cylinder: {grandTotalCylinder}</td>
+                                                <td style={{fontSize:"15px",fontWeight:'bold'}}>Grand Total Surface Area: {grandTotalSurfaceArea}</td>
                                             </tr>
                                         </table>
                                     </div>

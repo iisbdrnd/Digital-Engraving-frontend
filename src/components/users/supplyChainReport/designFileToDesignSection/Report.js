@@ -181,34 +181,34 @@ const Report = ({fromDate, toDate}) => {
                                         >
                                             <thead className="groupFont">
                                             <tr>
-                                                <th width="10%" align="center">
+                                                <th width="10%" align="center" style={{fontSize:"15px",fontWeight:'bold'}}>
                                                 JobNo
                                                 </th>
-                                                <th width="15%" align="center">
+                                                <th width="15%" align="center" style={{fontSize:"15px",fontWeight:'bold'}}>
                                                 Agreement Date
                                                 </th>
-                                                <th width="20%" align="center">
+                                                <th width="20%" align="center" style={{fontSize:"15px",fontWeight:'bold'}}>
                                                 Job Name
                                                 </th>
-                                                <th width="10%" align="center">
+                                                <th width="10%" align="center" style={{fontSize:"15px",fontWeight:'bold'}}>
                                                 Client Name
                                                 </th>
-                                                <th width="10%" align="center">
+                                                <th width="10%" align="center" style={{fontSize:"15px",fontWeight:'bold'}}>
                                                 Printers Name
                                                 </th>
-                                                <th width="10%" align="center">
+                                                <th width="10%" align="center" style={{fontSize:"15px",fontWeight:'bold'}}>
                                                 Size(mm X mm)
                                                 </th>
-                                                <th width="5%" align="center">
+                                                <th width="5%" align="center" style={{fontSize:"15px",fontWeight:'bold'}}>
                                                 No Cyl
                                                 </th>
-                                                <th width="5%" align="center">
+                                                <th width="5%" align="center" style={{fontSize:"15px",fontWeight:'bold'}}>
                                                 Base Date
                                                 </th>
-                                                <th width="10%" align="center">
+                                                <th width="10%" align="center" style={{fontSize:"15px",fontWeight:'bold'}}>
                                                 Surface Area
                                                 </th>
-                                                <th width="10%" align="center">
+                                                <th width="10%" align="center" style={{fontSize:"15px",fontWeight:'bold'}}>
                                                 Remarks
                                                 </th>
                                             </tr>
@@ -219,25 +219,25 @@ const Report = ({fromDate, toDate}) => {
                                                 {currentReports.map((orderType, index1) => (
                                                     <>
                                                     <tr key={index1}>
-                                                        <td colSpan="10">{orderType.job_type}</td>
+                                                        <td colSpan="10" style={{fontSize:"15px",fontWeight:'bold'}}>{orderType.job_type}</td>
                                                     </tr>
                                                     {orderType.jobOrders ? (
                                                         orderType.jobOrders.map((jobOrder, index2) => (
                                                         <tr key={index2}>
-                                                            <td>{jobOrder.job_no}</td>
-                                                            <td>{jobOrder.agreement_date}</td>
-                                                            <td>{jobOrder.job_name}</td>
-                                                            <td>{jobOrder.client_name}</td>
-                                                            <td>{jobOrder.printer_name}</td>
-                                                            <td>{`${jobOrder.eye_mark_size_one} X ${jobOrder.eye_mark_size_one}`}</td>
-                                                            <td className="text-center">
+                                                            <td style={{fontSize:"13px",fontWeight:'bold'}}>{jobOrder.job_no}</td>
+                                                            <td style={{fontSize:"13px",fontWeight:'bold'}}>{jobOrder.agreement_date}</td>
+                                                            <td style={{fontSize:"13px",fontWeight:'bold'}}>{jobOrder.job_name}</td>
+                                                            <td style={{fontSize:"13px",fontWeight:'bold'}}>{jobOrder.client_name}</td>
+                                                            <td style={{fontSize:"13px",fontWeight:'bold'}}>{jobOrder.printer_name}</td>
+                                                            <td style={{fontSize:"13px",fontWeight:'bold'}}>{`${jobOrder.eye_mark_size_one} X ${jobOrder.eye_mark_size_one}`}</td>
+                                                            <td className="text-center" style={{fontSize:"13px",fontWeight:'bold'}}>
                                                             {jobOrder.total_cylinder_qty}
                                                             </td>
                                                             <td></td>
-                                                            <td className="text-center">
+                                                            <td className="text-center" style={{fontSize:"13px",fontWeight:'bold'}}>
                                                             {jobOrder.surface_area}
                                                             </td>
-                                                            <td>{jobOrder.remarks}</td>
+                                                            <td style={{fontSize:"13px",fontWeight:'bold'}}>{jobOrder.remarks}</td>
                                                         </tr>
                                                         ))
                                                     ) : (
@@ -248,15 +248,15 @@ const Report = ({fromDate, toDate}) => {
                                                         </tr>
                                                     )}
                                                     <tr className="groupFont">
-                                                        <td colSpan="5">
+                                                        <td colSpan="5" style={{fontSize:"15px",fontWeight:'bold'}}>
                                                         Total Number of Job: {orderType.jobOrders.length}
                                                         </td>
-                                                        <td className="text-right">Total</td>
-                                                        <td className="text-center">
+                                                        <td className="text-right" style={{fontSize:"15px",fontWeight:'bold'}}>Total</td>
+                                                        <td className="text-center" style={{fontSize:"15px",fontWeight:'bold'}}>
                                                         {orderType.calculateTotalCyl}
                                                         </td>
                                                         <td></td>
-                                                        <td className="text-center">
+                                                        <td className="text-center" style={{fontSize:"15px",fontWeight:'bold'}}>
                                                         {orderType.calculateTotalSurfaceArea}
                                                         </td>
                                                         <td colSpan="2"></td>
@@ -283,8 +283,8 @@ const Report = ({fromDate, toDate}) => {
                                                     style={tableStyle}
                                                 >
                                                     <tr className="groupFont">
-                                                    <td>Grand Total Cylinder: {grandTotalCylinder}</td>
-                                                    <td>Grand Total Surface Area: {grandTotalSurfaceArea}</td>
+                                                    <td style={{fontSize:"15px",fontWeight:'bold'}}>Grand Total Cylinder: {grandTotalCylinder}</td>
+                                                    <td style={{fontSize:"15px",fontWeight:'bold'}}>Grand Total Surface Area: {grandTotalSurfaceArea}</td>
                                                     </tr>
                                                 </table>
                                             )

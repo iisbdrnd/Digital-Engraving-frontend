@@ -40,30 +40,30 @@ const Report = (props) => {
                                     jobOrdersInfo != null ? (
                                         <>
                                         <div>
-                                            <h4>Marketing Person: {jobOrdersInfo.marketing_person}</h4>
-                                            <h4 align="right">{jobOrdersInfo.job_type}</h4>
+                                            <h4 style={{fontSize:"13px",fontWeight:'bold'}}>Marketing Person: {jobOrdersInfo.marketing_person}</h4>
+                                            <h4 align="right" style={{fontSize:"13px",fontWeight:'bold'}}>{jobOrdersInfo.job_type}</h4>
 
                                         </div>
                                         <div className="row">
                                         <h3>General Information</h3>
                                             <table className="particulars table-stripped groupFont" width="100%"  style={tableStyle}>
                                                 <tr>
-                                                    <td width="15%">Job No.</td>
+                                                    <td width="15%" style={{fontSize:"14px",fontWeight:'bold'}}>Job No.</td>
                                                     <td width="5%" align="center">:</td>
-                                                    <td width="30%">{jobOrdersInfo.job_no}</td>
-                                                    <td width="15%">Date of Agreement</td>
+                                                    <td width="30%" style={{fontSize:"13px",fontWeight:'bold'}}>{jobOrdersInfo.job_no}</td>
+                                                    <td width="15%" style={{fontSize:"14px",fontWeight:'bold'}}>Date of Agreement</td>
                                                     <td width="5%" align="center">:</td>
-                                                    <td width="30%">{jobOrdersInfo.agreement_date}</td>
+                                                    <td width="30%" style={{fontSize:"13px",fontWeight:'bold'}}>{jobOrdersInfo.agreement_date}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td width="15%">Name of Job</td>
+                                                    <td width="15%" style={{fontSize:"14px",fontWeight:'bold'}}>Name of Job</td>
                                                     <td width="5%" align="center">:</td>
-                                                    <td width="30%" colSpan="4">{jobOrdersInfo.job_name}</td>
+                                                    <td width="30%" colSpan="4" style={{fontSize:"13px",fontWeight:'bold'}}>{jobOrdersInfo.job_name}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td width="15%">Client Name</td>
+                                                    <td width="15%" style={{fontSize:"14px",fontWeight:'bold'}}>Client Name</td>
                                                     <td width="5%" align="center">:</td>
-                                                    <td width="30%" colSpan="4">{jobOrdersInfo.client_name}</td>
+                                                    <td width="30%" colSpan="4" style={{fontSize:"13px",fontWeight:'bold'}}>{jobOrdersInfo.client_name}</td>
                                                 </tr>
                                                 {/* <tr>
                                                     <td width="15%">Address</td>
@@ -71,9 +71,9 @@ const Report = (props) => {
                                                     <td width="30%">{jobOrdersInfo.client_address}</td>
                                                 </tr> */}
                                                 <tr>
-                                                    <td width="15%">Name of Printer</td>
+                                                    <td width="15%" style={{fontSize:"14px",fontWeight:'bold'}}>Name of Printer</td>
                                                     <td width="5%" align="center">:</td>
-                                                    <td width="30%" colSpan="4">{jobOrdersInfo.printer_name}</td>
+                                                    <td width="30%" colSpan="4" style={{fontSize:"13px",fontWeight:'bold'}}>{jobOrdersInfo.printer_name}</td>
                                                 </tr>
                                                 
                                             </table>
@@ -81,91 +81,91 @@ const Report = (props) => {
                                             {/* <h6>Printing Area</h6> */}
                                             <table className="particulars table table-bordered table-stripped reportBody" cellSpacing="5" cellPadding="5" width="100%"  style={tableStyle}>
                                                 <tr>
-                                                    <td width="15%">Job Height</td>
+                                                    <td width="15%" style={{fontSize:"14px",fontWeight:'bold'}}>Job Height</td>
                                                     <td width="5%" align="center">:</td>
-                                                    <td width="30%">{jobOrdersInfo.design_height}</td>
-                                                    <td width="15%">Job Width</td>
+                                                    <td width="30%" style={{fontSize:"13px",fontWeight:'bold'}}>{jobOrdersInfo.design_height}</td>
+                                                    <td width="15%" style={{fontSize:"14px",fontWeight:'bold'}}>Job Width</td>
                                                     <td width="5%" align="center">:</td>
-                                                    <td width="30%">{jobOrdersInfo.design_width}</td>
+                                                    <td width="30%" style={{fontSize:"13px",fontWeight:'bold'}}>{jobOrdersInfo.design_width}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td width="15%">Repeat</td>
+                                                    <td width="15%" style={{fontSize:"14px",fontWeight:'bold'}}>Repeat</td>
                                                     <td width="5%" align="center">:</td>
-                                                    <td width="30%">{jobOrdersInfo.rpt}</td>
-                                                    <td width="15%">Ups</td>
+                                                    <td width="30%" style={{fontSize:"13px",fontWeight:'bold'}}>{jobOrdersInfo.rpt}</td>
+                                                    <td width="15%" style={{fontSize:"14px",fontWeight:'bold'}}>Ups</td>
                                                     <td width="5%" align="center">:</td>
-                                                    <td width="30%">{jobOrdersInfo.ups}</td>
+                                                    <td width="30%" style={{fontSize:"13px",fontWeight:'bold'}}>{jobOrdersInfo.ups}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td width="15%">Printing Height</td>
+                                                    <td width="15%" style={{fontSize:"14px",fontWeight:'bold'}}>Printing Height</td>
                                                     <td width="5%" align="center">:</td>
-                                                    <td width="30%">{jobOrdersInfo.printing_height}</td>
-                                                    <td width="15%">Printing Width</td>
+                                                    <td width="30%" style={{fontSize:"13px",fontWeight:'bold'}}>{jobOrdersInfo.printing_height}</td>
+                                                    <td width="15%" style={{fontSize:"14px",fontWeight:'bold'}}>Printing Width</td>
                                                     <td width="5%" align="center">:</td>
-                                                    <td width="30%">{jobOrdersInfo.printing_width}</td>
+                                                    <td width="30%" style={{fontSize:"13px",fontWeight:'bold'}}>{jobOrdersInfo.printing_width}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td width="15%">Circumference</td>
+                                                    <td width="15%" style={{fontSize:"14px",fontWeight:'bold'}}>Circumference</td>
                                                     <td width="5%" align="center">:</td>
-                                                    <td width="30%">{jobOrdersInfo.circumference}</td>
-                                                    <td width="15%">Face Length</td>
+                                                    <td width="30%" style={{fontSize:"13px",fontWeight:'bold'}}>{jobOrdersInfo.circumference}</td>
+                                                    <td width="15%" style={{fontSize:"14px",fontWeight:'bold'}}>Face Length</td>
                                                     <td width="5%" align="center">:</td>
-                                                    <td width="30%">{jobOrdersInfo.face_length}</td>
+                                                    <td width="30%" style={{fontSize:"13px",fontWeight:'bold'}}>{jobOrdersInfo.face_length}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td width="15%">Eye Mark Size One</td>
+                                                    <td width="15%" style={{fontSize:"14px",fontWeight:'bold'}}>Eye Mark Size One</td>
                                                     <td width="5%" align="center">:</td>
-                                                    <td width="30%">{jobOrdersInfo.eye_mark_size_one}</td>
-                                                    <td width="15%">Eye Mark Size Two</td>
+                                                    <td width="30%" style={{fontSize:"13px",fontWeight:'bold'}}>{jobOrdersInfo.eye_mark_size_one}</td>
+                                                    <td width="15%" style={{fontSize:"14px",fontWeight:'bold'}}>Eye Mark Size Two</td>
                                                     <td width="5%" align="center">:</td>
-                                                    <td width="30%">{jobOrdersInfo.eye_mark_size_two}</td>
+                                                    <td width="30%" style={{fontSize:"13px",fontWeight:'bold'}}>{jobOrdersInfo.eye_mark_size_two}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td width="15%">Surface Area</td>
+                                                    <td width="15%" style={{fontSize:"14px",fontWeight:'bold'}}>Surface Area</td>
                                                     <td width="5%" align="center">:</td>
-                                                    <td width="30%">{jobOrdersInfo.surface_area}</td>
-                                                    <td width="15%">Number of Cylinder</td>
+                                                    <td width="30%" style={{fontSize:"13px",fontWeight:'bold'}}>{jobOrdersInfo.surface_area}</td>
+                                                    <td width="15%" style={{fontSize:"14px",fontWeight:'bold'}}>Number of Cylinder</td>
                                                     <td width="5%" align="center">:</td>
-                                                    <td width="30%">{jobOrdersInfo.total_cylinder_qty}</td>
+                                                    <td width="30%" style={{fontSize:"13px",fontWeight:'bold'}}>{jobOrdersInfo.total_cylinder_qty}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td width="15%">Total Surface Area</td>
+                                                    <td width="15%" style={{fontSize:"14px",fontWeight:'bold'}}>Total Surface Area</td>
                                                     <td width="5%" align="center">:</td>
-                                                    <td width="30%">{jobOrdersInfo.total_surface_area}</td>
-                                                    <td width="15%">Printing Mark</td>
+                                                    <td width="30%" style={{fontSize:"13px",fontWeight:'bold'}}>{jobOrdersInfo.total_surface_area}</td>
+                                                    <td width="15%" style={{fontSize:"14px",fontWeight:'bold'}}>Printing Mark</td>
                                                     <td width="5%" align="center">:</td>
-                                                    <td width="30%">{jobOrdersInfo.printer_mark}</td>
+                                                    <td width="30%" style={{fontSize:"13px",fontWeight:'bold'}}>{jobOrdersInfo.printer_mark}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td width="15%">Diameter</td>
+                                                    <td width="15%" style={{fontSize:"14px",fontWeight:'bold'}}>Diameter</td>
                                                     <td width="5%" align="center">:</td>
-                                                    <td width="30%">{jobOrdersInfo.dia}</td>
-                                                    <td width="15%">Cone</td>
+                                                    <td width="30%" style={{fontSize:"13px",fontWeight:'bold'}}>{jobOrdersInfo.dia}</td>
+                                                    <td width="15%" style={{fontSize:"14px",fontWeight:'bold'}}>Cone</td>
                                                     <td width="5%" align="center">:</td>
-                                                    <td width="30%">{jobOrdersInfo.cone}</td>
+                                                    <td width="30%" style={{fontSize:"13px",fontWeight:'bold'}}>{jobOrdersInfo.cone}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td width="15%">Extra Face Length</td>
+                                                    <td width="15%" style={{fontSize:"14px",fontWeight:'bold'}}>Extra Face Length</td>
                                                     <td width="5%" align="center">:</td>
-                                                    <td width="30%">{jobOrdersInfo.extra_face_length}</td>
-                                                    <td width="15%">Angle</td>
+                                                    <td width="30%" style={{fontSize:"13px",fontWeight:'bold'}}>{jobOrdersInfo.extra_face_length}</td>
+                                                    <td width="15%" style={{fontSize:"14px",fontWeight:'bold'}}>Angle</td>
                                                     <td width="5%" align="center">:</td>
-                                                    <td width="30%">{jobOrdersInfo.angle}</td>
+                                                    <td width="30%" style={{fontSize:"13px",fontWeight:'bold'}}>{jobOrdersInfo.angle}</td>
                                                 </tr>
                                                 <tr>
                                                     <td colSpan="7">
                                                         <div className="cylImgDiv">
                                                             <img className="img-responsive cylImgTag" src={process.env.PUBLIC_URL+'/cylinder.bmp'} alt="Company Logo"/>
-                                                            <div className="fl">FL</div>
-                                                            <div className="flValue">{jobOrdersInfo.face_length} mm</div>
-                                                            <div className="ups">Ups</div>
-                                                            <div className="upsValue">{jobOrdersInfo.ups} Nos</div>
-                                                            <div className="printArea">Printing Area</div>
-                                                            <div className="printAreaValue">{jobOrdersInfo.printing_width} mm</div>
-                                                            <div className="cirRpt">Cir <br /> RPT</div>
-                                                            <div className="cirRptValue">{jobOrdersInfo.circumference} mm <br /> {jobOrdersInfo.rpt} Nos</div>
-                                                            <div className="designHeight"> Design Height - <span style={{'padding': '2px', 'border': '1px solid black'}}>{jobOrdersInfo.printing_height}</span> mm </div>
-                                                            <div className="designWidth"> Design Width - <span style={{'padding': '2px', 'border': '1px solid black'}}>{jobOrdersInfo.printing_height}</span> mm </div>
+                                                            <div className="fl" style={{fontSize:"14px",fontWeight:'bold'}}>FL</div>
+                                                            <div className="flValue" style={{fontSize:"13px",fontWeight:'bold'}}>{jobOrdersInfo.face_length} mm</div>
+                                                            <div className="ups" style={{fontSize:"14px",fontWeight:'bold'}}>Ups</div>
+                                                            <div className="upsValue" style={{fontSize:"13px",fontWeight:'bold'}}>{jobOrdersInfo.ups} Nos</div>
+                                                            <div className="printArea" style={{fontSize:"14px",fontWeight:'bold'}}>Printing Area</div>
+                                                            <div className="printAreaValue" style={{fontSize:"13px",fontWeight:'bold'}}>{jobOrdersInfo.printing_width} mm</div>
+                                                            <div className="cirRpt" style={{fontSize:"14px",fontWeight:'bold'}}>Cir <br /> RPT</div>
+                                                            <div className="cirRptValue" style={{fontSize:"13px",fontWeight:'bold'}}>{jobOrdersInfo.circumference} mm <br /> {jobOrdersInfo.rpt} Nos</div>
+                                                            <div className="designHeight" style={{fontSize:"14px",fontWeight:'bold'}}> Design Height - <span style={{'padding': '2px', 'border': '1px solid black'}}>{jobOrdersInfo.printing_height}</span> mm </div>
+                                                            <div className="designWidth" style={{fontSize:"14px",fontWeight:'bold'}}> Design Width - <span style={{'padding': '2px', 'border': '1px solid black'}}>{jobOrdersInfo.printing_height}</span> mm </div>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -173,23 +173,23 @@ const Report = (props) => {
 
                                             <table className="particulars table-stripped groupFont" width="100%"  style={tableStyle}>
                                                 <tr>
-                                                    <td width="15%">Name of Color</td>
+                                                    <td width="15%" style={{fontSize:"14px",fontWeight:'bold'}}>Name of Color</td>
                                                     <td width="5%" align="center">:</td>
-                                                    <td width="80%" colSpan="4">
+                                                    <td width="80%" colSpan="4" style={{fontSize:"13px",fontWeight:'bold'}}>
                                                     {colorInfo.map((name,index) => (index ? ', ' : '')+(name.color_name))}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td width="15%">Type of Printing</td>
+                                                    <td width="15%" style={{fontSize:"14px",fontWeight:'bold'}}>Type of Printing</td>
                                                     <td width="5%" align="center">:</td>
-                                                    <td width="30%">{jobOrdersInfo.printing_status}</td>
-                                                    <td width="15%">Design Location</td>
+                                                    <td width="30%" style={{fontSize:"13px",fontWeight:'bold'}}>{jobOrdersInfo.printing_status}</td>
+                                                    <td width="15%" style={{fontSize:"14px",fontWeight:'bold'}}>Design Location</td>
                                                     <td width="5%" align="center">:</td>
                                                     <td width="30%"></td>
                                                 </tr>
                                                 <tr>
-                                                    <td width="15%">Note</td>
+                                                    <td width="15%" style={{fontSize:"14px",fontWeight:'bold'}}>Note</td>
                                                     <td width="5%" align="center">:</td>
-                                                    <td width="80%" colSpan="4">{jobOrdersInfo.remarks}</td>
+                                                    <td width="80%" colSpan="4" style={{fontSize:"13px",fontWeight:'bold'}}>{jobOrdersInfo.remarks}</td>
                                                 </tr>
                                             </table>
                                         </div>

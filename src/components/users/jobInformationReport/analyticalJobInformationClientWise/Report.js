@@ -7,6 +7,8 @@ import './style.scss';
 const Report = (props) => {
     const [isLoading, setIsLoading] = useState(true);
     const [clients, setClients] = useState([]);
+    const [jobOrders, setJobOrders] = useState([]);
+    const [groupByClient, setGroupByClient] = useState([]);
     
     const tableStyle = {
         "margin" : "2% 1% 2% 0%"
@@ -19,11 +21,43 @@ const Report = (props) => {
         userGetMethod(`${ANALYTICAL_JOB_INFORMATION_CLIENT_WISE_REPORT}?fromDate=${fromDate}&&toDate=${toDate}&&clientId=${clientId}`) 
         .then(response => {
             console.log('response', response.data);
-            setClients(response.data.clients);
+            // setClients(response.data.clients);
+            setJobOrders(response.data.job_orders);
             setIsLoading(false);
         })
         .catch(error => console.log(error))
     }, []);
+    // console.log(jobOrders)
+    useEffect(() =>{
+        if (jobOrders.length > 0) {
+            const groupByClient = (data) => {
+                const groupedData = data.reduce((result, item) => {
+                  const clientName = item.client_id;
+              
+                  
+                  if (!result[clientName]) {
+                    result[clientName] = [];
+                  }
+              
+                  result[clientName].push(item);
+                  console.log(result);
+                  return result;
+                }, {});
+    
+                const groupedArray = Object.entries(groupedData).map(([clientName, items]) => ({
+                    
+                    client_id: Number(clientName), 
+                  items,
+                }));
+              
+                return groupedArray;
+              };
+              
+              const groupedByClientId = groupByClient(jobOrders);
+              setGroupByClient(groupedByClientId);
+            //   console.log(groupedByClientId);
+        }
+    },[jobOrders])
     
     return (
         <Fragment>
@@ -41,68 +75,82 @@ const Report = (props) => {
                                             <h5>{'Analytical Job Information Client Wise Report - '+fromDate+' to '+toDate}</h5>
                                         </div>
                                         <Fragment>
-                                            <div className="row">
-                                                <table className="particulars table table-bordered table-stripped reportBody" cellSpacing="5" cellPadding="5" width="100%"  style={tableStyle}>
-                                                    <thead>    
-                                                        <tr>
-                                                            <th width="6%" align="center">Aggrement Date</th>
-                                                            <th width="6%" align="center">Job No</th>
-                                                            <th width="8%" align="center">Job Name</th>
-                                                            <th width="8%" align="center">Req/PO No</th>
-                                                            <th width="6%" align="center">Printer</th>
-                                                            <th width="6%" align="center">Status</th>
-                                                            <th width="6%" align="center">Size</th>
-                                                            <th width="6%" align="center">Cyl</th>
-                                                            <th width="8%" align="center">Surface Area</th>
-                                                            <th width="6%" align="center">Design Received Date</th>
-                                                            <th width="10%" align="center">Job Position</th>
-                                                            <th width="6%" align="center">Duration</th>
-                                                            <th width="6%" align="center">Delivered Date</th>
+                                            <div className="">
+                                            {groupByClient.length > 0 ? groupByClient.map((item,key) => (
+                                           <div key={key}>
+                                            <h3>Client Id: {item.client_id}</h3>
+                                            <table className="particulars table table-bordered table-stripped reportBody" cellSpacing="5" cellPadding="5" width="100%"  style={tableStyle}>
+                                            
+                                            <thead>    
+                                                <tr>
+                                                    <th width="6%" align="center" style={{fontSize:"13px",fontWeight:'bold'}}>Aggrement Date</th>
+                                                    <th width="6%" align="center" style={{fontSize:"13px",fontWeight:'bold'}}>Job No</th>
+                                                    <th width="8%" align="center" style={{fontSize:"13px",fontWeight:'bold'}}>Job Name</th>
+                                                    <th width="8%" align="center" style={{fontSize:"13px",fontWeight:'bold'}}>Req/PO No</th>
+                                                    <th width="6%" align="center" style={{fontSize:"13px",fontWeight:'bold'}}>Printer</th>
+                                                    <th width="6%" align="center" style={{fontSize:"13px",fontWeight:'bold'}}>Status</th>
+                                                    <th width="6%" align="center" style={{fontSize:"13px",fontWeight:'bold'}}>Size</th>
+                                                    <th width="6%" align="center" style={{fontSize:"13px",fontWeight:'bold'}}>Cyl</th>
+                                                    <th width="8%" align="center" style={{fontSize:"13px",fontWeight:'bold'}}>Surface Area</th>
+                                                    <th width="6%" align="center" style={{fontSize:"13px",fontWeight:'bold'}}>Design Received Date</th>
+                                                    <th width="10%" align="center" style={{fontSize:"13px",fontWeight:'bold'}}>Job Position</th>
+                                                    <th width="6%" align="center" style={{fontSize:"13px",fontWeight:'bold'}}>Duration</th>
+                                                    <th width="6%" align="center" style={{fontSize:"13px",fontWeight:'bold'}}>Delivered Date</th>
 
-                                                        </tr>    
-                                                    </thead>
-                                                    <tbody>
-                                                        {clients.length > 0 ? 
-                                                            clients.map((client)=>(
-                                                                client.jobs.length > 0 ?
-                                                                    <>
-                                                                        <tr>
-                                                                            <th colSpan="13" >{client.name}</th>
-                                                                        </tr>
-                                                
-                                                                        {client.jobs.map((job)=>( 
-                                                                            <tr>
-                                                                                <td>{job.agreement_date}</td>
-                                                                                <td>{job.job_no}</td>
-                                                                                <td>{job.job_name}</td>
-                                                                                <td></td>
-                                                                                <td>{job.printer_name}</td>
-                                                                                <td>{job.job_type}</td>
-                                                                                <td>{job.face_length}x{job.circumference}</td>
-                                                                                <td>{job.total_cylinder_qty}</td>
-                                                                                <td>{job.total_surface_area}</td>
-                                                                                <td>{job.design_rcv_date}</td>
-                                                                                <td>{job.bill_status==1?'Finished':'Pending'}</td>
-                                                                                <td>{job.bill_date != null ? Math.round(Math.abs((new Date(job.design_rcv_date) - new Date(job.bill_date)) / oneDay)):'N/A'}</td>
-                                                                                <td>{job.bill_date}</td>
-                                                                            </tr>
-                                                                        ))}
-                                                                        {client.total.map((data)=>(
-                                                                            <tr> 
-                                                                                <th colspan="7">Total</th>                                                                               
-                                                                                <th>{data.total_cylinder_qty}</th>                                                                                 
-                                                                                <th>{data.total_surface_area}</th>  
-                                                                            </tr>
-                                                                        ))}
-                                                                    </>
-                                                                : null
-                                                            ))
-                                                        : null
-                                                        }
-                                                    </tbody>
-                                                </table>
+                                                </tr>    
+                                            </thead>
+                                            <tbody>
+                                                {item?.items.length > 0 ? 
+                                                    item?.items.map((client,key)=>(
+                                                        // console.log(client),
+                                                        
+                                                            <>
+                                                                
+                                        
+                                                                
+                                                                    <tr key={key}>
+                                                                        <td style={{fontSize:"12px",fontWeight:'bold'}}>{client.agreement_date}</td>
+                                                                        <td style={{fontSize:"12px",fontWeight:'bold'}}>{client.job_no}</td>
+                                                                        <td style={{fontSize:"12px",fontWeight:'bold'}}>{client.job_name}</td>
+                                                                        <td style={{fontSize:"12px",fontWeight:'bold'}}></td>
+                                                                        <td style={{fontSize:"12px",fontWeight:'bold'}}>{client.printer_name}</td>
+                                                                        
+                                                                        <td style={{fontSize:"12px",fontWeight:'bold'}}>{client.job_type}</td>
+                                                                        <td style={{fontSize:"12px",fontWeight:'bold'}}>{client.face_length}x{client.circumference}</td>
+                                                                        <td style={{fontSize:"12px",fontWeight:'bold'}}>{client.total_cylinder_qty}</td>
+                                                                        <td style={{fontSize:"12px",fontWeight:'bold'}}>{client.total_surface_area}</td>
+                                                                        <td style={{fontSize:"12px",fontWeight:'bold'}}>{client.design_rcv_date}</td>
+                                                                        <td style={{fontSize:"12px",fontWeight:'bold'}}>{client.bill_status==1?'Finished':'Pending'}</td>
+                                                                        <td style={{fontSize:"12px",fontWeight:'bold'}}>{client.bill_date != null ? Math.round(Math.abs((new Date(client.design_rcv_date) - new Date(client.bill_date)) / oneDay)):'N/A'}</td>
+                                                                        <td style={{fontSize:"12px",fontWeight:'bold'}}>{client.bill_date}</td>
+                                                                    </tr>
+                                                                
+                                                                {/* {client.total.map((data)=>(
+                                                                    <tr> 
+                                                                        <th colspan="7">Total</th>                                                                               
+                                                                        <th>{data.total_cylinder_qty}</th>                                                                                 
+                                                                        <th>{data.total_surface_area}</th>  
+                                                                    </tr>
+                                                                ))} */}
+                                                            </>
+                                                        
+                                                    ))
+                                                : null
+                                                }
+                                            </tbody>
+                                            </table>
+                                           </div>
+                                            
+                                            )) : null}
                                             </div>    
                                         </Fragment>
+
+                                        
+
+
+
+
+
                                     </>
                                 )
                             } 

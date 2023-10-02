@@ -71,76 +71,76 @@ const Show = (props) => {
                                             {/* <h6>Printing Area</h6> */}
                                             <table className="particulars table table-bordered table-stripped reportBody" cellSpacing="5" cellPadding="5" width="100%"  style={tableStyle}>
                                                 <tr>
-                                                    <td width="15%">Job Height</td>
+                                                    <td width="15%" style={{fontSize:"13px",fontWeight:'bold'}}>Job Height</td>
                                                     <td width="5%" align="center">:</td>
-                                                    <td width="30%">{jobOrdersInfo.design_height}</td>
-                                                    <td width="15%">Job Width</td>
+                                                    <td width="30%" style={{fontSize:"13px",fontWeight:'bold'}}>{jobOrdersInfo.design_height}</td>
+                                                    <td width="15%" style={{fontSize:"13px",fontWeight:'bold'}}>Job Width</td>
                                                     <td width="5%" align="center">:</td>
-                                                    <td width="30%">{jobOrdersInfo.design_width}</td>
+                                                    <td width="30%" style={{fontSize:"13px",fontWeight:'bold'}}>{jobOrdersInfo.design_width}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td width="15%">Repeat</td>
+                                                    <td width="15%" style={{fontSize:"13px",fontWeight:'bold'}}>Repeat</td>
                                                     <td width="5%" align="center">:</td>
-                                                    <td width="30%">{jobOrdersInfo.rpt}</td>
-                                                    <td width="15%">Ups</td>
+                                                    <td width="30%" style={{fontSize:"13px",fontWeight:'bold'}}>{jobOrdersInfo.rpt}</td>
+                                                    <td width="15%" style={{fontSize:"13px",fontWeight:'bold'}}>Ups</td>
                                                     <td width="5%" align="center">:</td>
-                                                    <td width="30%">{jobOrdersInfo.ups}</td>
+                                                    <td width="30%" style={{fontSize:"13px",fontWeight:'bold'}}>{jobOrdersInfo.ups}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td width="15%">Printing Height</td>
+                                                    <td width="15%" style={{fontSize:"13px",fontWeight:'bold'}}>Printing Height</td>
                                                     <td width="5%" align="center">:</td>
-                                                    <td width="30%">{jobOrdersInfo.printing_height}</td>
-                                                    <td width="15%">Printing Width</td>
+                                                    <td width="30%" style={{fontSize:"13px",fontWeight:'bold'}}>{jobOrdersInfo.printing_height}</td>
+                                                    <td width="15%" style={{fontSize:"13px",fontWeight:'bold'}}>Printing Width</td>
                                                     <td width="5%" align="center">:</td>
-                                                    <td width="30%">{jobOrdersInfo.printing_width}</td>
+                                                    <td width="30%" style={{fontSize:"13px",fontWeight:'bold'}}>{jobOrdersInfo.printing_width}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td width="15%">Circumference</td>
+                                                    <td width="15%" style={{fontSize:"13px",fontWeight:'bold'}}>Circumference</td>
                                                     <td width="5%" align="center">:</td>
-                                                    <td width="30%">{jobOrdersInfo.circumference}</td>
-                                                    <td width="15%">Face Length</td>
+                                                    <td width="30%" style={{fontSize:"13px",fontWeight:'bold'}}>{jobOrdersInfo.circumference}</td>
+                                                    <td width="15%" style={{fontSize:"13px",fontWeight:'bold'}}>Face Length</td>
                                                     <td width="5%" align="center">:</td>
-                                                    <td width="30%">{jobOrdersInfo.face_length}</td>
+                                                    <td width="30%" style={{fontSize:"13px",fontWeight:'bold'}}>{jobOrdersInfo.face_length}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td width="15%">Eye Mark Size One</td>
+                                                    <td width="15%" style={{fontSize:"13px",fontWeight:'bold'}}>Eye Mark Size One</td>
                                                     <td width="5%" align="center">:</td>
-                                                    <td width="30%">{jobOrdersInfo.eye_mark_size_one}</td>
-                                                    <td width="15%">Eye Mark Size Two</td>
+                                                    <td width="30%" style={{fontSize:"13px",fontWeight:'bold'}}>{jobOrdersInfo.eye_mark_size_one}</td>
+                                                    <td width="15%" style={{fontSize:"13px",fontWeight:'bold'}}>Eye Mark Size Two</td>
                                                     <td width="5%" align="center">:</td>
-                                                    <td width="30%">{jobOrdersInfo.eye_mark_size_two}</td>
+                                                    <td width="30%" style={{fontSize:"13px",fontWeight:'bold'}}>{jobOrdersInfo.eye_mark_size_two}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td width="15%">Surface Area</td>
+                                                    <td width="15%" style={{fontSize:"13px",fontWeight:'bold'}}>Surface Area</td>
                                                     <td width="5%" align="center">:</td>
-                                                    <td width="30%">{jobOrdersInfo.surface_area}</td>
-                                                    <td width="15%">Number of Cylinder</td>
+                                                    <td width="30%" style={{fontSize:"13px",fontWeight:'bold'}}>{jobOrdersInfo.surface_area}</td>
+                                                    <td width="15%" style={{fontSize:"13px",fontWeight:'bold'}}>Number of Cylinder</td>
                                                     <td width="5%" align="center">:</td>
-                                                    <td width="30%">{jobOrdersInfo.total_cylinder_qty}</td>
+                                                    <td width="30%" style={{fontSize:"13px",fontWeight:'bold'}}>{jobOrdersInfo.total_cylinder_qty}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td width="15%">Total Surface Area</td>
+                                                    <td width="15%" style={{fontSize:"13px",fontWeight:'bold'}}>Total Surface Area</td>
                                                     <td width="5%" align="center">:</td>
-                                                    <td width="30%">{jobOrdersInfo.total_surface_area}</td>
-                                                    <td width="15%">Printing Mark</td>
+                                                    <td width="30%" style={{fontSize:"13px",fontWeight:'bold'}}>{jobOrdersInfo.total_surface_area}</td>
+                                                    <td width="15%" style={{fontSize:"13px",fontWeight:'bold'}}>Printing Mark</td>
                                                     <td width="5%" align="center">:</td>
-                                                    <td width="30%">{jobOrdersInfo.printer_mark}</td>
+                                                    <td width="30%" style={{fontSize:"13px",fontWeight:'bold'}}>{jobOrdersInfo.printer_mark}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td width="15%">Diameter</td>
+                                                    <td width="15%" style={{fontSize:"13px",fontWeight:'bold'}}>Diameter</td>
                                                     <td width="5%" align="center">:</td>
-                                                    <td width="30%">{jobOrdersInfo.dia}</td>
-                                                    <td width="15%">Cone</td>
+                                                    <td width="30%" style={{fontSize:"13px",fontWeight:'bold'}}>{jobOrdersInfo.dia}</td>
+                                                    <td width="15%" style={{fontSize:"13px",fontWeight:'bold'}}>Cone</td>
                                                     <td width="5%" align="center">:</td>
-                                                    <td width="30%">{jobOrdersInfo.cone}</td>
+                                                    <td width="30%" style={{fontSize:"13px",fontWeight:'bold'}}>{jobOrdersInfo.cone}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td width="15%">Extra Face Length</td>
+                                                    <td width="15%" style={{fontSize:"13px",fontWeight:'bold'}}>Extra Face Length</td>
                                                     <td width="5%" align="center">:</td>
-                                                    <td width="30%">{jobOrdersInfo.extra_face_length}</td>
-                                                    <td width="15%">Angle</td>
+                                                    <td width="30%" style={{fontSize:"13px",fontWeight:'bold'}}>{jobOrdersInfo.extra_face_length}</td>
+                                                    <td width="15%" style={{fontSize:"13px",fontWeight:'bold'}}>Angle</td>
                                                     <td width="5%" align="center">:</td>
-                                                    <td width="30%">{jobOrdersInfo.angle}</td>
+                                                    <td width="30%" style={{fontSize:"13px",fontWeight:'bold'}}>{jobOrdersInfo.angle}</td>
                                                 </tr>
                                                 <tr>
                                                     <td colSpan="7">

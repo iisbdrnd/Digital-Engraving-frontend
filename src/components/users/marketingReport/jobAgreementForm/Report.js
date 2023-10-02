@@ -85,49 +85,49 @@ const Report = (props) => {
 
                                             <table className="particulars table table-bordered table-stripped reportBody" cellSpacing="5" cellPadding="5" width="100%"  style={tableStyle}>
                                                 <tr>
-                                                    <td width="15%">Job Width</td>
+                                                    <td width="15%" style={{fontSize:"13px",fontWeight:'bold'}}>Job Width</td>
                                                     <td width="5%" align="center">:</td>
-                                                    <td width="30%">{jobAgreementInfo.design_width}</td>
-                                                    <td width="15%">Job Height</td>
+                                                    <td width="30%" style={{fontSize:"13px",fontWeight:'bold'}}>{jobAgreementInfo.design_width}</td>
+                                                    <td width="15%" style={{fontSize:"13px",fontWeight:'bold'}}>Job Height</td>
                                                     <td width="5%" align="center">:</td>
-                                                    <td width="30%">{jobAgreementInfo.design_height}</td>
+                                                    <td width="30%" style={{fontSize:"13px",fontWeight:'bold'}}>{jobAgreementInfo.design_height}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td width="15%">Printing Width</td>
+                                                    <td width="15%" style={{fontSize:"13px",fontWeight:'bold'}}>Printing Width</td>
                                                     <td width="5%" align="center">:</td>
-                                                    <td width="30%">{jobAgreementInfo.printing_width}</td>
-                                                    <td width="15%">Printing Height</td>
+                                                    <td width="30%" style={{fontSize:"13px",fontWeight:'bold'}}>{jobAgreementInfo.printing_width}</td>
+                                                    <td width="15%" style={{fontSize:"13px",fontWeight:'bold'}}>Printing Height</td>
                                                     <td width="5%" align="center">:</td>
-                                                    <td width="30%">{jobAgreementInfo.printing_height}</td>
+                                                    <td width="30%" style={{fontSize:"13px",fontWeight:'bold'}}>{jobAgreementInfo.printing_height}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td width="15%">Face Length</td>
+                                                    <td width="15%" style={{fontSize:"13px",fontWeight:'bold'}}>Face Length</td>
                                                     <td width="5%" align="center">:</td>
-                                                    <td width="30%">{jobAgreementInfo.face_length}</td>
-                                                    <td width="15%">Circumference</td>
+                                                    <td width="30%" style={{fontSize:"13px",fontWeight:'bold'}}>{jobAgreementInfo.face_length}</td>
+                                                    <td width="15%" style={{fontSize:"13px",fontWeight:'bold'}}>Circumference</td>
                                                     <td width="5%" align="center">:</td>
-                                                    <td width="30%">{jobAgreementInfo.circumference}</td>
+                                                    <td width="30%" style={{fontSize:"13px",fontWeight:'bold'}}>{jobAgreementInfo.circumference}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td width="15%">Surface Area</td>
+                                                    <td width="15%" style={{fontSize:"13px",fontWeight:'bold'}}>Surface Area</td>
                                                     <td width="5%" align="center">:</td>
-                                                    <td width="30%">{jobAgreementInfo.surface_area}</td>
-                                                    <td width="15%">Number of Cylinder</td>
+                                                    <td width="30%" style={{fontSize:"13px",fontWeight:'bold'}}>{jobAgreementInfo.surface_area}</td>
+                                                    <td width="15%" style={{fontSize:"13px",fontWeight:'bold'}}>Number of Cylinder</td>
                                                     <td width="5%" align="center">:</td>
-                                                    <td width="30%">{jobAgreementInfo.total_cylinder_qty}</td>
+                                                    <td width="30%" style={{fontSize:"13px",fontWeight:'bold'}}>{jobAgreementInfo.total_cylinder_qty}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td width="15%">Total Surface Area</td>
+                                                    <td width="15%" style={{fontSize:"13px",fontWeight:'bold'}}>Total Surface Area</td>
                                                     <td width="5%" align="center">:</td>
-                                                    <td width="30%">{jobAgreementInfo.total_surface_area}</td>
-                                                    <td width="15%">Printing Mark</td>
+                                                    <td width="30%" style={{fontSize:"13px",fontWeight:'bold'}}>{jobAgreementInfo.total_surface_area}</td>
+                                                    <td width="15%" style={{fontSize:"13px",fontWeight:'bold'}}>Printing Mark</td>
                                                     <td width="5%" align="center">:</td>
-                                                    <td width="30%">{jobAgreementInfo.printer_mark}</td>
+                                                    <td width="30%" style={{fontSize:"13px",fontWeight:'bold'}}>{jobAgreementInfo.printer_mark}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td width="15%">Approved By</td>
+                                                    <td width="15%" style={{fontSize:"13px",fontWeight:'bold'}}>Approved By</td>
                                                     <td width="5%" align="center">:</td>
-                                                    <td width="30%" colSpan="4">{jobAgreementInfo.approver_name}</td>
+                                                    <td width="30%" colSpan="4" style={{fontSize:"13px",fontWeight:'bold'}}>{jobAgreementInfo.approver_name}</td>
                                                 </tr>
                                             </table>
 
