@@ -178,6 +178,7 @@ const Add = (props) => {
             'surface_area' : '',
             'fixed_amount'     : '',
             'per_square_amount'  : '',
+            'client_name' : ''
         });
     }
 

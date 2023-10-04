@@ -598,7 +598,7 @@ const handlePageChange = (pageNumber = 1) => {
                                     lastPageText="Last"
                                 />
               </div>
-            </div>: <div colSpan="9" className="text-center">{processing == true ? "Processing Data" :'No data found.Please search any field' }</div>}
+            </div>: <div colSpan="9" className="text-center">{processing == true ? "Processing Data" :'Please search any field' }</div>}
           </div>
         </div>
       </div>

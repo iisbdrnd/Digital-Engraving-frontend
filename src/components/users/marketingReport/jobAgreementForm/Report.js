@@ -32,7 +32,7 @@ const Report = (props) => {
                 <div className="row">
                     <div className="col-sm-12">
                         <div className=""> 
-                            <ReportHeader reportTtile="Print Voucher Report" />
+                            <ReportHeader jobType = {jobAgreementInfo?.job_type} reportTtile="Print Voucher Report" />
 
                             <div className="mainDiv" style={{"padding": "1% 5%"}}>
                             {isLoading ? (<img src={process.env.PUBLIC_URL+'/preloader.gif'} alt="Data Loading"/>):
@@ -150,7 +150,9 @@ const Report = (props) => {
                                                     <td width="5%" align="center">:</td>
                                                     <td width="80%" colSpan="4">{jobAgreementInfo.remarks}</td>
                                                 </tr>
-                                                <tr>
+
+                                                {/* Let Working------- */}
+                                                {/* <tr>
                                                     <td width="15%">Bill of Amount</td>
                                                     <td width="5%" align="center">:</td>
                                                     <td width="80%" colSpan="4"></td>
@@ -159,27 +161,30 @@ const Report = (props) => {
                                                     <td width="15%">Out Standing Amount</td>
                                                     <td width="5%" align="center">:</td>
                                                     <td width="80%" colSpan="4"></td>
-                                                </tr>
+                                                </tr> */}
                                             </table>
                                         </div>
                                         <div className="row report-footer groupFont">
                                             <div className="col-md-4">
                                                 <h5>Job order by</h5>
-                                                <div className="put-signature"></div>
+                                                <p style={{height: '30px'}}></p>
+                                                {/* <div className="put-signature"></div> */}
                                                 <span className="footer-signature">Signature and Date</span> <br />
-                                                <h5><span>for</span> Meghna Group of Industries Ltd</h5>
+                                                <h5><span>for</span> {jobAgreementInfo?.client_name}</h5>
                                             </div>
                                             <div className="col-md-4">
                                                 <h5>Job Measured by</h5>
-                                                <div className="put-signature"></div>
+                                                {/* <div className="put-signature"></div> */}
+                                                <p style={{height: '30px'}}></p>
                                                 <span className="footer-signature">Signature and Date</span> <br />
-                                                <h5><span>for</span> Meghna Group of Industries Ltd</h5>
+                                                <h5><span>for</span> {jobAgreementInfo.printer_name}</h5>
                                             </div>
                                             <div className="col-md-4">
                                                 <h5>Order Received by</h5>
-                                                <div className="put-signature"></div>
+                                                {/* <div className="put-signature"></div> */}
+                                                <p style={{height: '30px'}}></p>
                                                 <span className="footer-signature">Signature and Date</span> <br />
-                                                <h5><span>for</span> Meghna Group of Industries Ltd</h5>
+                                                <h5><span>for</span> Digital Engravers Limited</h5>
                                             </div>
                                         </div>
                                         </>

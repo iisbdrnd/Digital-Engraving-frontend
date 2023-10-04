@@ -63,7 +63,7 @@ const Edit = (props) => {
     useEffect(() => {
         userGetMethod(`${clientInformation}/${clientInfoId}/edit`)
             .then(response => {
-                console.log('response.data.clientInfo', response.data.clientInfo);
+                // console.log('response.data.clientInfo', response.data.clientInfo);
                 let {name, address, bill_collection_method, bill_collection_status, branch_id, client_id, client_type_id, email, email_notify, marketing_person_id, mobile, sms_notify, vat_status, cyl_rate_status, limit_square_cm, fixed_amount, per_square_amount, cylinder_a_amount, cylinder_b_amount, cylinder_c_amount } = response.data.clientInfo; 
                 setClientInformationInput({
                     client_id             : client_id,
@@ -98,6 +98,11 @@ const Edit = (props) => {
     },[]);
 
     const submitHandler = (data, e) => {
+
+        // if (e.target.name == 'email') {
+        //     console.log(e.target.value)
+        // }
+        // console.log(data)
         userPutMethod(`${clientInformation}/${clientInfoId}`, data )
             .then(response => {
                 console.log("response.data", response.data);
@@ -243,12 +248,12 @@ const Edit = (props) => {
                                                         id="email" 
                                                         name="email" 
                                                         type="text" 
-                                                        readOnly={'readonly'}
+                                                        // readOnly={'readonly'}
                                                         placeholder="Email Address"
                                                         onChange={changeHandler}
                                                         value={clientInformationInput.email}
                                                         ref={register({
-                                                            required: 'Email Field Required'
+                                                            
                                                         })}
                                                     />
                                                     {errors.email && <p className='text-danger'>{errors.email.message}</p>}
@@ -283,7 +288,7 @@ const Edit = (props) => {
                                                         })} >
                                                         <option> Select One </option>
                                                         <option value="1" selected={clientInformationInput.client_type_id == 1 ? true : false}> Corporate </option>
-                                                        <option value="2" selected={clientInformationInput.client_type_id == 2 ? true : false}> Media </option>
+                                                        <option value="2" selected={clientInformationInput.client_type_id == 2 ? true : false}> Individual </option>
                                                         
                                                     </select>
                                                     {errors.client_type_id && <p className='text-danger'>{errors.client_type_id.message}</p>}
@@ -459,7 +464,7 @@ const Edit = (props) => {
                                                 </div>
                                                 
                                                 {(cylinderRate == 2) && <div className="form-group row">
-                                                    <label className="col-md-4 col-form-label" htmlFor="limit_square_cm">Limit (square cm)</label>
+                                                    <label className="col-md-4 col-form-label" htmlFor="limit_square_cm">Min S.A. Limit (sq cm)</label>
                                                     <div className="col-md-8">
                                                         <input 
                                                             className="form-control"

@@ -7,6 +7,8 @@ const ReportHeader = props => {
     const printDocument = () => {
         window.print();
     }
+    // console.log(props.jobType)
+    
     return (
         <div className="report-header">
             <div className="print_button">
@@ -22,7 +24,7 @@ const ReportHeader = props => {
             </div>
             <div className="report-for">
                 <h2>Agreement Form</h2>
-                <h2>New</h2>
+                <h2>{props.jobType}</h2>
             </div>
         </div>
 )};

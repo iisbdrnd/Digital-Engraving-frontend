@@ -208,7 +208,7 @@ const Add = (props) => {
                                                         })} >
                                                         <option> Select One </option>
                                                         <option value="1"> Corporate </option>
-                                                        <option value="2"> Media </option>
+                                                        <option value="2"> Individual </option>
                                                         
                                                     </select>
                                                     {errors.client_type_id && <p className='text-danger'>{errors.client_type_id.message}</p>}
@@ -383,7 +383,7 @@ const Add = (props) => {
                                                 </div>
                                                 
                                                 {cylinderRate == 2 && <div className="form-group row">
-                                                    <label className="col-md-4 col-form-label" htmlFor="limit_square_cm">Limit (square cm)</label>
+                                                    <label className="col-md-4 col-form-label" htmlFor="limit_square_cm">Min S.A. Limit (sq cm)</label>
                                                     <div className="col-md-8">
                                                         <input 
                                                             className="form-control"
