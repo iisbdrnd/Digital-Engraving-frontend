@@ -67,18 +67,20 @@ const Report = (props) => {
                                                     <td width="5%" align="center">:</td>
                                                     <td width="30%" colSpan="4">{jobAgreementInfo.client_name}</td>
                                                 </tr>
-                                                <tr>
-                                                    <td width="15%">Contact No.</td>
-                                                    <td width="5%" align="center">:</td>
-                                                    <td width="30%">{jobAgreementInfo.client_mobile}</td>
-                                                    <td width="15%">Address</td>
-                                                    <td width="5%" align="center">:</td>
-                                                    <td width="30%">{jobAgreementInfo.client_address}</td>
-                                                </tr>
+                                                
                                                 <tr>
                                                     <td width="15%">Name of Printer</td>
                                                     <td width="5%" align="center">:</td>
                                                     <td width="30%" colSpan="4">{jobAgreementInfo.printer_name}</td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td width="15%">Contact No.</td>
+                                                    <td width="5%" align="center">:</td>
+                                                    <td width="15%">{jobAgreementInfo.client_mobile}</td>
+                                                    <td width="15%">Address</td>
+                                                    <td width="5%" align="center">:</td>
+                                                    <td width="45%">{jobAgreementInfo.client_address}</td>
                                                 </tr>
                                                 
                                             </table>
