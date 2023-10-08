@@ -227,6 +227,10 @@ import YearlyJobFlowReport from './../components/users/supplyChainReport/yearlyJ
 import ClientStockForm from './../components/users/supplyChainReport/clientStockReport/Form';
 import ClientStockReport from './../components/users/supplyChainReport/clientStockReport/Report';
 import ClientStockBalanceForm from './../components/users/supplyChainReport/clientStockBalanceReport/Form';
+import ClientWiseBillInformation from './../components/users/supplyChainReport/ClientWiseBillInformation/Form';
+import DueBillInformation from './../components/users/supplyChainReport/DueBillInformation/Form';
+import ClientWiseBillInformationReport from './../components/users/supplyChainReport/ClientWiseBillInformation/Report';
+import DueBillInformationReport from './../components/users/supplyChainReport/DueBillInformation/Report';
 import ClientStockBalanceReport from './../components/users/supplyChainReport/clientStockBalanceReport/Report';
 import MonthlyJobFlowForm from './../components/users/supplyChainReport/monthlyJobFlow/Form';
 import MonthlyJobFlowReport from './../components/users/supplyChainReport/monthlyJobFlow/Report';
@@ -508,6 +512,16 @@ class UserRoute extends Component {
               component={JobFlowAnalysisMarketingPersonWiseReport}
             />
             <UserAuthRoute
+              path={`${process.env.PUBLIC_URL}/clientWiseBillInformationReport/:fromDate/:toDate/:clientId`}
+              component={ClientWiseBillInformationReport}
+            />
+            <UserAuthRoute
+              path={`${process.env.PUBLIC_URL}/dueBillInformation/:clientId`}
+              component={DueBillInformationReport}
+            />
+
+
+            <UserAuthRoute
               path={`${process.env.PUBLIC_URL}/analyticalJobInformationClientWise/:fromDate/:toDate/:clientId`}
               component={AnalyticalJobInformationClientWiseReport}
             />
@@ -607,6 +621,7 @@ class UserRoute extends Component {
               path={`${process.env.PUBLIC_URL}/clientStockBalanceReport/report/:client_id/:printer_id`}
               component={ClientStockBalanceReport}
             />
+            
             <UserAuthRoute
               path={`${process.env.PUBLIC_URL}/monthlyJobFlow/report/:month/:year/:cylinder_type`}
               component={MonthlyJobFlowReport}
@@ -1225,6 +1240,14 @@ class UserRoute extends Component {
                 <UserAuthRoute
                   path={`${process.env.PUBLIC_URL}/clientStockBalanceReport`}
                   component={ClientStockBalanceForm}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/clientWiseBillInformation`}
+                  component={ClientWiseBillInformation}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/dueBillInformation`}
+                  component={DueBillInformation}
                 />
                 <UserAuthRoute
                   path={`${process.env.PUBLIC_URL}/monthlyJobFlow`}

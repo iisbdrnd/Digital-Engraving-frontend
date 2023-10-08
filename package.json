@@ -32,6 +32,7 @@
     "leaflet": "^1.7.1",
     "multiselect-react-dropdown": "^1.7.0",
     "node-sass": "^4.14.1",
+    "number-to-words": "^1.2.4",
     "pdfmake": "^0.2.4",
     "react-big-calendar": "^0.22.1",
     "react-bootstrap": "^1.6.3",
