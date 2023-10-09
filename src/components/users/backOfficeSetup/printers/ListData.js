@@ -43,9 +43,12 @@ export default function ListData(props) {
     }
     const searchHandler = (e) =>{
         setIsLoading(true);
-        userGetMethod(printersAPI+'?searchText='+searchText)
+        userGetMethod(`${printersAPI}?page=${1}&perPage=${perPage}&searchText=${searchText}`)
         .then(response => {
             setPrinterData(response.data.printers.data)
+            setCurrentPage(response.data.printers.current_page)
+                setPerPage(response.data.printers.per_page)
+                setTotalData(response.data.printers.total)
             setIsLoading(false);
         })
         .catch(error => console.log(error)); 
@@ -70,7 +73,7 @@ export default function ListData(props) {
     const handlePageChange = (pageNumber = 1) => {
         setIsLoading(true);
         // TABLE DATA READY
-        userGetMethod(`${printersAPI}?page=${pageNumber}&perPage=${perPage}`)
+        userGetMethod(`${printersAPI}?page=${pageNumber}&perPage=${perPage}&searchText=${searchText}`)
             .then(response => {
                 console.log("current_page", response.data);
                 setCurrentPage(response.data.printers.current_page)
@@ -86,7 +89,7 @@ export default function ListData(props) {
        let perPage = e.target.value;
         setIsLoading(true);
         // TABLE DATA READY
-        userGetMethod(`${printersAPI}?perPage=${perPage}`)
+        userGetMethod(`${printersAPI}?page=${1}&perPage=${perPage}&searchText=${searchText}`)
             .then(response => {
                 setCurrentPage(response.data.printers.current_page)
                 setPerPage(response.data.printers.per_page)

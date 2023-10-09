@@ -213,7 +213,7 @@ export default function ListData(props) {
                                                                         <td>{item.client_name}</td>
                                                                         <td>{item.supplier_name}</td>
                                                                         <td>
-                                                                            {item.base_receive_status == 0 ? 
+                                                                            {item?.receive_status == 0 ? 
                                                                             <Link 
                                                                                 to={{
                                                                                     pathname: `${process.env.PUBLIC_URL}/baseReceive/add`,

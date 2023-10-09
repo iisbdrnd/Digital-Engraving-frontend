@@ -41,9 +41,12 @@ export default function ListData(props) {
     }
     const searchHandler = (e) =>{
         setIsLoading(true);
-        userGetMethod(DESIGN_MACHINE_LOCATION+'?searchText='+searchText)
+        userGetMethod(`${DESIGN_MACHINE_LOCATION}?page=${1}&perPage=${perPage}&searchText=${searchText}`)
         .then(response => {
             setDesignMachineData(response.data.designMachines.data)
+            setCurrentPage(response.data.designMachines.current_page)
+                setPerPage(response.data.designMachines.per_page)
+                setTotalData(response.data.designMachines.total)
             setIsLoading(false);
         })
         .catch(error => console.log(error)); 
@@ -68,7 +71,7 @@ export default function ListData(props) {
     const handlePageChange = (pageNumber = 1) => {
         setIsLoading(true);
         // TABLE DATA READY
-        userGetMethod(`${DESIGN_MACHINE_LOCATION}?page=${pageNumber}&perPage=${perPage}`)
+        userGetMethod(`${DESIGN_MACHINE_LOCATION}?page=${pageNumber}&perPage=${perPage}&searchText=${searchText}`)
             .then(response => {
                 setCurrentPage(response.data.designMachines.current_page)
                 setPerPage(response.data.designMachines.per_page)
@@ -83,7 +86,7 @@ export default function ListData(props) {
         let perPage = e.target.value;
         setIsLoading(true);
         // TABLE DATA READY
-        userGetMethod(`${DESIGN_MACHINE_LOCATION}?perPage=${perPage}`)
+        userGetMethod(`${DESIGN_MACHINE_LOCATION}?page=${1}&perPage=${perPage}&searchText=${searchText}`)
             .then(response => {
                 setCurrentPage(response.data.designMachines.current_page)
                 setPerPage(response.data.designMachines.per_page)

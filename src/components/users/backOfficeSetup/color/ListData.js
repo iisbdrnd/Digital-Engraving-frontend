@@ -41,9 +41,12 @@ export default function ListData(props) {
     }
     const searchHandler = (e) =>{
         setIsLoading(true);
-        userGetMethod(colorAPI+'?searchText='+searchText)
+        userGetMethod(`${colorAPI}?page=${1}&perPage=${perPage}&searchText=${searchText}`)
         .then(response => {
-            setColorData(response.data.colors.data)
+            setColorData(response.data.colors.data);
+            setCurrentPage(response.data.colors.current_page);
+            setPerPage(response.data.colors.per_page);
+            setTotalData(response.data.colors.total);
             setIsLoading(false);
         })
         .catch(error => console.log(error)); 
@@ -68,7 +71,7 @@ export default function ListData(props) {
     const handlePageChange = (pageNumber = 1) => {
         setIsLoading(true);
         // TABLE DATA READY
-        userGetMethod(`${colorAPI}?page=${pageNumber}&perPage=${perPage}`)
+        userGetMethod(`${colorAPI}?page=${pageNumber}&perPage=${perPage}&searchText=${searchText}`)
             .then(response => {
                 console.log("current_page", response.data);
                 setCurrentPage(response.data.colors.current_page)
@@ -84,7 +87,8 @@ export default function ListData(props) {
         let perPage = e.target.value;
         setIsLoading(true);
         // TABLE DATA READY
-        userGetMethod(`${colorAPI}?perPage=${perPage}`)
+        if (searchText.length == 0) {
+            userGetMethod(`${colorAPI}?perPage=${perPage}`)
             .then(response => {
                 setCurrentPage(response.data.colors.current_page)
                 setPerPage(response.data.colors.per_page)
@@ -93,6 +97,17 @@ export default function ListData(props) {
                 setIsLoading(false)
             })
             .catch(error => console.log(error))
+        }else{
+            userGetMethod(`${colorAPI}?page=${1}&perPage=${perPage}&searchText=${searchText}`)
+        .then(response => {
+            setColorData(response.data.colors.data);
+            setCurrentPage(response.data.colors.current_page);
+            setPerPage(response.data.colors.per_page);
+            setTotalData(response.data.colors.total);
+            setIsLoading(false);
+        })
+        .catch(error => console.log(error)); 
+        }
     }
 
     const sortHandler = (params) => {
@@ -179,7 +194,7 @@ export default function ListData(props) {
                                             <thead>
                                                 <tr>
                                                     <th scope="col" width="8%" onClick={() => sortHandler(1)} >SL.</th>
-                                                    <th scope="col" width="50%" onClick={() => sortHandler(2)} > Printer Name</th>
+                                                    <th scope="col" width="50%" onClick={() => sortHandler(2)} > Color Name</th>
                                                     <th scope="col" width="24%" onClick={() => sortHandler(2)} >Short Name</th>
                                                     <th scope="col" width="10%" onClick={() => sortHandler(2)} > Status</th>
                                                     <th scope="col" width="8%">Action</th>

@@ -63,11 +63,6 @@ const Report = (props) => {
               
               const groupedByClientId = groupByClient(jobOrders);
               setGroupByClient(groupedByClientId);
-
-
-
-
-            //   console.log(groupedByClientId);
         }
     },[jobOrders]);
 
@@ -349,16 +344,11 @@ const Report = (props) => {
                                             
                                                 
                                             <tbody>  
-                                            <tr> 
-                                                                        <th colSpan='9' style={{fontSize:"12px",fontWeight:'bold'}}>Grand Total:</th>
-                                                                                                                                                                                                
-                                                                         
-                                                                        <th style={{fontSize:"12px",fontWeight:'bold'}}>{grandCylinderTotal}</th>                                                                                 
-                                                                        <th style={{fontSize:"12px",fontWeight:'bold'}}>{grandSurfaceTotal}</th>
-                                                                        
-                                                                        
-                                                                          
-                                                                    </tr>
+                                                    <tr> 
+                                                    <th colSpan='9' style={{fontSize:"12px",fontWeight:'bold'}}>Grand Total:</th>
+                                                    <th style={{fontSize:"12px",fontWeight:'bold'}}>{grandCylinderTotal}</th>                                                                                 
+                                                    <th style={{fontSize:"12px",fontWeight:'bold'}}>{grandSurfaceTotal}</th>
+                                                    </tr>
                                                                     
                                             </tbody>
                                             

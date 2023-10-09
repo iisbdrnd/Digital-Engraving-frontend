@@ -41,9 +41,12 @@ export default function ListData(props) {
     }
     const searchHandler = (e) =>{
         setIsLoading(true);
-        userGetMethod(employeeInformation+'?searchText='+searchText)
+        userGetMethod(`${employeeInformation}?page=${1}&perPage=${perPage}&searchText=${searchText}`)
         .then(response => {
             setBranchData(response.data.employeeInfos.data)
+            setCurrentPage(response.data.employeeInfos.current_page)
+                setPerPage(response.data.employeeInfos.per_page)
+                setTotalData(response.data.employeeInfos.total)
             setIsLoading(false);
         })
         .catch(error => console.log(error)); 
@@ -68,7 +71,7 @@ export default function ListData(props) {
     const handlePageChange = (pageNumber = 1) => {
         setIsLoading(true);
         // TABLE DATA READY
-        userGetMethod(`${employeeInformation}?page=${pageNumber}&perPage=${perPage}`)
+        userGetMethod(`${employeeInformation}?page=${pageNumber}&perPage=${perPage}&searchText=${searchText}`)
             .then(response => {
                 console.log("current_page", response.data);
                 setCurrentPage(response.data.employeeInfos.current_page)
@@ -84,7 +87,7 @@ export default function ListData(props) {
         let perPage = e.target.value;
         setIsLoading(true);
         // TABLE DATA READY
-        userGetMethod(`${employeeInformation}?perPage=${perPage}`)
+        userGetMethod(`${employeeInformation}?page=${1}&perPage=${perPage}&searchText=${searchText}`)
             .then(response => {
                 setCurrentPage(response.data.employeeInfos.current_page)
                 setPerPage(response.data.employeeInfos.per_page)

@@ -36,18 +36,21 @@ export default function ListData(props) {
         pageChange();
     },[]);
 
-    // useEffect(() => {
-    //     perPageBoxChange();
-    // },[perPage])
+    useEffect(() => {
+        perPageBoxChange();
+    },[perPage])
 
     const handleSearchText = (e) => {
         setSearchText(e);
     }
     const searchHandler = (e) => {
         setIsLoading(true);
-        userGetMethod(clientInformation+'?searchText='+searchText)
+        userGetMethod(`${clientInformation}?page=${1}&perPage=${perPage}&searchText=${searchText}`)
         .then(response => {
-            setClientData(response.data.clientInfos.data)
+            setClientData(response.data.clientInfos.data);
+            setCurrentPage(response.data.clientInfos.current_page);
+                setPerPage(response.data.clientInfos.per_page);
+                setTotalData(response.data.clientInfos.total);
             setIsLoading(false);
         })
         .catch(error => console.log(error)); 
@@ -72,7 +75,7 @@ export default function ListData(props) {
     const pageChange = (pageNumber = 1) => {
         setIsLoading(true);
         // TABLE DATA READY
-        userGetMethod(`${clientInformation}?page=${pageNumber}&perPage=${perPage}`)
+        userGetMethod(`${clientInformation}?page=${pageNumber}&perPage=${perPage}&searchText=${searchText}`)
             .then(response => {
                 setCurrentPage(response.data.clientInfos.current_page)
                 setPerPage(response.data.clientInfos.per_page)
@@ -82,12 +85,14 @@ export default function ListData(props) {
             })
             .catch(error => console.log(error))
     }
+    
 
     const perPageBoxChange = (e) => {
-        let perPage = e.target.value;
+        // let perPage = e.target.value;
+        
         setIsLoading(true);
         // TABLE DATA READY
-        userGetMethod(`${clientInformation}?perPage=${perPage}`)
+        userGetMethod(`${clientInformation}?page=${1}&perPage=${perPage}&searchText=${searchText}`)
             .then(response => {
                 setCurrentPage(response.data.clientInfos.current_page)
                 setPerPage(response.data.clientInfos.per_page)

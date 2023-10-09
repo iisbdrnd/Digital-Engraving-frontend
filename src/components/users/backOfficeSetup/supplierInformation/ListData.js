@@ -41,9 +41,12 @@ export default function ListData(props) {
     }
     const searchHandler = (e) =>{
         setIsLoading(true);
-        userGetMethod(supplierInformationAPI+'?searchText='+searchText)
+        userGetMethod(`${supplierInformationAPI}?page=${1}&perPage=${perPage}&searchText=${searchText}`)
         .then(response => {
             setSupplierInformationData(response.data.supplierInfos.data)
+            setCurrentPage(response.data.supplierInfos.current_page)
+                setPerPage(response.data.supplierInfos.per_page)
+                setTotalData(response.data.supplierInfos.total)
             setIsLoading(false);
         })
         .catch(error => console.log(error)); 
@@ -68,7 +71,7 @@ export default function ListData(props) {
     const handlePageChange = (pageNumber = 1) => {
         setIsLoading(true);
         // TABLE DATA READY
-        userGetMethod(`${supplierInformationAPI}?page=${pageNumber}&perPage=${perPage}`)
+        userGetMethod(`${supplierInformationAPI}?page=${pageNumber}&perPage=${perPage}&searchText=${searchText}`)
             .then(response => {
                 console.log("current_page", response.data);
                 setCurrentPage(response.data.supplierInfos.current_page)
@@ -84,7 +87,7 @@ export default function ListData(props) {
         let perPage = e.target.value;
         setIsLoading(true);
         // TABLE DATA READY
-        userGetMethod(`${supplierInformationAPI}?perPage=${perPage}`)
+        userGetMethod(`${supplierInformationAPI}?page=${1}&perPage=${perPage}&searchText=${searchText}`)
             .then(response => {
                 setCurrentPage(response.data.supplierInfos.current_page)
                 setPerPage(response.data.supplierInfos.per_page)

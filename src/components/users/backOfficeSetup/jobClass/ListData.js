@@ -41,9 +41,12 @@ export default function ListData(props) {
     }
     const searchHandler = (e) =>{
         setIsLoading(true);
-        userGetMethod(jobClassAPI+'?searchText='+searchText)
+        userGetMethod(`${jobClassAPI}?page=${1}&perPage=${perPage}&searchText=${searchText}`)
         .then(response => {
             setJobClassesData(response.data.jobClasses.data)
+            setCurrentPage(response.data.jobClasses.current_page)
+                setPerPage(response.data.jobClasses.per_page)
+                setTotalData(response.data.jobClasses.total)
             setIsLoading(false);
         })
         .catch(error => console.log(error)); 
@@ -68,7 +71,7 @@ export default function ListData(props) {
     const handlePageChange = (pageNumber = 1) => {
         setIsLoading(true);
         // TABLE DATA READY
-        userGetMethod(`${jobClassAPI}?page=${pageNumber}&perPage=${perPage}`)
+        userGetMethod(`${jobClassAPI}?page=${pageNumber}&perPage=${perPage}&searchText=${searchText}`)
             .then(response => {
                 console.log("current_page", response.data);
                 setCurrentPage(response.data.jobClasses.current_page)
@@ -84,7 +87,7 @@ export default function ListData(props) {
         let perPage = e.target.value;
         setIsLoading(true);
         // TABLE DATA READY
-        userGetMethod(`${jobClassAPI}?perPage=${perPage}`)
+        userGetMethod(`${jobClassAPI}?page=${1}&perPage=${perPage}&searchText=${searchText}`)
             .then(response => {
                 setCurrentPage(response.data.jobClasses.current_page)
                 setPerPage(response.data.jobClasses.per_page)

@@ -41,9 +41,12 @@ export default function ListData(props) {
     }
     const searchHandler = (e) =>{
         setIsLoading(true);
-        userGetMethod(branches+'?searchText='+searchText)
+        userGetMethod(`${branches}?page=${1}&perPage=${perPage}&searchText=${searchText}`)
         .then(response => {
             setBranchData(response.data.branches.data)
+            setCurrentPage(response.data.branches.current_page)
+                setPerPage(response.data.branches.per_page)
+                setTotalData(response.data.branches.total)
             setIsLoading(false);
         })
         .catch(error => console.log(error)); 
@@ -68,7 +71,7 @@ export default function ListData(props) {
     const handlePageChange = (pageNumber = 1) => {
         setIsLoading(true);
         // TABLE DATA READY
-        userGetMethod(`${branches}?page=${pageNumber}&perPage=${perPage}`)
+        userGetMethod(`${branches}?page=${pageNumber}&perPage=${perPage}&searchText=${searchText}`)
             .then(response => {
                 console.log("current_page", response.data);
                 setCurrentPage(response.data.branches.current_page)
@@ -84,7 +87,7 @@ export default function ListData(props) {
         let perPage = e.target.value;
         setIsLoading(true);
         // TABLE DATA READY
-        userGetMethod(`${branches}?perPage=${perPage}`)
+        userGetMethod(`${branches}?page=${1}&perPage=${perPage}&searchText=${searchText}`)
             .then(response => {
                 setCurrentPage(response.data.branches.current_page)
                 setPerPage(response.data.branches.per_page)

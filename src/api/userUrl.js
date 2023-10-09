@@ -203,9 +203,11 @@ export const JOB_FLOW_ANALYSIS_REPORT = 'api/user/jobFlowAnalysisReport';
 export const JOB_FLOW_ANALYSIS_FORM = 'api/user/jobFlowAnalysisForm';
 export const JOB_FLOW_ANALYSIS_MARKETING_PERSON_WISE_REPORT = 'api/user/jobFlowAnalysisMarketingPersonWiseReport';
 export const CLIENT_WISE_BILL_INFO_REPORT = 'api/user/clientWiseBillInformationReport';
+export const CYLINDER_DELIVERED_REPORT = 'api/user/cylinderDeliveredReport';
 export const DUE_BILL_INFORMATION_REPORT = 'api/user/dueBillInformationReport';
 export const JOB_FLOW_ANALYSISS_MARKETING_PERSON_WISE_FORM = 'api/user/jobFlowAnalysisMarketingPersonWiseForm';
 export const CLIENT_WISE_BILL_INFO_FORM = 'api/user/clientWiseBillInformationForm';
+export const CYLINDER_DELIVERED_FORM = 'api/user/cylinderDeliveredForm';
 export const DUE_BILL_INFO_FORM = 'api/user/dueBillInformationForm';
 export const DEALER_WISE_JOB_FLOW_REPORT = 'api/user/dealerWiseJobFlowReport';
 // END MARKETING REPORT
