@@ -13,6 +13,8 @@ const Report = (props) => {
     const tableStyle = {
         "margin" : "2% 1% 2% 0%"
     }
+    const bodySize = {fontSize:'12px', fontWeight:'bold'}
+    const HeaderSize = {fontSize:'15px', fontWeight:'bold'}
     const fromDate = props.match.params.fromDate;
     const toDate = props.match.params.toDate;
     const oneDay = 24 * 60 * 60 * 1000;
@@ -48,24 +50,24 @@ const Report = (props) => {
                                                 <table className="particulars table table-bordered table-stripped reportBody" cellSpacing="5" cellPadding="5" width="100%"  style={tableStyle}>
                                                     <thead>    
                                                         <tr>
-                                                            <th width="5%" align="center">Order</th>
-                                                            <th width="6%" align="center">Job No</th>
-                                                            <th width="8%" align="center">Job Name</th>
-                                                            <th width="8%" align="center">Client Name</th>
-                                                            <th width="6%" align="center">Printer Name</th>
-                                                            <th width="10%" align="center">Base Supplier</th>
-                                                            <th width="4%" align="center">New</th>
-                                                            <th width="4%" align="center">Remake</th>
-                                                            <th width="4%" align="center">Redo</th>
-                                                            <th width="4%"align="center">DC/RC</th>
-                                                            <th width="6%" align="center">FL</th>
-                                                            <th width="6%" align="center">Circumference</th>
-                                                            <th width="6%" align="center">Dia</th>
-                                                            <th width="8%" align="center">Surface Area</th>
-                                                            <th width="8%" align="center">Approved(A)</th>
-                                                            <th width="8%" align="center">Challan No</th>
-                                                            <th width="8%" align="center">Finished(B)</th>
-                                                            <th width="10%" align="center">Duration(B-A)</th>   
+                                                            <th width="5%" align="center" style={HeaderSize}>Order</th>
+                                                            <th width="6%" align="center" style={HeaderSize}>Job No</th>
+                                                            <th width="8%" align="center" style={HeaderSize}>Job Name</th>
+                                                            <th width="8%" align="center" style={HeaderSize}>Client Name</th>
+                                                            <th width="6%" align="center" style={HeaderSize}>Printer Name</th>
+                                                            <th width="10%" align="center" style={HeaderSize}>Base Supplier</th>
+                                                            <th width="4%" align="center" style={HeaderSize}>New</th>
+                                                            <th width="4%" align="center" style={HeaderSize}>Remake</th>
+                                                            <th width="4%" align="center" style={HeaderSize}>Redo</th>
+                                                            <th width="4%"align="center" style={HeaderSize}>DC/RC</th>
+                                                            <th width="6%" align="center" style={HeaderSize}>FL</th>
+                                                            <th width="6%" align="center" style={HeaderSize}>Circumference</th>
+                                                            <th width="6%" align="center" style={HeaderSize}>Dia</th>
+                                                            <th width="8%" align="center" style={HeaderSize}>Surface Area</th>
+                                                            <th width="8%" align="center" style={HeaderSize}>Approved(A)</th>
+                                                            <th width="8%" align="center" style={HeaderSize}>Challan No</th>
+                                                            <th width="8%" align="center" style={HeaderSize}>Finished(B)</th>
+                                                            <th width="10%" align="center" style={HeaderSize}>Duration(B-A)</th>   
                                                         </tr>    
                                                     </thead>
                                                     <tbody>
@@ -74,41 +76,41 @@ const Report = (props) => {
                                                                 employee.dailyProductions.length > 0 ?
                                                                     <>
                                                                         <tr>
-                                                                            <th colSpan="18" >{employee.name}</th>
+                                                                            <th colSpan="18" style={HeaderSize}>{employee.name}</th>
                                                                         </tr>
                                                 
                                                                         {employee.dailyProductions.map((dailyProduction)=>( 
                                                                             <tr>
-                                                                                <td>{dailyProduction.agreement_date}</td>
-                                                                                <td>{dailyProduction.job_no}</td>
-                                                                                <td>{dailyProduction.job_name}</td>
-                                                                                <td>{dailyProduction.client_name}</td>
-                                                                                <td>{dailyProduction.printer_name}</td>
-                                                                                <td>Test Supllier</td>
-                                                                                <td>{dailyProduction.new_qty}</td>
-                                                                                <td>{dailyProduction.remake_qty}</td>
-                                                                                <td>{dailyProduction.redo_qty}</td>
-                                                                                <td>{dailyProduction.dc_rc_qty}</td>
-                                                                                <td>{dailyProduction.face_length}</td>
-                                                                                <td>{dailyProduction.circumference}</td>
-                                                                                <td>{dailyProduction.dia}</td>
-                                                                                <td>{dailyProduction.surface_area}</td> 
-                                                                                <td>{dailyProduction.approved_date}</td> 
-                                                                                <td>{dailyProduction.challan_no}</td> 
-                                                                                <td>{dailyProduction.finished_date}</td>
-                                                                                <td>{dailyProduction.finished_date != null ? Math.round(Math.abs((new Date(dailyProduction.approved_date) - new Date(dailyProduction.finished_date)) / oneDay)):'N/A'}</td>
-                                                                                <td></td>
+                                                                                <td style={bodySize}>{dailyProduction.agreement_date}</td>
+                                                                                <td style={bodySize}>{dailyProduction.job_no}</td>
+                                                                                <td style={bodySize}>{dailyProduction.job_name}</td>
+                                                                                <td style={bodySize}>{dailyProduction.client_name}</td>
+                                                                                <td style={bodySize}>{dailyProduction.printer_name}</td>
+                                                                                <td style={bodySize}>Test Supllier</td>
+                                                                                <td style={bodySize}>{dailyProduction.new_qty}</td>
+                                                                                <td style={bodySize}>{dailyProduction.remake_qty}</td>
+                                                                                <td style={bodySize}>{dailyProduction.redo_qty}</td>
+                                                                                <td style={bodySize}>{dailyProduction.dc_rc_qty}</td>
+                                                                                <td style={bodySize}>{dailyProduction.face_length}</td>
+                                                                                <td style={bodySize}>{dailyProduction.circumference}</td>
+                                                                                <td style={bodySize}>{dailyProduction.dia}</td>
+                                                                                <td style={bodySize}>{dailyProduction.surface_area}</td> 
+                                                                                <td style={bodySize}>{dailyProduction.approved_date}</td> 
+                                                                                <td style={bodySize}>{dailyProduction.challan_no}</td> 
+                                                                                <td style={bodySize}>{dailyProduction.finished_date}</td>
+                                                                                <td style={bodySize}>{dailyProduction.finished_date != null ? Math.round(Math.abs((new Date(dailyProduction.approved_date) - new Date(dailyProduction.finished_date)) / oneDay)):'N/A'}</td>
+                                                                                <td style={bodySize}></td>
                                                                             </tr>
                                                                         ))}
                                                                         {employee.total.map((data)=>(
                                                                             <tr>
-                                                                                <th colspan="6">Total</th>
-                                                                                <th>{data.new_qty}</th>
-                                                                                <th>{data.remake_qty}</th>
-                                                                                <th>{data.redo_qty}</th>
-                                                                                <th>{data.dc_rc_qty}</th>
+                                                                                <th colspan="6" style={HeaderSize}>Total</th>
+                                                                                <th style={HeaderSize}>{data.new_qty}</th>
+                                                                                <th style={HeaderSize}>{data.remake_qty}</th>
+                                                                                <th style={HeaderSize}>{data.redo_qty}</th>
+                                                                                <th style={HeaderSize}>{data.dc_rc_qty}</th>
                                                                                 <th colspan="3"></th>                                                                                 
-                                                                                <th>{data.surface_area}</th>
+                                                                                <th style={HeaderSize}>{data.surface_area}</th>
                                                                                 <th colspan="4"></th>   
                                                                             </tr>
                                                                         ))}
@@ -121,13 +123,13 @@ const Report = (props) => {
                                                             {grandTotals.length > 0 ? 
                                                                 grandTotals.map((grandTotal, key)=>(
                                                                     <tr>  
-                                                                        <th colspan="6" align="right">Grand Total</th>
-                                                                        <th>{grandTotal.new_qty}</th>
-                                                                        <th>{grandTotal.remake_qty}</th>
-                                                                        <th>{grandTotal.redo_qty}</th>
-                                                                        <th>{grandTotal.dc_rc_qty}</th>
+                                                                        <th colspan="6" align="right" style={HeaderSize}>Grand Total</th>
+                                                                        <th style={HeaderSize}>{grandTotal.new_qty}</th>
+                                                                        <th style={HeaderSize}>{grandTotal.remake_qty}</th>
+                                                                        <th style={HeaderSize}>{grandTotal.redo_qty}</th>
+                                                                        <th style={HeaderSize}>{grandTotal.dc_rc_qty}</th>
                                                                         <th colspan="3"></th>
-                                                                        <th>{grandTotal.total_surface_area}</th>
+                                                                        <th style={HeaderSize}>{grandTotal.total_surface_area}</th>
                                                                         <th colspan="4"></th>
                                                                     </tr>
                                                                 ))
@@ -142,11 +144,11 @@ const Report = (props) => {
                                                             grandTotals.map((grandTotal, key)=>(
                                                                 <>
                                                                     <tr>
-                                                                        <td>Billable Cylinder:  {grandTotal.billable_cylinder}</td>
+                                                                        <td style={HeaderSize}>Billable Cylinder:  {grandTotal.billable_cylinder}</td>
                                                                     </tr>
                                                                 
                                                                     <tr>
-                                                                        <td>Total Work Load: {grandTotal.total_cyl_qty}</td>
+                                                                        <td style={HeaderSize}>Total Work Load: {grandTotal.total_cyl_qty}</td>
                                                                     </tr> 
                                                                 </>
                                                             ))

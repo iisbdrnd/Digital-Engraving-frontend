@@ -11,6 +11,8 @@ const Report = (props) => {
     const tableStyle = {
         "margin" : "2% 1% 2% 0%"
     }
+    const headerStyle = {fontSize : "14px", fontWeight : "bold"}
+    const bodyStyle = {fontSize : "12px", fontWeight : "bold"}
     const fromDate = props.match.params.fromDate;
     const toDate = props.match.params.toDate;
     const employeeId = props.match.params.employeeId;
@@ -44,12 +46,12 @@ const Report = (props) => {
                                                 <table className="particulars table table-bordered table-stripped reportBody" cellSpacing="5" cellPadding="5" width="100%"  style={tableStyle}>
                                                     <thead>    
                                                         <tr>
-                                                            <th width="15%" align="center">Client Name</th>
-                                                            <th width="15%" align="center">Printer Name</th>
-                                                            <th width="15%" align="center">Marketing Person</th>
-                                                            <th width="10%" align="center">Cylinder</th>
+                                                            <th width="15%" align="center" style={headerStyle}>Client Name</th>
+                                                            <th width="15%" align="center" style={headerStyle}>Printer Name</th>
+                                                            <th width="15%" align="center" style={headerStyle}>Marketing Person</th>
+                                                            <th width="10%" align="center" style={headerStyle}>Cylinder</th>
                                                             {/* <th width="10%" align="center">Times</th> */}
-                                                            <th width="10%" align="center">Surface Area</th>      
+                                                            <th width="10%" align="center" style={headerStyle}>Surface Area</th>      
                                                         </tr>    
                                                     </thead>
                                                     <tbody>
@@ -58,22 +60,22 @@ const Report = (props) => {
                                                                 employee.jobs.length > 0 ?
                                                                     <>
                                                                         <tr>
-                                                                            <th colSpan="5" >{employee.name}</th>
+                                                                            <th colSpan="5" style={headerStyle}>{employee.name}</th>
                                                                         </tr>
                                                 
                                                                         {employee.jobs.map((job)=>( 
                                                                             <tr>
-                                                                                <td>{job.client_name}</td>
-                                                                                <td>{job.printer_name}</td>
-                                                                                <td>{job.employee_name}</td>
-                                                                                <td>{job.total_cylinder_qty}</td>
-                                                                                <td>{job.surface_area}</td>
+                                                                                <td style={bodyStyle}>{job.client_name}</td>
+                                                                                <td style={bodyStyle}>{job.printer_name}</td>
+                                                                                <td style={bodyStyle}>{job.employee_name}</td>
+                                                                                <td style={bodyStyle}>{job.total_cylinder_qty}</td>
+                                                                                <td style={bodyStyle}>{job.surface_area}</td>
                                                                             </tr>
                                                                         ))}
                                                                         {employee.total.map((data)=>(
                                                                             <tr>
-                                                                                <th colspan="4">Total</th>                                                                                
-                                                                                <th>{data.surface_area}</th>
+                                                                                <th colspan="4" style={headerStyle}>Total</th>                                                                                
+                                                                                <th style={headerStyle}>{data.surface_area}</th>
                                                                             </tr>
                                                                         ))}
                                                                     </>

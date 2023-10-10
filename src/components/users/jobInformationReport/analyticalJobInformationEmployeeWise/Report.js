@@ -45,19 +45,19 @@ const Report = (props) => {
                                                 <table className="particulars table table-bordered table-stripped reportBody" cellSpacing="5" cellPadding="5" width="100%"  style={tableStyle}>
                                                     <thead>    
                                                         <tr>
-                                                            <th width="6%" align="center">Aggrement Date</th>
-                                                            <th width="6%" align="center">Job No</th>
-                                                            <th width="8%" align="center">Job Name</th>
-                                                            <th width="8%" align="center">Req/PO No</th>
-                                                            <th width="6%" align="center">Printer</th>
-                                                            <th width="6%" align="center">Status</th>
-                                                            <th width="6%" align="center">Size</th>
-                                                            <th width="6%" align="center">Cyl</th>
-                                                            <th width="8%" align="center">Surface Area</th>
-                                                            <th width="6%" align="center">Design Received Date</th>
-                                                            <th width="10%" align="center">Job Position</th>
-                                                            <th width="6%" align="center">Duration</th>
-                                                            <th width="6%" align="center">Delivered Date</th>
+                                                            <th width="6%" align="center" style={{fontSize:'14px', fontWeight:'bold'}}>Aggrement Date</th>
+                                                            <th width="6%" align="center" style={{fontSize:'14px', fontWeight:'bold'}}>Job No</th>
+                                                            <th width="8%" align="center" style={{fontSize:'14px', fontWeight:'bold'}}>Job Name</th>
+                                                            <th width="8%" align="center" style={{fontSize:'14px', fontWeight:'bold'}}>Req/PO No</th>
+                                                            <th width="6%" align="center" style={{fontSize:'14px' ,fontWeight:'bold'}}>Printer</th>
+                                                            <th width="6%" align="center" style={{fontSize:'14px', fontWeight:'bold'}}>Status</th>
+                                                            <th width="6%" align="center" style={{fontSize:'14px', fontWeight:'bold'}}>Size</th>
+                                                            <th width="6%" align="center" style={{fontSize:'14px', fontWeight:'bold'}}>Cyl</th>
+                                                            <th width="8%" align="center" style={{fontSize:'14px', fontWeight:'bold'}}>Surface Area</th>
+                                                            <th width="6%" align="center" style={{fontSize:'14px', fontWeight:'bold'}}>Design Received Date</th>
+                                                            <th width="10%" align="center" style={{fontSize:'14px', fontWeight:'bold'}}>Job Position</th>
+                                                            <th width="6%" align="center" style={{fontSize:'14px', fontWeight:'bold'}}>Duration</th>
+                                                            <th width="6%" align="center" style={{fontSize:'14px', fontWeight:'bold'}}>Delivered Date</th>
 
                                                         </tr>    
                                                     </thead>
@@ -89,9 +89,9 @@ const Report = (props) => {
                                                                         ))}
                                                                         {employee.total.map((data)=>(
                                                                             <tr> 
-                                                                                <th colspan="7">Total</th>                                                                               
-                                                                                <th>{data.total_cylinder_qty}</th>                                                                                 
-                                                                                <th>{data.total_surface_area}</th>  
+                                                                                <th colspan="7" style={{fontSize:"14px", fontWeight:"bold"}}>Total</th>                                                                               
+                                                                                <th style={{fontSize:"14px", fontWeight:"bold"}}>{data.total_cylinder_qty}</th>                                                                                 
+                                                                                <th style={{fontSize:"14px", fontWeight:"bold"}}>{data.total_surface_area}</th>  
                                                                             </tr>
                                                                         ))}
                                                                     </>

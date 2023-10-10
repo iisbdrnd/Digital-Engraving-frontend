@@ -31,7 +31,8 @@ const Form = (props) => {
         setShowPdf(true);
 
         console.log('date',from_date , to_date);
-
+        let url = `${process.env.PUBLIC_URL}/designToDesignReport/${data.from_date}/${data.to_date}`;
+        window.open(url, '_blank', 'height=800,width=1200');
         // let url = data.type === 'upto_date' ? `${process.env.PUBLIC_URL}/designToDesignReport/${from_date}` : `${process.env.PUBLIC_URL}/designToDesignReport/${data.from_date}/${data.to_date}`;
         // console.log('data form',url, data.from_date, `${process.env.PUBLIC_URL}/designToDesignReport/${from_date}` );
         // window.open(url, '_blank', 'height=800,width=1200');
@@ -136,7 +137,7 @@ const Form = (props) => {
             
              {/* report pdf  */}
              {
-                showPdf && <Report fromDate={fromDate} toDate={toDate} />
+                // showPdf && <Report fromDate={fromDate} toDate={toDate} />
              }
 
              {/* <PDFViewer showToolbar={true} height="1000px" width="100%">

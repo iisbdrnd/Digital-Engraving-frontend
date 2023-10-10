@@ -43,9 +43,12 @@ export default function ListData(props) {
 
     const searchHandler = (e) =>{
         setIsLoading(true);
-        userGetMethod(chartOfAccountAPI+'?searchText='+searchText)
+        userGetMethod(`${chartOfAccountAPI}?page=${1}&perPage=${perPage}&searchText=${searchText}`)
         .then(response => {
             setChartOfAccountData(response.data.accounts.data)
+            setCurrentPage(response.data.accounts.current_page)
+                setPerPage(response.data.accounts.per_page)
+                setTotalData(response.data.accounts.total)
             setIsLoading(false);
         })
         .catch(error => console.log(error)); 
@@ -71,7 +74,7 @@ export default function ListData(props) {
     const handlePageChange = (pageNumber = 1) => {
         setIsLoading(true);
         // TABLE DATA READY
-        userGetMethod(`${chartOfAccountAPI}?page=${pageNumber}&perPage=${perPage}`)
+        userGetMethod(`${chartOfAccountAPI}?page=${pageNumber}&perPage=${perPage}&searchText=${searchText}`)
             .then(response => {
                 console.log("current_page", response.data);
                 setCurrentPage(response.data.accounts.current_page)
@@ -87,7 +90,7 @@ export default function ListData(props) {
         setIsLoading(true);
         //TABLE DATA READY
         let perPage = e.target.value
-        userGetMethod(`${chartOfAccountAPI}?perPage=${perPage}`)
+        userGetMethod(`${chartOfAccountAPI}?page=${1}&perPage=${perPage}&searchText=${searchText}`)
             .then(response => {
                 setCurrentPage(response.data.accounts.current_page)
                 setPerPage(response.data.accounts.per_page)

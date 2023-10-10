@@ -41,9 +41,12 @@ export default function ListData(props) {
     }
     const searchHandler = (e) =>{
         setIsLoading(true);
-        userGetMethod(MACHINE_RSURL+'?searchText='+searchText)
+        userGetMethod(`${MACHINE_RSURL}?page=${1}&perPage=${perPage}&searchText=${searchText}`)
         .then(response => {
             setMachineData(response.data.machines.data)
+            setCurrentPage(response.data.machines.current_page)
+                setPerPage(response.data.machines.per_page)
+                setTotalData(response.data.machines.total)
             setIsLoading(false);
         })
         .catch(error => console.log(error)); 
@@ -68,7 +71,7 @@ export default function ListData(props) {
     const handlePageChange = (pageNumber = 1) => {
         setIsLoading(true);
         // TABLE DATA READY
-        userGetMethod(`${MACHINE_RSURL}?page=${pageNumber}&perPage=${perPage}`)
+        userGetMethod(`${MACHINE_RSURL}?page=${pageNumber}&perPage=${perPage}&searchText=${searchText}`)
             .then(response => {
                 setCurrentPage(response.data.machines.current_page)
                 setPerPage(response.data.machines.per_page)
@@ -83,7 +86,7 @@ export default function ListData(props) {
         let perPage = e.target.value;
         setIsLoading(true);
         // TABLE DATA READY
-        userGetMethod(`${MACHINE_RSURL}?perPage=${perPage}`)
+        userGetMethod(`${MACHINE_RSURL}?page=${1}&perPage=${perPage}&searchText=${searchText}`)
             .then(response => {
                 setCurrentPage(response.data.machines.current_page)
                 setPerPage(response.data.machines.per_page)
