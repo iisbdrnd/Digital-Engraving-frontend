@@ -32,7 +32,7 @@ const Report = (props) => {
                 <div className="row">
                     <div className="col-sm-12">
                         <div className=""> 
-                            <ReportHeader reportTtile="Design File" />
+                            <ReportHeader reportTtile="Design File" jobType={jobOrdersInfo.job_type} />
 
                             <div className="mainDiv" style={{"padding": "1% 5%"}}>
                             {isLoading ? (<img src={process.env.PUBLIC_URL+'/preloader.gif'} alt="Data Loading"/>):
@@ -40,8 +40,8 @@ const Report = (props) => {
                                     jobOrdersInfo != null ? (
                                         <>
                                         <div>
-                                            <h4 style={{fontSize:"13px",fontWeight:'bold'}}>Marketing Person: {jobOrdersInfo.marketing_person}</h4>
-                                            <h4 align="right" style={{fontSize:"13px",fontWeight:'bold'}}>{jobOrdersInfo.job_type}</h4>
+                                            <h3 style={{fontSize:"14px",fontWeight:'bold'}}>Marketing Person: {jobOrdersInfo.marketing_person}</h3>
+                                            {/* <h4 align="right" style={{fontSize:"13px",fontWeight:'bold'}}>{jobOrdersInfo.job_type}</h4> */}
 
                                         </div>
                                         <div className="row">
@@ -58,12 +58,13 @@ const Report = (props) => {
                                                 <tr>
                                                     <td width="15%" style={{fontSize:"14px",fontWeight:'bold'}}>Name of Job</td>
                                                     <td width="5%" align="center">:</td>
-                                                    <td width="30%" colSpan="4" style={{fontSize:"13px",fontWeight:'bold'}}>{jobOrdersInfo.job_name}</td>
-                                                </tr>
-                                                <tr>
+                                                    <td width="30%"  style={{fontSize:"13px",fontWeight:'bold'}}>{jobOrdersInfo.job_name}</td>
                                                     <td width="15%" style={{fontSize:"14px",fontWeight:'bold'}}>Client Name</td>
                                                     <td width="5%" align="center">:</td>
-                                                    <td width="30%" colSpan="4" style={{fontSize:"13px",fontWeight:'bold'}}>{jobOrdersInfo.client_name}</td>
+                                                    <td width="30%" style={{fontSize:"13px",fontWeight:'bold'}}>{jobOrdersInfo.client_name}</td>
+                                                </tr>
+                                                <tr>
+                                                    
                                                 </tr>
                                                 {/* <tr>
                                                     <td width="15%">Address</td>
@@ -165,7 +166,7 @@ const Report = (props) => {
                                                             <div className="cirRpt" style={{fontSize:"14px",fontWeight:'bold'}}>Cir <br /> RPT</div>
                                                             <div className="cirRptValue" style={{fontSize:"13px",fontWeight:'bold'}}>{jobOrdersInfo.circumference} mm <br /> {jobOrdersInfo.rpt} Nos</div>
                                                             <div className="designHeight" style={{fontSize:"14px",fontWeight:'bold'}}> Design Height - <span style={{'padding': '2px', 'border': '1px solid black'}}>{jobOrdersInfo.printing_height}</span> mm </div>
-                                                            <div className="designWidth" style={{fontSize:"14px",fontWeight:'bold'}}> Design Width - <span style={{'padding': '2px', 'border': '1px solid black'}}>{jobOrdersInfo.printing_height}</span> mm </div>
+                                                            <div className="designWidth" style={{fontSize:"14px",fontWeight:'bold'}}> Design Width - <span style={{'padding': '2px', 'border': '1px solid black'}}>{jobOrdersInfo.printing_width}</span> mm </div>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -175,8 +176,14 @@ const Report = (props) => {
                                                 <tr>
                                                     <td width="15%" style={{fontSize:"14px",fontWeight:'bold'}}>Name of Color</td>
                                                     <td width="5%" align="center">:</td>
-                                                    <td width="80%" colSpan="4" style={{fontSize:"13px",fontWeight:'bold'}}>
+                                                    <td width="30%" style={{fontSize:"13px",fontWeight:'bold'}}>
                                                     {colorInfo.map((name,index) => (index ? ', ' : '')+(name.color_name))}</td>
+                                                    {/* <td width="15%" style={{fontSize:"14px",fontWeight:'bold'}}>Note</td>
+                                                    <td width="5%" align="center">:</td>
+                                                    <td width="30%" colSpan="4" style={{fontSize:"13px",fontWeight:'bold'}}>{jobOrdersInfo.remarks}</td> */}
+                                                    <td width="15%" style={{fontSize:"14px",fontWeight:'bold'}}>Note</td>
+                                                    <td width="5%" align="center">:</td>
+                                                    <td width="30%" style={{fontSize:"13px",fontWeight:'bold'}}>{jobOrdersInfo.remarks}</td>
                                                 </tr>
                                                 <tr>
                                                     <td width="15%" style={{fontSize:"14px",fontWeight:'bold'}}>Type of Printing</td>
@@ -186,31 +193,29 @@ const Report = (props) => {
                                                     <td width="5%" align="center">:</td>
                                                     <td width="30%"></td>
                                                 </tr>
-                                                <tr>
-                                                    <td width="15%" style={{fontSize:"14px",fontWeight:'bold'}}>Note</td>
-                                                    <td width="5%" align="center">:</td>
-                                                    <td width="80%" colSpan="4" style={{fontSize:"13px",fontWeight:'bold'}}>{jobOrdersInfo.remarks}</td>
-                                                </tr>
+                                                
                                             </table>
                                         </div>
+
+
                                         <div className="row report-footer groupFont">
                                             <div className="col-md-4">
                                                 <h5>Job order by</h5>
                                                 <div className="put-signature"></div>
                                                 <span className="footer-signature">Signature and Date</span> <br />
-                                                <h5><span>for</span> Meghna Group of Industries Ltd</h5>
+                                                <h5><span>for</span> {jobOrdersInfo.client_name}</h5>
                                             </div>
                                             <div className="col-md-4">
                                                 <h5>Job Measured by</h5>
                                                 <div className="put-signature"></div>
                                                 <span className="footer-signature">Signature and Date</span> <br />
-                                                <h5><span>for</span> Meghna Group of Industries Ltd</h5>
+                                                <h5><span>for</span> {jobOrdersInfo.printer_name}</h5>
                                             </div>
                                             <div className="col-md-4">
                                                 <h5>Order Received by</h5>
                                                 <div className="put-signature"></div>
                                                 <span className="footer-signature">Signature and Date</span> <br />
-                                                <h5><span>for</span> Meghna Group of Industries Ltd</h5>
+                                                <h5><span>for</span> Digital Engravers Limited</h5>
                                             </div>
                                         </div>
                                         </>

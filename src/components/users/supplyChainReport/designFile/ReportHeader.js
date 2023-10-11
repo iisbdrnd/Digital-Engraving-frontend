@@ -22,6 +22,7 @@ const ReportHeader = props => {
             </div>
             <div className="report-for">
                 <h2>Design File</h2>
+                <h2>{props.jobType}</h2>
             </div>
         </div>
 )};
