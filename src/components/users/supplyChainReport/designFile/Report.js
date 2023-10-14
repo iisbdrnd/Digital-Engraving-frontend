@@ -201,19 +201,19 @@ const Report = (props) => {
                                         <div className="row report-footer groupFont">
                                             <div className="col-md-4">
                                                 <h5>Job order by</h5>
-                                                <div className="put-signature"></div>
+                                               
                                                 <span className="footer-signature">Signature and Date</span> <br />
                                                 <h5><span>for</span> {jobOrdersInfo.client_name}</h5>
                                             </div>
                                             <div className="col-md-4">
                                                 <h5>Job Measured by</h5>
-                                                <div className="put-signature"></div>
+                                               
                                                 <span className="footer-signature">Signature and Date</span> <br />
                                                 <h5><span>for</span> {jobOrdersInfo.printer_name}</h5>
                                             </div>
                                             <div className="col-md-4">
                                                 <h5>Order Received by</h5>
-                                                <div className="put-signature"></div>
+                                                
                                                 <span className="footer-signature">Signature and Date</span> <br />
                                                 <h5><span>for</span> Digital Engravers Limited</h5>
                                             </div>

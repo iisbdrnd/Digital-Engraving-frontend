@@ -5,15 +5,17 @@ import { userGetMethod } from '../../../../api/userAction';
 
 const Report = (props) => {
     const [isLoading, setIsLoading] = useState(true);
-    const [orderTypes, setJorderTypes] = useState([]);
+    const [orderTypes, setOrderTypes] = useState([]);
     const [grandTotalCylinder, setGrandTotalCyl] = useState([]);
     const [grandTotalSurfaceArea, setGrandTotalSurfaceArea] = useState([]);
-    const [calculateCyl, setCalculateCyl] = useState(0);
+    
+    const [jobOrders,setJobOrders] = useState([]);
 
     const tableStyle = {
         // "border" : "1px solid #ccc",
         "margin" : "2% 1% 2% 0%"
     }
+    const tableRow = {fontSize: "16px",fontWeight: "bold"}
     useEffect(()=>{
         const fromDate = props.match.params.fromDate;
         const toDate = props.match.params.toDate;
@@ -22,13 +24,46 @@ const Report = (props) => {
         userGetMethod(`${DESIGN_FILE_TO_FACTORY_REPORT}?fromDate=${fromDate}&&toDate=${toDate}`)
         .then(response => {
             console.log('res', response.data);
-            setJorderTypes(response.data.orderTypes);
-            setGrandTotalCyl(response.data.grandTotalCyl);
-            setGrandTotalSurfaceArea(response.data.grandTotalSurfaceArea);
+            // setJorderTypes(response.data.orderTypes);
+            setJobOrders(response.data.jobOrders);
+            // setGrandTotalCyl(response.data.grandTotalCyl);
+            // setGrandTotalSurfaceArea(response.data.grandTotalSurfaceArea);
             setIsLoading(false);
         })
         .catch(error => console.log(error))
     }, []);
+    useEffect(() =>{
+        if (jobOrders.length > 0) {
+            const groupByClient = (data) => {
+                const groupedData = data.reduce((result, item) => {
+                //   const printerId = item.printer_id;
+                  const jobTypes = item.job_type;
+
+                if (!result[jobTypes]) {
+                    result[jobTypes] = [];
+                  }
+              
+                //   result[clientId].push(...item,clientName);
+                result[jobTypes].push({ ...item,jobTypes})
+                  return result;
+                }, {});
+
+                const groupedArray = Object.entries(groupedData).map(([jobTypes, items]) => ({
+                    
+                    // printer_id: Number(printerId),
+                    jobTypeName: jobTypes,
+                    
+                  items,
+                }));
+            //   console.log(groupedArray)
+                return groupedArray;
+              };
+              
+              const groupedByClientId = groupByClient(jobOrders);
+              setOrderTypes(groupedByClientId);
+        }
+    },[jobOrders]);
+    console.log(orderTypes)
 
     return (
         <Fragment>
@@ -44,17 +79,17 @@ const Report = (props) => {
                                     <div className="row">
                                         <table className="particulars table table-bordered table-stripped" cellSpacing="5" cellPadding="5" width="100%"  style={tableStyle}>
                                             <thead className="groupFont">
-                                                <tr>
-                                                    <th width="10%" align="center">JobNo</th>
-                                                    <th width="15%" align="center">Agreement Date</th>
-                                                    <th width="20%" align="center">Job Name</th>
-                                                    <th width="10%" align="center">Client Name</th>
-                                                    <th width="10%" align="center">Printers Name</th>
-                                                    <th width="10%" align="center">Size(mm X mm)</th>
-                                                    <th width="5%" align="center">No Cyl</th>
-                                                    <th width="5%" align="center">Base Date</th>
-                                                    <th width="10%" align="center">Surface Area</th>
-                                                    <th width="10%" align="center">Remarks</th>
+                                                <tr style={{backgroundColor: "#ADA9A8"}}>
+                                                    <th style={tableRow} width="10%" align="center">JobNo</th>
+                                                    <th style={tableRow} width="15%" align="center">Agreement Date</th>
+                                                    <th style={tableRow} width="20%" align="center">Job Name</th>
+                                                    <th style={tableRow} width="10%" align="center">Client Name</th>
+                                                    <th style={tableRow} width="10%" align="center">Printers Name</th>
+                                                    <th style={tableRow} width="10%" align="center">Size(mm X mm)</th>
+                                                    <th style={tableRow} width="5%" align="center">No Cyl</th>
+                                                    <th style={tableRow} width="5%" align="center">Base Date</th>
+                                                    <th style={tableRow} width="10%" align="center">Surface Area</th>
+                                                    <th style={tableRow} width="10%" align="center">Remarks</th>
                                                 </tr>
                                             </thead>
                                             <tbody className="reportBody">
@@ -62,13 +97,17 @@ const Report = (props) => {
                                                 orderTypes.length > 0 ? 
                                                 <>
                                                     {orderTypes.map((orderType, index1) => 
-                                                        (
+                                                    {
+                                                        const items = orderType.items || []
+                                                        const totalCylinder = items.reduce((acc,current)=> acc + current.total_cylinder_qty,0);
+                                                        const totalSurfaceArea = items.reduce((acc,current)=> acc + current.surface_area,0);
+                                                        return (
                                                             <>
                                                                 <tr key={index1}>
-                                                                    <td colSpan="10" style={{fontSize:"13px",fontWeight:'bold'}}>{orderType.job_type}</td>
+                                                                    <td colSpan="10" style={{fontSize:"15px",fontWeight:'bold'}}>{orderType.jobTypeName}</td>
                                                                 </tr>
-                                                                { orderType.jobOrders.length > 0 ? 
-                                                                    orderType.jobOrders.map((jobOrder, index2) => (
+                                                                { orderType.items.length > 0 ? 
+                                                                    orderType.items.map((jobOrder, index2) => (
                                                                         <tr key={index2}>
                                                                             <td style={{fontSize:"13px",fontWeight:'bold'}}>{jobOrder.job_no}</td>
                                                                             <td style={{fontSize:"13px",fontWeight:'bold'}}>{jobOrder.agreement_date}</td>
@@ -84,43 +123,39 @@ const Report = (props) => {
                                                                     ))
                                                                     : <tr><td colSpan="10" className="text-center">No data found</td></tr>
                                                                 }
-                                                                {/* <tr>
-                                                                    <td colSpan="5">
-                                                                        <b> {orderType.job_type} </b>  No of Job: <b>{orderType.jobOrders.length} </b> 
-                                                                    </td>
-                                                                    <td colSpan="4"><b>Total Cylinder : { orderType.calculateTotalCyl } </b> </td>
-                                                                    <td ></td>
-                                                                </tr> */}
+                                                                
                                                                 <tr className="groupFont">
                                                                     <td colSpan="5" style={{fontSize:"15px",fontWeight:'bold'}}>
-                                                                        Total Number of Job: {orderType.jobOrders.length}
+                                                                        Total Number of Job: {orderType.items.length}
                                                                     </td>
                                                                     <td className="text-right" style={{fontSize:"15px",fontWeight:'bold'}}>
                                                                         Total
                                                                     </td>
                                                                     <td className="text-center" style={{fontSize:"15px",fontWeight:'bold'}}>
-                                                                        {orderType.calculateTotalCyl}
+                                                                        {totalCylinder}
                                                                     </td>
                                                                     <td></td>
                                                                     <td className="text-center" style={{fontSize:"15px",fontWeight:'bold'}}>
-                                                                        {orderType.calculateTotalSurfaceArea}
+                                                                        {totalSurfaceArea}
                                                                     </td>
                                                                     <td colSpan="2"></td>
                                                                 </tr>
                                                             </>
                                                         )
+                                                    }
+                                                       
                                                     )}
                                                 </>
                                                 : <tr><td colSpan="10" className="text-center">No data found</td></tr>
                                             }
                                             </tbody>
                                         </table>
-                                        <table className="particulars table table-bordered table-stripped" cellSpacing="5" cellPadding="5" width="100%"  style={tableStyle}>
+                                        {/* <table className="particulars table table-bordered table-stripped" cellSpacing="5" cellPadding="5" width="100%"  style={tableStyle}>
                                             <tr className="groupFont">
                                                 <td style={{fontSize:"15px",fontWeight:'bold'}}>Grand Total Cylinder: {grandTotalCylinder}</td>
                                                 <td style={{fontSize:"15px",fontWeight:'bold'}}>Grand Total Surface Area: {grandTotalSurfaceArea}</td>
                                             </tr>
-                                        </table>
+                                        </table> */}
                                     </div>
                                 )
                             } 

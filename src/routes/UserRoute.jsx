@@ -45,6 +45,10 @@ import JobSubClassEdit from './../components/users/backOfficeSetup/jobSubClass/E
 import Color from './../components/users/backOfficeSetup/color/ListData';
 import ColorAdd from './../components/users/backOfficeSetup/color/Add';
 import ColorEdit from './../components/users/backOfficeSetup/color/Edit';
+// Monthly Target Area
+import MonthlyTarget from './../components/users/backOfficeSetup/MonthlyTarget/ListData';
+import MonthlyTargetAdd from './../components/users/backOfficeSetup/MonthlyTarget/Add';
+
 //DESIGN MACHINE LOCATION
 import DesignMachineLocation from './../components/users/backOfficeSetup/designMachineLocation/ListData';
 import DesignMachineLocationAdd from './../components/users/backOfficeSetup/designMachineLocation/Add';
@@ -961,9 +965,18 @@ class UserRoute extends Component {
                   path={`${process.env.PUBLIC_URL}/color/index`}
                   component={Color}
                 />
+                {/* Monthly Target */}
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/monthlyTarget/index`}
+                  component={MonthlyTarget}
+                />
                 <UserAuthRoute
                   path={`${process.env.PUBLIC_URL}/color/add`}
                   component={ColorAdd}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/monthlyTarget/add`}
+                  component={MonthlyTargetAdd}
                 />
                 <UserAuthRoute
                   path={`${process.env.PUBLIC_URL}/color/edit/:colorId`}
