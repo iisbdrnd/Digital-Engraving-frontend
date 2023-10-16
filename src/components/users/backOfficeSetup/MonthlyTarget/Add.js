@@ -37,8 +37,8 @@ const Add = (props) => {
 
     const submitHandler = (data, e) => {
         data.monthlyCylinderQyt = [value];
-        // data.status = colorInput == false ? 0 : 1;
-        // // console.log(data);
+        data.status = colorInput == false ? 0 : 1;
+        // console.log(data);
         // userPostMethod(colorAPI, data)
         //     .then(response => {
         //         if (response.data.status == 1) {
@@ -50,7 +50,7 @@ const Add = (props) => {
         //     })
         // .catch(error => toast.error(error))
 
-        console.log(data)
+        // console.log(data)
 
     }
 

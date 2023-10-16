@@ -233,9 +233,11 @@ import ClientStockReport from './../components/users/supplyChainReport/clientSto
 import ClientStockBalanceForm from './../components/users/supplyChainReport/clientStockBalanceReport/Form';
 import ClientWiseBillInformation from './../components/users/supplyChainReport/ClientWiseBillInformation/Form';
 import CylinderDeliveredReportForm from './../components/users/supplyChainReport/CylinderDeliveredReport/Form';
+import ClientWiseAccountStatementsForm from './../components/users/supplyChainReport/ClientWiseAccountStatement/Form';
 import DueBillInformation from './../components/users/supplyChainReport/DueBillInformation/Form';
 import ClientWiseBillInformationReport from './../components/users/supplyChainReport/ClientWiseBillInformation/Report';
 import CylinderDeliveredReport from './../components/users/supplyChainReport/CylinderDeliveredReport/Report';
+import ClientWiseAccountStatementsReport from './../components/users/supplyChainReport/ClientWiseAccountStatement/Report';
 import DueBillInformationReport from './../components/users/supplyChainReport/DueBillInformation/Report';
 import ClientStockBalanceReport from './../components/users/supplyChainReport/clientStockBalanceReport/Report';
 import MonthlyJobFlowForm from './../components/users/supplyChainReport/monthlyJobFlow/Form';
@@ -526,6 +528,10 @@ class UserRoute extends Component {
             <UserAuthRoute
               path={`${process.env.PUBLIC_URL}/cylinderDeliveredReport/:fromDate/:toDate/:clientId`}
               component={CylinderDeliveredReport}
+            />
+            <UserAuthRoute
+              path={`${process.env.PUBLIC_URL}/clientWiseAccountStatementsReport/:fromDate/:toDate/:clientCode/:subsidiaryCode`}
+              component={ClientWiseAccountStatementsReport}
             />
             <UserAuthRoute
               path={`${process.env.PUBLIC_URL}/dueBillInformation/:clientId`}
@@ -1269,6 +1275,10 @@ class UserRoute extends Component {
                 <UserAuthRoute
                   path={`${process.env.PUBLIC_URL}/cylinderDeliveredReport`}
                   component={CylinderDeliveredReportForm}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/clientWiseAccountStatements`}
+                  component={ClientWiseAccountStatementsForm}
                 />
                 <UserAuthRoute
                   path={`${process.env.PUBLIC_URL}/dueBillInformation`}

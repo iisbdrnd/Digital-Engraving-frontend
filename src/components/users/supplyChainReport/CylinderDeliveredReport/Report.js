@@ -176,7 +176,7 @@ const Report = (props) => {
 
                                                     <tr>
                                                                                 <th colspan="6" style={{textAlign:"right", fontSize: '14px', fontWeight: 'bold'}}>Total</th>                                                                                
-                                                                                <th style={{fontSize: '14px', fontWeight: 'bold'}}>aaa</th>
+                                                                                <th style={{fontSize: '14px', fontWeight: 'bold'}}>Data is not arraged</th>
                                                                             </tr>
 
                                                 </table>
