@@ -23,7 +23,7 @@ const Add = (props) => {
             // } }) 
             setValue([...value,{
                 month_name: stateName,
-                qyt: event.target.value,
+                qty: event.target.value,
              }]) 
           }
     }
