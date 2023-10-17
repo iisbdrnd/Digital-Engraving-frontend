@@ -48,6 +48,7 @@ import ColorEdit from './../components/users/backOfficeSetup/color/Edit';
 // Monthly Target Area
 import MonthlyTarget from './../components/users/backOfficeSetup/MonthlyTarget/ListData';
 import MonthlyTargetAdd from './../components/users/backOfficeSetup/MonthlyTarget/Add';
+import MonthlyTargetEdit from './../components/users/backOfficeSetup/MonthlyTarget/Edit';
 
 //DESIGN MACHINE LOCATION
 import DesignMachineLocation from './../components/users/backOfficeSetup/designMachineLocation/ListData';
@@ -231,6 +232,7 @@ import YearlyJobFlowReport from './../components/users/supplyChainReport/yearlyJ
 import ClientStockForm from './../components/users/supplyChainReport/clientStockReport/Form';
 import ClientStockReport from './../components/users/supplyChainReport/clientStockReport/Report';
 import ClientStockBalanceForm from './../components/users/supplyChainReport/clientStockBalanceReport/Form';
+import DailyJobAnalysisEmployeeWiseForm from './../components/users/supplyChainReport/DailyJobAnalysisEmployeeWise/Form';
 import ClientWiseBillInformation from './../components/users/supplyChainReport/ClientWiseBillInformation/Form';
 import CylinderDeliveredReportForm from './../components/users/supplyChainReport/CylinderDeliveredReport/Form';
 import ClientWiseAccountStatementsForm from './../components/users/supplyChainReport/ClientWiseAccountStatement/Form';
@@ -240,6 +242,7 @@ import CylinderDeliveredReport from './../components/users/supplyChainReport/Cyl
 import ClientWiseAccountStatementsReport from './../components/users/supplyChainReport/ClientWiseAccountStatement/Report';
 import DueBillInformationReport from './../components/users/supplyChainReport/DueBillInformation/Report';
 import ClientStockBalanceReport from './../components/users/supplyChainReport/clientStockBalanceReport/Report';
+import DailyJobAnalysisEmployeeWiseReport from './../components/users/supplyChainReport/DailyJobAnalysisEmployeeWise/Report';
 import MonthlyJobFlowForm from './../components/users/supplyChainReport/monthlyJobFlow/Form';
 import MonthlyJobFlowReport from './../components/users/supplyChainReport/monthlyJobFlow/Report';
 import MonthlyProductionForm from './../components/users/supplyChainReport/monthlyProduction/Form';
@@ -523,6 +526,10 @@ class UserRoute extends Component {
               path={`${process.env.PUBLIC_URL}/clientWiseBillInformationReport/:fromDate/:toDate/:clientId`}
               component={ClientWiseBillInformationReport}
             />
+            <UserAuthRoute
+              path={`${process.env.PUBLIC_URL}/dailyJobAnalysisEmployeeWiseReport/:fromDate/:toDate/:employeeId`}
+              component={DailyJobAnalysisEmployeeWiseReport}
+            />
 
 
             <UserAuthRoute
@@ -639,6 +646,7 @@ class UserRoute extends Component {
               path={`${process.env.PUBLIC_URL}/clientStockBalanceReport/report/:client_id/:printer_id`}
               component={ClientStockBalanceReport}
             />
+            
             
             <UserAuthRoute
               path={`${process.env.PUBLIC_URL}/monthlyJobFlow/report/:month/:year/:cylinder_type`}
@@ -988,6 +996,10 @@ class UserRoute extends Component {
                   path={`${process.env.PUBLIC_URL}/color/edit/:colorId`}
                   component={ColorEdit}
                 />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/monthlyTarget/edit/:targetId`}
+                  component={MonthlyTargetEdit}
+                />
                 {/* Design Machine Location */}
                 <UserAuthRoute
                   path={`${process.env.PUBLIC_URL}/designMachineLocation/index`}
@@ -1267,6 +1279,10 @@ class UserRoute extends Component {
                 <UserAuthRoute
                   path={`${process.env.PUBLIC_URL}/clientStockBalanceReport`}
                   component={ClientStockBalanceForm}
+                />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/dailyJobAnalysisEmployeeWise`}
+                  component={DailyJobAnalysisEmployeeWiseForm}
                 />
                 <UserAuthRoute
                   path={`${process.env.PUBLIC_URL}/clientWiseBillInformation`}

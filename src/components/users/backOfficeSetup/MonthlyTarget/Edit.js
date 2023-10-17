@@ -1,31 +1,47 @@
-import React, { Fragment, useState,useReducer } from 'react';
-import { colorAPI, postMonthlyTargetAPI } from '../../../../api/userUrl';
-import { userPostMethod } from '../../../../api/userAction';
+import React, { Fragment, useState,useReducer, useEffect } from 'react';
+import { colorAPI, monthlyTargetAPI, postMonthlyTargetAPI } from '../../../../api/userUrl';
+import { userGetMethod, userPostMethod, userPutMethod } from '../../../../api/userAction';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import useForm from "react-hook-form";
 import { SubmitButton } from '../../../common/GlobalButton';
 import { ToggleButton } from '../../../common/toggleBtn/toggleButton';
 
-function Edit() {
+function Edit(props) {
     const [colorInput, setColorInput] = useState(false)
     const { handleSubmit, register, errors } = useForm();
-    const [value, setValue] = useState([])
+    const [value, setValue] = useState(0);
+    const [targetData,setTargetData] = useState(0);
+
+
+    const targetId = props.match.params.targetId;
 
 
 
-    const handleChangeValue = (event, stateName) =>{
-        if (stateName == '1' || stateName == '2' || stateName == '3' || stateName == '4' || stateName == '5' || stateName == '6' || stateName == '7' || stateName == '8' || stateName == '9' || stateName == '10' || stateName == '11' || stateName == '12' ) {
-            setValue({ ...value,[stateName]: event.target.value })
-          }
-    }
     // console.log(value);
-
+    useEffect(() => {
+        userGetMethod(`${monthlyTargetAPI}/${targetId}/edit`)
+        .then(response => {
+            console.log(response.data);
+            setTargetData(response.data.target)
+            setValue(response.data?.target?.no_of_cylinder)
+        })
+        .catch(error => console.log(error))   
+    },[]);
+   
+    
+    const handleChangeValue = (event) =>{
+         setValue( event.target.value )
+        
+        
+    }
+    // console.log(value)
     const submitHandler = (data, e) => {
-        data.monthlyCylinderQyt = value;
-        data.status = colorInput == false ? 0 : 1;
+        data.qty = value;
+        data.month_name = targetData.month_name;
+        
         // console.log(data);
-        userPostMethod(postMonthlyTargetAPI, data)
+        userPutMethod(`${postMonthlyTargetAPI}/${targetId}`, data)
             .then(response => {
                 if (response.data.status == 1) {
                     e.target.reset();
@@ -41,9 +57,17 @@ function Edit() {
         // console.log(data)
 
     }
+    const monthNames = [
+        "January", "February", "March", "April",
+        "May", "June", "July", "August",
+        "September", "October", "November", "December"
+    ];
+    
+    const monthName = monthNames[targetData.month_name - 1];
+    
 
     const clearField = () =>{
-        setValue([]);
+        setValue(0);
     }
 
     var menuId = 0;
@@ -61,7 +85,7 @@ function Edit() {
                     <div className="col-sm-12">
                         <div className="card">
                             <div className="card-header">
-                                <h5>Add Monthly Target</h5>
+                                <h5>Edit Monthly Target</h5>
                             </div>
                             <div className="card-body">
                                 <form onSubmit={handleSubmit(submitHandler)} className="theme-form">
@@ -70,8 +94,8 @@ function Edit() {
                                     <div className="form-group row mb-3">
                                     <label className="col-sm-6 col-form-label" htmlFor="year">Target Year</label>
                                         <div className="col-sm-6">
-                                            <select className="form-control" name="year" ref={register({})}>
-                                                <option value="">Select One</option>
+                                            <select value={targetData?.target_year? targetData?.target_year : ''} className="form-control" name="year" ref={register({})}>
+                                                <option value=''>Select One</option>
                                                 {/* <option value="2015">2015</option>
                                                 <option value="2016">2016</option>
                                                 <option value="2017">2017</option>
@@ -103,16 +127,16 @@ function Edit() {
                                     <div className='col-md-6 '>
 
                                     <div className="form-group row">
-                                        <label className="col-sm-6 col-form-label" htmlFor="january">January</label>
+                                        <label className="col-sm-6 col-form-label" htmlFor="january">{monthName}</label>
                                         <div className="col-sm-6">
                                             <input 
                                                 className="form-control"
-                                                id="january" 
-                                                // name="january" 
+                                                id="quantity" 
+                                                // name="quantity" 
                                                 type="number" 
                                                 placeholder="Cylinder Quantity.."
-                                                onChange={(e)=>handleChangeValue(e,'1')}
-                                                // value={userInput.name}
+                                                onChange={(e)=>handleChangeValue(e)}
+                                                value={value}
                                                 ref={register({
                                                     required: 'Name Field Required'
                                                 })}
@@ -121,220 +145,9 @@ function Edit() {
                                         </div>
                                     </div>
 
-                                    <div className="form-group row">
-                                        <label className="col-sm-6 col-form-label" htmlFor="february">February</label>
-                                        <div className="col-sm-6">
-                                            <input 
-                                                className="form-control"
-                                                id="february" 
-                                                // name="february" 
-                                                type="number" 
-                                                placeholder="Cylinder Quantity.."
-                                                onChange={(e)=>handleChangeValue(e,'2')}
-                                                // value={userInput.name}
-                                                ref={register({
-                                                    required: 'Name Field Required'
-                                                })}
-                                            />
-                                            {errors.february && <p className='text-danger'>{errors.february.message}</p>}
-                                        </div>
                                     </div>
 
-                                    <div className="form-group row">
-                                        <label className="col-sm-6 col-form-label" htmlFor="march">March</label>
-                                        <div className="col-sm-6">
-                                            <input 
-                                                className="form-control"
-                                                id="march" 
-                                                // name="march" 
-                                                type="number" 
-                                                placeholder="Cylinder Quantity.."
-                                                onChange={(e)=>handleChangeValue(e,'3')}
-                                                // value={userInput.name}
-                                                ref={register({
-                                                    required: 'Name Field Required'
-                                                })}
-                                            />
-                                            {errors.march && <p className='text-danger'>{errors.march.message}</p>}
-                                        </div>
-                                    </div>
-
-                                    <div className="form-group row">
-                                        <label className="col-sm-6 col-form-label" htmlFor="april">April</label>
-                                        <div className="col-sm-6">
-                                            <input 
-                                                className="form-control"
-                                                id="april" 
-                                                // name="april" 
-                                                type="number" 
-                                                placeholder="Cylinder Quantity.."
-                                                onChange={(e)=>handleChangeValue(e,'4')}
-                                                // value={userInput.name}
-                                                ref={register({
-                                                    required: 'Name Field Required'
-                                                })}
-                                            />
-                                            {errors.april && <p className='text-danger'>{errors.april.message}</p>}
-                                        </div>
-                                    </div>
-
-                                    <div className="form-group row">
-                                        <label className="col-sm-6 col-form-label" htmlFor="may">May</label>
-                                        <div className="col-sm-6">
-                                            <input 
-                                                className="form-control"
-                                                id="may" 
-                                                // name="may" 
-                                                type="number" 
-                                                placeholder="Cylinder Quantity.."
-                                                onChange={(e)=>handleChangeValue(e,'5')}
-                                                // value={userInput.name}
-                                                ref={register({
-                                                    required: 'Name Field Required'
-                                                })}
-                                            />
-                                            {errors.may && <p className='text-danger'>{errors.may.message}</p>}
-                                        </div>
-                                    </div>
-
-                                    <div className="form-group row">
-                                        <label className="col-sm-6 col-form-label" htmlFor="june">June</label>
-                                        <div className="col-sm-6">
-                                            <input 
-                                                className="form-control"
-                                                id="june" 
-                                                // name="june" 
-                                                type="number" 
-                                                placeholder="Cylinder Quantity.."
-                                                onChange={(e)=>handleChangeValue(e,'6')}
-                                                // value={userInput.name}
-                                                ref={register({
-                                                    required: 'Name Field Required'
-                                                })}
-                                            />
-                                            {errors.june && <p className='text-danger'>{errors.june.message}</p>}
-                                        </div>
-                                    </div>
-
-                                    </div>
-
-                                        {/* Left Side */}
-                                    <div className='col-md-6'>
-
-                                    <div className="form-group row">
-                                        <label className="col-sm-6 col-form-label" htmlFor="july">July</label>
-                                        <div className="col-sm-6">
-                                            <input 
-                                                className="form-control"
-                                                id="july" 
-                                                // name="july" 
-                                                type="number" 
-                                                placeholder="Cylinder Quantity.."
-                                                onChange={(e)=>handleChangeValue(e,'7')}
-                                                // value={userInput.name}
-                                                ref={register({
-                                                    required: 'Name Field Required'
-                                                })}
-                                            />
-                                            {errors.july && <p className='text-danger'>{errors.july.message}</p>}
-                                        </div>
-                                    </div>
-
-                                    <div className="form-group row">
-                                        <label className="col-sm-6 col-form-label" htmlFor="auguest">Auguest</label>
-                                        <div className="col-sm-6">
-                                            <input 
-                                                className="form-control"
-                                                id="auguest" 
-                                                // name="auguest" 
-                                                type="number" 
-                                                placeholder="Cylinder Quantity.."
-                                                onChange={(e)=>handleChangeValue(e,'8')}
-                                                // value={userInput.name}
-                                                ref={register({
-                                                    required: 'Name Field Required'
-                                                })}
-                                            />
-                                            {errors.auguest && <p className='text-danger'>{errors.auguest.message}</p>}
-                                        </div>
-                                    </div>
-
-                                    <div className="form-group row">
-                                        <label className="col-sm-6 col-form-label" htmlFor="september">September</label>
-                                        <div className="col-sm-6">
-                                            <input 
-                                                className="form-control"
-                                                id="september" 
-                                                // name="september" 
-                                                type="number" 
-                                                placeholder="Cylinder Quantity.."
-                                                onChange={(e)=>handleChangeValue(e,'9')}
-                                                // value={userInput.name}
-                                                ref={register({
-                                                    required: 'Name Field Required'
-                                                })}
-                                            />
-                                            {errors.september && <p className='text-danger'>{errors.september.message}</p>}
-                                        </div>
-                                    </div>
-
-                                    <div className="form-group row">
-                                        <label className="col-sm-6 col-form-label" htmlFor="october">October</label>
-                                        <div className="col-sm-6">
-                                            <input 
-                                                className="form-control"
-                                                id="october" 
-                                                // name="october" 
-                                                type="number" 
-                                                placeholder="Cylinder Quantity.."
-                                                onChange={(e)=>handleChangeValue(e,'10')}
-                                                // value={userInput.name}
-                                                ref={register({
-                                                    required: 'Name Field Required'
-                                                })}
-                                            />
-                                            {errors.october && <p className='text-danger'>{errors.october.message}</p>}
-                                        </div>
-                                    </div>
-
-                                    <div className="form-group row">
-                                        <label className="col-sm-6 col-form-label" htmlFor="november">November</label>
-                                        <div className="col-sm-6">
-                                            <input 
-                                                className="form-control"
-                                                id="november" 
-                                                // name="november" 
-                                                type="number" 
-                                                placeholder="Cylinder Quantity.."
-                                                onChange={(e)=>handleChangeValue(e,'11')}
-                                                // value={userInput.name}
-                                                ref={register({
-                                                    required: 'Name Field Required'
-                                                })}
-                                            />
-                                            {errors.november && <p className='text-danger'>{errors.november.message}</p>}
-                                        </div>
-                                    </div>
-
-                                    <div className="form-group row">
-                                        <label className="col-sm-6 col-form-label" htmlFor="december">December</label>
-                                        <div className="col-sm-6">
-                                            <input 
-                                                className="form-control"
-                                                id="december" 
-                                                // name="december" 
-                                                type="number" 
-                                                placeholder="Cylinder Quantity.."
-                                                onChange={(e)=>handleChangeValue(e,'12')}
-                                                // value={userInput.name}
-                                                ref={register({
-                                                    required: 'Name Field Required'
-                                                })}
-                                            />
-                                            {errors.december && <p className='text-danger'>{errors.december.message}</p>}
-                                        </div>
-                                    </div>
-                                        </div>
+                                      
                                     </div>
                                     </div>
                                    
@@ -343,7 +156,7 @@ function Edit() {
                                     
 
                                             
-                                    <SubmitButton link="color/index" offset="2" menuId={ menuId } />
+                                    <SubmitButton link="monthlyTarget/index" offset="2" menuId={ menuId } />
                                 </form>
                             </div>
                         </div>

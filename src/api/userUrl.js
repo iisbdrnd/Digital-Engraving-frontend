@@ -213,6 +213,7 @@ export const JOB_FLOW_ANALYSISS_MARKETING_PERSON_WISE_FORM = 'api/user/jobFlowAn
 export const CLIENT_WISE_BILL_INFO_FORM = 'api/user/clientWiseBillInformationForm';
 export const CYLINDER_DELIVERED_FORM = 'api/user/cylinderDeliveredForm';
 export const CLIENT_WISE_ACCOUNT_STATEMENT_FORM = 'api/user/clientWiseAccountStatementsForm';
+export const DAILY_JOB_ANALYSIS_EMPLOYEE_WISE_FORM = 'api/user/dailyJobAnalysisEmployeeWiseForm';
 export const DUE_BILL_INFO_FORM = 'api/user/dueBillInformationForm';
 export const DEALER_WISE_JOB_FLOW_REPORT = 'api/user/dealerWiseJobFlowReport';
 // END MARKETING REPORT
@@ -235,6 +236,7 @@ export const PRINTER_WISE_JOB_STATUS_DETAILS_REPORT = 'api/user/printerWiseJobSt
 export const PRINTER_WISE_JOB_STATUS_DETAILS_FORM = 'api/user/printerWiseJobStatusDetailsForm';
 export const MARKETING_PERSON_WISE_JOB_STATUS_REPORT = 'api/user/marketingPersonWiseJobStatusReport';
 export const MARKETING_PERSON_WISE_JOB_STATUS_FORM = 'api/user/marketingPersonWiseJobStatusForm';
+export const DAILY_JOB_ANALYSIS_EMPLOYEE_WISE_REPORT = 'api/user/dailyJobAnalysisEmployeeWiseReport';
 
 // START SUPPLY CHAIN REPORT
 export const DESIGN_FILE_REPORT = 'api/user/designFileReport';

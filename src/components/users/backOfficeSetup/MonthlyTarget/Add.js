@@ -352,7 +352,7 @@ const Add = (props) => {
                                     
 
                                             
-                                    <SubmitButton link="color/index" offset="2" menuId={ menuId } />
+                                    <SubmitButton link="monthlyTarget/index" offset="2" menuId={ menuId } />
                                 </form>
                             </div>
                         </div>

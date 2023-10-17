@@ -223,11 +223,11 @@ export default function ListData(props) {
                                                                     <td>{monthName}</td>
                                                                     <td>{item.no_of_cylinder}</td>
                                                                     
-                                                                    <td className="">
+                                                                    <td className="text-center">
                                                                         {
                                                                             accLoad === false ? <>
-                                                                                {hasAccess.edit === true ? <EditButton link={`/color/edit/${item.id}`} menuId={ menuId } /> : ''} 
-                                                                                {hasAccess.destroy === true ? <DeleteButton deleteLink='' deleteHandler={ deleteHandler } menuId={ menuId } dataId={item.id} /> : ''} 
+                                                                                {hasAccess.edit === true ? <EditButton link={`/monthlyTarget/edit/${item.id}`} menuId={ menuId } /> : ''} 
+                                                                                 
                                                                             </> : ''
                                                                         }
                                                                     </td>
