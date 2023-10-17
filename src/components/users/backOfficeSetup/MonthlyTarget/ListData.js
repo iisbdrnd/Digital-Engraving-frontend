@@ -132,42 +132,7 @@ export default function ListData(props) {
             })
             .catch(error => console.log(error))
     }
-    let monthName;
-    if (monthlyData.month_name == 1) {
-        monthName = "January";
-    }else if (monthlyData.month_name == 2){
-        monthName = "February";
-    }
-    else if (monthlyData.month_name == 3){
-        monthName = "March";
-    }
-    else if (monthlyData.month_name == 4){
-        monthName = "April";
-    }
-    else if (monthlyData.month_name == 5){
-        monthName = "May";
-    }
-    else if (monthlyData.month_name == 6){
-        monthName = "June";
-    }
-    else if (monthlyData.month_name == 7){
-        monthName = "July";
-    }
-    else if (monthlyData.month_name == 8){
-        monthName = "Auguest";
-    }
-    else if (monthlyData.month_name == 9){
-        monthName = "September";
-    }
-    else if (monthlyData.month_name == 10){
-        monthName = "October";
-    }
-    else if (monthlyData.month_name == 11){
-        monthName = "November";
-    }
-    else if (monthlyData.month_name == 12){
-        monthName = "December";
-    }
+    
     
 
     return (

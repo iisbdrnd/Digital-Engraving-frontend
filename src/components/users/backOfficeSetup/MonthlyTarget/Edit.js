@@ -6,9 +6,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import useForm from "react-hook-form";
 import { SubmitButton } from '../../../common/GlobalButton';
 import { ToggleButton } from '../../../common/toggleBtn/toggleButton';
-// import { ToggleButton } from 'react-bootstrap';
 
-const Add = (props) => {
+function Edit() {
     const [colorInput, setColorInput] = useState(false)
     const { handleSubmit, register, errors } = useForm();
     const [value, setValue] = useState([])
@@ -16,11 +15,8 @@ const Add = (props) => {
 
 
     const handleChangeValue = (event, stateName) =>{
-        if (stateName >= 1 && stateName <= 12 ) {
-            setValue({ ...value,[stateName - 1]: {
-                month_name: stateName,
-                qyt: event.target.value,
-            } }) 
+        if (stateName == '1' || stateName == '2' || stateName == '3' || stateName == '4' || stateName == '5' || stateName == '6' || stateName == '7' || stateName == '8' || stateName == '9' || stateName == '10' || stateName == '11' || stateName == '12' ) {
+            setValue({ ...value,[stateName]: event.target.value })
           }
     }
     // console.log(value);
@@ -56,10 +52,9 @@ const Add = (props) => {
     }else{
         menuId = props.location.state.params.menuId;
     }
-    // console.log(colorInput)
-    
-    return (
-        <Fragment>
+  return (
+    <div>
+         <Fragment>
             {/* <Breadcrumb title="User Designation Add" parent="Designation" /> */}
             <div className="container-fluid">
                 <div className="row">
@@ -358,7 +353,8 @@ const Add = (props) => {
             </div>
         
         </Fragment>
-    );
-};
+    </div>
+  )
+}
 
-export default Add;
+export default Edit
