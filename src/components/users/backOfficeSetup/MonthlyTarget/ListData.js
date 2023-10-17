@@ -132,6 +132,43 @@ export default function ListData(props) {
             })
             .catch(error => console.log(error))
     }
+    let monthName;
+    if (monthlyData.month_name == 1) {
+        monthName = "January";
+    }else if (monthlyData.month_name == 2){
+        monthName = "February";
+    }
+    else if (monthlyData.month_name == 3){
+        monthName = "March";
+    }
+    else if (monthlyData.month_name == 4){
+        monthName = "April";
+    }
+    else if (monthlyData.month_name == 5){
+        monthName = "May";
+    }
+    else if (monthlyData.month_name == 6){
+        monthName = "June";
+    }
+    else if (monthlyData.month_name == 7){
+        monthName = "July";
+    }
+    else if (monthlyData.month_name == 8){
+        monthName = "Auguest";
+    }
+    else if (monthlyData.month_name == 9){
+        monthName = "September";
+    }
+    else if (monthlyData.month_name == 10){
+        monthName = "October";
+    }
+    else if (monthlyData.month_name == 11){
+        monthName = "November";
+    }
+    else if (monthlyData.month_name == 12){
+        monthName = "December";
+    }
+    
 
     return (
         
@@ -143,7 +180,7 @@ export default function ListData(props) {
                             <div className="card-header">
                                 <div className="row">
                                     <div className="col-md-6">
-                                        <h5>Colors List</h5>
+                                        <h5>Monthly Target List</h5>
                                     </div>
                                     <div className="col-md-6">
                                         
@@ -194,9 +231,9 @@ export default function ListData(props) {
                                             <thead>
                                                 <tr>
                                                     <th scope="col" width="8%" onClick={() => sortHandler(1)} >SL.</th>
-                                                    <th scope="col" width="50%" onClick={() => sortHandler(2)} > Color Name</th>
-                                                    <th scope="col" width="24%" onClick={() => sortHandler(2)} >Short Name</th>
-                                                    <th scope="col" width="10%" onClick={() => sortHandler(2)} > Status</th>
+                                                    <th scope="col" width="50%" onClick={() => sortHandler(2)} > Target Year</th>
+                                                    <th scope="col" width="24%" onClick={() => sortHandler(2)} >Month</th>
+                                                    <th scope="col" width="10%" onClick={() => sortHandler(2)} > Cylinder No</th>
                                                     <th scope="col" width="8%">Action</th>
                                                 </tr>
                                             </thead>
@@ -205,23 +242,32 @@ export default function ListData(props) {
                                                     monthlyData.length > 0 ? 
                                                         <>
                                                             {monthlyData.map((item, index) =>           
-                                                                (
+                                                                {
+                                                                    const monthNames = [
+                                                                        "January", "February", "March", "April",
+                                                                        "May", "June", "July", "August",
+                                                                        "September", "October", "November", "December"
+                                                                    ];
+                                                                    
+                                                                    const monthName = monthNames[item.month_name - 1];
+
+                                                                    return(
                                                                     <tr key={index}>
-                                                                        <td scope="row">{ ((index+1) + (currentPage == 1 ? 0 : (currentPage*perPage - perPage))) }</td>
-                                                                        <td>{item.target_year}</td>
-                                                                        <td>Month</td>
-                                                                        <td>{item.no_of_cylinder}</td>
-                                                                        
-                                                                        <td className="">
-                                                                            {
-                                                                                accLoad === false ? <>
-                                                                                    {hasAccess.edit === true ? <EditButton link={`/color/edit/${item.id}`} menuId={ menuId } /> : ''} 
-                                                                                    {hasAccess.destroy === true ? <DeleteButton deleteLink={colorAPI} deleteHandler={ deleteHandler } menuId={ menuId } dataId={item.id} /> : ''} 
-                                                                                </> : ''
-                                                                            }
-                                                                        </td>
-                                                                    </tr>
-                                                                )                
+                                                                    <td scope="row">{ ((index+1) + (currentPage == 1 ? 0 : (currentPage*perPage - perPage))) }</td>
+                                                                    <td>{item.target_year}</td>
+                                                                    <td>{monthName}</td>
+                                                                    <td>{item.no_of_cylinder}</td>
+                                                                    
+                                                                    <td className="">
+                                                                        {
+                                                                            accLoad === false ? <>
+                                                                                {hasAccess.edit === true ? <EditButton link={`/color/edit/${item.id}`} menuId={ menuId } /> : ''} 
+                                                                                {hasAccess.destroy === true ? <DeleteButton deleteLink='' deleteHandler={ deleteHandler } menuId={ menuId } dataId={item.id} /> : ''} 
+                                                                            </> : ''
+                                                                        }
+                                                                    </td>
+                                                                </tr>
+                                                                )}                
                                                             )}
                                                         </> 
                                                     : <tr><td colSpan="3" className="text-center">No data found</td></tr>

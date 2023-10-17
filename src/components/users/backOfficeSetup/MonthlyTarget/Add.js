@@ -1,5 +1,5 @@
 import React, { Fragment, useState,useReducer } from 'react';
-import { colorAPI } from '../../../../api/userUrl';
+import { colorAPI, postMonthlyTargetAPI } from '../../../../api/userUrl';
 import { userPostMethod } from '../../../../api/userAction';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -11,20 +11,7 @@ import { ToggleButton } from '../../../common/toggleBtn/toggleButton';
 const Add = (props) => {
     const [colorInput, setColorInput] = useState(false)
     const { handleSubmit, register, errors } = useForm();
-    const [value, setValue] = useState([{
-        january : 0,
-        february:0,
-        march:0,
-        april:0,
-        may:0,
-        june:0,
-        july: 0,
-        auguest: 0,
-        september:0,
-        october: 0,
-        november: 0,
-        december: 0
-    }])
+    const [value, setValue] = useState([])
 
 
 
@@ -36,22 +23,40 @@ const Add = (props) => {
     // console.log(value);
 
     const submitHandler = (data, e) => {
-        data.monthlyCylinderQyt = [value];
+        data.monthlyCylinderQyt = value;
         data.status = colorInput == false ? 0 : 1;
         // console.log(data);
-        // userPostMethod(colorAPI, data)
-        //     .then(response => {
-        //         if (response.data.status == 1) {
-        //             e.target.reset();
-        //             toast.success(response.data.message)
-        //         } else {
-        //             toast.error(response.data.message)
-        //         }
-        //     })
-        // .catch(error => toast.error(error))
+        userPostMethod(postMonthlyTargetAPI, data)
+            .then(response => {
+                if (response.data.status == 1) {
+                    e.target.reset();
+                    e.target.value ='';
+                    clearField();
+                    toast.success(response.data.message)
+                } else {
+                    toast.error(response.data.message)
+                }
+            })
+        .catch(error => toast.error(error))
 
         // console.log(data)
 
+    }
+
+    const clearField = () =>{
+        setValue({
+            january : 0,
+            february:0,
+            march:0,
+            april:0,
+            may:0,
+            june:0,
+            july: 0,
+            auguest: 0,
+            september:0,
+            october: 0,
+            november: 0,
+            december: 0})
     }
 
     var menuId = 0;
