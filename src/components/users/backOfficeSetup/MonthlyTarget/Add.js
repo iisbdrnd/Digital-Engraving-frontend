@@ -17,14 +17,14 @@ const Add = (props) => {
 
     const handleChangeValue = (event, stateName) =>{
         if (stateName >= 1 && stateName <= 12 ) {
-            // setValue({ ...value,[stateName - 1]: {
-            //     month_name: stateName,
-            //     qyt: event.target.value,
-            // } }) 
-            setValue([...value,{
+            setValue({ ...value,[stateName - 1]: {
                 month_name: stateName,
-                qty: event.target.value,
-             }]) 
+                qyt: event.target.value,
+            } }) 
+            // setValue([...value,{
+            //     month_name: stateName,
+            //     qty: event.target.value,
+            //  }]) 
           }
     }
     // console.log(value);

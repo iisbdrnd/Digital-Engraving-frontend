@@ -92,6 +92,7 @@ export const supplierInformationAPI = 'api/user/supplierInformation';
 export const colorAPI = 'api/user/color';
 // Monthly Target
 export const monthlyTargetAPI = 'api/user/monthlyTarget';
+export const getTargetYear = 'api/user/getTargetYear';
 export const postMonthlyTargetAPI = 'api/user/monthlyTarget';
 //DESIGN MACHINE LOCATION
 export const DESIGN_MACHINE_LOCATION = 'api/user/designMachineLocation';

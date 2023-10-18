@@ -749,7 +749,7 @@ const Edit = (props) => {
 
                                                     <div className="col-sm-6">
                                                         <div className="form-group row">
-                                                            <label className="col-sm-8 col-form-label required" htmlFor="design_width">Job Width</label>
+                                                            <label className="col-sm-8 col-form-label required" htmlFor="design_width">Job Width (mm)</label>
                                                             <div className="col-sm-4">
                                                                 <input 
                                                                     className="form-control" 
@@ -787,7 +787,7 @@ const Edit = (props) => {
                                                         </div>
 
                                                         <div className="form-group row">
-                                                            <label className="col-sm-8 col-form-label required" htmlFor="printing_width">Printing Width</label>
+                                                            <label className="col-sm-8 col-form-label required" htmlFor="printing_width">Printing Width (mm)</label>
                                                             <div className="col-sm-4">
                                                                 <input 
                                                                     className="form-control" 
@@ -806,7 +806,7 @@ const Edit = (props) => {
                                                         </div>
 
                                                         <div className="form-group row">
-                                                            <label className="col-sm-8 col-form-label required" htmlFor="face_length">Face Length</label>
+                                                            <label className="col-sm-8 col-form-label required" htmlFor="face_length">Face Length (mm)</label>
                                                             <div className="col-sm-4">
                                                                 <input 
                                                                     className="form-control" 
@@ -825,7 +825,7 @@ const Edit = (props) => {
                                                         </div>
 
                                                         <div className="form-group row">
-                                                            <label className="col-sm-8 col-form-label required" htmlFor="extra_face_length">Extra Face Length</label>
+                                                            <label className="col-sm-8 col-form-label required" htmlFor="extra_face_length">Extra Face Length (mm)</label>
                                                             <div className="col-sm-4">
                                                                 <input 
                                                                     className="form-control" 
@@ -847,7 +847,7 @@ const Edit = (props) => {
                                                     <div className="col-sm-6">
 
                                                         <div className="form-group row">
-                                                            <label className="col-sm-8 col-form-label required" htmlFor="design_height">Job Height</label>
+                                                            <label className="col-sm-8 col-form-label required" htmlFor="design_height">Job Height (mm)</label>
                                                             <div className="col-sm-4">
                                                                 <input 
                                                                     className="form-control" 
@@ -885,7 +885,7 @@ const Edit = (props) => {
                                                         </div>
 
                                                         <div className="form-group row">
-                                                            <label className="col-sm-8 col-form-label required" htmlFor="circumference">Circumference</label>
+                                                            <label className="col-sm-8 col-form-label required" htmlFor="circumference">Circumference (mm)</label>
                                                             <div className="col-sm-4">
                                                                 <input 
                                                                     className="form-control" 
@@ -904,7 +904,7 @@ const Edit = (props) => {
                                                         </div>
 
                                                         <div className="form-group row">
-                                                            <label className="col-sm-8 col-form-label required" htmlFor="printing_height">Printing Height</label>
+                                                            <label className="col-sm-8 col-form-label required" htmlFor="printing_height">Printing Height (mm)</label>
                                                             <div className="col-sm-4">
                                                                 <input 
                                                                     className="form-control" 
@@ -982,7 +982,7 @@ const Edit = (props) => {
                                                 </div>
 
                                                 <div className="form-group row">
-                                                    <label className="col-sm-4 col-form-label required" htmlFor="surface_area">Surface Area</label>
+                                                    <label className="col-sm-4 col-form-label required" htmlFor="surface_area">Surface Area (cm²)</label>
                                                     <div className="col-sm-8">
                                                         <input 
                                                             className="form-control" 
@@ -1001,7 +1001,7 @@ const Edit = (props) => {
                                                 </div>
 
                                                 <div className="form-group row">
-                                                    <label className="col-sm-4 col-form-label required" htmlFor="total_surface_area">Total Surface Area</label>
+                                                    <label className="col-sm-4 col-form-label required" htmlFor="total_surface_area">Total Surface Area (cm²)</label>
                                                     <div className="col-sm-8">
                                                         <input 
                                                             className="form-control" 
@@ -1021,7 +1021,7 @@ const Edit = (props) => {
                                                 <div className="form-row">
                                                     <div className="col-md-4">
                                                         <div className="row">
-                                                            <label className="col-sm-5 col-form-label" htmlFor="fl">FL</label>
+                                                            <label className="col-sm-5 col-form-label" htmlFor="fl">FL (mm)</label>
                                                             <div className="col-sm-7">
                                                                 <input 
                                                                     className="form-control" 
@@ -1039,7 +1039,7 @@ const Edit = (props) => {
                                                     </div>
                                                     <div className="col-md-4">
                                                         <div className="row">
-                                                            <label className="col-sm-5 col-form-label" htmlFor="cir">Cir</label>
+                                                            <label className="col-sm-5 col-form-label" htmlFor="cir">Cir (mm)</label>
                                                             <div className="col-sm-7">
                                                                 <input 
                                                                     className="form-control" 
@@ -1057,7 +1057,7 @@ const Edit = (props) => {
                                                     </div>
                                                     <div className="col-md-4">
                                                         <div className="row">
-                                                            <label className="col-sm-5 col-form-label" htmlFor="dia">Dia</label>
+                                                            <label className="col-sm-5 col-form-label" htmlFor="dia">Dia (mm)</label>
                                                             <div className="col-sm-7">
                                                                 <input 
                                                                     className="form-control" 
