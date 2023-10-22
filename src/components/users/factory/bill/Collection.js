@@ -218,7 +218,7 @@ const handleSelectCash = (e) => {
         setTransactionBy(transaction.value);
         
     };
-    // console.log(transactionBy)
+    console.log(transactionBy)
 
     const calculateCheck = (e) => {
         setSubmitDisabled(false);
@@ -306,16 +306,16 @@ const handleSelectCash = (e) => {
             }else{
                 
                 if( amount && amount > 0){
-
+                    console.log(amount);
                     data.clientId = clientId;
                     data.transactionBy = transactionBy;
                     data.amount = amount;
                     data.check_no = checkInfo.check_no;
                     data.check_date = checkInfo.check_date;
-                    if (amount > clientInfo.due) {
+                    if (amount < clientInfo.due) {
 
                         Swal.fire({
-                            title: 'Are you sure, you want to receive the advance amount!',
+                            title: 'you wanted to receive the less amount!',
                             showDenyButton: true,
                             showCancelButton: true,
                             confirmButtonText: 'Save',

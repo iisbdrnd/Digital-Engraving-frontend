@@ -74,9 +74,9 @@ const Header = () => {
               </Link>
             </div>
           </div>
-          <div className="mobile-sidebar d-block">
-            <div className="media-body text-right switch-sm">
-              <label className="switch">
+          <div className="mobile-sidebar d-block cursor-pointer">
+            <div className="media-body text-right switch-sm cursor-pointer">
+              <label className="switch cursor-pointer">
                 <a onClick={() => openCloseSidebar()}>
                   <AlignLeft />
                 </a>
