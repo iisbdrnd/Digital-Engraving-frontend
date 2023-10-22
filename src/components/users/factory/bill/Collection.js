@@ -188,6 +188,7 @@ const handleSelectCash = (e) => {
         setShowCheckInfo(false);
     }
 }
+// console.log(showCheckInfo)
     
     const amountChangeHandler = (e)=>{
         setSubmitDisabled(false);
@@ -215,10 +216,11 @@ const handleSelectCash = (e) => {
 // console.log(cashValue)
     const transactionHandleChange = (transaction) => {
         setSubmitDisabled(false);
-        setTransactionBy(transaction.value);
+        // console.log(transaction)
+        setTransactionBy(transaction.id);
         
     };
-    console.log(transactionBy)
+    // console.log(transactionBy)
 
     const calculateCheck = (e) => {
         setSubmitDisabled(false);
@@ -236,7 +238,8 @@ const handleSelectCash = (e) => {
         setSubmitDisabled(true);
         if(transactionBy == 0 || clientId == ""){
             toast.error('please select client and transactionBy');
-        }else{
+        }
+        else{
             if(showCheckInfo){
                 if(checkInfo.check_no == "" || checkInfo.check_date == ""){
                     toast.error('please select client and transactionBy');
@@ -251,10 +254,101 @@ const handleSelectCash = (e) => {
                         data.check_no = checkInfo.check_no;
                         data.check_date = checkInfo.check_date;
                         data.remarks = remarks;
-                        if (amount > clientInfo.due) {
+                        
+                        if (parseInt(amount) > parseInt(clientInfo.due)) {
 
                             Swal.fire({
                                 title: 'Are you sure, you want to receive the advance amount!',
+                                showDenyButton: true,
+                                showCancelButton: true,
+                                confirmButtonText: 'Save',
+                                denyButtonText: `Don't save`,
+                              }).then((result) => {
+                                /* Read more about isConfirmed, isDenied below */
+                                if (result.isConfirmed) {
+                                    // setConfirmToast(!confirmToast)
+                                  Swal.fire('Saved!', '', 'success')
+                                  userPutMethod(`${submitCollectionApi}/${clientId}`, data )
+                            .then(response => {
+                                if (response.data.status == 1) {
+                                    e.target.reset();
+                                    toast.success(response.data.message);
+                                    setGroupOption(
+                                        (prevstate) => ({
+                                            ...prevstate,
+                                            ['groups']: [],
+                                        })
+                                    );
+                                    setClients(
+                                        (prevstate) => ({
+                                            ...prevstate,
+                                            ['groups']: [],
+                                        })
+                                    );
+                                } else {
+                                    toast.error(response.data.message);
+                                }
+                            })
+                            .catch(error => toast.error(error))
+                                } else if (result.isDenied) {
+                                  Swal.fire('Changes are not saved', '', 'info')
+                                  setSubmitDisabled(false);
+                                }
+                              })
+    
+    
+                            // alert('you give large amount')
+                            
+                        }
+                        if (parseInt(amount) < parseInt(clientInfo.due)) {
+
+                            Swal.fire({
+                                title: ' you want to receive the less amount!',
+                                showDenyButton: true,
+                                showCancelButton: true,
+                                confirmButtonText: 'Save',
+                                denyButtonText: `Don't save`,
+                              }).then((result) => {
+                                /* Read more about isConfirmed, isDenied below */
+                                if (result.isConfirmed) {
+                                    // setConfirmToast(!confirmToast)
+                                  Swal.fire('Saved!', '', 'success')
+                                  userPutMethod(`${submitCollectionApi}/${clientId}`, data )
+                            .then(response => {
+                                if (response.data.status == 1) {
+                                    e.target.reset();
+                                    toast.success(response.data.message);
+                                    setGroupOption(
+                                        (prevstate) => ({
+                                            ...prevstate,
+                                            ['groups']: [],
+                                        })
+                                    );
+                                    setClients(
+                                        (prevstate) => ({
+                                            ...prevstate,
+                                            ['groups']: [],
+                                        })
+                                    );
+                                } else {
+                                    toast.error(response.data.message);
+                                }
+                            })
+                            .catch(error => toast.error(error))
+                                } else if (result.isDenied) {
+                                  Swal.fire('Changes are not saved', '', 'info')
+                                  setSubmitDisabled(false);
+                                }
+                              })
+    
+    
+                            // alert('you give large amount')
+                            
+                        }
+                        if (parseInt(amount) == parseInt(clientInfo.due)) {
+
+                            Swal.fire({
+                                title: `you are  receive the ${amount} amount!`,
                                 showDenyButton: true,
                                 showCancelButton: true,
                                 confirmButtonText: 'Save',
@@ -303,16 +397,65 @@ const handleSelectCash = (e) => {
                         toast.error("amount greather than zero and can't be greater than due amount");
                     }
                 }
-            }else{
+            }
+            else{
                 
                 if( amount && amount > 0){
-                    console.log(amount);
                     data.clientId = clientId;
                     data.transactionBy = transactionBy;
                     data.amount = amount;
                     data.check_no = checkInfo.check_no;
                     data.check_date = checkInfo.check_date;
-                    if (amount < clientInfo.due) {
+                    if (parseInt(amount) > parseInt(clientInfo.due)) {
+
+                        Swal.fire({
+                            title: 'Are you sure, you want to receive the advance amount!',
+                            showDenyButton: true,
+                            showCancelButton: true,
+                            confirmButtonText: 'Save',
+                            denyButtonText: `Don't save`,
+                          }).then((result) => {
+                            /* Read more about isConfirmed, isDenied below */
+                            if (result.isConfirmed) {
+                                
+                              Swal.fire('Saved!', '', 'success')
+                              userPutMethod(`${submitCollectionApi}/${clientId}`, data )
+                              .then(response => {
+                                  if (response.data.status == 1) {
+                                      e.target.reset();
+                                      toast.success(response.data.message);
+                                      setGroupOption(
+                                          (prevstate) => ({
+                                              ...prevstate,
+                                              ['groups']: [],
+                                          })
+                                      );
+                                      setClients(
+                                          (prevstate) => ({
+                                              ...prevstate,
+                                              ['groups']: [],
+                                          })
+                                      );
+                                  } else {
+                                      toast.error(response.data.message);
+                                  }
+                              })
+                              .catch(error => toast.error(error))
+                            } else if (result.isDenied) {
+                              Swal.fire('Changes are not saved', '', 'info')
+                              setSubmitDisabled(false);
+                            }
+                          })
+
+
+                        // alert('you give large amount')
+                        
+                        
+                          
+                        
+                       
+                    }
+                    if (parseInt(amount) < parseInt(clientInfo.due)) {
 
                         Swal.fire({
                             title: 'you wanted to receive the less amount!',
@@ -360,6 +503,52 @@ const handleSelectCash = (e) => {
                           
                         
                        
+                    }
+
+                    if (parseInt(amount) == parseInt(clientInfo.due)) {
+
+                        Swal.fire({
+                            title: `you are  receive the ${amount} amount!`,
+                            showDenyButton: true,
+                            showCancelButton: true,
+                            confirmButtonText: 'Save',
+                            denyButtonText: `Don't save`,
+                          }).then((result) => {
+                            /* Read more about isConfirmed, isDenied below */
+                            if (result.isConfirmed) {
+                                // setConfirmToast(!confirmToast)
+                              Swal.fire('Saved!', '', 'success')
+                              userPutMethod(`${submitCollectionApi}/${clientId}`, data )
+                        .then(response => {
+                            if (response.data.status == 1) {
+                                e.target.reset();
+                                toast.success(response.data.message);
+                                setGroupOption(
+                                    (prevstate) => ({
+                                        ...prevstate,
+                                        ['groups']: [],
+                                    })
+                                );
+                                setClients(
+                                    (prevstate) => ({
+                                        ...prevstate,
+                                        ['groups']: [],
+                                    })
+                                );
+                            } else {
+                                toast.error(response.data.message);
+                            }
+                        })
+                        .catch(error => toast.error(error))
+                            } else if (result.isDenied) {
+                              Swal.fire('Changes are not saved', '', 'info')
+                              setSubmitDisabled(false);
+                            }
+                          })
+
+
+                        // alert('you give large amount')
+                        
                     }
 
 
