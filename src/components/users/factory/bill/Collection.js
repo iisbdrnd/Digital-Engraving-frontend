@@ -20,6 +20,7 @@ const Edit = (props) => {
     const [clientId, setClientId] = useState(0);
     const [cashValue, setCashValue] = useState(0);
     const [cashStore, setCashStore] = useState([]);
+    const [clientValue, setClientValue] = useState([]);
     const [ transactionBy, setTransactionBy] = useState(0);
     const [ amount, setAmount] = useState(0);
     const [ remarks, setRemarks] = useState('');
@@ -77,6 +78,7 @@ const Edit = (props) => {
                     clientOptionsObj.id = cash.account_code;
                     clientOptionsObj.isdisable = clientOptionsObj.id.endsWith('000')
                     groupedOptionsCustom.push(clientOptionsObj);
+                    setClientValue([...clientValue,clientOptionsObj])
                 });
                 // console.log(groupedOptionsCustom)
 
@@ -129,9 +131,10 @@ const Edit = (props) => {
                         clientOptionsObj.id = cash.account_code;
                         clientOptionsObj.isdisable = clientOptionsObj.id.endsWith('000')
                         groupedOptionsCustom.push(clientOptionsObj);
+                        setClientValue([...clientValue,clientOptionsObj])
                     });
 
-                    console.log(groupedOptionsCustom)
+                    // console.log(groupedOptionsCustom)
                     setGroupOption(
                         (prevstate) => ({
                             ...prevstate,
@@ -196,8 +199,10 @@ const handleSelectCash = (e) => {
     }
 
     const clientChangeHandler = (e) => {
+        setClientValue(e);
         setSubmitDisabled(false);
         var selectClientId = e.value;
+        console.log(clientValue)
         setClientId(selectClientId);
         userGetMethod(`${getClientDetails}/${selectClientId}`)
             .then(response => {
@@ -604,9 +609,11 @@ const handleSelectCash = (e) => {
                                                     <Select
                                                         id="client_id"
                                                         name="client_id"
+                                                        
                                                         onChange={clientChangeHandler}
                                                         options={clients.groups}
-                                                        ref={register({required: true })}
+                                                        selected={clientValue}
+                                                        ref={register({required: 'Client Field Required' })}
                                                     />
                                                     {errors.client_id && <p className='text-danger'>{errors.client_id.message}</p>}
                                                 </div>
