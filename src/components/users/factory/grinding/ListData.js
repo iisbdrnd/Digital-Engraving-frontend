@@ -29,6 +29,7 @@ export default function ListData(props) {
     }
     
     useEffect(() => {
+        // console.log('first',pageChange())
         // ADD,EDIT,DELETE,SHOW ACCESS CHECK
         userGetMethod(`${userHasAccess}/${menuId}`)
             .then(response => {
@@ -38,9 +39,10 @@ export default function ListData(props) {
         
         // TABLE DATA READY
         pageChange();
-    },[]);
+    },[menuId]);
 
     useEffect(() => {
+        // console.log(jobActiveStatus,perPage,'perpagebox useEffect')
         perPageBoxChange();
     },[jobActiveStatus,perPage])
 
@@ -87,7 +89,8 @@ export default function ListData(props) {
         // TABLE DATA READY
         userGetMethod(`${GRINDING_RSURL}?grinding_status=${jobActiveStatus}&page=${pageNumber}&perPage=${perPage}&searchText=${searchText}`)
             .then(response => {
-                console.log("res", response.data);
+                console.log("console form pageChange");
+                // console.log("res", response.data);
                 setCurrentPage(response.data.pendingGrindings.current_page)
                 setPerPage(response.data.pendingGrindings.per_page)
                 setTotalData(response.data.pendingGrindings.total)
@@ -102,7 +105,7 @@ export default function ListData(props) {
         // TABLE DATA READY
         userGetMethod(`${GRINDING_RSURL}?grinding_status=${jobActiveStatus}&perPage=${perPage}&searchText=${searchText}`)
             .then(response => {
-                // console.log("console form pageBoxChange", response.data);
+                console.log("console form pageBoxChange");
                 setCurrentPage(response.data.pendingGrindings.current_page)
                 setPerPage(response.data.pendingGrindings.per_page)
                 setTotalData(response.data.pendingGrindings.total)
@@ -137,7 +140,7 @@ export default function ListData(props) {
             })
             .catch(error => console.log(error))
     }
-
+// console.log(jobActiveStatus)
     return (
         
         <Fragment>
@@ -212,7 +215,7 @@ export default function ListData(props) {
                                                     <th scope="col" width="40%"> Job Name</th>
                                                     <th scope="col" width="10%" > Type</th>                                                        
                                                     <th scope="col" width="15%" > Client</th>
-                                                    {/* <th scope="col" width="15%" onClick={() => sortHandler(5)}><i className="fa fa-sort"></i> Client</th> */}
+                                                    {/* <th scope="col" width="15%" onClick={() => sortHandler(10)}><i className="fa fa-sort"></i> Client</th> */}
                                                     <th scope="col" width="10%" > Approve</th>
                                                     {/* <th scope="col" width="7%">Action</th> */}
                                                 </tr>

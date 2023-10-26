@@ -9,6 +9,7 @@ import Pagination from "react-js-pagination";
 
 import ReportHeader from '../../../layouts/ReportHeader';
 import '../../../layouts/style.scss';
+import { fixedNumber } from '../../../../common/GlobalComponent';
 
 
 const Report = (props) => {
@@ -206,7 +207,7 @@ const Report = (props) => {
                                                             <tfoot>
                                                                 <tr>
                                                                     <td colspan="2" class="text-right"><strong>Total</strong></td>
-                                                                    <td class="text-center"><strong>{totalBalance}</strong></td>
+                                                                    <td class="text-center"><strong>{fixedNumber(totalBalance)}</strong></td>
                                                                 </tr>
                                                             </tfoot>
                                                         </table>

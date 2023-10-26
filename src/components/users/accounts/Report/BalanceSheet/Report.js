@@ -286,7 +286,7 @@ const Report = (props) => {
                                                     <tr>
                                                         <td width="10%"></td>
                                                         <td>Current Year Profit/Loss</td>
-                                                        <td width="15%" class="text-right">{totalAmount}</td>
+                                                        <td width="15%" class="text-right">{fixedNumber(totalAmount)}</td>
                                                     </tr>
                                                     <tr>
                                                         <td colspan="2" class="text-right"><strong>Grand Total</strong></td>
