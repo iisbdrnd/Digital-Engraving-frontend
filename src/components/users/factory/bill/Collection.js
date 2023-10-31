@@ -68,6 +68,7 @@ const Edit = (props) => {
 
                 if (cashValue == '2201') {
                     setCashStore(response.data.accountLevelOfFour['2201']);
+                    // console.log(response.data.accountLevelOfFour['2201']);
 
 
                     let groupedOptionsCustom = [];
@@ -78,8 +79,11 @@ const Edit = (props) => {
                     clientOptionsObj.id = cash.account_code;
                     clientOptionsObj.isdisable = clientOptionsObj.id.endsWith('000')
                     groupedOptionsCustom.push(clientOptionsObj);
-                    setClientValue([...clientValue,clientOptionsObj])
+                    // setClientValue([...clientValue,clientOptionsObj])
+                    
+                    // setClientValue((prevClientValue) => [...prevClientValue, ...clientOptionsObj]);
                 });
+
                 // console.log(groupedOptionsCustom)
 
                 setGroupOption(
@@ -122,6 +126,7 @@ const Edit = (props) => {
                 // );
 
                 }else if (cashValue == '2202'){
+                    // console.log(response.data.accountLevelOfFour['2202'])
                     setCashStore(response.data.accountLevelOfFour['2202']);
                     let groupedOptionsCustom = [];
                     response.data.accountLevelOfFour['2202'].map( (cash, i) => {
@@ -131,9 +136,9 @@ const Edit = (props) => {
                         clientOptionsObj.id = cash.account_code;
                         clientOptionsObj.isdisable = clientOptionsObj.id.endsWith('000')
                         groupedOptionsCustom.push(clientOptionsObj);
-                        setClientValue([...clientValue,clientOptionsObj])
+                        // setClientValue([...clientValue,clientOptionsObj])
+                        // setClientValue((prevClientValue) => [...prevClientValue, ...clientOptionsObj]);
                     });
-
                     // console.log(groupedOptionsCustom)
                     setGroupOption(
                         (prevstate) => ({
@@ -181,7 +186,8 @@ const Edit = (props) => {
     },[cashValue]);
 
     
-
+// console.log(groupOption)
+// console.log(clientValue)
 const handleSelectCash = (e) => {
     setCashValue(e.target.value);
     let result = e.target.value;

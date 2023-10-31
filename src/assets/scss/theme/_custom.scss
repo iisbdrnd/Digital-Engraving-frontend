@@ -112,13 +112,15 @@ table.mdb-dataTable thead, table thead.mdb-dataTable-head{
     border: 1px solid #dee2e6;
 }
 table.table th {
-    border: 1px solid #c5c7cc !important;
-    padding: 6px 16px ;
+    // border: 1px solid #c5c7cc !important;
+    border: 1px solid black !important;
+    padding: 6px 8px ;
     vertical-align: center !important;
 }
 table.table td{
-    border: 1px solid #c5c7cc !important;
-    padding: 2px 8px !important;
+    border: 1px solid black !important;
+    // border: 1px solid #c5c7cc !important;
+    padding: 12px 8px !important;
     vertical-align: center !important;
 }
 

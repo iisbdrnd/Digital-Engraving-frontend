@@ -11,6 +11,12 @@ const Report = (props) => {
     const tableStyle = {
         "margin" : "2% 1% 2% 0%"
     }
+    const rowHead = {
+        fontSize:"15px",fontWeight:"bold"
+    }
+    const columnHead = {
+        fontSize:"12px",fontWeight:"bold"
+    }
     const fromDate = props.match.params.fromDate;
     const toDate = props.match.params.toDate;
     useEffect(()=>{
@@ -43,28 +49,28 @@ const Report = (props) => {
                                                 <table className="particulars table table-bordered table-stripped reportBody" cellSpacing="5" cellPadding="5" width="100%"  style={tableStyle}>
                                                     <thead>    
                                                         <tr>
-                                                            <th className="text-center">Date</th>
-                                                            <th className="text-center">Job No</th>
-                                                            <th className="text-center">Job Name</th>
-                                                            <th className="text-center">Printer</th>
-                                                            <th className="text-center">FL</th>
-                                                            <th className="text-center">Cir</th>
-                                                            <th className="text-center">Dia</th>   
-                                                            <th className="text-center">Surface Area</th>
+                                                        <th width="5%" className="text-left" style={rowHead}>Date</th>
+                                                            <th width="5%" className="text-left" style={rowHead}>Job No</th>
+                                                            <th width="40%" className="text-left" style={rowHead}>Job Name</th>
+                                                            <th width="20%" className="text-left" style={rowHead}>Printer</th>
+                                                            <th width="10%" className="text-left" style={rowHead}>FL</th>
+                                                            <th width="10%" className="text-left" style={rowHead}>Cir</th>
+                                                            <th width="5%" className="text-left" style={rowHead}>Dia</th>   
+                                                            <th width="5%" className="text-left" style={rowHead}>Surface Area</th>
                                                         </tr>    
                                                     </thead>
                                                     <tbody>
                                                         {jobs.length > 0 ?
                                                             jobs.map((job)=>(    
                                                                 <tr>    
-                                                                    <td className="text-center">{job.date}</td>
-                                                                    <td className="text-center">{job.job_no}</td>        
-                                                                    <td className="text-center">{job.job_name}</td>
-                                                                    <td className="text-center">{job.printer_name}</td>        
-                                                                    <td className="text-center">{job.fl}</td>
-                                                                    <td className="text-center">{job.cir}</td>        
-                                                                    <td className="text-center">{job.dia}</td>
-                                                                    <td className="text-center">{job.surface_area}</td>        
+                                                                    <td style={columnHead} className="text-left">{job.date}</td>
+                                                                    <td style={columnHead} className="text-left">{job.job_no}</td>        
+                                                                    <td style={columnHead} className="text-left">{job.job_name}</td>
+                                                                    <td style={columnHead} className="text-left">{job.printer_name}</td>        
+                                                                    <td style={columnHead} className="text-left">{job.fl}</td>
+                                                                    <td style={columnHead} className="text-left">{job.cir}</td>        
+                                                                    <td style={columnHead} className="text-left">{job.dia}</td>
+                                                                    <td style={columnHead} className="text-left">{job.surface_area}</td>        
                                                                 </tr>   
                                                             ))
                                                         : null

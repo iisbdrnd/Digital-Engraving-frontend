@@ -152,14 +152,14 @@ useEffect(() => {
                                                 <table className="particulars table table-bordered table-stripped reportBody" cellSpacing="5" cellPadding="5" width="100%"  style={tableStyle}>
                                                     <thead>    
                                                         <tr>
-                                                            <th style={{fontSize:"15px",fontWeight:"bold"}} rowSpan= "2" className="text-center">Date</th>
-                                                            <th style={{fontSize:"15px",fontWeight:"bold"}} colSpan ="3" className="text-center">Layout</th>
-                                                            <th style={{fontSize:"15px",fontWeight:"bold"}} rowSpan= "2" className="text-center">Grinding</th>
-                                                            <th style={{fontSize:"15px",fontWeight:"bold"}} colSpan ="3" className="text-center">Plating</th>
-                                                            <th style={{fontSize:"15px",fontWeight:"bold"}} colSpan ="3" className="text-center">Polishing</th>
-                                                            <th style={{fontSize:"15px",fontWeight:"bold"}} colSpan ="3" className="text-center">Engraving</th>
-                                                            <th style={{fontSize:"15px",fontWeight:"bold"}} colSpan ="3" className="text-center">Chrome</th>   
-                                                            <th style={{fontSize:"15px",fontWeight:"bold"}} colSpan ="2" className="text-center">Challan Complete</th>   
+                                                            <th style={{fontSize:"15px",fontWeight:"bold"}} className="text-center">Date</th>
+                                                            <th style={{fontSize:"15px",fontWeight:"bold"}}  className="text-center">Layout</th>
+                                                            <th style={{fontSize:"15px",fontWeight:"bold"}}  className="text-center">Grinding</th>
+                                                            <th style={{fontSize:"15px",fontWeight:"bold"}}  className="text-center">Plating</th>
+                                                            <th style={{fontSize:"15px",fontWeight:"bold"}}  className="text-center">Polishing</th>
+                                                            <th style={{fontSize:"15px",fontWeight:"bold"}}  className="text-center">Engraving</th>
+                                                            <th style={{fontSize:"15px",fontWeight:"bold"}}  className="text-center">Chrome</th>   
+                                                            <th style={{fontSize:"15px",fontWeight:"bold"}}  className="text-center">Challan Complete</th>   
                                                         </tr>
                                                             
                                                           
@@ -232,37 +232,39 @@ useEffect(() => {
 
                                                                 return(
                                                                     <>
-                                                                    <tbody>
-                                                                <td style={{verticalAlign:"top", fontSize:"13px",fontWeight:"bold"}}  rowSpan= "2" key={index}>{item.date}</td>
+                                                                    <thead>
+                                                                
+                                                                <td id='dateId' style={{ fontSize:"13px",fontWeight:"bold"}}  key={index}>{item.date}</td>
     
-                                                                <td style={{verticalAlign:"top",fontSize:"13px",fontWeight:"bold"}} colSpan ="3" key={index}>
+                                                                <td id='dateId' style={{fontSize:"13px",fontWeight:"bold"}}  key={index}>
                                                                     {sumLayouts.toFixed(2)}
                                                                 </td>
-    
-    
-                                                                <td style={{verticalAlign:"top" ,fontSize:"13px",fontWeight:"bold"}} rowSpan= "2">
+
+
+                                                                <td id='dateId' style={{fontSize:"13px",fontWeight:"bold"}} >
                                                                     {sumGrindings.toFixed(2)}</td>
-    
-    
-                                                                <td style={{verticalAlign:"top" ,fontSize:"13px",fontWeight:"bold"}} colSpan ="3" key={index}>
+
+
+                                                                <td id='dateId' style={{fontSize:"13px",fontWeight:"bold"}}  key={index}>
                                                                     {sumPlating.toFixed(2)}</td>
-    
-    
-                                                                <td style={{verticalAlign:"top" ,fontSize:"13px",fontWeight:"bold"}} colSpan ="3" key={index}>
+
+
+                                                                <td id='dateId' style={{fontSize:"13px",fontWeight:"bold"}}  key={index}>
                                                                 {sumPolishing.toFixed(2)}</td>
-    
-    
-                                                                <td style={{verticalAlign:"top" ,fontSize:"13px",fontWeight:"bold"}} colSpan ="3" key={index}>
+
+
+                                                                <td id='dateId' style={{fontSize:"13px",fontWeight:"bold"}}  key={index}>
                                                                     {sumEngravings.toFixed(2)}</td>
-    
-    
-                                                                <td style={{verticalAlign:"top" ,fontSize:"13px",fontWeight:"bold"}} colSpan ="3" key={index}>
+
+
+                                                                <td id='dateId' style={{fontSize:"13px",fontWeight:"bold"}}  key={index}>
                                                                     {sumChrome.toFixed(2)}</td>
-    
-    
-                                                                <td style={{verticalAlign:"top" ,fontSize:"13px",fontWeight:"bold"}} colSpan ="2" key={index}>
+
+
+                                                                <td id='dateId' style={{fontSize:"13px",fontWeight:"bold"}} key={index}>
                                                                     {sumChallan.toFixed(2)}
                                                                     </td>
+                                                               
                                                                 
                                                             
                                                            
@@ -275,7 +277,7 @@ useEffect(() => {
                                                             
                                                             
                                                             
-                                                                    </tbody>
+                                                                    </thead>
     
                                                                     {/* <tr>
                                                                         <td rowSpan= "2" className="text-right" style={{fontSize:"14px",fontWeight:"bold"}}>Total</td>
