@@ -184,10 +184,10 @@ const Report = (props) => {
                                                                       <>
                                            
                                                                         <tr>
-                                                                            <td>{opening_balance.account_code}</td>
-                                                                            <td>{"'B/F - "+opening_balance.account_head}</td>
-                                                                            <td align="left" valign="middle">{Receipts(opening_balance.total_credit)}</td>
-                                                                            <td align="left" valign="middle">{Payments(opening_balance.total_debit)}</td>
+                                                                            <td style={{fontSize:'12px', fontWeight:"bold"}}> {opening_balance.account_code}</td>
+                                                                            <td style={{fontSize:'12px', fontWeight:"bold"}}> {"'B/F - "+opening_balance.account_head}</td>
+                                                                            <td style={{fontSize:'12px', fontWeight:"bold"}} align="left" valign="middle">{Receipts(opening_balance.total_credit)}</td>
+                                                                            <td style={{fontSize:'12px', fontWeight:"bold"}} align="left" valign="middle">{Payments(opening_balance.total_debit)}</td>
                                                                         </tr> 
 
                                                                     </>

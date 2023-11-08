@@ -254,14 +254,14 @@ const Report = (props) => {
                                                                         {Credit(opening_balance.total_credit)}
 
                                                                         <tr>
-                                                                            <td>{opening_balance.account_code}</td>
-                                                                            <td> - </td>
-                                                                            <td>{openingDate}</td>
-                                                                            <td> - </td>
-                                                                            <td>Opening Balance</td>
-                                                                            <td align="left" valign="middle">{opening_balance.total_debit}</td>
-                                                                            <td align="left" valign="middle">{opening_balance.total_credit}</td>
-                                                                            <td>{op_balance}</td>
+                                                                            <td style={{fontSize:"12px", fontWeight:"bold"}}>{opening_balance.account_code}</td>
+                                                                            <td style={{fontSize:"12px", fontWeight:"bold"}}> - </td>
+                                                                            <td style={{fontSize:"12px", fontWeight:"bold"}}>{openingDate}</td>
+                                                                            <td style={{fontSize:"12px", fontWeight:"bold"}}> - </td>
+                                                                            <td style={{fontSize:"12px", fontWeight:"bold"}}>Opening Balance</td>
+                                                                            <td style={{fontSize:"12px", fontWeight:"bold"}} align="left" valign="middle">{opening_balance.total_debit}</td>
+                                                                            <td style={{fontSize:"12px", fontWeight:"bold"}} align="left" valign="middle">{opening_balance.total_credit}</td>
+                                                                            <td style={{fontSize:"12px", fontWeight:"bold"}}>{op_balance}</td>
                                                                         </tr> 
 
                                                                         </>
@@ -279,14 +279,14 @@ const Report = (props) => {
                                                                         {Credit(ledger.credit_amount)}
 
                                                                         <tr>
-                                                                            <td>{ledger.account_code}</td>
-                                                                            <td>{ledger.transaction_no}</td>
-                                                                            <td>{ledger.transaction_date}</td>
-                                                                            <td>{ledger.voucher_type + '-' + ledger.instrument_no}</td>
-                                                                            <td>{ledger.remarks}</td>
-                                                                            <td align="left" valign="middle">{ledger.debit_amount}</td>
-                                                                            <td align="left" valign="middle">{ledger.credit_amount}</td>
-                                                                            <td>{op_balance}</td>
+                                                                            <td style={{fontSize:"12px", fontWeight:"bold"}}>{ledger.account_code}</td>
+                                                                            <td style={{fontSize:"12px", fontWeight:"bold"}}>{ledger.transaction_no}</td>
+                                                                            <td style={{fontSize:"12px", fontWeight:"bold"}}>{ledger.transaction_date}</td>
+                                                                            <td style={{fontSize:"12px", fontWeight:"bold"}}>{ledger.voucher_type + '-' + ledger.instrument_no}</td>
+                                                                            <td style={{fontSize:"12px", fontWeight:"bold"}}>{ledger.remarks}</td>
+                                                                            <td style={{fontSize:"12px", fontWeight:"bold"}} align="left" valign="middle">{ledger.debit_amount}</td>
+                                                                            <td style={{fontSize:"12px", fontWeight:"bold"}} align="left" valign="middle">{ledger.credit_amount}</td>
+                                                                            <td style={{fontSize:"12px", fontWeight:"bold"}}>{op_balance}</td>
                                                                         </tr> 
 
                                                                         </>

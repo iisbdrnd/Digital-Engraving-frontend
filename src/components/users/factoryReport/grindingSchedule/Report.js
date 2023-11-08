@@ -49,14 +49,14 @@ const Report = (props) => {
                                                 <table className="particulars table table-bordered table-stripped reportBody" cellSpacing="5" cellPadding="5" width="100%"  style={tableStyle}>
                                                     <thead>    
                                                         <tr>
-                                                        <th width="5%" className="text-left" style={rowHead}>Date</th>
-                                                            <th width="5%" className="text-left" style={rowHead}>Job No</th>
-                                                            <th width="40%" className="text-left" style={rowHead}>Job Name</th>
-                                                            <th width="20%" className="text-left" style={rowHead}>Printer</th>
-                                                            <th width="10%" className="text-left" style={rowHead}>FL</th>
-                                                            <th width="10%" className="text-left" style={rowHead}>Cir</th>
+                                                        <th width="8%" className="text-left" style={rowHead}>Date</th>
+                                                            <th width="8%" className="text-left" style={rowHead}>Job No</th>
+                                                            <th width="35%" className="text-left" style={rowHead}>Job Name</th>
+                                                            <th width="19%" className="text-left" style={rowHead}>Printer</th>
+                                                            <th width="5%" className="text-left" style={rowHead}>FL</th>
+                                                            <th width="5%" className="text-left" style={rowHead}>Cir</th>
                                                             <th width="5%" className="text-left" style={rowHead}>Dia</th>   
-                                                            <th width="5%" className="text-left" style={rowHead}>Surface Area</th>
+                                                            <th width="10%" className="text-left" style={rowHead}>Surface Area</th>
                                                         </tr>    
                                                     </thead>
                                                     <tbody>
@@ -67,10 +67,10 @@ const Report = (props) => {
                                                                     <td className="text-left" style={columnHead}>{grindingSchedule.job_no}</td>        
                                                                     <td className="text-left" style={columnHead}>{grindingSchedule.job_name}</td>
                                                                     <td className="text-left" style={columnHead}>{grindingSchedule.printer_name}</td>        
-                                                                    <td className="text-left" style={columnHead}>{grindingSchedule.fl}</td>
-                                                                    <td className="text-left" style={columnHead}>{grindingSchedule.cir}</td>        
-                                                                    <td className="text-left" style={columnHead}>{grindingSchedule.dia}</td>
-                                                                    <td className="text-left" style={columnHead}>{grindingSchedule.surface_area}</td>        
+                                                                    <td className="text-center" style={columnHead}>{grindingSchedule.fl}</td>
+                                                                    <td className="text-center" style={columnHead}>{grindingSchedule.cir}</td>        
+                                                                    <td className="text-center" style={columnHead}>{grindingSchedule.dia}</td>
+                                                                    <td className="text-center" style={columnHead}>{grindingSchedule.surface_area}</td>        
                                                                 </tr>   
                                                             ))
                                                         : null

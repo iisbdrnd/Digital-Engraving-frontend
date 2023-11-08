@@ -215,9 +215,9 @@ const Report = (props) => {
                                                                 {assetAmountFunction(balance.amount)}
 
                                                                 <tr>
-                                                                    <td>{asset_account_code}</td>
-                                                                    <td>{asset_account_head}</td>
-                                                                    <td class="text-right">{balance.amount}</td>
+                                                                    <td style={{fontSize:"12px", fontWeight:"bold"}}>{asset_account_code}</td>
+                                                                    <td style={{fontSize:"12px", fontWeight:"bold"}}>{asset_account_head}</td>
+                                                                    <td style={{fontSize:"12px", fontWeight:"bold"}} class="text-right">{balance.amount}</td>
                                                                 </tr>
 
                                                             </>
@@ -266,10 +266,10 @@ const Report = (props) => {
                                                             {liabilityAmountFunction(balance.amount)}
                                 
                                                             <tr>
-                                                                <td width="10%">{capital_account_code}</td>
-                                                                <td>{capital_account_head}</td>
+                                                                <td style={{fontSize:"12px", fontWeight:"bold"}} width="10%">{capital_account_code}</td>
+                                                                <td style={{fontSize:"12px", fontWeight:"bold"}}>{capital_account_head}</td>
                                                                 
-                                                                <td width="15%" class="text-right">{balance.amount}</td>
+                                                                <td style={{fontSize:"12px", fontWeight:"bold"}} width="15%" class="text-right">{balance.amount}</td>
                                                             </tr>
 
                                                         </>
@@ -284,13 +284,13 @@ const Report = (props) => {
 
                                                 <tfoot>
                                                     <tr>
-                                                        <td width="10%"></td>
-                                                        <td>Current Year Profit/Loss</td>
-                                                        <td width="15%" class="text-right">{fixedNumber(totalAmount)}</td>
+                                                        <td style={{fontSize:"13px", fontWeight:"bold"}} width="10%"></td>
+                                                        <td style={{fontSize:"13px", fontWeight:"bold"}}>Current Year Profit/Loss</td>
+                                                        <td style={{fontSize:"13px", fontWeight:"bold"}} width="15%" class="text-right">{fixedNumber(totalAmount)}</td>
                                                     </tr>
                                                     <tr>
-                                                        <td colspan="2" class="text-right"><strong>Grand Total</strong></td>
-                                                        <td class="text-right"><strong>{fixedNumber(liability_amount) + fixedNumber(totalAmount)}
+                                                        <td style={{fontSize:"13px", fontWeight:"bold"}} colspan="2" class="text-right"><strong>Grand Total</strong></td>
+                                                        <td style={{fontSize:"13px", fontWeight:"bold"}} class="text-right"><strong>{fixedNumber(liability_amount) + fixedNumber(totalAmount)}
                                                     </strong></td>
                                                     </tr>
                                                 </tfoot>

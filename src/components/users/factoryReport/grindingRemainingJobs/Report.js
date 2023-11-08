@@ -49,14 +49,14 @@ const Report = (props) => {
                                                 <table className="particulars table table-bordered table-stripped reportBody" cellSpacing="5" cellPadding="5" width="100%"  style={tableStyle}>
                                                     <thead>    
                                                         <tr>
-                                                            <th width="5%" className="text-left" style={rowHead}>Date</th>
-                                                            <th width="5%" className="text-left" style={rowHead}>Job No</th>
-                                                            <th width="40%" className="text-left" style={rowHead}>Job Name</th>
-                                                            <th width="20%" className="text-left" style={rowHead}>Printer</th>
-                                                            <th width="10%" className="text-left" style={rowHead}>FL</th>
-                                                            <th width="10%" className="text-left" style={rowHead}>Cir</th>
+                                                        <th width="8%" className="text-left" style={rowHead}>Date</th>
+                                                            <th width="8%" className="text-left" style={rowHead}>Job No</th>
+                                                            <th width="35%" className="text-left" style={rowHead}>Job Name</th>
+                                                            <th width="19%" className="text-left" style={rowHead}>Printer</th>
+                                                            <th width="5%" className="text-left" style={rowHead}>FL</th>
+                                                            <th width="5%" className="text-left" style={rowHead}>Cir</th>
                                                             <th width="5%" className="text-left" style={rowHead}>Dia</th>   
-                                                            <th width="5%" className="text-left" style={rowHead}>Surface Area</th>
+                                                            <th width="10%" className="text-left" style={rowHead}>Surface Area</th>
                                                         </tr>    
                                                     </thead>
                                                     <tbody>

@@ -229,14 +229,14 @@ const Report = (props) => {
                                                                             }
 
                                                                             <tr>
-                                                                                <td>{accountRow.account_code}</td>
-                                                                                <td> - </td>
-                                                                                <td>{openingDate}</td>
-                                                                                <td> - </td>
-                                                                                <td>Opening Balance</td>
-                                                                                <td>{}</td>
-                                                                                <td>{debit_amount}</td>
-                                                                                <td>{credit_amount}</td>
+                                                                                <td style={{fontSize:"12px", fontWeight:"bold"}}>{accountRow.account_code}</td>
+                                                                                <td style={{fontSize:"12px", fontWeight:"bold"}}> - </td>
+                                                                                <td style={{fontSize:"12px", fontWeight:"bold"}}>{openingDate}</td>
+                                                                                <td style={{fontSize:"12px", fontWeight:"bold"}}> - </td>
+                                                                                <td style={{fontSize:"12px", fontWeight:"bold"}}>Opening Balance</td>
+                                                                                <td style={{fontSize:"12px", fontWeight:"bold"}}>{}</td>
+                                                                                <td style={{fontSize:"12px", fontWeight:"bold"}}>{debit_amount}</td>
+                                                                                <td style={{fontSize:"12px", fontWeight:"bold"}}>{credit_amount}</td>
                                                                             </tr>
 
                                                                         </>
@@ -265,16 +265,16 @@ const Report = (props) => {
                                                                                     }
 
                                                                                     <tr>
-                                                                                        <td>{ledgerRow.account_code}</td>
-                                                                                        <td>{ledgerRow.transaction_no}</td>
-                                                                                        <td>{ledgerRow.transaction_date}</td>
-                                                                                        <td className="text-center">
+                                                                                        <td style={{fontSize:"12px", fontWeight:"bold"}}>{ledgerRow.account_code}</td>
+                                                                                        <td style={{fontSize:"12px", fontWeight:"bold"}}>{ledgerRow.transaction_no}</td>
+                                                                                        <td style={{fontSize:"12px", fontWeight:"bold"}}>{ledgerRow.transaction_date}</td>
+                                                                                        <td style={{fontSize:"12px", fontWeight:"bold"}} className="text-center">
                                                                                             {ledgerRow.voucher_type+'-'+ledgerRow.instrument_no}
                                                                                         </td>
-                                                                                        <td>{ledgerRow.remarks}</td>
-                                                                                        <td>{ledgerRow.debit_amount}</td>
-                                                                                        <td>{ledgerRow.credit_amount}</td>
-                                                                                        <td>{totalBalance}</td>
+                                                                                        <td style={{fontSize:"12px", fontWeight:"bold"}}>{ledgerRow.remarks}</td>
+                                                                                        <td style={{fontSize:"12px", fontWeight:"bold"}}>{ledgerRow.debit_amount}</td>
+                                                                                        <td style={{fontSize:"12px", fontWeight:"bold"}}>{ledgerRow.credit_amount}</td>
+                                                                                        <td style={{fontSize:"12px", fontWeight:"bold"}}>{totalBalance}</td>
                                                                                     </tr>
                                                                                 </>
                                                                             ))
@@ -296,10 +296,10 @@ const Report = (props) => {
                                                                     {grandTotalBalanceFunction(totalBalance)} 
                                                                     <>
                                                                         <tr>
-                                                                            <td colspan="5"><strong>Total</strong></td>
-                                                                            <td><strong>{debit_amount}</strong></td>
-                                                                            <td><strong>{credit_amount}</strong></td>
-                                                                            <td><strong>{totalBalance}</strong></td>
+                                                                            <td style={{fontSize:"12px", fontWeight:"bold"}} colspan="5"><strong>Total</strong></td>
+                                                                            <td style={{fontSize:"12px", fontWeight:"bold"}}><strong>{debit_amount}</strong></td>
+                                                                            <td style={{fontSize:"12px", fontWeight:"bold"}}><strong>{credit_amount}</strong></td>
+                                                                            <td style={{fontSize:"12px", fontWeight:"bold"}}><strong>{totalBalance}</strong></td>
                                                                         </tr>
                                                                     </>
 
@@ -326,10 +326,10 @@ const Report = (props) => {
                                             
                                                         <table className="particulars table table-bordered table-stripped m-t-15" style={{"width" : "100%"}}>
                                                             <tr>
-                                                                <td colspan="5"><strong>Grand Total</strong></td>
-                                                                <td width="12%"><strong>{grandTotalDebit}</strong></td>
-                                                                <td width="12%"><strong>{grandTotalCredit}</strong></td>
-                                                                <td width="12%" className=""><strong>{grandTotalBalance}</strong></td>
+                                                                <td style={{fontSize:"13px", fontWeight:"bold"}} colspan="5"><strong>Grand Total</strong></td>
+                                                                <td style={{fontSize:"13px", fontWeight:"bold"}} width="12%"><strong>{grandTotalDebit}</strong></td>
+                                                                <td style={{fontSize:"13px", fontWeight:"bold"}} width="12%"><strong>{grandTotalCredit}</strong></td>
+                                                                <td style={{fontSize:"13px", fontWeight:"bold"}} width="12%" className=""><strong>{grandTotalBalance}</strong></td>
                                                             </tr>
                                                         </table>
                                                   

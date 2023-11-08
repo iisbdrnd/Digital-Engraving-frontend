@@ -239,13 +239,13 @@ const Report = (props) => {
 
 
                                                                         <tr>
-                                                                            <td>{item.transaction_date}</td>
-                                                                            <td>{item.transaction_no}</td>
-                                                                            <td>{item.voucher_type+'-'+item.instrument_no}</td>
-                                                                            <td>{item.account_code}</td>
-                                                                            <td>{item.account_head}</td>
-                                                                            <td align="left" valign="middle">{Debit(item.debit_amount)}</td>
-                                                                            <td align="left" valign="middle">{Credit(item.credit_amount)}</td>
+                                                                            <td style={{fontSize:"12px", fontWeight:"bold"}}>{item.transaction_date}</td>
+                                                                            <td style={{fontSize:"12px", fontWeight:"bold"}}>{item.transaction_no}</td>
+                                                                            <td style={{fontSize:"12px", fontWeight:"bold"}}>{item.voucher_type+'-'+item.instrument_no}</td>
+                                                                            <td style={{fontSize:"12px", fontWeight:"bold"}}>{item.account_code}</td>
+                                                                            <td style={{fontSize:"12px", fontWeight:"bold"}}>{item.account_head}</td>
+                                                                            <td style={{fontSize:"12px", fontWeight:"bold"}} align="left" valign="middle">{Debit(item.debit_amount)}</td>
+                                                                            <td style={{fontSize:"12px", fontWeight:"bold"}} align="left" valign="middle">{Credit(item.credit_amount)}</td>
                                                                         </tr> 
 
                                                                        

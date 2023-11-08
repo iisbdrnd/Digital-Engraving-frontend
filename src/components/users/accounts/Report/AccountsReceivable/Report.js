@@ -192,9 +192,9 @@ const Report = (props) => {
                                                                             {TotalBalanceAmount(ledger.debit_amount,ledger.credit_amount)}
 
                                                                             <tr>
-                                                                                <td>{ledger.account_code}</td>
-                                                                                <td>{chartOfAccountData[ledger.account_code].account_head}</td>
-                                                                                <td>{ledger.debit_amount-ledger.credit_amount}</td>
+                                                                                <td style={{fontSize:"12px", fontWeight:"bold"}}>{ledger.account_code}</td>
+                                                                                <td style={{fontSize:"12px", fontWeight:"bold"}}>{chartOfAccountData[ledger.account_code].account_head}</td>
+                                                                                <td style={{fontSize:"12px", fontWeight:"bold"}}>{ledger.debit_amount-ledger.credit_amount}</td>
                                                                             </tr>
 
                                                                         </>
@@ -206,8 +206,8 @@ const Report = (props) => {
 
                                                             <tfoot>
                                                                 <tr>
-                                                                    <td colspan="2" class="text-right"><strong>Total</strong></td>
-                                                                    <td class="text-center"><strong>{fixedNumber(totalBalance)}</strong></td>
+                                                                    <td style={{fontSize:"13px", fontWeight:"bold"}} colspan="2" class="text-right"><strong>Total</strong></td>
+                                                                    <td style={{fontSize:"13px", fontWeight:"bold"}} class="text-center"><strong>{fixedNumber(totalBalance)}</strong></td>
                                                                 </tr>
                                                             </tfoot>
                                                         </table>
