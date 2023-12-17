@@ -191,9 +191,9 @@ const Report = (props) => {
                                                                             {TotalBalanceAmount(ledger.credit_amount,ledger.debit_amount)}
 
                                                                             <tr>
-                                                                                <td>{ledger.account_code}</td>
-                                                                                <td>{chartOfAccountData[ledger.account_code].account_head}</td>
-                                                                                <td>{ledger.credit_amount-ledger.debit_amount}</td>
+                                                                                <td style={{textAlign: 'center'}}>{ledger.account_code}</td>
+                                                                                <td style={{textAlign: 'center'}}>{chartOfAccountData[ledger.account_code].account_head}</td>
+                                                                                <td style={{textAlign: 'center'}}>{ledger.credit_amount-ledger.debit_amount}</td>
                                                                             </tr>
 
                                                                         </>

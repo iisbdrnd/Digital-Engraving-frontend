@@ -8,6 +8,7 @@ import cookie from 'js-cookie';
 import { connect } from 'react-redux';
 import { UserLoginPost } from '../../api/userUrl';
 import { UncontrolledAlert } from 'reactstrap';
+import './demoLogin.css'
 
 
 class UserLogin extends Component {
@@ -59,30 +60,83 @@ class UserLogin extends Component {
     render(){
         return (
             <div>
-                <div className="page-wrapper">
-                    <div className="container-fluid p-0">
-                        {/* <!-- login page start--> */}
-                        <div className="authentication-main">
-                            <div className="row">
-                                <div className="col-md-12">
-                                    <div className="auth-innerright">
-                                        <div className="authentication-box">
-                                            <div className="text-center">
-                                                <img style={{width: '280px'}} src={logo} alt="" /></div>
-                                            <div className="card mt-4">
-                                                <div className="card-body">
+
+
+                    <div class="container h-100">
+                    <div class="d-flex justify-content-center h-100 login-container">
+                        <div class="user_card">
+                            <div class="d-flex justify-content-center">
+                                <div class="brand_logo_container">
+                                    <div class="brand_logo_container_design">  
+                                        <img src={logo} class="brand_logo" alt="Logo"/>
+                                    </div>
+                                </div>
+                            </div>
+                                    {this.state.errors ? 
+                                        <UncontrolledAlert color="danger" fade={true}>
+                                                Email or Password not match
+                                        </UncontrolledAlert>: ''}
+                                        
+                            <div class="d-flex justify-content-center form_container">
+                                <form onSubmit={this.handleFormSubmit}> 
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                        </div>
+                                        <input class="form-control input_user"
+                                        type="email" name="email"
+                                        value={this.state.email}
+                                        onChange={this.handleInput}
+                                        placeholder="Email address"
+                                        />
+                                    </div>
+                                    <div class="input-group mb-2">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text"><i class="fas fa-key"></i></span>
+                                        </div>
+                                        <input class="form-control input_pass"
+                                        type="password" name="password"
+                                        value={this.state.password}
+                                        onChange={this.handleInput} 
+                                        placeholder="Enter Password"
+                                        />
+                                    </div>
+                                   
+                                        <div class="d-flex justify-content-center mt-3 login_container">
+                                        <button type="submit" name="button" class="btn login_btn">Login</button>
+                            </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+
+
+            
+                 {/* <div className="page-wrapper"> */}
+                    {/* <div className="container-fluid p-0"> */}
+                        
+                        {/* <div className="authentication-main"> */}
+                            {/* <div className="row"> */}
+                                {/* <div className="col-md-12"> */}
+                                    {/* <div className="auth-innerright"> */}
+                                        {/* <div className="authentication-box"> */}
+                                            {/* <div className="text-center"> */}
+                                                {/* <img style={{width: '280px'}} src={logo} alt="" /></div> */}
+                                            {/* <div className="card mt-4"> */}
+                                                {/* <div className="card-body">
                                                     <div className="text-center">
                                                         <h4>USER LOGIN</h4>
-                                                    </div>
+                                                    </div> */}
 
-                                                    {this.state.errors ? 
+                                                    {/* {this.state.errors ? 
                                                         <UncontrolledAlert color="danger" fade={true}>
                                                             Email or Password not match
                                                         </UncontrolledAlert>
-                                                    : ''}
+                                                    : ''} */}
                                                     
-                                                    <form className="theme-form" onSubmit={this.handleFormSubmit}>
-                                                        <div className="form-group">
+                                                    {/* <form className="theme-form" onSubmit={this.handleFormSubmit}> */}
+                                                        {/* <div className="form-group">
                                                             <label className="col-form-label pt-0">Email</label>
                                                             <input className="form-control" type="email" name="email"
                                                                 value={this.state.email}
@@ -90,24 +144,24 @@ class UserLogin extends Component {
                                                                 placeholder="Email address"
                                                             />
                                                             
-                                                        </div>
+                                                        </div> */}
                                                             
-                                                        <div className="form-group">
+                                                        {/* <div className="form-group">
                                                             <label className="col-form-label">Password</label>
                                                             <input className="form-control" type="password" name="password"
                                                                 value={this.state.password}
                                                                 onChange={this.handleInput} 
                                                                 placeholder="Enter Password"
                                                                 />
-                                                            {/* {errors.password && 'Email is required'} */}
-                                                        </div>
+                                                            
+                                                        </div> */}
                                                         {/* <div className="checkbox p-0">
                                                             <input id="checkbox1" type="checkbox" />
                                                             <label htmlFor="checkbox1">Remember me</label>
                                                         </div> */}
-                                                        <div className="form-group form-row mt-3 mb-0">
+                                                        {/* <div className="form-group form-row mt-3 mb-0">
                                                             <button className="btn btn-primary btn-block" type="submit">Login</button>
-                                                        </div>
+                                                        </div> */}
                                                         {/* <div className="form-row">
                                                             <div className="col-sm-4">
                                                                 <button className="btn btn-primary btn-block" type="submit">Login</button>
@@ -116,18 +170,23 @@ class UserLogin extends Component {
                                                             </div>
                                                         </div> */}
                                                         {/* <div className="login-divider"></div> */}
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <ToastContainer />
-                        {/* <!-- login page end--> */}
-                    </div>
-                </div>
+                                                    {/* </form> */}
+                                                {/* </div> */}
+                                            {/* </div> */}
+                                        {/* </div> */}
+                                     {/* </div> */}
+                                 {/* </div> */}
+                             {/* </div> */}
+                         {/* </div> */}
+                         <ToastContainer />
+                       
+                    {/* </div> */}
+                {/* </div> */}
+                
+                
+
+
+                
             </div>
         );
     }

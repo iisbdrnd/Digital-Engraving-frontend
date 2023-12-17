@@ -5,6 +5,10 @@ import { userGetMethod } from '../../../../api/userAction';
 import './style.scss';
 import { fixedNumber } from '../../../common/GlobalComponent';
 
+export const reportTableFont = 
+    {fontSize:"12px",fontWeight:'bold'}
+
+
 const Report = (props) => {
     const [isLoading, setIsLoading] = useState(true);
     const [jobs, setJobs] = useState([]);
@@ -147,21 +151,21 @@ const Report = (props) => {
                                                         <thead>
                                                     
                                                             <tr style={{backgroundColor:"#bab6b6"}}>
-                                                                <th width="10%" align="center" style={{fontSize:"15px",fontWeight:'bold'}}>Date</th>
-                                                                <th width="5%" align="center" style={{fontSize:"15px",fontWeight:'bold'}}>Day</th>
-                                                                <th width="5%" align="center" style={{fontSize:"15px",fontWeight:'bold'}}>New</th>
-                                                                <th width="5%" align="center" style={{fontSize:"15px",fontWeight:'bold'}}>Remake</th>
-                                                                <th width="5%" align="center" style={{fontSize:"15px",fontWeight:'bold'}}>Redo</th>
-                                                                <th width="5%"align="center" style={{fontSize:"15px",fontWeight:'bold'}}>DC/RC</th>
-                                                                <th width="10%" align="center" style={{fontSize:"15px",fontWeight:'bold'}}>Total Cyl</th>
-                                                                <th width="10%" align="center" style={{fontSize:"15px",fontWeight:'bold'}}>% of Total</th>
-                                                                <th width="10%" align="center" style={{fontSize:"15px",fontWeight:'bold'}}>Total S.A</th>
-                                                                <th width="10%" align="center" style={{fontSize:"15px",fontWeight:'bold'}}>Billable Cyl</th>
-                                                                <th width="10%" align="center" style={{fontSize:"15px",fontWeight:'bold'}}>Billable S.A</th>
-                                                                <th width="5%" align="center" style={{fontSize:"15px",fontWeight:'bold'}}>Return</th>
-                                                                <th width="10%" align="center" style={{fontSize:"15px",fontWeight:'bold'}}>Base To Stock</th>
-                                                                <th width="10%" align="center" style={{fontSize:"15px",fontWeight:'bold'}}>Cancel Cyl</th>
-                                                                <th width="10%" align="center" style={{fontSize:"15px",fontWeight:'bold'}}>Total Order</th>
+                                                                <th width="10%" align="center" style={{fontSize:"14px",fontWeight:'bold'}}>Date</th>
+                                                                <th width="5%" align="center" style={{fontSize:"14px",fontWeight:'bold'}}>Day</th>
+                                                                <th width="5%" align="center" style={{fontSize:"14px",fontWeight:'bold'}}>New</th>
+                                                                <th width="5%" align="center" style={{fontSize:"14px",fontWeight:'bold'}}>Remake</th>
+                                                                <th width="5%" align="center" style={{fontSize:"14px",fontWeight:'bold'}}>Redo</th>
+                                                                <th width="5%"align="center" style={{fontSize:"14px",fontWeight:'bold'}}>DC/RC</th>
+                                                                <th width="10%" align="center" style={{fontSize:"14px",fontWeight:'bold'}}>Total Cyl</th>
+                                                                <th width="10%" align="center" style={{fontSize:"14px",fontWeight:'bold'}}>% of Total</th>
+                                                                <th width="10%" align="center" style={{fontSize:"14px",fontWeight:'bold'}}>Total S.A</th>
+                                                                <th width="10%" align="center" style={{fontSize:"14px",fontWeight:'bold'}}>Billable Cyl</th>
+                                                                <th width="10%" align="center" style={{fontSize:"14px",fontWeight:'bold'}}>Billable S.A</th>
+                                                                <th width="5%" align="center" style={{fontSize:"14px",fontWeight:'bold'}}>Return</th>
+                                                                <th width="10%" align="center" style={{fontSize:"14px",fontWeight:'bold'}}>Base To Stock</th>
+                                                                <th width="10%" align="center" style={{fontSize:"14px",fontWeight:'bold'}}>Cancel Cyl</th>
+                                                                <th width="10%" align="center" style={{fontSize:"14px",fontWeight:'bold'}}>Total Order</th>
                                                             </tr>
                                                             
                                                         </thead>
@@ -170,25 +174,25 @@ const Report = (props) => {
                                                                 jobs.length > 0 ? 
                                                                     jobs.map((job, key)=>(    
                                                                         <tr key={key++}>
-                                                                            <td style={{fontSize:"14px",fontWeight:'bold'}}>{job.agreement_date}</td>
-                                                                            <td style={{fontSize:"14px",fontWeight:'bold'}}>{job.agreement_day}</td>
-                                                                            <td style={{fontSize:"14px",fontWeight:'bold'}}>{job.new_qty}</td>
-                                                                            <td style={{fontSize:"14px",fontWeight:'bold'}}>{job.remake_qty}</td>
-                                                                            <td style={{fontSize:"14px",fontWeight:'bold'}}>{job.redo_qty}</td>
-                                                                            <td style={{fontSize:"14px",fontWeight:'bold'}}>{job.dc_rc_qty}</td>
-                                                                            <td style={{fontSize:"14px",fontWeight:'bold'}}>{job.total_cyl_qty}</td>
+                                                                            <td style={reportTableFont}>{job.agreement_date}</td>
+                                                                            <td style={reportTableFont}>{job.agreement_day}</td>
+                                                                            <td style={reportTableFont}>{job.new_qty}</td>
+                                                                            <td style={reportTableFont}>{job.remake_qty}</td>
+                                                                            <td style={reportTableFont}>{job.redo_qty}</td>
+                                                                            <td style={reportTableFont}>{job.dc_rc_qty}</td>
+                                                                            <td style={reportTableFont}>{job.total_cyl_qty}</td>
 
-                                                                            <td style={{fontSize:"14px",fontWeight:'bold'}}>{Math.round((job.total_cyl_qty * 100) / totalValue)}%</td>
+                                                                            <td style={reportTableFont}>{Math.round((job.total_cyl_qty * 100) / totalValue)}%</td>
 
 
 
-                                                                            <td style={{fontSize:"14px",fontWeight:'bold'}}>{fixedNumber(job.total_surface_area)}</td>
-                                                                            <td style={{fontSize:"14px",fontWeight:'bold'}}>{job.billable_cylinder}</td>
-                                                                            <td style={{fontSize:"14px",fontWeight:'bold'}}>{fixedNumber(job.billable_surface_area)}</td>
-                                                                            <td style={{fontSize:"14px",fontWeight:'bold'}}></td>
-                                                                            <td style={{fontSize:"14px",fontWeight:'bold'}}></td>
-                                                                            <td style={{fontSize:"14px",fontWeight:'bold'}}></td>
-                                                                            <td style={{fontSize:"14px",fontWeight:'bold'}}>{job.total_cyl_qty}</td>
+                                                                            <td style={reportTableFont}>{fixedNumber(job.total_surface_area)}</td>
+                                                                            <td style={reportTableFont}>{job.billable_cylinder}</td>
+                                                                            <td style={reportTableFont}>{fixedNumber(job.billable_surface_area)}</td>
+                                                                            <td style={reportTableFont}></td>
+                                                                            <td style={reportTableFont}></td>
+                                                                            <td style={reportTableFont}></td>
+                                                                            <td style={reportTableFont}>{job.total_cyl_qty}</td>
                                                                         </tr>
                                                                     ))
                                                                 : null
@@ -197,27 +201,27 @@ const Report = (props) => {
                                                                 
                                                                 <tr>
                                                                     <td align="right" style={{fontSize:"16px",fontWeight:'bold'}}>Total</td>
-                                                                    <td style={{fontSize:"15px",fontWeight:'bold'}}></td>
-                                                                    <td style={{fontSize:"15px",fontWeight:'bold'}}>{result.newQty}</td>
-                                                                    <td style={{fontSize:"15px",fontWeight:'bold'}}>{result.remakeQty}</td>
-                                                                    <td style={{fontSize:"15px",fontWeight:'bold'}}>{result.redoQty}</td>
-                                                                    <td style={{fontSize:"15px",fontWeight:'bold'}}>{result.dcRcQty}</td>
-                                                                    <td style={{fontSize:"15px",fontWeight:'bold'}}>{totalValue}</td>
-                                                                    <td style={{fontSize:"15px",fontWeight:'bold'}}>100%</td>
+                                                                    <td style={{fontSize:"14px",fontWeight:'bold'}}></td>
+                                                                    <td style={{fontSize:"14px",fontWeight:'bold'}}>{result.newQty}</td>
+                                                                    <td style={{fontSize:"14px",fontWeight:'bold'}}>{result.remakeQty}</td>
+                                                                    <td style={{fontSize:"14px",fontWeight:'bold'}}>{result.redoQty}</td>
+                                                                    <td style={{fontSize:"14px",fontWeight:'bold'}}>{result.dcRcQty}</td>
+                                                                    <td style={{fontSize:"14px",fontWeight:'bold'}}>{totalValue}</td>
+                                                                    <td style={{fontSize:"14px",fontWeight:'bold'}}>100%</td>
 
                                                                     {/* <td style={{fontSize:"13px",fontWeight:'bold'}}>{fixedNumber(grandTotal.total_surface_area)}</td> */}
 
 
-                                                                    <td style={{fontSize:"15px",fontWeight:'bold'}}>{result.totalSA}</td>
+                                                                    <td style={{fontSize:"14px",fontWeight:'bold'}}>{result.totalSA}</td>
 
-                                                                    <td style={{fontSize:"15px",fontWeight:'bold'}}>{result.billableCA}</td>
+                                                                    <td style={{fontSize:"14px",fontWeight:'bold'}}>{result.billableCA}</td>
 
-                                                                    <td style={{fontSize:"15px",fontWeight:'bold'}}>{result.billableSA}</td>
+                                                                    <td style={{fontSize:"14px",fontWeight:'bold'}}>{result.billableSA}</td>
 
-                                                                    <td style={{fontSize:"15px",fontWeight:'bold'}}></td>
-                                                                    <td style={{fontSize:"15px",fontWeight:'bold'}}></td>
-                                                                    <td style={{fontSize:"15px",fontWeight:'bold'}}></td>
-                                                                    <td style={{fontSize:"15px",fontWeight:'bold'}}>{totalValue}</td>
+                                                                    <td style={{fontSize:"14px",fontWeight:'bold'}}></td>
+                                                                    <td style={{fontSize:"14px",fontWeight:'bold'}}></td>
+                                                                    <td style={{fontSize:"14px",fontWeight:'bold'}}></td>
+                                                                    <td style={{fontSize:"14px",fontWeight:'bold'}}>{totalValue}</td>
                                                                 </tr>
                                                            
                                             </>
@@ -255,9 +259,9 @@ const Report = (props) => {
                                                             
                                                                     <>
                                                                         <tr>
-                                                                            <td style={{fontSize:"15px",fontWeight:'bold'}}>Billable Cylinder:  <span style={{fontSize:"16px",fontWeight:'bold'}}><i>{result.billableCA}</i></span></td>
+                                                                            <td style={{fontSize:"14px",fontWeight:'bold'}}>Billable Cylinder:  <span style={{fontSize:"16px",fontWeight:'bold'}}><i>{result.billableCA}</i></span></td>
                                                                             
-                                                                                    <td style={{fontSize:"15px",fontWeight:'bold'}}>This Month's Target: <span style={{fontSize:"16px",fontWeight:'bold'}}>
+                                                                                    <td style={{fontSize:"14px",fontWeight:'bold'}}>This Month's Target: <span style={{fontSize:"16px",fontWeight:'bold'}}>
                                                                                     <i>{monthlyTarget ? monthlyTarget: 0}</i>
                                                                                     </span>
                                                                                     </td>
@@ -266,10 +270,10 @@ const Report = (props) => {
                                                                         </tr>
                                                                     
                                                                         <tr>
-                                                                            <td style={{fontSize:"15px",fontWeight:'bold'}}>Total Work Load: <span style={{fontSize:"16px",fontWeight:'bold'}}><i>{totalValue}</i></span></td>
+                                                                            <td style={{fontSize:"14px",fontWeight:'bold'}}>Total Work Load: <span style={{fontSize:"16px",fontWeight:'bold'}}><i>{totalValue}</i></span></td>
                                                                             
                                                                            
-                                                                                    <td style={{fontSize:"15px",fontWeight:'bold'}}>Target Balance: 
+                                                                                    <td style={{fontSize:"14px",fontWeight:'bold'}}>Target Balance: 
                                                                                     <span style={{fontSize: "16px", fontWeight: 'bold'}}>
                                                                                     <i> {monthlyTarget - totalValue}</i>
                                                                                         </span> </td>
@@ -277,7 +281,7 @@ const Report = (props) => {
                                                                             
                                                                         </tr>
                                                                         <tr>
-                                                                            <td style={{fontSize:"15px",fontWeight:'bold'}}>Average Billiable Cylinder Per Day: <span style={{fontSize: "16px", fontWeight:'bold'}}><i>{fixedNumber(result.billableCA / jobs.length)}</i></span></td>
+                                                                            <td style={{fontSize:"14px",fontWeight:'bold'}}>Average Billiable Cylinder Per Day: <span style={{fontSize: "16px", fontWeight:'bold'}}><i>{fixedNumber(result.billableCA / jobs.length)}</i></span></td>
                                                                             
                                                                         </tr>
                                                                     </>

@@ -215,9 +215,9 @@ const Report = (props) => {
                                                                 {assetAmountFunction(balance.amount)}
 
                                                                 <tr>
-                                                                    <td style={{fontSize:"12px", fontWeight:"bold"}}>{asset_account_code}</td>
-                                                                    <td style={{fontSize:"12px", fontWeight:"bold"}}>{asset_account_head}</td>
-                                                                    <td style={{fontSize:"12px", fontWeight:"bold"}} class="text-right">{balance.amount}</td>
+                                                                    <td style={{fontSize:"12px", fontWeight:"bold"}}>{balance?.account_code}</td>
+                                                                    <td style={{fontSize:"12px", fontWeight:"bold"}}>{balance?.account_head}</td>
+                                                                    <td style={{fontSize:"12px", fontWeight:"bold"}} class="text-right">{parseFloat(balance.amount).toFixed(2)}</td>
                                                                 </tr>
 
                                                             </>
@@ -266,10 +266,10 @@ const Report = (props) => {
                                                             {liabilityAmountFunction(balance.amount)}
                                 
                                                             <tr>
-                                                                <td style={{fontSize:"12px", fontWeight:"bold"}} width="10%">{capital_account_code}</td>
-                                                                <td style={{fontSize:"12px", fontWeight:"bold"}}>{capital_account_head}</td>
+                                                                <td style={{fontSize:"12px", fontWeight:"bold"}} width="10%">{balance.account_code}</td>
+                                                                <td style={{fontSize:"12px", fontWeight:"bold"}}>{balance.account_head}</td>
                                                                 
-                                                                <td style={{fontSize:"12px", fontWeight:"bold"}} width="15%" class="text-right">{balance.amount}</td>
+                                                                <td style={{fontSize:"12px", fontWeight:"bold"}} width="15%" class="text-right">{parseFloat(balance.amount).toFixed(2)}</td>
                                                             </tr>
 
                                                         </>

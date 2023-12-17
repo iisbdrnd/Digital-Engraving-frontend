@@ -107,9 +107,9 @@ export default function ListData(props) {
         console.log('sort', ascDesc);
         let ascUrl = '';
         if (ascDesc === true) {
-            ascUrl = `${chartOfAccountAPI}?asc=${params}&desc=`;
+            ascUrl = `${chartOfAccountAPI}?page=${1}&perPage=${perPage}&searchText=${searchText}?asc=${params}&desc=`;
         } else {
-            ascUrl = `${chartOfAccountAPI}?asc=&desc=${params}`;
+            ascUrl = `${chartOfAccountAPI}?page=${1}&perPage=${perPage}&searchText=${searchText}?asc=&desc=${params}`;
         }
         
         setIsLoading(true);

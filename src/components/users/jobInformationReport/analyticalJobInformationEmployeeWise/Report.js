@@ -3,6 +3,7 @@ import ReportHeader from './ReportHeader';
 import {ANALYTICAL_JOB_INFORMATION_EMPLOYEE_WISE_REPORT} from '../../../../api/userUrl'
 import { userGetMethod } from '../../../../api/userAction';
 import './style.scss';
+import { reportTableFont } from '../../supplyChainReport/monthlyJobFlow/Report';
 
 const Report = (props) => {
     const [isLoading, setIsLoading] = useState(true);
@@ -67,31 +68,31 @@ const Report = (props) => {
                                                                 employee.jobs.length > 0 ?
                                                                     <>
                                                                         <tr>
-                                                                            <th colSpan="13" >{employee.name}</th>
+                                                                            <th style={reportTableFont} colSpan="13" >{employee.name}</th>
                                                                         </tr>
                                                 
                                                                         {employee.jobs.map((job)=>( 
                                                                             <tr>
-                                                                                <td>{job.agreement_date}</td>
-                                                                                <td>{job.job_no}</td>
-                                                                                <td>{job.job_name}</td>
-                                                                                <td></td>
-                                                                                <td>{job.printer_name}</td>
-                                                                                <td>{job.job_type}</td>
-                                                                                <td>{job.face_length}x{job.circumference}</td>
-                                                                                <td>{job.total_cylinder_qty}</td>
-                                                                                <td>{job.total_surface_area}</td>
-                                                                                <td>{job.design_rcv_date}</td>
-                                                                                <td>{job.bill_status==1?'Finished':'Pending'}</td>
-                                                                                <td>{job.bill_date != null ? Math.round(Math.abs((new Date(job.design_rcv_date) - new Date(job.bill_date)) / oneDay)):'N/A'}</td>
-                                                                                <td>{job.bill_date}</td>
+                                                                                <td style={reportTableFont}>{job.agreement_date}</td>
+                                                                                <td style={reportTableFont}>{job.job_no}</td>
+                                                                                <td style={reportTableFont}>{job.job_name}</td>
+                                                                                <td style={reportTableFont}></td>
+                                                                                <td style={reportTableFont}>{job.printer_name}</td>
+                                                                                <td style={reportTableFont}>{job.job_type}</td>
+                                                                                <td style={reportTableFont}>{job.face_length}x{job.circumference}</td>
+                                                                                <td style={reportTableFont}>{job.total_cylinder_qty}</td>
+                                                                                <td style={reportTableFont}>{job.total_surface_area}</td>
+                                                                                <td style={reportTableFont}>{job.design_rcv_date}</td>
+                                                                                <td style={reportTableFont}>{job.bill_status==1?'Finished':'Pending'}</td>
+                                                                                <td style={reportTableFont}>{job.bill_date != null ? Math.round(Math.abs((new Date(job.design_rcv_date) - new Date(job.bill_date)) / oneDay)):'N/A'}</td>
+                                                                                <td style={reportTableFont}>{job.bill_date}</td>
                                                                             </tr>
                                                                         ))}
                                                                         {employee.total.map((data)=>(
                                                                             <tr> 
                                                                                 <th colspan="7" style={{fontSize:"14px", fontWeight:"bold"}}>Total</th>                                                                               
-                                                                                <th style={{fontSize:"14px", fontWeight:"bold"}}>{data.total_cylinder_qty}</th>                                                                                 
-                                                                                <th style={{fontSize:"14px", fontWeight:"bold"}}>{data.total_surface_area}</th>  
+                                                                                <th style={{fontSize:"14px", fontWeight:"bold"}}>{parseFloat(data.total_cylinder_qty).toFixed(2)}</th>                                                                                 
+                                                                                <th style={{fontSize:"14px", fontWeight:"bold"}}>{parseFloat(data.total_surface_area).toFixed(2)}</th>  
                                                                             </tr>
                                                                         ))}
                                                                     </>

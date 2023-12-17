@@ -7,6 +7,7 @@ import useForm from "react-hook-form";
 import { SubmitButton } from '../../../common/GlobalButton';
 import { Typeahead } from 'react-bootstrap-typeahead';
 import moment from 'moment';
+import { trStyleNormal } from '../../jobAgreement/Create';
 
 const Add = (props) => {
     const { handleSubmit, register, errors ,reset} = useForm();
@@ -541,37 +542,37 @@ const Add = (props) => {
                                                 <div className='p-0'>
                                                     <table className="table table-bordernone">
                                                         <tbody>
-                                                            <tr>
+                                                            <tr style={trStyleNormal}>
                                                                 <td width="45%" align="right">Job Name</td>
                                                                 <td width="5%">:</td>
                                                                 <td width="50%">{stateData.jobOrderDetailsData.job_name}</td>
                                                             </tr>
-                                                            <tr>
+                                                            <tr style={trStyleNormal}>
                                                                 <td align="right">Job Type</td>
                                                                 <td>:</td>
                                                                 <td>{stateData.jobOrderDetailsData.job_type}</td>
                                                             </tr>
-                                                            <tr>
+                                                            <tr style={trStyleNormal}>
                                                                 <td align="right">Cylinder Id</td>
                                                                 <td>:</td>
                                                                 <td>{stateData.selectCylinderId}</td>
                                                             </tr>
-                                                            <tr>
+                                                            <tr style={trStyleNormal}>
                                                                 <td align="right">FL</td>
                                                                 <td>:</td>
                                                                 <td>{stateData.jobOrderDetailsData.fl}</td>
                                                             </tr>
-                                                            <tr>
+                                                            <tr style={trStyleNormal}>
                                                                 <td align="right">Cir</td>
                                                                 <td>:</td>
                                                                 <td>{stateData.jobOrderDetailsData.cir}</td>
                                                             </tr>
-                                                            <tr>
+                                                            <tr style={trStyleNormal}>
                                                                 <td align="right">Dia</td>
                                                                 <td>:</td>
                                                                 <td>{stateData.jobOrderDetailsData.dia}</td>
                                                             </tr>
-                                                            <tr>
+                                                            <tr style={trStyleNormal}>
                                                                 <td align="right">S. Area</td>
                                                                 <td>:</td>
                                                                 <td>{stateData.jobOrderDetailsData.surface_area}</td>

@@ -979,9 +979,9 @@ const Add = (props) => {
         // console.log('duplicated')
         // console.log(duplicated)
     }else{
-        
+        // console.log(Array.from(formValue.entries()));
         setColorArray(duplicated);
-        // setIsSubmitting(false);
+        setIsSubmitting(false);
         userPostMethod(`${DESIGN_LAYOUT_RSURL}`, formValue)
             .then((response) => {
                 toast.success(response.data.message);

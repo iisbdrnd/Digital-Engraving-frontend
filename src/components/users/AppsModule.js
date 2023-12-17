@@ -7,7 +7,7 @@ const AppsModule = (props) => {
     return (
         <Fragment>
             <Link to={`${process.env.PUBLIC_URL}/master/${props.modulePrefix}`} pre={props.modulePrefix} id='user-navbar' className="media  col-md-2 feather-main m-t-5" style={{background: "#edeef3", padding: "20px", marginRight: "10px", borderRadius: '8px'}} onClick={props.click}>
-                <div style={{marginRight: "25px"}} className="feather-icon-block">
+                <div style={{marginRight: "20px"}} className="feather-icon-block">
                     <Navigation />
                 </div>
                 <div className="media-body align-self-center">

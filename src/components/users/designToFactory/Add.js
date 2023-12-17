@@ -6,6 +6,7 @@ import { DESIGN_TO_FACTORY_RSURL, JOB_ORDER_DETAILS } from '../../../api/userUrl
 import { Typeahead } from 'react-bootstrap-typeahead';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { trStyleNormal } from '../jobAgreement/Create';
 
 const Add = (props) => {
     const { handleSubmit, register, errors } = useForm();
@@ -229,22 +230,22 @@ const Add = (props) => {
                                                 <div className="table-responsive display-div">
                                                     <table className="table table-bordernone">
                                                         <tbody>
-                                                            <tr>
+                                                            <tr style={trStyleNormal}>
                                                                 <td width="25%" align="right">Job Name</td>
                                                                 <td width="5%">:</td>
                                                                 <td width="70%">{designToFactoryInput.job_name}</td>
                                                             </tr>
-                                                            <tr>
+                                                            <tr style={trStyleNormal}>
                                                                 <td align="right">Client Name</td>
                                                                 <td>:</td>
                                                                 <td>{designToFactoryInput.client_name}</td>
                                                             </tr>
-                                                            <tr>
+                                                            <tr style={trStyleNormal}>
                                                                 <td align="right">Printer Name</td>
                                                                 <td>:</td>
                                                                 <td>{designToFactoryInput.printer_name}</td>
                                                             </tr>
-                                                            <tr>
+                                                            <tr style={trStyleNormal}>
                                                                 <td align="right">No of Cylinder</td>
                                                                 <td>:</td>
                                                                 <td>{designToFactoryInput.total_cylinder_qty}</td>

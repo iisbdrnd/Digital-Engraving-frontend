@@ -1226,6 +1226,7 @@ a:hover {
 .btn-secondary {
     background-color: #1ea6ec !important;
     border-color: #1ea6ec !important;
+    
 }
 .btn-secondary.disabled {
     background-color: #1ea6ec !important;
@@ -3714,13 +3715,14 @@ ul .submenu input {
 }
 .page-wrapper .page-body-wrapper .page-sidebar .sidebar-menu .sidebar-header {
     font-size: 14px;
-    letter-spacing: 0.5px;
+    /* letter-spacing: 0.5px; */
     padding-bottom: 8px;
     padding-top: 8px;
     text-transform: capitalize;
     font-weight: 600;
     color: rgba(255, 255, 255, 0.85);
-    font-family: Nunito;
+    /* font-family: Nunito; */
+    font-family: "Droid Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 .page-wrapper .page-body-wrapper .page-sidebar .sidebar-menu .sidebar-header svg {
     width: 14px;
@@ -3820,7 +3822,8 @@ ul .submenu input {
     padding-left: 10px;
     line-height: 2.5;
     letter-spacing: 0.7px;
-    font-family: Nunito;
+    /* font-family: Nunito; */
+    font-family: "Droid Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 .page-wrapper .page-body-wrapper .page-sidebar .sidebar-menu .sidebar-submenu > li > a > .fa-circle {
     width: 12px;
@@ -23981,7 +23984,8 @@ body.dark-sidebar-body-mix .bookmark ul li a {
     right: -330px;
     background-color: #fff;
     z-index: 99;
-    font-family: Nunito;
+    /* font-family: Nunito; */
+    font-family: "Droid Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
     -webkit-transition: all 0.3s ease;
     transition: all 0.3s ease;
 }

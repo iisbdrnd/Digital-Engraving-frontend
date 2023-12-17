@@ -229,14 +229,14 @@ const Report = (props) => {
                                                                             }
 
                                                                             <tr>
-                                                                                <td style={{fontSize:"12px", fontWeight:"bold"}}>{accountRow.account_code}</td>
-                                                                                <td style={{fontSize:"12px", fontWeight:"bold"}}> - </td>
-                                                                                <td style={{fontSize:"12px", fontWeight:"bold"}}>{openingDate}</td>
-                                                                                <td style={{fontSize:"12px", fontWeight:"bold"}}> - </td>
-                                                                                <td style={{fontSize:"12px", fontWeight:"bold"}}>Opening Balance</td>
-                                                                                <td style={{fontSize:"12px", fontWeight:"bold"}}>{}</td>
-                                                                                <td style={{fontSize:"12px", fontWeight:"bold"}}>{debit_amount}</td>
-                                                                                <td style={{fontSize:"12px", fontWeight:"bold"}}>{credit_amount}</td>
+                                                                                <td style={{fontSize:"12px", fontWeight:"bold",textAlign:"center"}}>{accountRow.account_code}</td>
+                                                                                <td style={{fontSize:"12px", fontWeight:"bold",textAlign:"center"}}> - </td>
+                                                                                <td style={{fontSize:"12px", fontWeight:"bold",textAlign:"center"}}>{openingDate}</td>
+                                                                                <td style={{fontSize:"12px", fontWeight:"bold",textAlign:"center"}}> - </td>
+                                                                                <td style={{fontSize:"12px", fontWeight:"bold",textAlign:"center"}}>Opening Balance</td>
+                                                                                <td style={{fontSize:"12px", fontWeight:"bold",textAlign:"center"}}>{}</td>
+                                                                                <td style={{fontSize:"12px", fontWeight:"bold",textAlign:"center"}}>{debit_amount}</td>
+                                                                                <td style={{fontSize:"12px", fontWeight:"bold",textAlign:"center"}}>{credit_amount}</td>
                                                                             </tr>
 
                                                                         </>
@@ -265,16 +265,16 @@ const Report = (props) => {
                                                                                     }
 
                                                                                     <tr>
-                                                                                        <td style={{fontSize:"12px", fontWeight:"bold"}}>{ledgerRow.account_code}</td>
-                                                                                        <td style={{fontSize:"12px", fontWeight:"bold"}}>{ledgerRow.transaction_no}</td>
-                                                                                        <td style={{fontSize:"12px", fontWeight:"bold"}}>{ledgerRow.transaction_date}</td>
-                                                                                        <td style={{fontSize:"12px", fontWeight:"bold"}} className="text-center">
+                                                                                        <td style={{fontSize:"12px", fontWeight:"bold",textAlign:"center"}}>{ledgerRow.account_code}</td>
+                                                                                        <td style={{fontSize:"12px", fontWeight:"bold",textAlign:"center"}}>{ledgerRow.transaction_no}</td>
+                                                                                        <td style={{fontSize:"12px", fontWeight:"bold",textAlign:"center"}}>{ledgerRow.transaction_date}</td>
+                                                                                        <td style={{fontSize:"12px", fontWeight:"bold",textAlign:"center"}} className="text-center">
                                                                                             {ledgerRow.voucher_type+'-'+ledgerRow.instrument_no}
                                                                                         </td>
-                                                                                        <td style={{fontSize:"12px", fontWeight:"bold"}}>{ledgerRow.remarks}</td>
-                                                                                        <td style={{fontSize:"12px", fontWeight:"bold"}}>{ledgerRow.debit_amount}</td>
-                                                                                        <td style={{fontSize:"12px", fontWeight:"bold"}}>{ledgerRow.credit_amount}</td>
-                                                                                        <td style={{fontSize:"12px", fontWeight:"bold"}}>{totalBalance}</td>
+                                                                                        <td style={{fontSize:"12px", fontWeight:"bold",textAlign:"center"}}>{ledgerRow.remarks}</td>
+                                                                                        <td style={{fontSize:"12px", fontWeight:"bold",textAlign:"center"}}>{ledgerRow.debit_amount}</td>
+                                                                                        <td style={{fontSize:"12px", fontWeight:"bold",textAlign:"center"}}>{ledgerRow.credit_amount}</td>
+                                                                                        <td style={{fontSize:"12px", fontWeight:"bold",textAlign:"center"}}>{totalBalance}</td>
                                                                                     </tr>
                                                                                 </>
                                                                             ))

@@ -71,6 +71,20 @@ const Sidebar = (props) => {
     let isDone = false;
     let secondMenuChildren = [];
 
+    const paddingSlider = {
+        
+        /* font-size: 14px; */
+        /* letter-spacing: 0.5px; */
+        paddingBottom: "5px",
+        paddingTop: "5px",
+        /* text-transform: capitalize; */
+        /* font-weight: 600; */
+        /* color: rgba(255, 255, 255, 0.85); */
+        /* font-family: Nunito; */
+        fontFamily: "sans-serif !important",
+    
+}
+
 
     useEffect(() => {
         let moduleId = localStorage.getItem('moduleId');
@@ -272,7 +286,7 @@ const Sidebar = (props) => {
                 <div className="sidebar custom-scrollbar">
                     {/* <UserPanel /> */}
                     <ul
-                        className="sidebar-menu"
+                        className="sidebar-menu p-0"
                         id="myDIV"
                         style={configDB.wrapper === 'horizontal_sidebar' ? layout === 'rtl' ?
                             { 'marginRight': margin + 'px' } : { 'marginLeft': margin + 'px' } : { margin: '0px' }}
@@ -281,12 +295,12 @@ const Sidebar = (props) => {
                             onClick={(configDB.wrapper === 'horizontal_sidebar' && layout === 'rtl') ? scrollToLeftRTL : scrollToLeft}><i className="fa fa-angle-left"></i></li>
                         {
                             MENUITEMS.map((menuItem, i) =>
-                                <li className={`${menuItem.active ? 'active' : ''}`} key={i}>
+                                <li className={`${menuItem.active ? 'active' : ''}`} style={{borderBottom: "1px solid #c1c1c1", padding:"0 8px 0 8px"}} key={i}>
                                     {(menuItem.sidebartitle) ?
                                         <div className="sidebar-title">{menuItem.sidebartitle}</div>
                                         : ''}
                                     {(menuItem.type === 'sub') ?
-                                        <a href="javascript:void(0)" className="sidebar-header" onClick={() => toggletNavActive(menuItem)}
+                                        <a  href="javascript:void(0)" className="sidebar-header" onClick={() => toggletNavActive(menuItem)}
                                         menuId={menuItem.menuId}
                                         >
                                             <menuItem.icon />
@@ -295,7 +309,7 @@ const Sidebar = (props) => {
                                         </a>
                                         : ''}
                                     {(menuItem.type === 'link') ?
-                                        <Link
+                                        <Link style={paddingSlider} 
                                             to={{
                                                 pathname: process.env.PUBLIC_URL+menuItem.path,
                                                 state: { params: {menuId: menuItem.menuId} },
@@ -316,7 +330,9 @@ const Sidebar = (props) => {
                                             style={menuItem.active ? { opacity: 1, transition: 'opacity 500ms ease-in' } : {}}
                                         >
                                             {menuItem.children.map((childrenItem, index) =>
-                                                <li key={index} className={childrenItem.children ? childrenItem.active ? 'active' : '' : ''}>
+                                                {
+                                                    return(
+                                                    <li style={  childrenItem.title ? {borderBottom: "1px solid #c1c1c1", padding:"0 8px 0 8px"}: {}} key={index}   className={childrenItem.children ? (childrenItem.active ? 'active' : '') : ''}>
 
                                                     {(childrenItem.type === 'sub') ?
                                                         <a href="javascript:void(0)" onClick={() => toggletNavActive(childrenItem)} >
@@ -324,7 +340,7 @@ const Sidebar = (props) => {
                                                         : ''}
 
                                                     {(childrenItem.type === 'link') ?
-                                                        <Link
+                                                        <Link 
                                                             to={{
                                                                 pathname: process.env.PUBLIC_URL+childrenItem.path,
                                                                 state: { params: {menuId: childrenItem.menuId} },
@@ -338,6 +354,8 @@ const Sidebar = (props) => {
                                                             {/* <menuItem.icon /> */}
                                                             <i className="fa fa-circle"></i>{props.t(childrenItem.title)} </Link>
                                                         : ''}
+
+                                                        
                                                     {childrenItem.children ?
                                                         <ul className={`sidebar-submenu ${childrenItem.active ? 'menu-open' : 'active'}`}>
                                                             {childrenItem.children.map((childrenSubItem, key) =>
@@ -388,7 +406,8 @@ const Sidebar = (props) => {
                                                             )}
                                                         </ul>
                                                         : ''}
-                                                </li>
+                                                </li>)
+                                                }
                                             )}
                                         </ul>
                                         : ''}

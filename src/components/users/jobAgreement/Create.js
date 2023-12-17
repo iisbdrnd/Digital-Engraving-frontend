@@ -10,6 +10,12 @@ import { Typeahead } from 'react-bootstrap-typeahead';
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 import Swal from 'sweetalert2';
 
+
+export const trStyleNormal = {
+    background: 'none',
+    border: 'none',
+}
+
 const Add = (props) => {
     const { handleSubmit, register, errors,reset } = useForm();
     const [isLoading, setIsLoading] = useState(true);
@@ -460,37 +466,37 @@ const Add = (props) => {
                                                 <div className="table-responsive display-div">
                                                     <table className="table table-bordernone">
                                                         <tbody>
-                                                            <tr>
+                                                            <tr style={trStyleNormal}>
                                                                 <td width="20%" align="right">Client Name</td>
                                                                 <td width="5%">:</td>
                                                                 <td width="75%">{jobAgreementInput?.client_name}</td>
                                                             </tr>
-                                                            <tr>
+                                                            <tr style={trStyleNormal}>
                                                                 <td width="20%" align="right">Job Name</td>
                                                                 <td width="5%">:</td>
                                                                 <td width="75%">{jobAgreementInput.job_name}</td>
                                                             </tr>
-                                                            <tr>
+                                                            <tr style={trStyleNormal}>
                                                                 <td align="right">Job Type</td>
                                                                 <td>:</td>
                                                                 <td>{jobAgreementInput.job_type}</td>
                                                             </tr>
-                                                            <tr>
+                                                            <tr style={trStyleNormal}>
                                                                 <td align="right">Surface Area</td>
                                                                 <td>:</td>
                                                                 <td>{jobAgreementInput.surface_area}</td>
                                                             </tr>
-                                                            <tr>
+                                                            <tr style={trStyleNormal}>
                                                                 <td align="right">Printer Name</td>
                                                                 <td>:</td>
                                                                 <td>{jobAgreementInput.printer_name}</td>
                                                             </tr>
-                                                            <tr>
+                                                            <tr style={trStyleNormal}>
                                                                 <td align="right">Client Email</td>
                                                                 <td>:</td>
                                                                 <td>{jobAgreementInput.client_email}</td>
                                                             </tr>
-                                                            <tr>
+                                                            <tr style={trStyleNormal}>
                                                                 <td align="right">Marketing By</td>
                                                                 <td>:</td>
                                                                 <td>{jobAgreementInput.marketing_p_name}</td>

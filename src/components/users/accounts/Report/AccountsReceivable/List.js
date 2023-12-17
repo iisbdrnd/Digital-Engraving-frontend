@@ -80,10 +80,10 @@ const Form = (props) => {
                                                     className="form-control" 
                                                     defaultValue=""
                                                     ref={register({
-                                                        required: 'Branch Field Required'
+                                                        
                                                     })} 
                                                 >
-                                                <option value="">Select one</option>
+                                                <option value="">All Branches</option>
                                                 {branchData.map(branch => (
                                                     <option value={branch.id}>{branch.branch_name}</option>
                                                 ))}

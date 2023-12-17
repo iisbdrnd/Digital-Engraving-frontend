@@ -8,6 +8,7 @@ import { Typeahead } from 'react-bootstrap-typeahead';
 import { SubmitButton } from '../../../common/GlobalButton';
 import './Add.css'
 import { placeHolderText } from '../../../common/GlobalComponent';
+import { trStyleNormal } from '../../jobAgreement/Create';
 
 const Add = (props) => {
     const { handleSubmit, register, errors,reset } = useForm();
@@ -570,22 +571,22 @@ const Add = (props) => {
                                                             <div className='col-md-8 p-0'>
                                                                 <table className="table table-bordernone">
                                                                     <tbody>
-                                                                        <tr>
+                                                                        <tr style={trStyleNormal}>
                                                                             <td width="18%" align="right">Job Type</td>
                                                                             <td width="5%">:</td>
                                                                             <td width="77%">{jobOrderData.job_type}</td>
                                                                         </tr>
-                                                                        <tr>
+                                                                        <tr style={trStyleNormal}>
                                                                             <td align="right">Client</td>
                                                                             <td>:</td>
                                                                             <td>{jobOrderData.client_name}</td>
                                                                         </tr>
-                                                                        <tr>
+                                                                        <tr style={trStyleNormal}>
                                                                             <td align="right">Makt P.</td>
                                                                             <td>:</td>
                                                                             <td>{jobOrderData.marketing_p_name}</td>
                                                                         </tr>
-                                                                        <tr>
+                                                                        <tr style={trStyleNormal}>
                                                                             <td align="right">Printer</td>
                                                                             <td>:</td>
                                                                             <td>{jobOrderData.printer_name}</td>
@@ -597,22 +598,22 @@ const Add = (props) => {
                                                             <div className='col-md-4 p-0'>
                                                                 <table className="table table-bordernone">
                                                                     <tbody>
-                                                                        <tr>
+                                                                        <tr style={trStyleNormal}>
                                                                             <td width="50%" align="right">No of Cyl</td>
                                                                             <td width="5%">:</td>
                                                                             <td width="45%">{jobOrderData.total_cylinder_qty}</td>
                                                                         </tr>
-                                                                        <tr>
+                                                                        <tr style={trStyleNormal}>
                                                                             <td align="right">Desired FL</td>
                                                                             <td>:</td>
                                                                             <td>{jobOrderData.desired_fl}</td>
                                                                         </tr>
-                                                                        <tr>
+                                                                        <tr style={trStyleNormal}>
                                                                             <td align="right">Desired Cir</td>
                                                                             <td>:</td>
                                                                             <td>{jobOrderData.desired_cir}</td>
                                                                         </tr>
-                                                                        <tr>
+                                                                        <tr style={trStyleNormal}>
                                                                             <td align="right">Desired Dia</td>
                                                                             <td>:</td>
                                                                             <td>{jobOrderData.desired_dia}</td>

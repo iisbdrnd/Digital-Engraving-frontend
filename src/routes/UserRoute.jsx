@@ -12,6 +12,7 @@ import UserGuestRoute from './../auth/user/UserGuestRoute';
 import UserAuthRoute from './../auth/user/UserAuthRoute';
 import AuthRoute from './../auth/authRoute';
 import UserLogin from './../auth/user/UserLogin';
+// import UserLogin from './../auth/user/demoLogin';
 
 import UserProfile from './../components/users/userProfile';
 import UserCards from './../components/users/user-cards';

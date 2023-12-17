@@ -128,7 +128,7 @@ export default function TankSchedule(props) {
     // FOR CYCLE SCHEDULE DETAILS ARRAY READY
     const addCylSchedulHandler = (event) => {
         let {cylinder_id, job_type, fl, cir, dia, est_plating_order, surface_area} = cylScheduleFormData;
-        // console.log(cylScheduleFormData)
+        console.log(cylScheduleFormData)
 
         
         if (dropdownData.job_order_id === ''|| fl === '' || cir === '' || dia === '' || cylinder_id === '' || job_type == '' || est_plating_order === '' || surface_area === '') {
@@ -172,15 +172,15 @@ export default function TankSchedule(props) {
                                 ...cylScheduleDetails_arr
                             ]);
                             // EMPTY ORDER DETAILS ALL FIELDS
-                            setCylScheduleFormData({
-                                job_type         : '',
-                                fl               : '',
-                                cir              : '',
-                                dia              : '',
-                                cylinder_id      : '',
-                                est_plating_order: '',
-                                surface_area     : '',
-                            });
+                            // setCylScheduleFormData({
+                            //     job_type         : '',
+                            //     fl               : '',
+                            //     cir              : '',
+                            //     dia              : '',
+                            //     cylinder_id      : '',
+                            //     est_plating_order: '',
+                            //     surface_area     : '',
+                            // });
                             //Empty the job order typeahead
                             setJobOrderObj([]);
                         }
@@ -217,7 +217,7 @@ export default function TankSchedule(props) {
                 .then(response => {
                     if (response.data.status == 1) {
                         toast.success(response.data.message);
-                        e.target.reset();
+                        // e.target.reset();
                         props.toggle();
                         props.onChangeTank(props.tankId, props.modalTitle);
                         props.callApi();

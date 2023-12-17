@@ -9,6 +9,7 @@ import { userGetMethod, userPostMethod } from '../../../api/userAction';
 import { DEL_STOCK_RSURL, GET_CLIENT_STOCK_JOB_RSURL, JOB_ORDER_DETAILS } from '../../../api/userUrl';
 import SweetAlert from 'sweetalert2';
 import { placeHolderText } from '../../common/GlobalComponent';
+import { trStyleNormal } from '../jobAgreement/Create';
 
 const Add = (props) => {
     const { handleSubmit, register, errors, reset } = useForm();
@@ -353,27 +354,27 @@ const Add = (props) => {
                                                             <tbody>
                                                                 <div class="row">
                                                                     <div className="col-md-6">
-                                                                        <tr>
+                                                                        <tr style={trStyleNormal}>
                                                                             <td  align="right">Order Date</td>
                                                                             <td>:</td>
                                                                             <td>{jobOrderData.entry_date}</td>
                                                                         </tr>
-                                                                        <tr>
+                                                                        <tr style={trStyleNormal}>
                                                                             <td  align="right">Job Name</td>
                                                                             <td>:</td>
                                                                             <td>{jobOrderData.job_name}</td>
                                                                         </tr>
-                                                                        <tr>
+                                                                        <tr style={trStyleNormal}>
                                                                             <td align="right">Client Name</td>
                                                                             <td>:</td>
                                                                             <td>{jobOrderData.client_name}</td>
                                                                         </tr>
-                                                                        <tr>
+                                                                        <tr style={trStyleNormal}>
                                                                             <td align="right">Printer Name</td>
                                                                             <td>:</td>
                                                                             <td>{jobOrderData.printer_name}</td>
                                                                         </tr>
-                                                                        <tr>
+                                                                        <tr style={trStyleNormal}>
                                                                             <td align="right">Job Type</td>
                                                                             <td>:</td>
                                                                             <td>{jobOrderData.job_type}</td>
@@ -382,27 +383,27 @@ const Add = (props) => {
                                                                 
                                                                     <div className="col-md-4">
                                                                         
-                                                                        <tr>
+                                                                        <tr style={trStyleNormal}>
                                                                             <td align="right">Agreement Date</td>
                                                                             <td>:</td>
                                                                             <td>{jobOrderData.agreement_date}</td>
                                                                         </tr>
-                                                                        <tr>
+                                                                        <tr style={trStyleNormal}>
                                                                             <td align="right">Face Length</td>
                                                                             <td>:</td>
                                                                             <td>{jobOrderData.fl}</td>
                                                                         </tr>
-                                                                        <tr>
+                                                                        <tr style={trStyleNormal}>
                                                                             <td align="right">Circumference</td>
                                                                             <td>:</td>
                                                                             <td>{jobOrderData.cir}</td>
                                                                         </tr>
-                                                                        <tr>
+                                                                        <tr style={trStyleNormal}>
                                                                             <td align="right">Total SA</td>
                                                                             <td>:</td>
                                                                             <td>{jobOrderData.total_surface_area}</td>
                                                                         </tr>
-                                                                        <tr>
+                                                                        <tr style={trStyleNormal}>
                                                                             <td align="right">Total Cyl</td>
                                                                             <td>:</td>
                                                                             <td>{jobOrderData.total_cylinder_qty}</td>

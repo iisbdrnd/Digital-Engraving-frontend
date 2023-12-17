@@ -240,10 +240,10 @@ const Report = (props) => {
 
                                                             <thead>
                                                                 <tr>
-                                                                    <th width="10%" align="left" valign="middle">Code</th>
-                                                                    <th width="10%" align="left" valign="middle">Particulars.</th>
-                                                                    <th width="10%" align="left" valign="middle">Debit</th>
-                                                                    <th width="10%" align="left" valign="middle">Credit</th>
+                                                                    <th width="10%" text-align="center" vertical-align="middle">Code</th>
+                                                                    <th width="50%" text-align="center" vertical-align="middle">Particulars.</th>
+                                                                    <th width="10%" text-align="center" vertical-align="middle">Debit</th>
+                                                                    <th width="10%" text-align="center" vertical-align="middle">Credit</th>
                                                                 </tr>
                                                             </thead>
 
@@ -260,10 +260,10 @@ const Report = (props) => {
                                                                         { updateCodeParicular(item) }
                           
                                                                         <tr>
-                                                                            <td style={{fontSize:"12px", fontWeight:"bold"}}>{item.account_code }</td>
-                                                                            <td style={{fontSize:"12px", fontWeight:"bold"}}>{item.account_head }</td>
-                                                                            <td style={{fontSize:"12px", fontWeight:"bold"}} align="left" valign="middle">{Debit(item.debit_amount)}</td>
-                                                                            <td style={{fontSize:"12px", fontWeight:"bold"}} align="left" valign="middle">{Credit(item.credit_amount)}</td>
+                                                                            <td style={{fontSize:"12px", fontWeight:"bold", textAlign:"center"}}>{item.account_code }</td>
+                                                                            <td style={{fontSize:"12px", fontWeight:"bold", textAlign:"center"}}>{item.account_head }</td>
+                                                                            <td style={{fontSize:"12px", fontWeight:"bold", textAlign:"center"}} align="left" valign="middle">{Debit(item.debit_amount)}</td>
+                                                                            <td style={{fontSize:"12px", fontWeight:"bold", textAlign:"center"}} align="left" valign="middle">{Credit(item.credit_amount)}</td>
                                                                         </tr> 
 
                                                                     </>

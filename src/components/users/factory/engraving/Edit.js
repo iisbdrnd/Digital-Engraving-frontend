@@ -16,6 +16,7 @@ import { SubmitButton } from "../../../common/GlobalButton";
 import { Typeahead } from 'react-bootstrap-typeahead';
 import moment from "moment";
 import { placeHolderText } from "../../../common/GlobalComponent";
+import { trStyleNormal } from "../../jobAgreement/Create";
 
 const Edit = (props) => {
     const { handleSubmit, register, errors, reset } = useForm();
@@ -139,10 +140,6 @@ const Edit = (props) => {
     };
 
 
-
-
-    
-    
     
 
     const dropDownChange = (e, fieldName) => {
@@ -889,7 +886,7 @@ const Edit = (props) => {
                                                     <div className="p-0">
                                                         <table className="table table-bordernone">
                                                             <tbody>
-                                                                <tr>
+                                                                <tr style={trStyleNormal}>
                                                                     <td width="45%" align="right">
                                                                         Job Name
                                                                     </td>
@@ -898,14 +895,14 @@ const Edit = (props) => {
                                                                         {stateData?.jobOrderDetailsData?.job_name}
                                                                     </td>
                                                                 </tr>
-                                                                <tr>
+                                                                <tr style={trStyleNormal}>
                                                                     <td align="right">Job Type</td>
                                                                     <td>:</td>
                                                                     <td>
                                                                         {stateData?.jobOrderDetailsData?.job_type}
                                                                     </td>
                                                                 </tr>
-                                                                <tr>
+                                                                <tr style={trStyleNormal}>
                                                                     <td align="right">Cylinder Id</td>
                                                                     <td>:</td>
                                                                     <td>{cylinderId}</td>
@@ -915,22 +912,22 @@ const Edit = (props) => {
                                                                 <td>:</td>
                                                                 <td>fksdjflk</td>
                                                             </tr> */}
-                                                                <tr>
+                                                                <tr style={trStyleNormal}>
                                                                     <td align="right">FL</td>
                                                                     <td>:</td>
                                                                     <td>{stateData?.jobOrderDetailsData?.fl}</td>
                                                                 </tr>
-                                                                <tr>
+                                                                <tr style={trStyleNormal}>
                                                                     <td align="right">Cir</td>
                                                                     <td>:</td>
                                                                     <td>{stateData?.jobOrderDetailsData?.cir}</td>
                                                                 </tr>
-                                                                <tr>
+                                                                <tr style={trStyleNormal}>
                                                                     <td align="right">Dia</td>
                                                                     <td>:</td>
                                                                     <td>{stateData?.jobOrderDetailsData?.dia}</td>
                                                                 </tr>
-                                                                <tr>
+                                                                <tr style={trStyleNormal}>
                                                                     <td align="right">S. Area</td>
                                                                     <td>:</td>
                                                                     <td>

@@ -103,25 +103,45 @@ form fieldset{
     font-size: 13px;
 }
 .card a.btn {
-    padding: 7px 12px !important;
+    padding: 3px 12px !important;
 }
 .datatable-react .pagination {
     margin-top: 10px;
 }
+
+
+
 table.mdb-dataTable thead, table thead.mdb-dataTable-head{
     border: 1px solid #dee2e6;
 }
+
+table{
+    font-family: Droid Sans,Helvetica Neue,Helvetica,Arial,sans-serif !important;
+    font-size: 12px;
+}
 table.table th {
     // border: 1px solid #c5c7cc !important;
-    border: 1px solid black !important;
+    border: 1px solid #c4c4c4 !important;
+    background-color: #f3f3f3;
     padding: 6px 8px ;
     vertical-align: center !important;
+    
+    
 }
 table.table td{
-    border: 1px solid black !important;
+    border: 1px solid #c4c4c4 !important;
     // border: 1px solid #c5c7cc !important;
     // padding: 12px 8px !important;
     vertical-align: center !important;
+    // font-family: Droid Sans,Helvetica Neue,Helvetica,Arial,sans-serif;
+}
+table.table tr:nth-child(odd){
+    background-color: #f3f3f3;
+    border: 1px solid #c4c4c4;
+    // border: 1px solid #c5c7cc !important;
+    // padding: 12px 8px !important;
+    vertical-align: center !important;
+    // font-family: Droid Sans,Helvetica Neue,Helvetica,Arial,sans-serif;
 }
 
 table.mdb-dataTable thead .sorting:after, table.mdb-dataTable thead .sorting_asc:after, table.mdb-dataTable thead .sorting_desc:after, table.mdb-dataTable thead .sorting_asc_disabled:after, table.mdb-dataTable thead .sorting_desc_disabled:after, table thead.mdb-dataTable-head .sorting:after, table thead.mdb-dataTable-head .sorting_asc:after, table thead.mdb-dataTable-head .sorting_desc:after, table thead.mdb-dataTable-head .sorting_asc_disabled:after, table thead.mdb-dataTable-head .sorting_desc_disabled:after {
@@ -132,6 +152,45 @@ table.mdb-dataTable thead .sorting:before, table.mdb-dataTable thead .sorting_as
     bottom: 5px !important;
     padding-left: 8px !important;
 }
+
+// Report table custome css
+
+
+report-table{
+    font-family: Droid Sans,Helvetica Neue,Helvetica,Arial,sans-serif !important;
+    font-size: 12px;
+}
+report-table.table th {
+    // border: 1px solid #c5c7cc !important;
+    border: 1px solid #669dd3 !important;
+    background-color: #f3f3f3;
+    padding: 6px 8px ;
+    vertical-align: center !important;
+    
+    
+}
+report-table.table td{
+    border: 1px solid #669dd3 !important;
+    // border: 1px solid #c5c7cc !important;
+    // padding: 12px 8px !important;
+    vertical-align: center !important;
+    // font-family: Droid Sans,Helvetica Neue,Helvetica,Arial,sans-serif;
+}
+report-table.table tr:nth-child(odd){
+    background-color: #d75959;
+    border: 1px solid #669dd3 !important;
+    // border: 1px solid #c5c7cc !important;
+    // padding: 12px 8px !important;
+    vertical-align: center !important;
+    // font-family: Droid Sans,Helvetica Neue,Helvetica,Arial,sans-serif;
+}
+
+
+
+// report table custom css end
+
+
+
 .custom-table-pagination .pagi-select {
     height: calc(2rem + 2px) !important;
 }

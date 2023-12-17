@@ -9,6 +9,7 @@ import useForm from "react-hook-form";
 import SweetAlert from 'react-bootstrap-sweetalert';
 import { SubmitButton } from '../../../common/GlobalButton';
 import Swal from 'sweetalert2';
+import { trStyleNormal } from '../../jobAgreement/Create';
 
 const Edit = (props) => {
     const { handleSubmit, register, errors } = useForm();
@@ -734,7 +735,7 @@ const handleSelectCash = (e) => {
                                                     <div className='p-0'>
                                                         <table className="table table-bordernone">
                                                             <tbody>
-                                                                <tr>
+                                                                <tr style={trStyleNormal}>
                                                                     <td 
                                                                         align="right"
                                                                     ></td>
@@ -743,7 +744,7 @@ const handleSelectCash = (e) => {
                                                                             Client Details
                                                                     </td>  
                                                                 </tr>
-                                                                <tr>
+                                                                <tr style={trStyleNormal}>
                                                                     <td width="25%" align="right">
                                                                         Client Details
                                                                     </td>
@@ -752,7 +753,7 @@ const handleSelectCash = (e) => {
                                                                         {clientInfo.clientName != '' ? clientInfo.clientName : ''}
                                                                     </td>
                                                                 </tr>
-                                                                <tr>
+                                                                <tr style={trStyleNormal}>
                                                                     <td align="right">
                                                                         Client Phone
                                                                     </td>
@@ -761,7 +762,7 @@ const handleSelectCash = (e) => {
                                                                         {clientInfo.clientPhone != '' ? clientInfo.clientPhone : ''}
                                                                     </td>
                                                                 </tr>
-                                                                <tr>
+                                                                <tr style={trStyleNormal}>
                                                                     <td align="right">
                                                                         Client Address
                                                                     </td>
@@ -772,7 +773,7 @@ const handleSelectCash = (e) => {
                                                                 </tr>
 
                                                             
-                                                                <tr>
+                                                                <tr style={trStyleNormal}>
                                                                     <td align="right"></td>
                                                                     <td></td>
                                                                     <td 
@@ -781,21 +782,21 @@ const handleSelectCash = (e) => {
                                                                     </td>  
                                                                 </tr>
                                                                
-                                                                <tr>
+                                                                <tr style={trStyleNormal}>
                                                                     <td align="right">Receivable</td>
                                                                     <td>:</td>
                                                                     <td>
                                                                         {clientInfo.receivable != '' ? clientInfo.receivable : ''}
                                                                     </td>
                                                                 </tr>
-                                                                <tr>
+                                                                <tr style={trStyleNormal}>
                                                                     <td align="right">Collect</td>
                                                                     <td>:</td>
                                                                     <td>
                                                                         {clientInfo.collect != '' ? clientInfo.collect : ''}
                                                                     </td>
                                                                 </tr>
-                                                                <tr>
+                                                                <tr style={trStyleNormal}>
                                                                     <td align="right">Due</td>
                                                                     <td>:</td>
                                                                     <td>

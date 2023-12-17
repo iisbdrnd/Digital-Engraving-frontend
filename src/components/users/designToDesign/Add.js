@@ -7,6 +7,7 @@ import { Typeahead } from 'react-bootstrap-typeahead';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { placeHolderText } from '../../common/GlobalComponent';
+import { trStyleNormal } from '../jobAgreement/Create';
 
 const Add = (props) => {
     const { handleSubmit, register, errors } = useForm();
@@ -305,22 +306,22 @@ const Add = (props) => {
                                                 <div className="table-responsive display-div">
                                                     <table className="table table-bordernone">
                                                         <tbody>
-                                                            <tr>
+                                                            <tr style={trStyleNormal}>
                                                                 <td width="25%" align="right">Job Name</td>
                                                                 <td width="5%">:</td>
                                                                 <td width="70%">{jobAgreementInput?.job_name}</td>
                                                             </tr>
-                                                            <tr>
+                                                            <tr style={trStyleNormal}>
                                                                 <td align="right">Client Name</td>
                                                                 <td>:</td>
                                                                 <td>{jobAgreementInput?.client_name}</td>
                                                             </tr>
-                                                            <tr>
+                                                            <tr style={trStyleNormal}>
                                                                 <td align="right">Printer Name</td>
                                                                 <td>:</td>
                                                                 <td>{jobAgreementInput?.printer_name}</td>
                                                             </tr>
-                                                            <tr>
+                                                            <tr style={trStyleNormal}>
                                                                 <td align="right">No of Cylinder</td>
                                                                 <td>:</td>
                                                                 <td>{jobAgreementInput?.total_cylinder_qty}</td>

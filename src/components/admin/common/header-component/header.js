@@ -6,6 +6,7 @@ import Notification from './notification';
 import SearchHeader from './searchHeader';
 import { Link } from 'react-router-dom';
 import { AlignLeft, Maximize, Bell, MessageCircle, MoreHorizontal } from 'react-feather';
+import './header.css'
 
 const Header = () => {
   const [sidebar, setSidebar] = useState(false);
@@ -58,17 +59,17 @@ const Header = () => {
 
   return (
     <Fragment>
-      <div className="page-main-header" >
+      <div id='page-main-header' className="page-main-header" >
         <div className="main-header-right row">
           <div className="main-header-left d-lg-none">
-            <div className="logo-wrapper">
+            <div className="logo-wrapper" >
               <Link to="/dashboard/default">
                 <img className="img-fluid" src={logo} alt="" />
               </Link>
             </div>
           </div>
-          <div className="mobile-sidebar d-block cursor-pointer">
-            <div className="media-body text-right switch-sm cursor-pointer">
+          <div className="mobile-sidebar d-block cursor-pointer" >
+            <div className="media-body text-right switch-sm cursor-pointer" >
               <label className="switch cursor-pointer">
                 <a onClick={() => openCloseSidebar()}>
                   <AlignLeft />
@@ -78,10 +79,11 @@ const Header = () => {
           </div>
           <div className="nav-right col p-0">
             <ul className={`nav-menus ${headerbar ? '' : 'open'}`}>
-              <li>
+              {/* <li>
                 <SearchHeader />
-              </li>
-              <li>
+              </li> */}
+              <li></li>
+              <li style={{borderLeft: "1px solid #919497"}}>
                 <a onClick={goFull} className="text-dark" href="#!">
                   <Maximize />
                 </a>
@@ -97,7 +99,7 @@ const Header = () => {
                 <span className="dot"></span>
                 <Notification />
               </li>
-              <li>
+              <li style={{borderLeft: "1px solid #919497"}}>
                 <a onClick={showRightSidebar}>
                   <MessageCircle />
                   <span className="dot"></span>

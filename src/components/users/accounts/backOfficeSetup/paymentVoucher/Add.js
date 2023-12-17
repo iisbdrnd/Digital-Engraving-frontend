@@ -128,7 +128,7 @@ const Add = (props) => {
             userGetMethod(`${GET_paymentVoucherAPI}?searchText=${accountCodeText}`)
             .then(response =>{
                 let accountOptions = [];
-            Object.keys(response.data.payment_accounts).map(function(key, index) {
+            Object.keys(response.data.payment_accounts ).map(function(key, index) {
                 if (response.data.payment_accounts.hasOwnProperty(key)) {
                     var groupOptionObj = {};
                     groupOptionObj.label = response.data.payment_accounts[key].account_code + ' - ' + response.data.payment_accounts[key].account_head;

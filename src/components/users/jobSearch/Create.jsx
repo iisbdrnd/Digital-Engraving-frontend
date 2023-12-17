@@ -30,7 +30,9 @@ const Create = () => {
     const [ups,setUps] = useState(0);
     const [repeat,setRepeat] = useState(0);
     const [cir,setCir] = useState(0);
-    const [filteredData, setFilteredData] = useState([]);
+    const [pageData, setPageData] = useState([{
+
+    }]);
 
 
     const [jobOrderData, setJobOrderData] = useState([]);
@@ -43,6 +45,7 @@ const Create = () => {
     setShow(true)
     setShowId(id)
 };
+
 
 // call First Time Api
 // useEffect(()=>{
@@ -89,21 +92,45 @@ const Create = () => {
 // console.log(jobOrderData)
 // console.log(employeeName)
 
-const handlePageChange = (pageNumber = 1) => {
+// const handlePageChange = (pageNumber = 1) =>{
   
+// }
+
+const handlePageChange = (pageNumber = 1) => {
+  setIsLoading(true);
+  setProcessing(true)
+  // TABLE DATA READY
+  userGetMethod(`${JOB_ORDER_SEARCH}?agreement_date=${pageData.agreementDate ? agreementDate : null}&circumference=${pageData.circumference? pageData.circumference: null}&client_name=${pageData.client_name ?pageData.client_name : null}&cylinder_qty=${pageData.cylinder_qty?pageData.cylinder_qty:null}&cylinder_type=${pageData.cylinder_type?pageData.cylinder_type:null}&design_height=${pageData.design_height?pageData.design_height:null}&design_width=${pageData.design_width?pageData.design_width:null}&employee_name=${pageData.employee_name?pageData.employee_name:null}&job_name=${pageData.job_name?pageData.job_name:null}&job_no=${pageData.job_no?pageData.job_no:null}&job_type=${pageData.job_type?pageData.job_type:null}&printer_name=${pageData.printer_name?pageData.printer_name:null}&repeat=${pageData.repeat?pageData.repeat:null}&ups=${pageData.ups?pageData.ups:null}&page=${pageNumber}&perPage=${perPage}`)
+      .then(response => {
+        setJobOrderData(response.data.jobs.data);
+        setPerPage(response.data.jobs.per_page);
+        setCurrentPage(response.data.jobs.current_page);
+        setTotalData(response.data.jobs.total)
+        setProcessing(false);
+        setIsLoading(false);
+      })
+      .catch(error => console.log(error))
 }
+// console.log(perPage,currentPage,totalData,)
+
+
  const submitHandler = (data, e) => {
     e.preventDefault();
     setIsLoading(true)
     setProcessing(true)
-    userGetMethod(`${JOB_ORDER_SEARCH}?agreement_date=${data.agreement_date? data.agreement_date : null}&circumference=${data.circumference? data.circumference: null}&client_name=${data.client_name ?data.client_name : null}&cylinder_qty=${data.cylinder_qty?data.cylinder_qty:null}&cylinder_type=${data.cylinder_type?data.cylinder_type:null}&design_height=${data.design_height?data.design_height:null}&design_width=${data.design_width?data.design_width:null}&employee_name=${data.employee_name?data.employee_name:null}&job_name=${data.job_name?data.job_name:null}&job_no=${data.job_no?data.job_no:null}&job_type=${data.job_type?data.job_type:null}&printer_name=${data.printer_name?data.printer_name:null}&repeat=${data.repeat?data.repeat:null}&ups=${data.ups?data.ups:null}`)
+    setPageData(data);
+    userGetMethod(`${JOB_ORDER_SEARCH}?agreement_date=${data.agreement_date? data.agreement_date : null}&circumference=${data.circumference? data.circumference: null}&client_name=${data.client_name ?data.client_name : null}&cylinder_qty=${data.cylinder_qty?data.cylinder_qty:null}&cylinder_type=${data.cylinder_type?data.cylinder_type:null}&design_height=${data.design_height?data.design_height:null}&design_width=${data.design_width?data.design_width:null}&employee_name=${data.employee_name?data.employee_name:null}&job_name=${data.job_name?data.job_name:null}&job_no=${data.job_no?data.job_no:null}&job_type=${data.job_type?data.job_type:null}&printer_name=${data.printer_name?data.printer_name:null}&repeat=${data.repeat?data.repeat:null}&ups=${data.ups?data.ups:null}&page=1&perPage=${perPage}`)
     .then(response => {
-      setJobOrderData(response.data.jobs)
-      setProcessing(false)
-      setIsLoading(false)
+      setJobOrderData(response.data.jobs.data);
+      setPerPage(response.data.jobs.per_page);
+      setCurrentPage(response.data.jobs.current_page);
+      setTotalData(response.data.jobs.total)
+      setProcessing(false);
+      setIsLoading(false);
     })
    
   }
+  // console.log(pageData);
   
 
   const handleKeyDown = (event) => {
@@ -562,7 +589,7 @@ const handlePageChange = (pageNumber = 1) => {
                                                             {jobOrderData.map((item, index) =>           
                                                                 (
                                                                     <tr key={index}>
-                                                                        <td scope="row">{index+1}</td>
+                                                                       <td scope="row">{ ((index+1) + (currentPage == 1 ? 0 : (currentPage*perPage - perPage))) }</td>
                                                                         <td>{item.job_no}</td>
                                                                         <td>{item.job_name}</td>
                                                                         <td>{item.agreement_date}</td>

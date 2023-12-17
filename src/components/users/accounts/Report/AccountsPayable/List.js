@@ -30,6 +30,7 @@ const Form = (props) => {
         })
         .catch(error => console.log(error))
     }, []);
+    // console.log(branchData);
     
 
     function onChangeValue(event) {
@@ -74,7 +75,7 @@ const Form = (props) => {
                                     <form onSubmit={handleSubmit(submitHandler)} className="needs-validation theme-form">
 
                                         <div className="form-group row offset-sm-1">
-                                            <label className="col-sm-4 col-form-label" htmlFor="branch_id">Select Branchss</label>
+                                            <label className="col-sm-4 col-form-label" htmlFor="branch_id">Select Branches</label>
                                             <div className="col-sm-4">
                                                 <select 
                                                     name="branch_id" 
@@ -82,10 +83,10 @@ const Form = (props) => {
                                                     className="form-control" 
                                                     defaultValue=""
                                                     ref={register({
-                                                        required: 'Branch Field Required'
+                                                        
                                                     })} 
                                                 >
-                                                <option value="">Select one</option>
+                                                <option value="">All Branches</option>
                                                 {branchData.map(branch => (
                                                     <option value={branch.id}>{branch.branch_name}</option>
                                                 ))}

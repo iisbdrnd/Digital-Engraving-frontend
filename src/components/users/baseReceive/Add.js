@@ -8,6 +8,7 @@ import { BASE_RECEIVE_RSURL, BASE_ORDER_DETAILS } from '../../../api/userUrl';
 import { Typeahead } from 'react-bootstrap-typeahead';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { trStyleNormal } from '../jobAgreement/Create';
 
 const CylinderInfo = (props) => {
     const { register, handleSubmit, errors } = useForm();
@@ -260,27 +261,27 @@ const CylinderInfo = (props) => {
                                                 <div className="table-responsive display-div">
                                                     <table className="table table-bordernone">
                                                         <tbody>
-                                                            <tr>
+                                                            <tr style={trStyleNormal}>
                                                                 <td width="25%" align="right">Job Name</td>
                                                                 <td width="5%">:</td>
                                                                 <td width="70%">{baseReceiveInput.job_name}</td>
                                                             </tr>
-                                                            <tr>
+                                                            <tr style={trStyleNormal}>
                                                                 <td align="right">Client Name</td>
                                                                 <td>:</td>
                                                                 <td>{baseReceiveInput.client_name}</td>
                                                             </tr>
-                                                            <tr>
+                                                            <tr style={trStyleNormal}>
                                                                 <td align="right">Printer Name</td>
                                                                 <td>:</td>
                                                                 <td>{baseReceiveInput.printer_name}</td>
                                                             </tr>
-                                                            <tr>
+                                                            <tr style={trStyleNormal}>
                                                                 <td align="right">No of Cylinder</td>
                                                                 <td>:</td>
                                                                 <td>{baseReceiveInput.total_cylinder_qty}</td>
                                                             </tr>
-                                                            <tr>
+                                                            <tr style={trStyleNormal}>
                                                                 <td align="right">Supplier Name</td>
                                                                 <td>:</td>
                                                                 <td>{baseReceiveInput.supplier_name}</td>

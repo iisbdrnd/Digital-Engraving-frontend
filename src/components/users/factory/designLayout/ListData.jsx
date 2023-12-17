@@ -12,6 +12,9 @@ import Show from "../../jobOrder/Show";
 import Modal from 'react-bootstrap/Modal';
 import View from "./View";
 import './ListData.css';
+
+
+
 const ListData = (props) =>  {
     const [isLoading, setIsLoading] =useState(false);
     const [hasAccess, setHasAccess] = useState({});
@@ -118,7 +121,7 @@ const ListData = (props) =>  {
             console.log(error);
         }
     }
-    console.log(layoutData);
+    // console.log(layoutData);
     
     const sortHandler = (params) => {
         setAscDesc(!ascDesc);
@@ -205,8 +208,8 @@ const ListData = (props) =>  {
                                         <thead>
                                             <tr>
                                                 <th scope="col" width="5%"  > SL.</th>
-                                                <th scope="col" width="10%" > Job No.</th>
-                                                <th scope="col" width="15%" > Job Name</th>
+                                                <th scope="col" width="5%" > Job No.</th>
+                                                <th scope="col" width="20%" > Job Name</th>
                                                 <th scope="col" width="5%"> Type</th>
                                                 <th scope="col" width="15%"> Client</th>   
                                                 <th scope="col" width="10%"> Approve</th>

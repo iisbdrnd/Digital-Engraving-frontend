@@ -126,6 +126,7 @@ const SearchHeader = () => {
                                 }) : ''
                             }
                         </div>
+
                         <div className="Typeahead-menu empty-menu">
                             <div className="tt-dataset tt-dataset-0">
                                 <div className="EmptyMessage">

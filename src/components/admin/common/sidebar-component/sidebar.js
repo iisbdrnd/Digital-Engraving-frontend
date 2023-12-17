@@ -6,6 +6,7 @@ import { useLocation } from "react-router";
 import { MENUITEMS } from '../../../../constant/adminMenu';
 import { Link } from 'react-router-dom';
 import { translate } from 'react-switch-lang';
+import '../header-component/header.css'
 
 function useWindowSize(wrapper) {
     const [size, setSize] = useState([0, 0]);
@@ -63,6 +64,19 @@ const Sidebar = (props) => {
         })
     }, []);
 
+ const paddingSlider = {
+        
+            /* font-size: 14px; */
+            /* letter-spacing: 0.5px; */
+            paddingBottom: "5px",
+            paddingTop: "5px",
+            /* text-transform: capitalize; */
+            /* font-weight: 600; */
+            /* color: rgba(255, 255, 255, 0.85); */
+            /* font-family: Nunito; */
+            fontFamily: "sans-serif !important",
+        
+    }
     // Click menu active
     const setNavActive = (item) => {
         MENUITEMS.filter(menuItem => {
@@ -164,7 +178,7 @@ const Sidebar = (props) => {
     return (
         <Fragment>
             <div className="page-sidebar">
-                <div className="main-header-left  d-lg-block">
+                <div id="page-main-header" className="main-header-left  d-lg-block">
                     <div className="logo-wrapper compactLogo">
                         <Link to={`${process.env.PUBLIC_URL}/welcome`}>
                             <img className="blur-up lazyloaded" src={logo_compact} alt="" />
@@ -173,8 +187,12 @@ const Sidebar = (props) => {
                     </div>
                 </div>
                 <div className="sidebar custom-scrollbar">
+                    {/* <div>
+                        <h2>Hi</h2>
+                    </div> */}
+
                     <ul
-                        className="sidebar-menu"
+                        className="sidebar-menu p-0"
                         id="myDIV"
                         style={configDB.wrapper === 'horizontal_sidebar' ? layout === 'rtl' ?
                             { 'marginRight': margin + 'px' } : { 'marginLeft': margin + 'px' } : { margin: '0px' }}
@@ -183,12 +201,12 @@ const Sidebar = (props) => {
                             onClick={(configDB.wrapper === 'horizontal_sidebar' && layout === 'rtl') ? scrollToLeftRTL : scrollToLeft}><i className="fa fa-angle-left"></i></li>
                         {
                             MENUITEMS.map((menuItem, i) =>
-                                <li className={`${menuItem.active ? 'active' : ''}`} key={i}>
+                                <li className={`${menuItem.active ? 'active' : ''}`} style={{borderBottom: "1px solid #c1c1c1", padding:"0 8px 0 8px"}} key={i}>
                                     {(menuItem.sidebartitle) ?
                                         <div className="sidebar-title">{menuItem.sidebartitle}</div>
                                         : ''}
                                     {(menuItem.type === 'sub') ?
-                                        <a className="sidebar-header" href="javascript:void(0)" onClick={() => toggletNavActive(menuItem)}>
+                                        <a style={paddingSlider} className="sidebar-header" href="javascript:void(0)" onClick={() => toggletNavActive(menuItem)}>
                                             <menuItem.icon />
                                             <span>{props.t(menuItem.title)}</span>
                                             <i className="fa fa-angle-right pull-right"></i>
@@ -198,7 +216,7 @@ const Sidebar = (props) => {
                                         <Link
                                             to={`${process.env.PUBLIC_URL}${menuItem.path}`}
                                             className={`sidebar-header ${menuItem.active ? 'active' : ''}`}
-
+                                            style={paddingSlider}
                                             onClick={() => toggletNavActive(menuItem)}
                                         >
                                             <menuItem.icon /><span>{props.t(menuItem.title)}</span>
