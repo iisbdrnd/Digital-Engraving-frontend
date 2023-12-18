@@ -90,7 +90,6 @@ import UserList from "../components/admin/users/access/List/UserList";
 // import UserAccess from "../components/admin/users/access/List/UserAccess";
 // import UserList from "../components/admin/List/UserList";
 // import UserAccess from "../components/admin/List/UserAccess";
-
 class AdminRoute extends Component {
     constructor(props) {
         super(props);

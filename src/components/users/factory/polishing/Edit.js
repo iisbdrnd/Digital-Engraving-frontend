@@ -461,37 +461,37 @@ const Edit = (props) => {
                                                 <div className='p-0'>
                                                     <table className="table table-bordernone">
                                                         <tbody>
-                                                            <tr>
+                                                            <tr style={{background: 'none',border:'none'}}>
                                                                 <td width="45%" align="right">Job Name</td>
                                                                 <td width="5%">:</td>
                                                                 <td width="50%">{stateData.jobOrderDetailsData.job_name}</td>
                                                             </tr>
-                                                            <tr>
+                                                            <tr style={{background: 'none',border:'none'}}>
                                                                 <td align="right">Job Type</td>
                                                                 <td>:</td>
                                                                 <td>{stateData.jobOrderDetailsData.job_type}</td>
                                                             </tr>
-                                                            <tr>
+                                                            <tr style={{background: 'none',border:'none'}}>
                                                                 <td align="right">Cylinder Id</td>
                                                                 <td>:</td>
                                                                 <td>{stateData.cylinder_id}</td>
                                                             </tr>
-                                                            <tr>
+                                                            <tr style={{background: 'none',border:'none'}}>
                                                                 <td align="right">FL</td>
                                                                 <td>:</td>
                                                                 <td>{stateData.jobOrderDetailsData.fl}</td>
                                                             </tr>
-                                                            <tr>
+                                                            <tr style={{background: 'none',border:'none'}}>
                                                                 <td align="right">Cir</td>
                                                                 <td>:</td>
                                                                 <td>{stateData.jobOrderDetailsData.cir}</td>
                                                             </tr>
-                                                            <tr>
+                                                            <tr style={{background: 'none',border:'none'}}>
                                                                 <td align="right">Dia</td>
                                                                 <td>:</td>
                                                                 <td>{stateData.jobOrderDetailsData.dia}</td>
                                                             </tr>
-                                                            <tr>
+                                                            <tr style={{background: 'none',border:'none'}}>
                                                                 <td align="right">S. Area</td>
                                                                 <td>:</td>
                                                                 <td>{stateData.jobOrderDetailsData.surface_area}</td>
@@ -511,12 +511,12 @@ const Edit = (props) => {
                                                                 <td>:</td>
                                                                 <td></td>
                                                             </tr> */}
-                                                            <tr>
+                                                            <tr style={{background: 'none',border:'none'}}>
                                                                 <td align="right">Remarks</td>
                                                                 <td>:</td>
                                                                 <td>{stateData.jobOrderDetailsData.remarks}</td>
                                                             </tr>
-                                                            <tr>
+                                                            <tr style={{background: 'none',border:'none'}}>
                                                                 <td align="right">Cylinder Type</td>
                                                                 <td>:</td>
                                                                 <td>{stateData.rework == 1 ? <span className="text-danger"> Rework </span> : 'New'}</td>

@@ -268,32 +268,32 @@ const Add = (props) => {
                                                 <div className='p-0'>
                                                     <table className="table table-bordernone">
                                                         <tbody>
-                                                            <tr>
+                                                            <tr style={{background: 'none',border:'none'}}>
                                                                 <td width="45%" align="right">Job Name</td>
                                                                 <td width="5%">:</td>
                                                                 <td width="50%">{stateData.singleJobData.job_name}</td>
                                                             </tr>
-                                                            <tr>
+                                                            <tr style={{background: 'none',border:'none'}}>
                                                                 <td align="right">Job Type</td>
                                                                 <td>:</td>
                                                                 <td>{stateData.singleJobData.job_type}</td>
                                                             </tr>
-                                                            <tr>
+                                                            <tr style={{background: 'none',border:'none'}}>
                                                                 <td align="right">FL</td>
                                                                 <td>:</td>
                                                                 <td>{stateData.singleJobData.fl}</td>
                                                             </tr>
-                                                            <tr>
+                                                            <tr style={{background: 'none',border:'none'}}>
                                                                 <td align="right">Cir</td>
                                                                 <td>:</td>
                                                                 <td>{stateData.singleJobData.cir}</td>
                                                             </tr>
-                                                            <tr>
+                                                            <tr style={{background: 'none',border:'none'}}>
                                                                 <td align="right">Dia</td>
                                                                 <td>:</td>
                                                                 <td>{stateData.singleJobData.dia}</td>
                                                             </tr>
-                                                            <tr>
+                                                            <tr style={{background: 'none',border:'none'}}>
                                                                 <td align="right">S. Area</td>
                                                                 <td>:</td>
                                                                 <td>{stateData.singleJobData.surface_area}</td>
