@@ -9,6 +9,7 @@ import { SubmitButton } from '../../../common/GlobalButton';
 import './Add.css'
 import { placeHolderText } from '../../../common/GlobalComponent';
 import { trStyleNormal } from '../../jobAgreement/Create';
+import { Framer } from 'react-feather';
 
 const Add = (props) => {
     const { handleSubmit, register, errors,reset } = useForm();
@@ -75,6 +76,7 @@ const Add = (props) => {
     );
 
 
+
     var menuId = 0;
     if (props.location.state === undefined) {
         menuId = 0;
@@ -125,6 +127,7 @@ const Add = (props) => {
                 {
                     userGetMethod(`${JOB_ORDER_DETAILS}?jobOrderId=${props.location.state.params.job_order_id}?`)
                     .then(response => {
+                        // console.log(response.data)
                     let { job_no, job_type, fl, cir, dia, marketing_p_name, printer_name, total_cylinder_qty, client_name} = response.data.jobOrderDetails;
                     
                     setJobOrderData({
@@ -180,36 +183,28 @@ const Add = (props) => {
         if(props.location.state != undefined){
             userGetMethod(`${GRINDING_DETAILS}?job_id=${props.location.state.params.job_order_id}?`)
                 .then(response => {
+                    console.log(response.data)
                     setGrindingValues(response?.data?.grindingDetails);
                     updateGrindingInput(response?.data?.grindingDetails);
                     setGrindingMaster(response?.data?.grindingMaster);
+                    // getGrinder();
                     
                     // grinding_cylinderFunction();
                 });
                 // setIsLoading(false);
         }
     }, []);
+    
+            
+    
+
+   
     // console.log(typeHeadOptions)
 
-    const getGrinder = () => {
-        var cylinder_arr =[];
-        var cylinder_details_arr =[];
-        var sr_arr = [];
-        for(let i=0;i<jobOrderData.total_cylinder_qty;i++){
-           var cy_id =  (jobOrderData.job_no).concat("-", (i+1).toString());
-           cylinder_arr.push(cy_id);
-           sr_arr.push(i+1);
-        }
+   
 
-        grindingValues.map(data =>{
-            cylinder_details_arr.push(data.id)
-        })
-
-        setGrindingInput({['cylinder_id']:cylinder_arr});
-        setGrindingInput({['cylinder_details_id']:cylinder_details_arr});
-        setGrindingInput({['serial']:sr_arr})
-        setGrapped(true);
-    }
+    
+        
 
     const dropDownChange = (e, fieldName) => {
         if(fieldName =='job_order_pk_id'){
@@ -227,6 +222,7 @@ const Add = (props) => {
 
             userGetMethod(`${JOB_ORDER_DETAILS}?jobOrderId=${selectedValueId}?`)
                 .then(response => {
+                    // console.log(response.data)
                     let { job_no, job_type, fl, cir, dia, marketing_p_name, printer_name, total_cylinder_qty, client_name} = response.data.jobOrderDetails;
                     setJobOrderData({
                         'job_no'            : job_no,
@@ -243,6 +239,7 @@ const Add = (props) => {
 
             userGetMethod(`${GRINDING_DETAILS}?job_id=${selectedValueId}?`)
                 .then(response => {
+                    console.log("griding details-----",response.data)
                     setGrindingValues(response?.data?.grindingDetails);
                     updateGrindingInput(response?.data?.grindingDetails);
                     setGrindingMaster(response?.data?.grindingMaster);
@@ -250,18 +247,6 @@ const Add = (props) => {
                 });
         }
     }
-
-    
-
-        
-        
-
-
-      
-    
-    
-    
-
     const handleTypeaheadInputChange = (text)=>{
         setJobNoFilter(text);
     }
@@ -271,7 +256,7 @@ const Add = (props) => {
             
             userGetMethod(`${GET_GRINDING_RSURL}?searchText=${jobNoFilter}`)
             .then(response => {
-                console.log(response.data)
+                // console.log(response.data)
                 let jobOrderOptions = [];
                 if (response.data.jobOrders && response.data.jobOrders.length > 0) {
                 response.data.jobOrders.map(job => {
@@ -320,7 +305,7 @@ const Add = (props) => {
             setGrindingInput({[key]:temp_obj})
         })
     }
-    // console.log(grindingInput);
+    console.log(grindingInput);
 
     const  changeMasterGrinder = (e) => {
         setGrindingMaster({...grindingMaster,[e.target.name] : e.target.value});
@@ -332,13 +317,13 @@ const Add = (props) => {
     },[grindingMaster?.shift])
 
     const changeInputHandler = (i, e, fieldName, checkbox = false) => {
-        if(!grapped){ 
-            getGrinder();
-        }
+        // if(!grapped){ 
+        //     getGrinder();
+        // }
         
 
         if(fieldName == 'after_mark_as_complete') {
-            console.log(e.target.checked,e.target.value);
+            // console.log(e.target.checked,e.target.value);
             if(e.target.checked == true) {
                 setMarkedComplete([...markedComplete,i]) ;
             }else if(e.target.checked == false){
@@ -377,20 +362,88 @@ const Add = (props) => {
                 });
             });
     }
-    // console.log(grindingValues)
+    // console.log(grapped)
 
-    const submitHandler = (data, e) => {
+    const getGrinder = async() => {
+       
+        var cylinder_arr =[];
+        var cylinder_details_arr =[];
+        var sr_arr = [];
+        for(let i=0;i<jobOrderData.total_cylinder_qty;i++){
+           var cy_id =  (jobOrderData.job_no).concat("-", (i+1).toString());
+           cylinder_arr.push(cy_id);
+           sr_arr.push(i+1);
+        }
+
+        grindingValues.map((data) =>{
+            cylinder_details_arr.push(data.id)
+        })
+        // console.log(cylinder_arr,cylinder_details_arr);
+        setGrindingInput({
+            ...grindingInput,
+            'cylinder_id': cylinder_arr,
+            'cylinder_details_id': cylinder_details_arr,
+            'serial': sr_arr,
+        }); 
+        // setGrindingInput({'cylinder_id':cylinder_arr});
+        // setGrindingInput({'cylinder_details_id':cylinder_details_arr});
+        // setGrindingInput({'serial':sr_arr})
+        setGrapped(!grapped);
+       // useEffect will be triggered whenever grapped changes
+    };
+
+    
+
+    const submitHandler = async(data, e) => {
         e.preventDefault();
-        getGrinder()
+
+        try {
+        // await getGrinder(data);
+        var cylinder_arr =[];
+        var cylinder_details_arr =[];
+        var sr_arr = [];
+        for(let i=0;i<jobOrderData.total_cylinder_qty;i++){
+           var cy_id =  (jobOrderData.job_no).concat("-", (i+1).toString());
+           cylinder_arr.push(cy_id);
+           sr_arr.push(i+1);
+        }
+
+        grindingValues.map((data) =>{
+            cylinder_details_arr.push(data.id)
+        })
+        // console.log(cylinder_arr,cylinder_details_arr);
+        setGrindingInput({
+            ...grindingInput,
+            'cylinder_id': cylinder_arr,
+            'cylinder_details_id': cylinder_details_arr,
+            'serial': sr_arr,
+        });
+
+        
         if(markedComplete.length == 0){
             toast.warn("Please select mimnum one cylinder")
             return;
-        }    
-        data.job_order_pk_id = dropDownData.job_order_pk_id;
-        data.grindingDetails = grindingInput;
-        data.total_cylinder_qty = jobOrderData.total_cylinder_qty;
+        } 
+            data.job_order_pk_id = dropDownData.job_order_pk_id;
+                data.cylinder_id = cylinder_arr;
+                data.cylinder_details_id = cylinder_details_arr;
+                data.serial = sr_arr;
+                data.grindingDetails = grindingInput;
+            if (!grindingInput.cylinder_id.length) {
+                data.cylinder_id = cylinder_arr;
+                data.cylinder_details_id = cylinder_details_arr;
+                data.serial = sr_arr;
+                data.grindingDetails = grindingInput;
+            }else if (grindingInput.cylinder_id.length) {
+                
+                data.grindingDetails = grindingInput;
+            }
+            data.total_cylinder_qty = jobOrderData.total_cylinder_qty;
+            // console.log(grindingValues,data);
+       
+
         // data.cylinder_details_id = cylinderIdDetails;
-        console.log(data,grindingValues);
+        // console.log(grindingValues,data);
         reset();
         clearForm();
         userPostMethod(GRINDING_RSURL, data)
@@ -405,6 +458,11 @@ const Add = (props) => {
                 }
             })
         .catch(error => toast.error(error))
+            
+        } catch (error) {
+            console.error(error);
+            toast.error("An error occurred while processing the data.");
+        }  
     }
 
     const clearForm = () => {
