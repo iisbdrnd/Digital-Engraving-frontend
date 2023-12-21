@@ -239,7 +239,7 @@ const Add = (props) => {
 
             userGetMethod(`${GRINDING_DETAILS}?job_id=${selectedValueId}?`)
                 .then(response => {
-                    console.log("griding details-----",response.data)
+                    // console.log("griding details-----",response.data)
                     setGrindingValues(response?.data?.grindingDetails);
                     updateGrindingInput(response?.data?.grindingDetails);
                     setGrindingMaster(response?.data?.grindingMaster);
@@ -425,39 +425,82 @@ const Add = (props) => {
             return;
         } 
             data.job_order_pk_id = dropDownData.job_order_pk_id;
-                data.cylinder_id = cylinder_arr;
-                data.cylinder_details_id = cylinder_details_arr;
-                data.serial = sr_arr;
-                data.grindingDetails = grindingInput;
-            if (!grindingInput.cylinder_id.length) {
-                data.cylinder_id = cylinder_arr;
-                data.cylinder_details_id = cylinder_details_arr;
-                data.serial = sr_arr;
-                data.grindingDetails = grindingInput;
-            }else if (grindingInput.cylinder_id.length) {
+                // data.cylinder_id = cylinder_arr;
+                // data.cylinder_details_id = cylinder_details_arr;
+                // data.serial = sr_arr;
+                // data.grindingDetails = grindingInput;
+            
+                // data.cylinder_id = cylinder_arr;
+                // data.cylinder_details_id = cylinder_details_arr;
+                // data.serial = sr_arr;
+                // data.grindingDetails = grindingInput;
+
+                data.grindingDetails = {
+                    'cylinder_id': cylinder_arr,
+                    'cylinder_details_id': cylinder_details_arr,
+                    'serial': sr_arr,
+                    'after_base_down' : grindingInput.after_base_down,
+                    'after_cone_prob' : grindingInput.after_cone_prob,
+                    'after_dia' : grindingInput.after_dia,
+                    'after_key_lock' : grindingInput.after_key_lock,
+                    'after_mark_as_complete' : grindingInput.after_mark_as_complete,
+                    'after_pinhole' : grindingInput.after_pinhole,
+                    'before_base_down' : grindingInput.before_base_down,
+                    'before_cone_prob' : grindingInput.before_cone_prob,
+                    'before_dia' : grindingInput.before_dia,
+                    'before_fl' : grindingInput.before_fl,
+                    'before_key_lock' : grindingInput.before_key_lock,
+                    'before_pinhole' : grindingInput.before_pinhole,
+                    'before_target' : grindingInput.before_target,
+                    'plating_order' : grindingInput.plating_order,
+                    'remarks_for_cyl' : grindingInput.remarks_for_cyl,
+                }
+
+           
+
+                // data.grindingDetails = {
+                //     'cylinder_id': cylinder_arr,
+                //     'cylinder_details_id': cylinder_details_arr,
+                //     'serial': sr_arr,
+                //     'after_base_down' : grindingInput.after_base_down,
+                //     'after_cone_prob' : grindingInput.after_cone_prob,
+                //     'after_dia' : grindingInput.after_dia,
+                //     'after_key_lock' : grindingInput.after_key_lock,
+                //     'after_mark_as_complete' : grindingInput.after_mark_as_complete,
+                //     'after_pinhole' : grindingInput.after_pinhole,
+                //     'before_base_down' : grindingInput.before_base_down,
+                //     'before_cone_prob' : grindingInput.before_cone_prob,
+                //     'before_dia' : grindingInput.before_dia,
+                //     'before_fl' : grindingInput.before_fl,
+                //     'before_key_lock' : grindingInput.before_key_lock,
+                //     'before_pinhole' : grindingInput.before_pinhole,
+                //     'before_target' : grindingInput.before_target,
+                //     'plating_order' : grindingInput.plating_order,
+                //     'remarks_for_cyl' : grindingInput.remarks_for_cyl,
+                // }
                 
-                data.grindingDetails = grindingInput;
-            }
+                // data.grindingDetails = grindingInput;
+            
             data.total_cylinder_qty = jobOrderData.total_cylinder_qty;
-            // console.log(grindingValues,data);
+            console.log(grindingValues,data);
        
 
         // data.cylinder_details_id = cylinderIdDetails;
         // console.log(grindingValues,data);
-        reset();
-        clearForm();
-        userPostMethod(GRINDING_RSURL, data)
-            .then(response => {
-                if (response.data.status == 1) {
-                    toast.success(response.data.message);
-                    e.target.reset();
-                    clearForm();
-                    // setSelected(false);
-                } else {
-                    toast.error(response.data.message)
-                }
-            })
-        .catch(error => toast.error(error))
+        // reset();
+        // clearForm();
+        // userPostMethod(GRINDING_RSURL, data)
+        //     .then(response => {
+        //         if (response.data.status == 1) {
+        //             toast.success(response.data.message);
+        //             e.target.reset();
+        //             clearForm();
+        //             // setSelected(false);
+        //         } else {
+        //             toast.error(response.data.message)
+        //         }
+        //     })
+        // .catch(error => toast.error(error))
             
         } catch (error) {
             console.error(error);
