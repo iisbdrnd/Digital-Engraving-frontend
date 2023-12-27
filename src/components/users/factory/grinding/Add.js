@@ -183,7 +183,7 @@ const Add = (props) => {
         if(props.location.state != undefined){
             userGetMethod(`${GRINDING_DETAILS}?job_id=${props.location.state.params.job_order_id}?`)
                 .then(response => {
-                    console.log(response.data)
+                    // console.log(response.data)
                     setGrindingValues(response?.data?.grindingDetails);
                     updateGrindingInput(response?.data?.grindingDetails);
                     setGrindingMaster(response?.data?.grindingMaster);
@@ -305,7 +305,7 @@ const Add = (props) => {
             setGrindingInput({[key]:temp_obj})
         })
     }
-    console.log(grindingInput);
+    // console.log(grindingInput);
 
     const  changeMasterGrinder = (e) => {
         setGrindingMaster({...grindingMaster,[e.target.name] : e.target.value});
@@ -482,25 +482,28 @@ const Add = (props) => {
                 // data.grindingDetails = grindingInput;
             
             data.total_cylinder_qty = jobOrderData.total_cylinder_qty;
-            console.log(grindingValues,data);
+            console.log(data);
        
 
         // data.cylinder_details_id = cylinderIdDetails;
         // console.log(grindingValues,data);
-        // reset();
+        
         // clearForm();
-        // userPostMethod(GRINDING_RSURL, data)
-        //     .then(response => {
-        //         if (response.data.status == 1) {
-        //             toast.success(response.data.message);
-        //             e.target.reset();
-        //             clearForm();
-        //             // setSelected(false);
-        //         } else {
-        //             toast.error(response.data.message)
-        //         }
-        //     })
-        // .catch(error => toast.error(error))
+        userPostMethod(GRINDING_RSURL, data)
+            .then(response => {
+                if (response.data.status == 1) {
+                    toast.success(response.data.message);
+                    e.target.reset();
+                    reset();
+                    clearForm();
+                    // setSelected(false);
+                } else {
+                    toast.error(response.data.message)
+                }
+            })
+        .catch(error =>{ 
+            console.log(error)
+            toast.error(error)})
             
         } catch (error) {
             console.error(error);

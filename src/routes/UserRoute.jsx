@@ -13,6 +13,10 @@ import UserAuthRoute from './../auth/user/UserAuthRoute';
 import AuthRoute from './../auth/authRoute';
 import UserLogin from './../auth/user/UserLogin';
 // import UserLogin from './../auth/user/demoLogin';
+// Project List Area
+import projectsList from './../components/users/users/Projects/ProjectsList';
+import companyProfile_edit from './../components/users/users/Projects/edit'
+import companyProfile_add from './../components/users/users/Projects/Add'
 
 import UserProfile from './../components/users/userProfile';
 import UserCards from './../components/users/user-cards';
@@ -822,6 +826,13 @@ class UserRoute extends Component {
                   path={`${process.env.PUBLIC_URL}/layouts/edit/:layoutsId`}
                   component={LayoutsEdit}
                 />
+
+                {/* Company Profile */}
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/companyProfile/index`}
+                  component={projectsList}
+                />
+
                 {/* users list  */}
                 <UserAuthRoute
                   path={`${process.env.PUBLIC_URL}/users/index`}
@@ -1577,6 +1588,12 @@ class UserRoute extends Component {
                   path={`${process.env.PUBLIC_URL}/polishing/add`}
                   component={PolishingAdd}
                 />
+
+                {/* companyProfile-add */}
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/companyProfile/add`}
+                  component={companyProfile_add}
+                />
                 <UserAuthRoute
                   path={`${process.env.PUBLIC_URL}/polishingShift/control`}
                   component={PolishingShift}
@@ -1584,6 +1601,12 @@ class UserRoute extends Component {
                 <UserAuthRoute
                   path={`${process.env.PUBLIC_URL}/polishing/edit/:dig_polishing_cylinder_id`}
                   component={PolishingEdit}
+                />
+
+                {/* Company Profile */}
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/companyProfile/edit/:companyProfile_id`}
+                  component={companyProfile_edit}
                 />
                 {/* ENGRAVING */}
                 <UserAuthRoute

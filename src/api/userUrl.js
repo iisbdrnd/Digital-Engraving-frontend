@@ -293,6 +293,8 @@ export const POLISHING_REMAINING_JOBS_REPORT = 'api/user/polishingRemainingJobsR
 export const PLATING_REMAINING_JOBS_REPORT = 'api/user/platingRemainingJobsReport';
 //END FACTORY REPORT
 
+export const PROJECT_URL = 'api/user/companyProfile';
+
 //POLISHING
 export const POLISHING_RS_URL = 'api/user/polishing';
 export const POLISHING_GET_POLISHING_DATA_BY_JOB_ID= 'api/user/getPolishingDataByJobId';

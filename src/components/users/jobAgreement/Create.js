@@ -20,6 +20,7 @@ const Add = (props) => {
     const { handleSubmit, register, errors,reset } = useForm();
     const [isLoading, setIsLoading] = useState(true);
     const [dropdownData, setDropdownData] = useState({});
+    const [vatStatus,setVatStatus] = useState(0);
     const [typeheadOptions, setTypeheadOptions] = useState({});
     const [jobNoValue, setJobNoValue] = useState([]);
 
@@ -86,11 +87,14 @@ const Add = (props) => {
                         ['job_orders']: jobOrderOptions,
                     })
                 );
+                setVatStatus(response?.data?.jobOrder?.vat_status)
+
+
 
                 setIsLoading(false);
             });
     }
-
+// console.log(vatStatus)
     // const warningToast = Swal.fire({
     //     icon: 'error',
     //     title: 'Oops...',
@@ -160,6 +164,7 @@ const Add = (props) => {
 
     const submitHandler = (data, e) => {
         data.job_order_id = dropdownData.job_order_id;
+        data.vat_status = vatStatus;
         userPostMethod(JOB_AGREEMENT_RSURL, data)
             .then(response => {
                 if (response.data.status == 1) {
@@ -397,9 +402,10 @@ const Add = (props) => {
                                                                         id="vat" 
                                                                         name="vat" 
                                                                         type="text" 
+                                                                        value={vatStatus == 0 ? 0 : 5}
+                                                                        disabled
                                                                         // placeholder="Vat" 
                                                                         aria-label="Vat"
-                                                                        disabled={'disabled'}
                                                                         ref={register({})}
                                                                     />
                                                                     <div className="input-group-append">

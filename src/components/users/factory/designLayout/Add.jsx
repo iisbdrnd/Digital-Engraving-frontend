@@ -120,8 +120,6 @@ const Add = (props) => {
     // console.log(typeheadOptions)
 
     useEffect(()=>{
-        
-
         if (job_id == null && jobNoFilter.length > 3) {
             
             userGetMethod(`${GET_DESIGN_LAYOUT_JOBORDER}?searchText=${jobNoFilter}`)
@@ -2086,7 +2084,7 @@ const Add = (props) => {
                                                 <div className="col-md-1 mb-3">
                                                     <label>Design W.</label>
                                                     <div className="d-flex">
-                                                        <div className="col-md-9 pl-0">
+                                                        <div className="col-md-10 pl-0 pr-0">
                                                             <input
                                                                 className="form-control"
                                                                 id="design_w"
@@ -2100,7 +2098,7 @@ const Add = (props) => {
                                                                 value={layoutMaster?.design_w ? layoutMaster?.design_w :formData.design_w}
                                                             />
                                                         </div>
-                                                        <div className="col-md-3 pl-0">
+                                                        <div className="col-md-2 pl-1">
                                                             <span>*</span>
                                                         </div>
                                                     </div>
@@ -2108,7 +2106,7 @@ const Add = (props) => {
                                                 <div className="col-md-1 mb-3">
                                                     <label>UPS</label>
                                                     <div className="d-flex">
-                                                        <div className="col-md-9 pl-0">
+                                                        <div className="col-md-10 pl-0 pr-0">
                                                             <input
                                                                 className="form-control"
                                                                 id="axial_ups"
@@ -2122,7 +2120,7 @@ const Add = (props) => {
                                                                 value={layoutMaster?.axial_ups ? layout.axial_ups : formData.axial_ups}
                                                             />
                                                         </div>
-                                                        <div className="col-md-3 pl-0">
+                                                        <div className="col-md-2 pl-1">
                                                             <span>+</span>
                                                         </div>
                                                     </div>
