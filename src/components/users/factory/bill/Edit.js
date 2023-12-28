@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useReducer } from 'react';
+import React, { Fragment, useEffect, useReducer, useState } from 'react';
 import Breadcrumb from '../../common/breadcrumb';
 import { billAPI } from '../../../../api/userUrl';
 import { userGetMethod, userPutMethod } from '../../../../api/userAction';
@@ -9,6 +9,8 @@ import { SubmitButton } from '../../../common/GlobalButton';
 
 const Edit = (props) => {
     const { handleSubmit, register, errors } = useForm();
+    const [vatStatus,setVatStatus] = useState(0)
+    const [vat,setVat] = useState(0)
 
     var runningDate = new Date().toISOString().slice(0, 10);
 
@@ -105,16 +107,9 @@ const Edit = (props) => {
             }
         }
 
-        if(e.target.name == "vat_value"){
-            var vat_type = userBillInput.vat_type;
-            var vat_value = parseInt(e.target.value);
-            if(vat_type == 1){
-                var calculate_vat = (grand_total * vat_value) / 100;
-                setBillInput({
-                    ['vat_amount'] : calculate_vat,
-                });
-            }
-        }
+        
+
+        // if vat type enable so bellow code will active. 
 
         if(e.target.name == "vat_type"){
             var vat_type = e.target.value;
@@ -132,6 +127,7 @@ const Edit = (props) => {
                 });
             }
         }
+        //Condtion end here that is vat_type 
 
 
 
@@ -145,6 +141,8 @@ const Edit = (props) => {
             .then(response => {
 
                 console.log('response', response);
+                setVatStatus(response.data?.jobOrders_details?.vat_status);
+                setVat(response.data?.jobOrders_details?.vat);
                 var rate_per_cm_total_amount;
                 if(response.data.jobOrders_details.cyl_rate_status == 2) {
                     rate_per_cm_total_amount = response.data.jobOrders_details.total_surface_area * response.data.jobOrders_details.per_sqr_amount;
@@ -211,7 +209,22 @@ const Edit = (props) => {
             })
             .catch(error => console.log(error))   
     },[]);
-    console.log(userBillInput);
+
+
+    useEffect(()=>{
+        var grand_total = userBillInput.grand_total;
+        if(vat){
+        if(vatStatus == 1){
+            var calculate_vat = (grand_total * vat) / 100;
+            setBillInput({
+                ['vat_amount'] : calculate_vat,
+            });
+        }
+    }
+    },[userBillInput.grand_total])
+
+    
+    // console.log(vatStatus);
 
     const submitHandler = (data,e) => {
 
@@ -626,8 +639,8 @@ const Edit = (props) => {
                                                             name="vat_type"
                                                             ref={register({required: true })}
                                                         >
-                                                            <option value="0">No</option>
-                                                            <option value="1">Yes</option>
+                                                            <option value={vatStatus}>{vatStatus == 0 ? "No":"Yes"}</option>
+                                                            {/* <option value="1">Yes</option> */}
                                                         </select>
                                                     </div>
                                                     <div className="col-md-1">
@@ -637,7 +650,8 @@ const Edit = (props) => {
                                                                 name="vat_value" 
                                                                 onChange={inputChangeHandler} 
                                                                 ref={register({required: true })}
-                                                                value={userBillInput.vat_value ? userBillInput.vat_value : 0} 
+                                                                value={vat}
+                                                                disabled 
                                                         />
                                                     </div>
 

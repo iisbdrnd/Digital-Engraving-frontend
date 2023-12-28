@@ -10,13 +10,19 @@ import { Link } from 'react-router-dom'
 import 'react-light-accordion/demo/css/index.css';
 import ProgressBar from 'react-bootstrap/ProgressBar'
 import { format } from "date-fns";
+import Pagination from "react-js-pagination";
 
 export default function ListData(props) {
     const [isOpen, setIsOpen] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [modal, setModal] = useState(false); 
+    const [chromeStatus,setChromeStatus]= useState(0)
     const [cycleModal, setCycleModal] = useState(false); 
     const [editTankSchedule, setEditTankSchedule] = useState(false); 
+    const [currentPage,setCurrentPage] = useState();
+    const [perPage,setPerPage] = useState(10);
+    const [totalData,setTotalData] = useState(0);
+    const [tankId,setTankId] = useState(0);
     const [progressVal, setProgressVal] = useReducer(
         (state, newState) => ({...state, ...newState}),
         {}
@@ -106,6 +112,32 @@ export default function ListData(props) {
         menuId = props.location.state.params.menuId;
     }
 
+    
+        const callApi =() =>{
+            userGetMethod(`${CHROME_RS_URL}/${tankId}?chrome_complete_status=${chromeStatus}&perPage=${perPage}`) //api of chrome/show/{id}
+            .then(response => {
+                setStateData({scheduleLoading: false});
+                setStateData({chromeTankScheduleDetails: []});
+                setStateData({currentTankSchedule: response.data.chromeTankScheduleMasters?.data});
+                setPerPage(response.data.chromeTankScheduleMasters.per_page);
+                setCurrentPage(response.data.chromeTankScheduleMasters.current_page);
+                setTotalData(response.data.chromeTankScheduleMasters.total);
+                if (response.data.chromeTankScheduleMasters.data && response.data.chromeTankScheduleMasters.data.length > 0) {
+                    response.data.chromeTankScheduleMasters.data.map(scheduleMaster => {
+                        
+                        if (scheduleMaster.est_end_time != null  && scheduleMaster.running_status == 0) {
+                            startTimer(scheduleMaster.start_time, scheduleMaster.est_end_time, scheduleMaster.id);
+                        }
+                    })
+                }
+            })
+        }
+    useEffect(()=>{
+        if (tankId != 0) {
+            callApi();
+           } 
+    },[chromeStatus,tankId]);
+
     useEffect(()=>{
         userGetMethod(`${CHROME_RS_URL}`)
             .then(response => {
@@ -116,17 +148,21 @@ export default function ListData(props) {
 
     const onChangeTank = (id, tank_id) => {
         setProgressVal({});
+        setTankId(id);
         clearInterval(interval.current);
         setStateData({currentTank: {id: id, tank_id: tank_id}, scheduleLoading: true});
         setIsOpen(null);
         setClockData('');
-        userGetMethod(`${CHROME_RS_URL}/${id}`) //api of chrome/show/{id}
+        userGetMethod(`${CHROME_RS_URL}/${id}?chrome_complete_status=${chromeStatus}&perPage=${perPage}`) //api of chrome/show/{id}
             .then(response => {
                 setStateData({scheduleLoading: false});
                 setStateData({chromeTankScheduleDetails: []});
-                setStateData({currentTankSchedule: response.data.currentTankSchedules});
-                if (response.data.currentTankSchedules && response.data.currentTankSchedules.length > 0) {
-                    response.data.currentTankSchedules.map(scheduleMaster => {
+                setStateData({currentTankSchedule: response.data.chromeTankScheduleMasters?.data});
+                setPerPage(response.data.chromeTankScheduleMasters.per_page);
+                setCurrentPage(response.data.chromeTankScheduleMasters.current_page);
+                setTotalData(response.data.chromeTankScheduleMasters.total);
+                if (response.data.chromeTankScheduleMasters.data && response.data.chromeTankScheduleMasters.data.length > 0) {
+                    response.data.chromeTankScheduleMasters.data.map(scheduleMaster => {
                         
                         if (scheduleMaster.est_end_time != null  && scheduleMaster.running_status == 0) {
                             startTimer(scheduleMaster.start_time, scheduleMaster.est_end_time, scheduleMaster.id);
@@ -135,6 +171,33 @@ export default function ListData(props) {
                 }
             })
     };
+
+    const pageChange = (pageNumber = 1) => {
+        if (tankId !== 0) {
+
+        setIsLoading(true);
+        userGetMethod(`${CHROME_RS_URL}/${tankId}?chrome_complete_status=${chromeStatus}&page=${pageNumber}&perPage=${perPage}`)
+        .then(response => {
+            setStateData({scheduleLoading: false});
+                setStateData({chromeTankScheduleDetails: []});
+                setStateData({currentTankSchedule: response.data.chromeTankScheduleMasters?.data});
+                setPerPage(response.data.chromeTankScheduleMasters.per_page);
+                setCurrentPage(response.data.chromeTankScheduleMasters.current_page);
+                setTotalData(response.data.chromeTankScheduleMasters.total);
+                if (response.data.chromeTankScheduleMasters.data && response.data.chromeTankScheduleMasters.data.length > 0) {
+                    response.data.chromeTankScheduleMasters.data.map(scheduleMaster => {
+                        
+                        if (scheduleMaster.est_end_time != null  && scheduleMaster.running_status == 0) {
+                            startTimer(scheduleMaster.start_time, scheduleMaster.est_end_time, scheduleMaster.id);
+                        }
+                    })
+                }
+        })
+        .catch(error => console.log(error))
+        }
+    }
+
+
     const toggle = (i, scheduleId) => {
         if (isOpen == i) {
             return setIsOpen(null)
@@ -147,6 +210,7 @@ export default function ListData(props) {
             });
         setIsOpen(i);
     }
+    // console.log(chromeStatus)
     
     const toggleModal = (modalName='', scheduleId, scheduleCycleId='') => { //scheduleId means chrome_tank_schedule_masters.id
         setStateData({singleScheduleInfo: {id: scheduleId, scheduleCycleId: scheduleCycleId}});
@@ -158,7 +222,7 @@ export default function ListData(props) {
             setCycleModal(!cycleModal);
         }
     }
-    console.log('stateData', stateData);
+    // console.log('stateData', stateData);
     
     return (
         <Fragment>
@@ -220,7 +284,29 @@ export default function ListData(props) {
                                         </div>
 
                                         <div className="card-body">
-                                            {stateData.currentTank.id != 0 ? <button className="btn btn-warning bt-xs" onClick={()=>toggleModal('addTankSchedule')}> Add New Cycle </button> : ''}
+
+                                        <div className="row" style={{alignItems:'center',justifyContent: 'flex-end',marginRight:'15px'}}>
+
+                                        {stateData.currentTank.id != 0 ? <div>
+                                                <div className="custom-table-pagination m-r-10">
+                                                <label className="mt-3">
+                                                <span>
+                                                    <select className="form-control pagi-select" name="grinding_status" onChange={(e)=>setChromeStatus(e.target.value)} value={chromeStatus} >
+                                                        <option value="2">All Chrome</option>
+                                                        <option value="0">Pending Chrome</option>
+                                                        <option value="1">Done Chrome</option>
+                                                    </select>
+                                                </span>
+                                                </label>
+                                                </div>
+
+                                            </div>:''}
+
+                                            {stateData.currentTank.id != 0 ? 
+                                            <button className="btn btn-warning bt-xs" onClick={()=>toggleModal('addTankSchedule')}> Add New Cycle </button> : ''}
+
+                                        </div>
+                                        
                                             
                                             {stateData.currentTankSchedule.length > 0 && stateData.currentTankSchedule.map((schedule, scheduleIndex) => 
                                             (
@@ -284,7 +370,7 @@ export default function ListData(props) {
                                                                         <tr key={detailIndex}>
                                                                             <td>{details.slot}</td>
                                                                             <td>{details.cylinder_id}</td>
-                                                                            <td>{details.job_order_id}</td>
+                                                                            <td>{details.job_name}</td>
                                                                             <td>{details.fl}</td>
                                                                             <td>{details.cir}</td>
                                                                             <td>{details.dia}</td>
@@ -303,6 +389,16 @@ export default function ListData(props) {
                                                 </div>
                                             ))}
                                         </div>
+                                        <Pagination 
+                                    activePage={currentPage}
+                                    itemsCountPerPage={perPage}
+                                    totalItemsCount={totalData}
+                                    onChange={pageChange}
+                                    itemClass="page-item"
+                                    linkClass="page-link"
+                                    firstPageText="First"
+                                    lastPageText="Last"
+                                />
                                     </div>
                                 )
                         ) : ''}
