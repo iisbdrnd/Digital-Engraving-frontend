@@ -638,7 +638,8 @@ const Add = (props) => {
         },[formData.ref_layout_id])
     
     // console.log(formData.layout_id);
-    // console.log(layoutArr);
+    const currentDate = moment().format("YYYY-MM-DD");
+    const currentTime = moment().format("HH:mm");
     const isUpdate = () =>{
 
     }
@@ -1437,7 +1438,9 @@ const Add = (props) => {
                                                                 ref={register({
                                                                     required: 'On text Field Required'
                                                                 })}
-                                                                value={layoutMaster?.layout_date ? layoutMaster.layout_date : (formData.layout_date ? formData.layout_date : '')}
+                                                                value={layoutMaster?.layout_date ?
+                                                                     layoutMaster.layout_date : 
+                                                                     (formData.layout_date ? formData.layout_date : currentDate)}
                                                                 onChange={inputChangeHandler}
                                                                 defaultValue={moment().format("ll")}
                                                                 
@@ -1454,7 +1457,7 @@ const Add = (props) => {
                                                                     required: 'On text Field Required'
                                                                 })}
                                                                 onChange={inputChangeHandler}
-                                                                value={layoutMaster?.layout_time ? layoutMaster.layout_time : (formData?.layout_time ? formData.layout_time : '')}
+                                                                value={layoutMaster?.layout_time ? layoutMaster.layout_time : (formData?.layout_time ? formData.layout_time : currentTime)}
                                                             />
                                                         </div>
                                                         <label className="col-md-4 text-left col-form-label">Layout</label>

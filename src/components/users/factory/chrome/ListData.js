@@ -192,6 +192,7 @@ export default function ListData(props) {
                         }
                     })
                 }
+                setIsLoading(false);
         })
         .catch(error => console.log(error))
         }

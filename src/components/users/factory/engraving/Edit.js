@@ -588,7 +588,7 @@ const Edit = (props) => {
                                                                         value={
                                                                             stateData.engr_date
                                                                                 ? stateData.engr_date
-                                                                                : ""
+                                                                                : moment().format('YYYY-MM-DD')
                                                                         }
                                                                         onChange={onChangeHandler}
                                                                     />
@@ -705,7 +705,7 @@ const Edit = (props) => {
                                                                         name="on_time"
                                                                         ref={register({})}
                                                                         value={
-                                                                            stateData.on_time ? stateData.on_time : ""
+                                                                            stateData.on_time ? stateData.on_time : moment().format('HH:mm')
                                                                         }
                                                                         onChange={onChangeHandler}
                                                                     />
@@ -753,7 +753,7 @@ const Edit = (props) => {
                                                                         value={
                                                                             stateData.a_off_time
                                                                                 ? stateData.a_off_time
-                                                                                : ""
+                                                                                : moment().format('HH:mm')
                                                                         }
                                                                         onChange={onChangeHandler}
                                                                     />

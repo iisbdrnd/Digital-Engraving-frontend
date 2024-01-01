@@ -10,6 +10,7 @@ import { DEL_STOCK_RSURL, GET_CLIENT_STOCK_JOB_RSURL, JOB_ORDER_DETAILS } from '
 import SweetAlert from 'sweetalert2';
 import { placeHolderText } from '../../common/GlobalComponent';
 import { trStyleNormal } from '../jobAgreement/Create';
+import moment from 'moment';
 
 const Add = (props) => {
     const { handleSubmit, register, errors, reset } = useForm();
@@ -446,7 +447,7 @@ const Add = (props) => {
                                                                 type="date" 
                                                                 placeholder="Receive Date" 
                                                                 onChange={delStocksInputHander}
-                                                                value={jobOrderData.receive_date}
+                                                                value={jobOrderData.receive_date ? jobOrderData.receive_date : moment().format('YYYY-MM-DD')}
                                                             />
                                                         </div>
                                                         <div className="col-md-2 mb-3">

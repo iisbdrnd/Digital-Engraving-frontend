@@ -10,6 +10,7 @@ import './Add.css'
 import { placeHolderText } from '../../../common/GlobalComponent';
 import { trStyleNormal } from '../../jobAgreement/Create';
 import { Framer } from 'react-feather';
+import moment from 'moment';
 
 const Add = (props) => {
     const { handleSubmit, register, errors,reset } = useForm();
@@ -785,9 +786,7 @@ const Add = (props) => {
                                                         <div className="row">
                                                             <label className="col-sm-5 col-form-label" htmlFor="start_time">Start Time</label>
                                                             <div className="col-sm-7">
-                                                                <input className="form-control"  onChange={(e) => changeMasterGrinder(e)} type="time" name="start_time" required id="start_time"  placeholder="Start Time"  value={grindingMaster?.start_time ? grindingMaster?.start_time : ''} ref={register({ required: true })} />
-                                                                {/* <DatePicker className="form-control digits" selected={startDate} onChange={dropDownChange} showTimeSelect showTimeSelectOnly timeIntervals={15} timeCaption="Time" dateFormat="h:mm aa" /> */}
-
+                                                                <input className="form-control"  onChange={(e) => changeMasterGrinder(e)} type="time" name="start_time" required id="start_time"  placeholder="Start Time"  value={grindingMaster?.start_time ? grindingMaster?.start_time : moment().format("HH:mm")} ref={register({ required: true })} />
                                                                 <span>{errors.start_time && 'Start Time is required'}</span>
                                                                 <div className="valid-feedback">Looks good!</div>
                                                             </div>

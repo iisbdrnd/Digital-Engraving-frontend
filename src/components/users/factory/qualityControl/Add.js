@@ -6,13 +6,15 @@ import 'react-toastify/dist/ReactToastify.css';
 import useForm from "react-hook-form";
 import { SubmitButton } from '../../../common/GlobalButton';
 import { Typeahead } from 'react-bootstrap-typeahead';
+import { placeHolderText } from '../../../common/GlobalComponent';
 
 const Add = (props) => {
     const { handleSubmit, register, errors } = useForm();
     const [isLoading, setIsLoading] = useState(true);
-    const [typeHeadOptions, setTypeHeadOptions] = useState({});
+    const [typeHeadOptions, setTypeHeadOptions] = useState({job_orders: []});
     const [dropDownData, setDropdownData] = useState();
-
+    const [jobNoFilter,setJobNoFilter] = useState('')
+ 
     let [stateData, setStateData] = useReducer((state, newState) => ({...state, ...newState}),
         {
             // send_date         : new Date().toLocaleDateString(),
@@ -48,8 +50,23 @@ const Add = (props) => {
         }
     );
 
-    useEffect(()=>{
-        userGetMethod(`${QUALITY_CONTROL_RS_URL}/create`)
+    
+
+useEffect(() => {
+    let job_orders = [];
+    setTypeHeadOptions({ ...typeHeadOptions,  
+            ['job_orders'] : job_orders
+           });
+    setIsLoading(false)
+},[])
+
+const handleTypeaheadInputChange =  (text)=>{
+    setJobNoFilter(text);
+}
+
+useEffect(() => {
+    if (jobNoFilter.length > 3) {
+        userGetMethod(`${QUALITY_CONTROL_RS_URL}/create?searchText=${jobNoFilter}`)
             .then(response => {
                 // FOR JOB ORDER
                 let jobOrderOptions = [];
@@ -75,7 +92,38 @@ const Add = (props) => {
 
                 setIsLoading(false);
             });
-    }, []);
+    }
+},[jobNoFilter])
+
+
+    // useEffect(()=>{
+    //     userGetMethod(`${QUALITY_CONTROL_RS_URL}/create`)
+    //         .then(response => {
+    //             // FOR JOB ORDER
+    //             let jobOrderOptions = [];
+    //             if (response.data.jobOrders && response.data.jobOrders.length > 0) {
+    //                 response.data.jobOrders.map(order => 
+    //                 {
+    //                     if (order.total_cylinder_qty == order.available_cyl_qty) {    
+    //                         let jobOrderObj = {};
+    //                         jobOrderObj.id = order.id;
+    //                         jobOrderObj.name = `[${order.job_no}] ` + order.job_name;
+    //                         jobOrderOptions.push(jobOrderObj);
+    //                     }
+    //                 })
+    //             }
+                
+    //             setTypeHeadOptions(
+    //                 (prevstate) => ({
+    //                     ...prevstate,
+    //                     ['job_orders']: jobOrderOptions,
+    //                 })
+    //             );
+
+
+    //             setIsLoading(false);
+    //         });
+    // }, []);
 
     const dropDownChange = (e, fieldName) => {
         if(e.length > 0){
@@ -199,10 +247,12 @@ const Add = (props) => {
                                                     <Typeahead
                                                         id="job_order_pk_id"
                                                         name="job_order_pk_id"
-                                                        labelKey={option => `${option.name}`}
+                                                        labelKey={option => `${option?.name}`}
                                                         options={typeHeadOptions['job_orders']}
-                                                        placeholder="Select Job No..."
+                                                        placeholder={placeHolderText}
                                                         onChange={(e) => dropDownChange(e, 'job_order_pk_id')}
+                                                        inputProps={{ required: true }}
+                                                        onInputChange={(e,text)=>handleTypeaheadInputChange(e,text)}
                                                         // selected={designToFactoryInput.job_order_pk_id}
                                                         // disabled={job_order_pk_id != null ? 'disabled' : ''}
                                                         ref={register({

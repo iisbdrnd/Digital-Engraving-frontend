@@ -495,7 +495,7 @@ const Add = (props) => {
 
                                                                 <label className="col-md-5 col-form-label label-form">Engr. Date</label>
                                                                 <div className="col-md-7">
-                                                                    <input type="date" className="form-control" name="engr_date"  ref={register({})} />
+                                                                    <input type="date" className="form-control" name="engr_date"   ref={register({})} />
                                                                 </div>
 
                                                                 <label className="col-md-5 col-form-label label-form">Est, Duration</label>

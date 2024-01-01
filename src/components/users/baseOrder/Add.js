@@ -9,6 +9,7 @@ import { userGetMethod, userPostMethod } from '../../../api/userAction';
 import { BASE_ORDER_RSURL, JOB_ORDER_DETAILS,GET_BASE_JOB_ORDER_RSURL, BASE_ORDER_DEL_RSURL, BASE_ORDER_CLIENT_RSURL } from '../../../api/userUrl';
 import SweetAlert from 'sweetalert2';
 import { placeHolderText } from '../../common/GlobalComponent';
+import moment from 'moment';
 
 const Add = (props) => {
     const { handleSubmit, register, errors, reset } = useForm();
@@ -745,7 +746,7 @@ const handleClientDrop =() =>{
                                                                 type="date" 
                                                                 placeholder="Delivery Date" 
                                                                 onChange={orderDetailsInputHander}
-                                                                value={jobOrderData.delivery_date}
+                                                                value={jobOrderData.delivery_date ? jobOrderData.delivery_date : moment().format("YYYY-MM-DD")}
                                                             />
                                                         </div>
 

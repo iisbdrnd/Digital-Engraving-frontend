@@ -387,7 +387,7 @@ const Add = (props) => {
                                                                 required: 'On Time Field Required'
                                                             })}
                                                             onChange={inputChangeHandler}
-                                                            value={stateData.on_time ? stateData.on_time : ''}
+                                                            value={stateData.on_time ? stateData.on_time : moment().format("HH:mm")}
                                                         />
                                                     </div>
                                                 
@@ -400,7 +400,7 @@ const Add = (props) => {
                                                             required 
                                                             onChange={inputChangeHandler}
                                                             ref={register({required: true })}
-                                                            value={stateData.polishing_date ? stateData.polishing_date : ''}
+                                                            value={stateData.polishing_date ? stateData.polishing_date : moment().format("YYYY-MM-DD")}
                                                         />
                                                     </div>
                                                 
@@ -411,7 +411,7 @@ const Add = (props) => {
                                                         <> */}
                                                     <label className="col-md-5 col-form-label label-form">Production Date</label>
                                                     <div className="col-md-7">
-                                                        <input type="date" className="form-control" name="production_date" required onChange={inputChangeHandler} ref={register({ required: true })} value={stateData.production_date ? stateData.production_date : ''}/>
+                                                        <input type="date" className="form-control" name="production_date" required onChange={inputChangeHandler} ref={register({ required: true })} value={stateData.production_date ? stateData.production_date : moment().format("YYYY-MM-DD")}/>
                                                     </div>
                                                         
                                                     <label className="col-md-5 col-form-label label-form">Shift</label>
@@ -505,7 +505,7 @@ const Add = (props) => {
                                                 
                                                     <label className="col-md-5 col-form-label label-form">A. off Time</label>
                                                     <div className="col-md-7">
-                                                        <input type="time" className="form-control" name="a_off_time" onChange={inputChangeHandler} ref={register({})} value={stateData.a_off_time ? stateData.a_off_time : ''} />
+                                                        <input type="time" className="form-control" name="a_off_time" onChange={inputChangeHandler} ref={register({})} value={stateData.a_off_time ? stateData.a_off_time : moment().format('HH:mm')} />
                                                     </div>
                                                 </div>
                                                 <div className="col-md-6 row">

@@ -9,6 +9,7 @@ import { userGetMethod, userPutMethod, userPostMethod } from '../../../src/api/u
 import { DIG_SHIFT_RSURL, ShiftFor, userHasAccess,digShiftFor,shiftInCharge,mechine_GETURL } from '../../../src/api/userUrl';
 import SweetAlert from 'sweetalert2';
 import { Form } from 'react-bootstrap';
+import moment from 'moment';
 
 const ShiftControl = (props) => {
     const { handleSubmit, register, errors } = useForm();
@@ -490,7 +491,7 @@ const ShiftControl = (props) => {
                                                                 ref={register({
                                                                     required: 'Shift Date Field Required'
                                                                 })}
-                                                                value={getDate}
+                                                                value={getDate ? getDate : moment().format("YYYY-MM-DD")}
                                                                 onChange={(e)=>setGetDate(e.target.value)}
                                                             />
                                                             {errors.shift_date && <p className='text-danger'>{errors.shift_date.message}</p>}

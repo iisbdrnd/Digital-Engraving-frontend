@@ -6,6 +6,7 @@ import { userGetMethod, userDeleteMethod } from '../../../api/userAction';
 import { AddButton, EditButton, DeleteButton, PerPageBox, PanelRefreshIcons } from '../../common/GlobalButton';
 import Pagination from "react-js-pagination";
 import { Link } from 'react-router-dom';
+import { FaRegFilePdf } from "react-icons/fa";
 
 export default function ListData(props) {
     const [baseReceiveData, setBaseReceiveData] = useState([]);
@@ -124,6 +125,10 @@ export default function ListData(props) {
             .catch(error => console.log(error))
     }
 
+    const handleQCFrom =() =>{
+
+    }
+
     return (
         
         <Fragment>
@@ -188,11 +193,11 @@ export default function ListData(props) {
                                                 <tr>
                                                     <th scope="col" width="5%" >SL.</th>
                                                     <th scope="col" width="15%" > Job No.</th>
-                                                    <th scope="col" width="15%" >Job Name</th>
+                                                    <th scope="col" width="35%" >Job Name</th>
                                                     <th scope="col" width="10%" > Type</th>                                                        
                                                     <th scope="col" width="15%"> Client</th>
                                                     {/* <th scope="col" width="15%" onClick={() => sortHandler(5)}><i className="fa fa-sort"></i> Client</th> */}
-                                                    <th scope="col" width="10%" >Approve</th>
+                                                    <th scope="col" width="20%" >Approve</th>
                                                     {/* <th scope="col" width="7%">Action</th> */}
                                                 </tr>
                                             </thead>
@@ -212,7 +217,8 @@ export default function ListData(props) {
                                                                         <td>{item.total_cylinder_qty}</td>
                                                                         <td>{item.per_square_amount}</td> */}
                                                                         <td>
-                                                                            {item.design_to_factory_status == 0 ? 
+                                                                            <div className="d-flex justify-content-around">
+                                                                            <div>{item.design_to_factory_status == 0 ? 
                                                                             <Link 
                                                                                 to={{
                                                                                     pathname: `${process.env.PUBLIC_URL}/designToFactory/add`,
@@ -221,7 +227,19 @@ export default function ListData(props) {
                                                                                 className="btn btn-secondary btn-xs">
                                                                                     Factory Approve
                                                                             </Link>
-                                                                            : 'Done'}
+                                                                            : 'Done'}</div>
+                                                                            <div
+
+                                                                             onClick={handleQCFrom} style={{ cursor:"pointer"}}>
+                                                                                <Link 
+                                                                                to={{
+                                                                                    pathname: `${process.env.PUBLIC_URL}/designToFactory/form`,
+                                                                                    state: { params: {menuId: menuId, job_order_id : item.id} }
+                                                                                }}
+                                                                                >   
+                                                                                <FaRegFilePdf size={25} color='#4466f2'/>
+                                                                            </Link></div>
+                                                                            </div>
                                                                         </td>
                                                                         {/* <td className="">
                                                                             {

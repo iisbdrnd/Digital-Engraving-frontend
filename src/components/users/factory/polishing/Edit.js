@@ -356,7 +356,7 @@ const Edit = (props) => {
                                                             ref={register({
                                                                 required: 'On Time Field Required'
                                                             })}
-                                                            value={stateData.on_time ? stateData.on_time : ''}
+                                                            value={stateData.on_time ? stateData.on_time : moment().format('HH:mm')}
                                                             onChange={onChangeHandler}
                                                         />
                                                     </div>
@@ -368,14 +368,14 @@ const Edit = (props) => {
                                                             className="form-control" 
                                                             name="polishing_date" 
                                                             ref={register({required: true })}
-                                                            value={stateData.polishing_date ? stateData.polishing_date : ''}
+                                                            value={stateData.polishing_date ? stateData.polishing_date : moment().format('YYYY-MM-DD')}
                                                             onChange={onChangeHandler}
                                                         />
                                                     </div>
                                                 
                                                     <label className="col-md-5 col-form-label label-form">Production Date</label>
                                                     <div className="col-md-7">
-                                                        <input type="date" className="form-control" name="production_date" ref={register({ required: true })} value={stateData.production_date ? stateData.production_date : ''} onChange={onChangeHandler}/>
+                                                        <input type="date" className="form-control" name="production_date" ref={register({ required: true })} value={stateData.production_date ? stateData.production_date : moment().format('YYYY-MM-DD')} onChange={onChangeHandler}/>
                                                     </div>
                                                 </div>      
 
@@ -423,7 +423,7 @@ const Edit = (props) => {
                                                 
                                                     <label className="col-md-5 col-form-label label-form">A. off Time</label>
                                                     <div className="col-md-7">
-                                                        <input type="time" className="form-control" name="a_off_time" ref={register({})} value={stateData.a_off_time ? stateData.a_off_time : ''} onChange={onChangeHandler} />
+                                                        <input type="time" className="form-control" name="a_off_time" ref={register({})} value={stateData.a_off_time ? stateData.a_off_time : moment().format('HH:mm')} onChange={onChangeHandler} />
                                                     </div>
                                                 </div>
                                                 <div className="col-md-6 row">

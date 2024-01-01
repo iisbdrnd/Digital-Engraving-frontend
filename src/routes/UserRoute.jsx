@@ -167,6 +167,7 @@ import BaseReceiveAdd from './../components/users/baseReceive/Add';
 import DesignToFactoryList from './../components/users/designToFactory/ListData';
 import DesignToFactoryAdd from './../components/users/designToFactory/Add';
 import DesignToFactoryEdit from './../components/users/designToFactory/Edit';
+import DesignForm from './../components/users/designToFactory/Form';
 
 //Design to Design
 import DesignToDesignList from './../components/users/designToDesign/ListData';
@@ -1177,6 +1178,12 @@ class UserRoute extends Component {
                   path={`${process.env.PUBLIC_URL}/designToFactory/edit/:designId`}
                   component={DesignToFactoryEdit}
                 />
+                <UserAuthRoute
+                  path={`${process.env.PUBLIC_URL}/designToFactory/form`}
+                  component={DesignForm}
+                />
+
+
                 {/* MARKETING REPORTS */}
                 <UserAuthRoute
                   path={`${process.env.PUBLIC_URL}/jobAgreementForm/index`}
