@@ -1,0 +1,12 @@
+@media print {
+    .print-layout .row {
+      display: flex;
+      flex-wrap: wrap;
+    }
+  
+    .print-layout .col-md-6 {
+      width: 50%;
+    }
+  
+    /* Add any other print-specific styles here */
+  }

@@ -7,6 +7,7 @@ const ReportHeader = props => {
     const printDocument = () => {
         window.print();
     }
+    
     return (
         <div className="report-header">
            { (props.showPrint == 1) ?

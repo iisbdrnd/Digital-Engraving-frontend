@@ -550,6 +550,15 @@ class UserRoute extends Component {
               path={`${process.env.PUBLIC_URL}/dueBillInformation/:clientId`}
               component={DueBillInformationReport}
             />
+            <UserAuthRoute
+              path={`${process.env.PUBLIC_URL}/designToFactory/form/:id`}
+              component={DesignForm}
+            />
+
+
+
+
+
 
 
             <UserAuthRoute
@@ -1178,10 +1187,10 @@ class UserRoute extends Component {
                   path={`${process.env.PUBLIC_URL}/designToFactory/edit/:designId`}
                   component={DesignToFactoryEdit}
                 />
-                <UserAuthRoute
+                {/* <UserAuthRoute
                   path={`${process.env.PUBLIC_URL}/designToFactory/form`}
                   component={DesignForm}
-                />
+                /> */}
 
 
                 {/* MARKETING REPORTS */}
@@ -1319,6 +1328,10 @@ class UserRoute extends Component {
                   path={`${process.env.PUBLIC_URL}/dueBillInformation`}
                   component={DueBillInformation}
                 />
+                {/* <UserAuthRoute
+                  
+                /> */}
+
                 <UserAuthRoute
                   path={`${process.env.PUBLIC_URL}/monthlyJobFlow`}
                   component={MonthlyJobFlowForm}

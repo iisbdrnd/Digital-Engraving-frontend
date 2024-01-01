@@ -7,6 +7,7 @@ import { AddButton, EditButton, DeleteButton, PerPageBox, PanelRefreshIcons } fr
 import Pagination from "react-js-pagination";
 import { Link } from 'react-router-dom';
 import { FaRegFilePdf } from "react-icons/fa";
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
 export default function ListData(props) {
     const [baseReceiveData, setBaseReceiveData] = useState([]);
@@ -124,9 +125,27 @@ export default function ListData(props) {
             })
             .catch(error => console.log(error))
     }
+    const history = useHistory();
 
-    const handleQCFrom =() =>{
+    const handleQCFrom =(item) =>{
+        // let url = `${process.env.PUBLIC_URL}/designToFactory/form`;
+        // window.open(url, '_blank', 'height=800,width=1200');
+        const url = `${process.env.PUBLIC_URL}/designToFactory/form/${item.id}`;
+        const stateParams = { menuId, job_order_id: item.id };
 
+        // const queryString = Object.keys(stateParams)
+        // .map((key) => `${key}=${stateParams[key]}`)
+        // .join('&');
+
+        // Open a new window with the URL and dimensions
+        window.open(`${url}`, '_blank', 'height=800,width=1200');
+        // window.open(url, '_blank', 'height=800,width=1200', { params: stateParams })
+
+        // Use history to navigate and pass state to the new route
+        // history.push({
+        //     pathname: getUrl,
+        //     state: { params: stateParams }
+        // });
     }
 
     return (
@@ -230,15 +249,10 @@ export default function ListData(props) {
                                                                             : 'Done'}</div>
                                                                             <div
 
-                                                                             onClick={handleQCFrom} style={{ cursor:"pointer"}}>
-                                                                                <Link 
-                                                                                to={{
-                                                                                    pathname: `${process.env.PUBLIC_URL}/designToFactory/form`,
-                                                                                    state: { params: {menuId: menuId, job_order_id : item.id} }
-                                                                                }}
-                                                                                >   
-                                                                                <FaRegFilePdf size={25} color='#4466f2'/>
-                                                                            </Link></div>
+                                                                             onClick={()=>handleQCFrom(item)} style={{ cursor:"pointer"}}>
+                                                                                  <FaRegFilePdf size={25} color='#4466f2'/>
+                                                                                  
+                                                                            </div>
                                                                             </div>
                                                                         </td>
                                                                         {/* <td className="">
