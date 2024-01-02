@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState, useReducer } from 'react';
-import { QUALITY_CONTROL_RS_URL, QUALITY_CONTROL_JOB_DATA_BY_JOB_ID } from '../../../../api/userUrl';
+import { QUALITY_CONTROL_RS_URL, QUALITY_CONTROL_JOB_DATA_BY_JOB_ID, DESIGN_LAYOUT_RSURL } from '../../../../api/userUrl';
 import { userGetMethod, userPostMethod } from '../../../../api/userAction';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -13,7 +13,21 @@ const Add = (props) => {
     const [isLoading, setIsLoading] = useState(true);
     const [typeHeadOptions, setTypeHeadOptions] = useState({job_orders: []});
     const [dropDownData, setDropdownData] = useState();
-    const [jobNoFilter,setJobNoFilter] = useState('')
+    const [jobNoFilter,setJobNoFilter] = useState('');
+    const [employees, setEmployees] = useState([]);
+    const [proofInfo,setProofInfo] = useState({
+        physicalCheck:'',
+        proof : '',
+        reg : '',
+        background: '',
+        graphic : '',
+        text : '',
+        sign1 : '',
+        sign2 : '',
+        sign3 : '',
+        note : '',
+        job_id: ''
+    });
  
     let [stateData, setStateData] = useReducer((state, newState) => ({...state, ...newState}),
         {
@@ -57,11 +71,38 @@ useEffect(() => {
     setTypeHeadOptions({ ...typeHeadOptions,  
             ['job_orders'] : job_orders
            });
+    userGetMethod(`${DESIGN_LAYOUT_RSURL}/create`)
+           .then(response => {
+               let {employees} = response.data;
+               setEmployees(employees);
+              
+           })
     setIsLoading(false)
 },[])
 
+const inputChangeHandler = (e,fieldName,i) =>{
+    if (e && e.target) {
+        const { type, value, checked } = e.target;
+        setProofInfo((prevProofInfo) => ({
+            ...prevProofInfo,
+            [fieldName]: type === 'checkbox' ? (checked ? 1 : 0) : value,
+          }));
+      }
+
+   
+}
+// console.log(proofInfo)
+
 const handleTypeaheadInputChange =  (text)=>{
     setJobNoFilter(text);
+}
+const pStyle = {
+    marginBottom: '5px',
+    fontSize: "15px",
+}
+const tableStyle = {
+    // "border" : "1px solid #ccc",
+    "margin" : "1% 1% 0% 0%"
 }
 
 useEffect(() => {
@@ -81,7 +122,12 @@ useEffect(() => {
                         }
                     })
                 }
-                
+                if (response.data.jobOrders[0].id) {
+                    setProofInfo({
+                        ...proofInfo,
+                        job_id : response.data.jobOrders[0].id}
+                    )
+                }
                 setTypeHeadOptions(
                     (prevstate) => ({
                         ...prevstate,
@@ -181,6 +227,8 @@ useEffect(() => {
             inputData.rework_status = [];
             inputData.rework_remarks = [];
         }
+        inputData.proofInfo = proofInfo;
+
 
         userPostMethod(`${QUALITY_CONTROL_RS_URL}`, inputData)
             .then(response => {
@@ -244,6 +292,10 @@ useEffect(() => {
                                             <div className="form-group row">
                                                 <label className="col-sm-2 col-form-label required">Job Id</label>
                                                 <div className="col-md-8">
+
+                                                    <div>
+
+                                                    </div>
                                                     <Typeahead
                                                         id="job_order_pk_id"
                                                         name="job_order_pk_id"
@@ -264,11 +316,13 @@ useEffect(() => {
                                                 <div className="col-md-2">
                                                     <select className="form-control" name='complete_status' onChange={(e)=>setStateData({'completeStatus' : e.target.value})} value={stateData.completeStatus} ref={register({required: true })}>
                                                         <option value="">select one</option>
-                                                        <option value="1">Ok</option>
-                                                        <option value="0">Not Ok</option>
+                                                        <option value="1">Delivery</option>
+                                                        <option value="0">Rework</option>
                                                     </select>
                                                     {errors.complete_status && 'Complete Status required'}
                                                 </div>
+
+                                                
 
                                                 {/* <label className="col-md-3 col-form-label label-form required ">Cylinder Id</label>
                                                 <div className="col-md-9">
@@ -278,6 +332,173 @@ useEffect(() => {
                                                         <option value="0">Not Ok</option>
                                                     </select>
                                                 </div> */}
+                                            </div>
+                                        </fieldset>
+
+                                       <fieldset>
+                                        <div>
+                                            <div className="row mt-4">
+                                                <div className="col-12">
+                                                    <h4 style={{fontSize:'17px',fontWeight:'bold'}}>Proof / Delivery Information</h4>
+                                                </div>
+                                            </div>
+
+                                            <table className="particulars table-stripped groupFont" width="100%"  style={tableStyle}>
+                                                
+                                                <tr style={{fontSize:'17px', fontWeight:'500'}}>
+                                                    <td width="15%">Physical Check</td>
+                                                    <td width="5%" align="center">:</td>
+                                                    <td width="30%">
+                                                    <select className="form-control" style={{width:'25%'}} name="phycicalCheck" id="phycicalCheck"  onChange={(e,i)=>inputChangeHandler(e,'physicalCheck',i)}>
+                                                                <option value="">select</option>
+                                                                <option value='1'>Yes</option>
+                                                                <option value='0'>No</option>
+                                                            </select>
+                                                    </td>
+                                                    <td width="15%">Sign</td>
+                                                    <td width="5%" align="center">:</td>
+                                                    <td width="30%">
+                                                    <select className="form-control" style={{width:'50%'}} name="Sign1" id="sign1" onChange={(e,i)=>inputChangeHandler(e,'sign1',i)}>
+                                                                <option value="">Select....</option>
+                                                                {/* Map here */}
+                                                                
+                                                                {employees.map((item,index) => (
+                                                                    <option key={index} value={item?.id}>
+                                                                        {item?.name}
+                                                                    </option>
+                                                                ))}
+                                                            </select>
+                                                    </td>
+                                                </tr>
+                                                <tr style={{fontSize:'17px', fontWeight:'500'}}>
+                                                    <td width="15%">Proof</td>
+                                                    <td width="5%" align="center">:</td>
+                                                    <td width="30%">
+                                                    <select className="form-control" style={{width:'25%',marginTop:'5px'}} name="proof" id="proof" onChange={(e,i)=>inputChangeHandler(e,'proof',i)}>
+                                                                <option value="">select</option>
+                                                                <option value='1'>Yes</option>
+                                                                <option value='0'>No</option>
+                                                            </select>
+                                                    </td>
+                                                    <td width="15%">Sign </td>
+                                                    <td width="5%" align="center">:</td>
+                                                    <td width="30%">
+                                                    <select className="form-control" style={{width:'50%',marginTop:'5px'}} name="sign2" id="sign2" onChange={(e,i)=>inputChangeHandler(e,'sign2',i)}>
+                                                                <option value="">Select</option>
+                                                                {/* Map here */}
+                                                                {employees.map((item,index) => (
+                                                                    <option key={index} value={item?.id}>
+                                                                        {item?.name}
+                                                                    </option>
+                                                                ))}
+                                                            </select>
+                                                    </td>
+                                                </tr>
+                                               
+                                                
+                                            </table>
+
+                                            <div className='row mt-1'>
+
+                                            <div className="col-12 d-flex">
+                                                <div className=''>
+                                                <p style={pStyle}>Attention: </p>
+                                                </div>
+                                                <div className='col-2'></div>
+
+                                                <div className='col-md-2 d-flex justify-content-center align-items-center '>
+                                                
+                                                            <div className="col-md-4">
+                                                                <input
+                                                                    type="checkbox"
+                                                                    name="reg"
+                                                                    onChange={(e,i)=>inputChangeHandler(e,'reg',i)}
+                                                                    value=''
+                                                                />
+                                                            </div>
+                                                <label className="col-md-6 mt-1" style={{whiteSpace: 'nowrap'}}>Registation</label>
+                                                </div>
+
+                                                <div className='col-md-2 d-flex justify-content-center align-items-center '>
+                                                
+                                                            <div className="col-md-4">
+                                                                <input
+                                                                    type="checkbox"
+                                                                    name="background"
+                                                                    onChange={(e,i)=>inputChangeHandler(e,'background',i)}
+                                                                    value=''
+                                                                />
+                                                            </div>
+                                                <label className="col-md-6 mt-1" style={{whiteSpace: 'nowrap'}}>Background</label>            
+                                                </div>
+
+                                                <div className='col-md-2 d-flex justify-content-center align-items-center '>
+                                                
+                                                            <div className="col-md-4">
+                                                                <input
+                                                                    type="checkbox"
+                                                                    name="text"
+                                                                    onChange={(e,i)=>inputChangeHandler(e,'text',i)}
+                                                                    value=''
+                                                                />
+                                                            </div>
+                                                <label className="col-md-6 mt-1" style={{whiteSpace: 'nowrap'}}>Text</label>            
+                                                </div>
+
+                                                <div className='col-md-2 d-flex justify-content-center align-items-center '>
+                                                
+                                                            <div className="col-md-4">
+                                                                <input
+                                                                    type="checkbox"
+                                                                    name="graphic"
+                                                                    onChange={(e,i)=>inputChangeHandler(e,'graphic',i)}
+                                                                    value=''
+                                                                />
+                                                            </div>
+                                                <label className="col-md-6 mt-1" style={{whiteSpace: 'nowrap'}}>Graphic</label>            
+                                                </div>
+                                                </div> 
+
+                                            </div>
+
+                                            <div>
+                                            <table className="particulars table-stripped groupFont" width="100%">
+                                                 <tr style={{fontSize:'17px', fontWeight:'500'}}>
+                                                            <td width="15%">Note</td>
+                                                            <td width="5%" align="center">:</td>
+                                                            <td width="30%">
+                                                            <input
+                                                            type="text"
+                                                            className="form-control"
+                                                            name="note"
+                                                            onChange={(e,i)=>inputChangeHandler(e,'note',i)}
+                                                            style={{width:'50%'}}
+                                                        />
+                                                            </td>
+                                                            <td width="15%">Sign</td>
+                                                            <td width="5%" align="center">:</td>
+                                                            <td width="30%">
+                                                            <select className="form-control" style={{width:'50%'}} name="sign3" id="designer_id" onChange={(e,i)=>inputChangeHandler(e,'sign3',i)}>
+                                                                <option value="">Select....</option>
+                                                                {/* Map here */}
+                                                                {employees.map((item,index) => (
+                                                                    <option key={index} value={item?.id}>
+                                                                        {item?.name}
+                                                                    </option>
+                                                                ))}
+                                                            </select>
+                                                            </td>
+                                                    </tr>
+                                                
+                                               
+                                                
+                                            </table>
+                                                
+                                            </div>
+
+
+
+
                                             </div>
                                         </fieldset>
 
