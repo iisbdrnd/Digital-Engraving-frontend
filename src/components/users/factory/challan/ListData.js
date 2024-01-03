@@ -116,11 +116,11 @@ export default function ListData(props) {
                                 </div>
                             </div>
                             <div className="row">
-                                <div className="col-md-6 col-lg-6">
+                                <div className="col-md-4 col-lg-4">
                                     <div className="input-group text-box searchBox">
                                         <input
                                             type="text"
-                                            className="form-control input-txt-bx col-md-4"
+                                            className="form-control input-txt-bx"
                                             placeholder="Type to Search..."
                                             onChange={(e) => handleSearchText(e.target.value)}
                                         />
@@ -135,8 +135,22 @@ export default function ListData(props) {
                                     </div>
                                 </div>
 
-                                <div className="col-md-6 col-lg-6">
-                                    {/* <AddButton link="challan/add" menuId={menuId} /> */}
+                                <div className="col-md-4 col-lg-4">
+                                    <div className="custom-table-pagination m-r-10">
+                                        <label className="mt-3">
+                                            <span>
+                                                <select className="form-control pagi-select" name="engraving_status" >
+                                                    <option value="2">All Challan</option>
+                                                    <option value="0">Pending Challan</option>
+                                                    <option value="1">Done Challan</option>
+                                                </select>
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div className="col-md-4 col-lg-4">
+                                    <AddButton link="challan/add" menuId={menuId} />
                                     <PerPageBox pageBoxChange={perPageBoxChange} perPage={perPage} setPerPage={setPerPage}/>
                                 </div>
                             </div>
@@ -178,11 +192,16 @@ export default function ListData(props) {
                                                                             {
                                                                                 accLoad === false ? <>
 
-                                                                                    {item.challan_complete == 1 ? 
-                                                                                    <button className="btn btn-success btn-sm">Done</button> :   <a className="btn btn-primary btn-xs" href={`/challan/edit/${item.id}`} menuId={ menuId }>Challan</a>}
+                                                                    {item.challan_complete == 1 ? 
+                                                                        <button className="btn btn-success btn-sm">View</button> 
+                                                                        :   
+                                                                        <a className="btn btn-primary btn-xs" href={`/challan/edit/${item.id}`} menuId={ menuId }>Challan</a>}
+
                                                                                     &nbsp;&nbsp;&nbsp;
                                                                                     
-                                                                                    {item.challan_complete == 1 ? <a className="btn btn-info btn-xs mr-1" href={`/challan/show/${item.id}`} menuId={ menuId }>Details</a> : ''}
+                                                                                    {item.challan_complete == 1 ? <a className="btn btn-info btn-xs mr-1" href={`/challan/show/${item.id}`} menuId={ menuId }>Details</a> 
+                                                                                    : 
+                                                                                    ''}
 
                                                                                    
                                                                                 </> : ''
