@@ -164,10 +164,10 @@ export default function ListData(props) {
                                         <label className="mt-3">
                                             <span>
                                                 <select className="form-control pagi-select" name="qc_status" onChange={(e) => setJobActiveStatus(parseInt(e.target.value))} value={jobActiveStatus} >
-                                                    <option value="3">All Quality Control</option>
+                                                    <option value="2">All Quality Control</option>
                                                     <option value="0">Running Quality Control</option>
                                                     <option value="1">Done Quality Control</option>
-                                                    <option value="2">Failed Quality Control</option>
+                                                    {/* <option value="2">Failed Quality Control</option> */}
                                                 </select>
                                             </span>
                                         </label>
@@ -217,7 +217,7 @@ export default function ListData(props) {
                                                                         <td>{item.plating_order}</td>
                                                                         <td>{item.client_name}</td>
                                                                         <td>
-                                                                            {item.total_cylinder_qty == item.available_cyl_qty ? (
+                                                                            {item.qc_status == 0 ? (
                                                                                 <Link 
                                                                                     to={{
                                                                                         pathname: `${process.env.PUBLIC_URL}/qualityControl/edit/${item.id}`,
@@ -230,7 +230,7 @@ export default function ListData(props) {
                                                                                     Q C
                                                                                 </Link>
                                                                             ) : (
-                                                                                <span className="text-danger">Pending</span>
+                                                                                <span className="btn btn-danger btn-xs">View</span>
                                                                             )}
                                                                         </td>
                                                                         
