@@ -114,18 +114,18 @@ useEffect(() => {
                 if (response.data.jobOrders && response.data.jobOrders.length > 0) {
                     response.data.jobOrders.map(order => 
                     {
-                        if (order.total_cylinder_qty == order.available_cyl_qty) {    
+                         
                             let jobOrderObj = {};
-                            jobOrderObj.id = order.id;
+                            jobOrderObj.id = order?.id;
                             jobOrderObj.name = `[${order.job_no}] ` + order.job_name;
                             jobOrderOptions.push(jobOrderObj);
-                        }
+                        
                     })
                 }
                 if (response.data.jobOrders[0].id) {
                     setProofInfo({
                         ...proofInfo,
-                        job_id : response.data.jobOrders[0].id}
+                        job_id : response.data?.jobOrders[0]?.id}
                     )
                 }
                 setTypeHeadOptions(

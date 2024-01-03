@@ -188,14 +188,12 @@ export default function ListData(props) {
                                                 <tr>
                                                     <th scope="col" width="7%" > SL.</th>
                                                     <th scope="col" width="10%" > Job No</th>
-                                                    <th scope="col" width="14%" > Job Name</th>
-                                                    <th scope="col" width="10%">Total Cyl</th>
-                                                    <th scope="col" width="12%">Rework Cyl Qty</th>
+                                                    <th scope="col" width="35%" > Job Name</th>
+                                                    <th scope="col" width="8%">Total Cyl</th>
                                                     <th scope="col" width="5%">FL</th>
                                                     <th scope="col" width="5%">Cir</th>
                                                     <th scope="col" width="5%">Dia</th>
-                                                    <th scope="col" width="12%"> Plating Order</th>
-                                                    <th scope="col" width="10%"> Client</th>   
+                                                    <th scope="col" width="15%"> Client</th>   
                                                     <th scope="col" width="6%">Action</th>
                                                 </tr>
                                             </thead>
@@ -210,11 +208,10 @@ export default function ListData(props) {
                                                                         <td>{item.job_no}</td>
                                                                         <td>{item.job_name}</td>
                                                                         <td className="text-center">{item.total_cylinder_qty} : {item.available_cyl_qty}</td>
-                                                                        <td>{item.rework_cyl_qty}</td>
+                                                                       
                                                                         <td>{item.fl}</td>
                                                                         <td>{item.cir}</td>
                                                                         <td>{item.dia}</td>
-                                                                        <td>{item.plating_order}</td>
                                                                         <td>{item.client_name}</td>
                                                                         <td>
                                                                             {item.qc_status == 0 ? (
