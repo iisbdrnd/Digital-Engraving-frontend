@@ -224,10 +224,21 @@ export default function ListData(props) {
                                                                                         } }
                                                                                     }}
                                                                                 className="btn btn-secondary btn-xs">
-                                                                                    Q C
+                                                                                    Q.C
                                                                                 </Link>
                                                                             ) : (
-                                                                                <span className="btn btn-danger btn-xs">View</span>
+                                                                                <Link 
+                                                                                    to={{
+                                                                                        pathname: `${process.env.PUBLIC_URL}/qualityControl/edit/${item.id}`,
+                                                                                        state: { params: {
+                                                                                            menuId: menuId, 
+                                                                                            // dig_polishing_id : item.id
+                                                                                        } }
+                                                                                    }}
+                                                                                className="btn btn-danger btn-xs">
+                                                                                    View
+                                                                                </Link>
+                                                                                
                                                                             )}
                                                                         </td>
                                                                         

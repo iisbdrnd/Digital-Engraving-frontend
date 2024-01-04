@@ -6,6 +6,7 @@ import { userGetMethod, userDeleteMethod } from '../../../../api/userAction';
 import { AddButton, EditButton, DeleteButton, PerPageBox } from '../../../common/GlobalButton';
 import Pagination from "react-js-pagination";
 import { Link } from 'react-router-dom';
+import { FaRegFilePdf } from "react-icons/fa";
 
 export default function ListData(props) {
     const [jobOrderData, setJobOrderData] = useState([]);
@@ -17,6 +18,7 @@ export default function ListData(props) {
     const [perPage, setPerPage] = useState(10);
     const [totalData, setTotalData] = useState(0);
     const [ascDesc, setAscDesc] = useState(false);
+    const [jobActiveStatus,setJobActiveStatus] = useState(0);
 
     var menuId = 0;
     if (props.location.state === undefined) {
@@ -39,14 +41,14 @@ export default function ListData(props) {
 
     useEffect(() => {
         perPageBoxChange();
-    },[perPage])
+    },[jobActiveStatus,perPage])
 
     const handleSearchText = (e) => {
         setSearchText(e);
     }
     const searchHandler = (e) => {
         setIsLoading(true);
-        userGetMethod(`${filterJobOrderChallanAPI}?page=${1}&perPage=${perPage}&searchText=${searchText}`)
+        userGetMethod(`${filterJobOrderChallanAPI}?challan_status=${jobActiveStatus}&page=${1}&perPage=${perPage}&searchText=${searchText}`)
         .then(response => {
             setCurrentPage(response.data.jobOrders.current_page)
             setPerPage(response.data.jobOrders.per_page)
@@ -76,7 +78,7 @@ export default function ListData(props) {
     const pageChange = (pageNumber = 1) => {
         setIsLoading(true);
         // TABLE DATA READY
-        userGetMethod(`${filterJobOrderChallanAPI}?page=${pageNumber}&perPage=${perPage}&searchText=${searchText}`)
+        userGetMethod(`${filterJobOrderChallanAPI}?challan_status=${jobActiveStatus}&page=${pageNumber}&perPage=${perPage}&searchText=${searchText}`)
             .then(response => {
                 setCurrentPage(response.data.jobOrders.current_page)
                 setPerPage(response.data.jobOrders.per_page)
@@ -86,11 +88,31 @@ export default function ListData(props) {
             })
             .catch(error => console.log(error))
     }
+    const handleQCFrom =(item) =>{
+        // let url = `${process.env.PUBLIC_URL}/designToFactory/form`;
+        // window.open(url, '_blank', 'height=800,width=1200');
+        const url = `${process.env.PUBLIC_URL}/challanForm/${item.id}`;
+        const stateParams = { menuId, job_order_id: item.id };
+
+        // const queryString = Object.keys(stateParams)
+        // .map((key) => `${key}=${stateParams[key]}`)
+        // .join('&');
+
+        // Open a new window with the URL and dimensions
+        // window.open(`${url}`, '_blank', 'height=800,width=1200');
+        window.open(url, '_blank', 'height=800,width=1200', { params: stateParams })
+
+        // Use history to navigate and pass state to the new route
+        // history.push({
+        //     pathname: getUrl,
+        //     state: { params: stateParams }
+        // });
+    }
 
     const perPageBoxChange = (e) => {
         setIsLoading(true);
         // TABLE DATA READY
-        userGetMethod(`${filterJobOrderChallanAPI}?perPage=${perPage}&searchText=${searchText}`)
+        userGetMethod(`${filterJobOrderChallanAPI}?challan_status=${jobActiveStatus}&perPage=${perPage}&searchText=${searchText}`)
             .then(response => {
                 setCurrentPage(response.data.jobOrders.current_page)
                 setPerPage(response.data.jobOrders.per_page)
@@ -140,7 +162,7 @@ export default function ListData(props) {
                                     <div className="custom-table-pagination m-r-10">
                                         <label className="mt-3">
                                             <span>
-                                                <select className="form-control pagi-select" name="engraving_status" >
+                                                <select className="form-control pagi-select" name="challan_status" onChange={(e) => setJobActiveStatus(parseInt(e.target.value))} value={jobActiveStatus}>
                                                     <option value="2">All Challan</option>
                                                     <option value="0">Pending Challan</option>
                                                     <option value="1">Done Challan</option>
@@ -166,12 +188,12 @@ export default function ListData(props) {
                                                     {/* <th scope="col" width="8%"><i className="fa fa-sort"></i> SL.</th> */}
                                                     <th scope="col" width="8%"> SL.</th>
                                                     <th scope="col" width="10%"> Job No.</th>
-                                                    <th scope="col" width="10%"> Job Name</th>                                                      
+                                                    <th scope="col" width="25%"> Job Name</th>                                                      
                                                     <th scope="col" width="10%"> Client</th>
                                                     <th scope="col" width="15%"> Marketing Person</th>
                                                     <th scope="col" width="12%"> Printer Name</th>
                                                     <th scope="col" width="10%">Job Type</th>
-                                                    <th scope="col" width="15%">Action</th>
+                                                    <th scope="col" width="10%">Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -194,9 +216,28 @@ export default function ListData(props) {
                                                                                 accLoad === false ? <>
 
                                                                     {item.challan_complete == 1 ? 
-                                                                        <button className="btn btn-success btn-sm">View</button> 
+                                                                        // <button className="btn btn-success btn-sm">View</button> 
+                                                                        <div className="d-flex justify-content-around">
+
+                                                                            <div onClick={()=>handleQCFrom(item)} style={{ cursor:"pointer"}}>
+                                                                                <FaRegFilePdf size={25} color='#4466f2'/>  
+                                                                            </div>
+                                                                            <Link 
+                                                                                to={{
+                                                                                    pathname: `${process.env.PUBLIC_URL}/challan/edit/${item.id}`,
+                                                                                    state: { params: {
+                                                                                        menuId: menuId,
+                                                                                    } }
+                                                                                }}
+                                                                            className="btn btn-danger btn-xs">
+                                                                                View
+                                                                                    </Link>
+                                                                        </div>
+                                                                        
+
                                                                         :   
-                                                                        <Link 
+                                                                        <div className="ml-3">
+                                                                            <Link 
                                                                                 to={{
                                                                                     pathname: `${process.env.PUBLIC_URL}/challan/edit/${item.id}`,
                                                                                     state: { params: {
@@ -205,17 +246,17 @@ export default function ListData(props) {
                                                                                 }}
                                                                             className="btn btn-primary btn-xs">
                                                                                 Challan
-                                                                                    </Link>}
+                                                                                    </Link></div>}
 
 
                                                                         {/* <a className="btn btn-primary btn-xs" href={`/challan/edit/${item.id}`} menuId={ menuId }>Challan</a> */}
 
-                                                                                    &nbsp;&nbsp;&nbsp;
+                                                                                    {/* &nbsp;&nbsp;&nbsp; */}
                                                                                     
                                                                                     
-                                                                                    {item.challan_complete == 1 ? <a className="btn btn-info btn-xs mr-1" href={`/challan/show/${item.id}`} menuId={ menuId }>Details</a> 
+                                                                                    {/* {item.challan_complete == 1 ? <a className="btn btn-info btn-xs mr-1" href={`/challan/show/${item.id}`} menuId={ menuId }>Details</a> 
                                                                                     : 
-                                                                                    ''}
+                                                                                    ''} */}
 
                                                                                    
                                                                                 </> : ''

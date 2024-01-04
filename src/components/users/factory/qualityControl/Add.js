@@ -121,19 +121,28 @@ useEffect(() => {
                             jobOrderOptions.push(jobOrderObj);
                         
                     })
+                }else{
+                    jobOrderOptions = []
                 }
-                if (response.data.jobOrders[0].id) {
-                    setProofInfo({
-                        ...proofInfo,
-                        job_id : response.data?.jobOrders[0]?.id}
-                    )
-                }
+                
                 setTypeHeadOptions(
                     (prevstate) => ({
                         ...prevstate,
                         ['job_orders']: jobOrderOptions,
                     })
                 );
+                if (response.data.jobOrders.length > 0) {
+                    setProofInfo({
+                        ...proofInfo,
+                        job_id : response.data?.jobOrders[0]?.id}
+                    )
+                }
+                // else{
+                //     setProofInfo({
+                //         ...proofInfo,
+                //         job_id : ''}
+                //     )
+                // }
 
 
                 setIsLoading(false);
@@ -198,6 +207,8 @@ useEffect(() => {
                 });
         }
     }
+
+    // console.log(stateData)
 
     const changeInputHandler = (i, e, fieldName, checkbox = false) => {
         setInputData(
@@ -568,6 +579,11 @@ useEffect(() => {
                                                                 <td align="right">S. Area</td>
                                                                 <td>:</td>
                                                                 <td>{stateData.singleJobData.surface_area}</td>
+                                                            </tr>
+                                                            <tr style={{background: 'none',border:'none'}}>
+                                                                <td align="right">Cylinder Quantity</td>
+                                                                <td>:</td>
+                                                                <td>{stateData.cylinderLength ? stateData.cylinderLength : ''}</td>
                                                             </tr>
                                                         </tbody>
                                                     </table>

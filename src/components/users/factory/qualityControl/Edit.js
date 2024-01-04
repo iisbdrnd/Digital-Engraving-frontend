@@ -178,6 +178,7 @@ const Edit = (props) => {
                 });
         }
     }
+    // console.log(stateData)
     
     const submitHandler = (data) => {
         getCylinderUpdateInfo();
@@ -528,6 +529,11 @@ const Edit = (props) => {
                                                                 <td align="right">S. Area</td>
                                                                 <td>:</td>
                                                                 <td>{stateData.singleJobData.surface_area}</td>
+                                                            </tr>
+                                                            <tr style={{ background: 'none',border:"none"}}>
+                                                                <td align="right">Cylinder Quantity</td>
+                                                                <td>:</td>
+                                                                <td>{stateData.cylinder_length ? stateData.cylinder_length : ''}</td>
                                                             </tr>
                                                         </tbody>
                                                     </table>

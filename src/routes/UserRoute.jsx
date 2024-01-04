@@ -426,6 +426,7 @@ import Challan from './../components/users/factory/challan/ListData';
 import ChallanAdd from './../components/users/factory/challan/Add'; 
 import ChallanEdit from './../components/users/factory/challan/Edit';
 import ChallaShow from './../components/users/factory/challan/Show';
+import ChallaForm from './../components/users/factory/challan/Form';
 
 //Bill 
 import Bill from './../components/users/factory/bill/ListData';
@@ -531,6 +532,11 @@ class UserRoute extends Component {
             <UserAuthRoute
               path={`${process.env.PUBLIC_URL}/clientWiseBillInformationReport/:fromDate/:toDate/:clientId`}
               component={ClientWiseBillInformationReport}
+            />
+            {/* Challan Form */}
+            <UserAuthRoute
+              path={`${process.env.PUBLIC_URL}/challanForm/:challanNo`}
+              component={ChallaForm}
             />
             <UserAuthRoute
               path={`${process.env.PUBLIC_URL}/dailyJobAnalysisEmployeeWiseReport/:fromDate/:toDate/:employeeId`}

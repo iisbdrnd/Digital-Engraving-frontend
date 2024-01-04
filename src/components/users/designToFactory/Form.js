@@ -23,7 +23,7 @@ const Form = (props) => {
         }
     );
     const { id } = useParams();
-        console.log(id);
+        // console.log(id);
     const tableStyle = {
         // "border" : "1px solid #ccc",
         "margin" : "2% 1% 2% 0%"
