@@ -1,16 +1,25 @@
 import React, { Fragment, useEffect, useReducer, useState } from 'react';
 import Breadcrumb from '../../common/breadcrumb';
 import { challanAPI } from '../../../../api/userUrl';
-import { userGetMethod, userPutMethod } from '../../../../api/userAction';
+import { userGetMethod, userPostMethod, userPutMethod } from '../../../../api/userAction';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import useForm from "react-hook-form";
 import { SubmitButton } from '../../../common/GlobalButton';
 import { trStyleNormal } from '../../jobAgreement/Create';
+import { Typeahead } from 'react-bootstrap-typeahead';
+import moment from 'moment';
+import { Button } from 'reactstrap';
 
 const Edit = (props) => {
-    const { handleSubmit, register, errors } = useForm();
-    const [isLoading,setIsLoading] = useState(true)
+    const { handleSubmit, register, errors,reset } = useForm();
+    const [isLoading,setIsLoading] = useState(true);
+    const [typeHeadOptions, setTypeHeadOptions] = useState({});
+    const [jobNoValue,setJobNoValue] = useState([]);
+    const [dropDownData, setDropdownData] = useState();
+    const [getDate,setGetDate] = useState('');
+    const [attachValue,setAttachValue] = useState('');
+    const [selectedOption, setSelectedOption] = useState([]);
 
     const [userChallanInput, setChallanInput] = useReducer(
         (state, newState) => ({...state, ...newState}),
@@ -23,28 +32,51 @@ const Edit = (props) => {
             finished_date : '',
             remarks : '',
             return_note : '',
-            isLoading   : true
+            isLoading   : true,
+            job_type: ''
         }
     );
-
+    
+    
     const inputChangeHandler = (e)=>{
         setChallanInput({[e.target.name]: e.target.value});
     }
 
     const job_order_id = props.match.params.challanId;
-
+    // setJobId(job_order_id);
 
     useEffect(() => {
         userGetMethod(`${challanAPI}/${job_order_id}/edit`)
             .then(response => {
+                let jobOrderAttach = [];
+                if (response.data.DigAttachedFinishedJob && response.data.DigAttachedFinishedJob.length > 0) {
+                    response.data.DigAttachedFinishedJob.map(order => 
+                    {
+                        let jobOrderObj = {};
+                        jobOrderObj.id = order.id;
+                        jobOrderObj.name = `${order.description}`;
+                        jobOrderAttach.push(jobOrderObj);
+                        // setJobNoValue([jobOrderObj])
+                    })
 
-                console.log('response', response);
+
+                }
+                setTypeHeadOptions(
+                    (prevstate) => ({
+                        ...prevstate,
+                        ['job_attach']: jobOrderAttach,
+                    })
+                );
+
+                // console.log('response', response);
                 setChallanInput({
                     job_no : response.data.jobOrders_details.job_no,
                     total_cylinder_qty : response.data.jobOrders_details.total_cylinder_qty,
                     job_name : response.data.jobOrders_details.job_name,
                     printer_name : response.data.jobOrders_details.printer_name,
                     client_name : response.data.jobOrders_details.client_name,
+                    job_type : response.data.jobOrders_details.job_type,
+                    remarks : response.data.jobOrders_details.remarks,
                     isLoading: false
                 });
                 setIsLoading(false)
@@ -52,14 +84,62 @@ const Edit = (props) => {
             .catch(error => console.log(error))   
     },[]);
 
-    const submitHandler = (data) => {
 
-        console.log('output', data);
 
-        userPutMethod(`${challanAPI}/${job_order_id}`, data )
+const dropDownChange = (e, fieldName) => {
+    
+    if(e.length > 0){
+        const selectedValueId = e[0].id;
+        setJobNoValue(selectedValueId);
+
+        setDropdownData(
+            (prevstate) => ({
+                ...prevstate,
+                [fieldName]: selectedValueId,
+            })
+        );
+
+        // userGetMethod(`${JOB_ORDER_DETAILS}?jobOrderId=${selectedValueId}?`)
+        //     .then(response => {
+        //         console.log(response);
+        //         let { job_name, printer_name, printer_mark, total_cylinder_qty, client_name} = response.data.jobOrderDetails;
+        //         setDesignToFactoryInput({
+        //             'job_name'          : job_name,
+        //             'printer_name'      : printer_name,
+        //             'printer_mark'      : printer_mark,
+        //             'client_name'       : client_name,
+        //             'total_cylinder_qty': total_cylinder_qty
+        //         });
+        //     });
+    }
+}
+const attachChange = (e,fieldName) => {
+    if(fieldName === 'job_attach' && e[0].name){
+        setAttachValue(e[0].id);
+        // setSelectedOption(e);
+    }
+}
+// console.log(dropDownData)
+
+const submitHandler = (data) => {
+        data.job_order_id = job_order_id;
+        data.attached_finished_job = attachValue;
+        data.total_cylinder_qty = userChallanInput.total_cylinder_qty;
+        // console.log('output', data);
+        // const url = `${process.env.PUBLIC_URL}/challanForm/${job_order_id}`;
+        // const stateParams = { menuId, job_order_id: job_order_id };
+        // window.open(url, '_blank', 'height=800,width=1200', { params: stateParams })
+        userPostMethod(`${challanAPI}`, data )
             .then(response => {
                 if (response.data.status == 1) {
-                    toast.success(response.data.message)
+                    toast.success(response.data.message);
+                    if (toast.success) {
+                        // reset();
+                        clearForm();
+                        
+                    }else{
+                        console.log('problem')
+                    }
                 } else {
                     toast.error(response.data.message)
                 }
@@ -73,143 +153,30 @@ const Edit = (props) => {
     }else{
         menuId = props.location.state.params.menuId;
     }
+    const clearForm = () => {
+        setAttachValue('');
+        setTypeHeadOptions(
+            (prevState) => ({
+              ...prevState,
+              ['job_attach']: [], 
+            })
+          );
+        setChallanInput({
+            job_no: '',
+            total_cylinder_qty: '',
+            job_name: '',
+            printer_name: '',
+            client_name: '',
+            finished_date : '',
+            remarks : '',
+            return_note : '',
+            job_type: ''
+        })
+    }
 
 
     return (
-        // <Fragment>
-  
-        //     <div className="container-fluid">
-        //         <div className="row">
-        //             <div className="col-sm-12">
-
-        //                 <div className="card">
-        //                     <div className="card-header">
-        //                         <h5>Create Challan</h5>
-        //                     </div>
-        //                     <div className="card-body">
-        //                         {userChallanInput.isLoading ? (<img src={process.env.PUBLIC_URL+'/preloader.gif'} alt="Data Loading"/>):
-        //                         (
-        //                             <form onSubmit={handleSubmit(submitHandler)} className="theme-form row">
-        //                                 <div className="col-md-10 offset-sm-1">
-        //                                     <fieldset className="border p-2" >
-        //                                         <legend className="w-auto text-left">Job and base Information</legend>
-
-        //                                         <div className="form-group row">
-
-        //                                             <label className="col-sm-3 col-form-label" style={{paddingTop: '0'}}>Job Id:</label>
-        //                                             <div className="col-md-9">
-        //                                                 <input 
-        //                                                     type="text" 
-        //                                                     className="form-control" 
-        //                                                     name="job_no" 
-        //                                                     value={userChallanInput.job_no}
-        //                                                     readOnly
-        //                                                 />
-        //                                             </div>
-        //                                         </div>
-
-        //                                         <div className="form-group row">
-
-        //                                             <label className="col-md-3 col-form-label label-form" style={{paddingTop: '0'}}>Number Of Cylinder:</label>
-        //                                             <div className="col-md-9">
-        //                                                 <input 
-        //                                                         type="text" 
-        //                                                         className="form-control" 
-        //                                                         name="total_cylinder_qty" 
-        //                                                         onChange={inputChangeHandler} 
-        //                                                         ref={register({required: true })}
-        //                                                         readOnly
-        //                                                         value={userChallanInput.total_cylinder_qty ? userChallanInput.total_cylinder_qty : ''} 
-        //                                                 />
-        //                                             </div>
-        //                                         </div>
-        //                                     </fieldset>
-
-        //                                     <fieldset className="border p-2" >
-        //                                         <legend className="w-auto text-left">Job History</legend>
-                                                
-        //                                         <div className="form-row">
-        //                                             <div className="col-md-6 row">
-        //                                                 <label className="col-md-5 col-form-label label-form" style={{paddingTop: '0'}}>Job Name:</label>
-        //                                                 <div className="col-md-7">
-        //                                                     {userChallanInput.job_name}
-        //                                                 </div>
-                                                    
-        //                                                 <label className="col-md-5 col-form-label label-form" style={{paddingTop: '0'}}>Client Name:</label>
-        //                                                 <div className="col-md-7">
-        //                                                     {userChallanInput.client_name}
-        //                                                 </div>
-                                                    
-                                                      
-                                                    
-        //                                             </div>      
-
-        //                                             <div className="col-md-6 row">
-                                            
-        //                                                 <label className="col-md-5 col-form-label label-form" style={{paddingTop: '0'}}>Printers Name:</label>
-        //                                                 <div className="col-md-7">
-        //                                                     {userChallanInput.printer_name}
-        //                                                 </div>
-                                                    
-        //                                                 <label className="col-md-5 col-form-label label-form" style={{paddingTop: '0'}}>Status:</label>
-        //                                                 <div className="col-md-7">
-        //                                                         Ok
-        //                                                 </div>
-                    
-                                                        
-        //                                             </div>
-        //                                         </div>
-        //                                     </fieldset>
-
-        //                                     <fieldset className="border p-2" >
-        //                                         <legend className="w-auto text-left">Output and Remarks</legend>
-        //                                         <div className="form-row">
-        //                                             <div className="col-md-10 row">
-        //                                                 <label className="col-md-5 col-form-label label-form required">Finished Date: </label>
-        //                                                 <div className="col-md-7">
-        //                                                     <input 
-        //                                                         type="date" 
-        //                                                         className="form-control" 
-        //                                                         name="finished_date" 
-        //                                                         onChange={inputChangeHandler}
-        //                                                         ref={register({required: true })}
-        //                                                         value={userChallanInput.finished_date ? userChallanInput.finished_date : ''}
-        //                                                     />
-        //                                                 </div>
-                                                        
-        //                                                 <label className="col-md-5 col-form-label label-form required"> Remarks:</label>
-                                                        
-                                                    
-        //                                                 <label className="col-md-5 col-form-label label-form required">Return Note:</label>
-        //                                                 <div className="col-md-7">
-        //                                                     <input 
-        //                                                         type="text" 
-        //                                                         className="form-control" 
-        //                                                         name="return_note" 
-        //                                                         onChange={inputChangeHandler} 
-        //                                                         ref={register({required: true })}
-        //                                                         value={userChallanInput.return_note ? userChallanInput.return_note : ''} 
-        //                                                     />
-        //                                                 </div>
-                            
-        //                                             </div>
-              
-        //                                         </div>       
-        //                                     </fieldset>
-        //                                 </div>
-                                  
-        //                                 <SubmitButton link="challan/index" menuId={ menuId } />
-        //                             </form>
-                                
-        //                         )}
-        //                     </div>
-                        
-        //                 </div>
-                        
-        //             </div>
-        //         </div>
-        //     </div>
-        // </Fragment>
+        
         <Fragment>
             <div className="container-fluid">
                 <div className="row">
@@ -220,9 +187,9 @@ const Edit = (props) => {
                                     <div className="col-md-6">
                                         <h5>Challan Add Form</h5>
                                     </div>
-                                    <div className="col-md-6">
-                                        {/* <PanelRefreshIcons panelRefresh={pageRefreshHandler} /> */}
-                                    </div>
+                                    {/* <div className="col-md-6">
+                                        <Button className="btn btn-primary" onClick={handleForm}>click for from</Button>
+                                    </div> */}
                                 </div>
                             </div>
                             <div className="card-body">
@@ -238,7 +205,7 @@ const Edit = (props) => {
                                                             type="text" 
                                                             className="form-control" 
                                                             name="job_no" 
-                                                            value={userChallanInput.job_no}
+                                                            value={`[${userChallanInput.job_no}] ${userChallanInput.job_name}`}
                                                             readOnly
                                                         />
                                                     </div>
@@ -250,10 +217,10 @@ const Edit = (props) => {
                                                  <input 
                                                                 type="date" 
                                                                 className="form-control" 
-                                                                name="finished_date" 
-                                                                onChange={inputChangeHandler}
+                                                                name="finished_date"
                                                                 ref={register({required: true })}
-                                                                value={userChallanInput.finished_date ? userChallanInput.finished_date : ''}
+                                                                value={getDate ? getDate : moment().format("YYYY-MM-DD")}
+                                                                onChange={(e)=>setGetDate(e.target.value)}
                                                             />
                                                         </div>
                                             </div>
@@ -261,20 +228,19 @@ const Edit = (props) => {
                                             <div className="form-group row">
                                                 <label className="col-sm-3 col-form-label required" htmlFor="job_no">Attached</label>
                                                 <div className="col-sm-9">
-                                                    {/* <Typeahead
-                                                        id="job_order_id"
-                                                        name="job_order_id"
+                                                    <Typeahead
+                                                        id="job_order_attach"
+                                                        name="job_order_attach"
                                                         labelKey={option => `${option.name}`}
-                                                        options={typeHeadOptions['job_orders']}
-                                                        placeholder="Select Job No..."
-                                                        onChange={(e) => dropDownChange(e, 'job_order_id')}
-                                                        selected={jobNoValue}
-                                                        disabled={job_order_id != null ? 'disabled' : ''}
-                                                        ref={register({
-                                                            required: 'Job No Field Required'
-                                                        })}
-                                                    /> */}
-                                                    {errors.job_order_id && 'Job No. is required'}
+                                                        options={typeHeadOptions['job_attach'] || []}
+                                                        placeholder="Select Attach.."
+                                                        onChange={(e) => attachChange(e, 'job_attach')}
+                                                        
+                                                        ref={register({required: true })}
+                                                        // disabled={job_order_id != null ? 'disabled' : ''}
+                                                        
+                                                    />
+                                                    
                                                 </div>
                                             </div>
 
@@ -293,14 +259,6 @@ const Edit = (props) => {
                                             </div>
                                            
 
-                                            {/* <div className="form-group row">
-                                                <div className="col-md-3">
-
-                                                </div>
-                                                <div className="col-md-9">
-                                                {uploadImg != '' &&  <img src={uploadImg ? uploadImg : ""} style={{height: '100%', width: '100%',marginBottom : '20px'}} />}
-                                                </div>
-                                            </div> */}
 
                                         </div>
 
@@ -348,7 +306,6 @@ const Edit = (props) => {
                             }
                             </div>
                         </div>
-                        
                     </div>
                 </div>
             </div>

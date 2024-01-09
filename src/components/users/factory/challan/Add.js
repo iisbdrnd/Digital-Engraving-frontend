@@ -7,15 +7,16 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 // import { trStyleNormal } from '../jobAgreement/Create';
 import { userGetMethod, userPostMethod } from '../../../../api/userAction';
-import { DESIGN_TO_FACTORY_RSURL, JOB_ORDER_DETAILS } from '../../../../api/userUrl';
+import { DESIGN_TO_FACTORY_RSURL, JOB_ORDER_DETAILS, challanAPI, challanAllJobAPI, challanAttachAPI } from '../../../../api/userUrl';
 import { trStyleNormal } from '../../jobAgreement/Create';
+import moment from 'moment';
 
 const Add = (props) => {
-    const { handleSubmit, register, errors } = useForm();
+    const { handleSubmit, register, errors,reset } = useForm();
 
     const [isLoading, setIsLoading] = useState(true);
-    const [resource, setResource] = useState(false);
-    const [status, setStatus] = useState(true);
+    const [attachValue, setAttachValue] = useState('');
+    const [getDate, setGetDate] = useState('');
     const [typeHeadOptions, setTypeHeadOptions] = useState({});
     const [dropDownData, setDropdownData] = useState();
     const [file,setFile] = useState();
@@ -25,13 +26,14 @@ const Add = (props) => {
     let [designToFactoryInput, setDesignToFactoryInput] = useReducer(
         (state, newState) => ({...state, ...newState}),
         {
-            send_date         : new Date().toLocaleDateString(),
             job_name          : '',
             printer_name      : '',
             limit_square_cm   : 0,
             job_order_id      : '', 
             client_name       : '',
-            total_cylinder_qty: ''
+            total_cylinder_qty: '',
+            remarks           : '',
+            job_type : '',
         }
     );
     
@@ -42,29 +44,17 @@ const Add = (props) => {
         menuId = props.location.state.params.menuId;
     }
     let job_order_id = props.location.state.params.job_order_id ? props.location.state.params.job_order_id : null;
+
+    
     
     useEffect(()=>{
-        userGetMethod(`${DESIGN_TO_FACTORY_RSURL}/create?job_order_id=${job_order_id}`)
+        userGetMethod(`${challanAllJobAPI}`)
             .then(response => {
                 console.log('response', response.data);
                 // FOR JOB ORDER
                 let jobOrderOptions = [];
-                if (response.data.jobOrder) {
-                    console.log('response.data.jobOrder', response.data.jobOrder);
-                    let jobOrderObj = {};
-                    jobOrderObj.id = response.data.jobOrder.id;
-                    jobOrderObj.name = `[${response.data.jobOrder.job_no}] ` + response.data.jobOrder.job_name;
-                    jobOrderOptions.push(jobOrderObj);
-                    if (response.data.jobOrder != null) { 
-                        setDesignToFactoryInput({
-                            'job_order_id': [jobOrderObj]
-                        })
-                    }
-                    setJobNoValue([jobOrderObj])
-                    dropDownChange([{id : response.data.jobOrder.id}], 'job_order_id');
-                }
-                if (response.data.jobOrders && response.data.jobOrders.length > 0) {
-                    response.data.jobOrders.map(order => 
+                if (response.data.challans && response.data.challans.length > 0) {
+                    response.data.challans.map(order => 
                     {
                         let jobOrderObj = {};
                         jobOrderObj.id = order.id;
@@ -81,15 +71,43 @@ const Add = (props) => {
 
                 setIsLoading(false);
             });
+
+        userGetMethod(`${challanAttachAPI}`)
+            .then((response) => {
+                let jobAttachList = [];
+                if (response.data.DigAttachedFinishedJob && response.data.DigAttachedFinishedJob.length > 0) {
+                    response.data.DigAttachedFinishedJob.map(order => 
+                    {
+                        let jobOrderObj = {};
+                        jobOrderObj.id = order.id;
+                        jobOrderObj.name = `${order.description}`;
+                        jobAttachList.push(jobOrderObj);
+                    })
+                }
+                setTypeHeadOptions(
+                    (prevstate) => ({
+                        ...prevstate,
+                        ['job_attach']: jobAttachList,
+                    })
+                );
+            })
     }, []);
-    console.log(jobNoValue);
-    const dropDownChange = (e, fieldName) => {
-        if(fieldName === 'job_order_id' && e[0].name){
-            setJobNoValue(e);
+
+    const inputChangeHandler = (e) => {
+        setDesignToFactoryInput({[e.target.name]: e.target.value});
+    }
+
+    const attachChange = (e,fieldName) => {
+        if(fieldName === 'job_attach' && e[0].name){
+            setAttachValue(e[0].id);
         }
+    }
+    // console.log(jobNoValue);
+    const dropDownChange = (e, fieldName) => {
+        
         if(e.length > 0){
             const selectedValueId = e[0].id;
-
+            // console.log(selectedValueId)
             setDropdownData(
                 (prevstate) => ({
                     ...prevstate,
@@ -100,18 +118,20 @@ const Add = (props) => {
             userGetMethod(`${JOB_ORDER_DETAILS}?jobOrderId=${selectedValueId}?`)
                 .then(response => {
                     console.log(response);
-                    let { job_name, printer_name, printer_mark, total_cylinder_qty, client_name} = response.data.jobOrderDetails;
+                    let { job_name, printer_name, printer_mark, total_cylinder_qty, client_name,remarks,job_type} = response.data.jobOrderDetails;
                     setDesignToFactoryInput({
                         'job_name'          : job_name,
                         'printer_name'      : printer_name,
                         'printer_mark'      : printer_mark,
                         'client_name'       : client_name,
-                        'total_cylinder_qty': total_cylinder_qty
+                        'total_cylinder_qty': total_cylinder_qty,
+                        'remarks'           : remarks,
+                        'job_type'          : job_type
                     });
                 });
         }
     }
-    // console.log(jobNoValue);
+    // console.log(attachValue);
 
     const onImgChange = (e) => {
         setFile(e.target.files[0]);
@@ -120,23 +140,36 @@ const Add = (props) => {
   
     const submitHandler = (data, e) => {
         data.job_order_id = dropDownData.job_order_id;
-        const formData = new FormData();
-        formData.append('upload_file',file);
-        formData.append('job_order_id',data.job_order_id);
-        formData.append('send_date',data.send_date);
-        formData.append('remark',data.remark);
+        data.attached_finished_job = attachValue;
+        data.total_cylinder_qty = designToFactoryInput.total_cylinder_qty;
+        // const formData = new FormData();
+        // formData.append('upload_file',file);
+        // formData.append('job_order_id',data.job_order_id);
+        // formData.append('remark',data.remark);
+        // console.log(data)
         
-        userPostMethod(DESIGN_TO_FACTORY_RSURL, formData)
-            .then(response => {
-                console.log("response.data", response.data);
-                if (response.data.status == 1) {
-                    toast.success(response.data.message)
+        userPostMethod(`${challanAPI}`, data )
+        .then(response => {
+            if (response.data.status == 1) {
+                toast.success(response.data.message);
+                if (toast.success) {
+                    setTypeHeadOptions(
+                        (prevstate) => ({
+                            ...prevstate,
+                            job_orders: [],
+                            job_attach: [],
+                        })
+                    );
+                    reset();
                     clearForm();
-                    e.target.reset();
-                } else {
-                    toast.error(response.data.message)
+                    
+                }else{
+                    console.log('problem')
                 }
-            })
+            } else {
+                toast.error(response.data.message)
+            }
+        })
         .catch(error => toast.error(error))
     }
 
@@ -147,7 +180,9 @@ const Add = (props) => {
             printer_name      : '', 
             client_name       : '',
             printer_mark      : '',
-            total_cylinder_qty: ''
+            total_cylinder_qty: '',
+            job_type : '',
+            remarks: '',
         })
         setUploadImg('');
     }
@@ -185,8 +220,8 @@ const Add = (props) => {
                                                         options={typeHeadOptions['job_orders']}
                                                         placeholder="Select Job No..."
                                                         onChange={(e) => dropDownChange(e, 'job_order_id')}
-                                                        selected={jobNoValue}
-                                                        disabled={job_order_id != null ? 'disabled' : ''}
+                                                        // selected={jobNoValue}
+                                                        // disabled={job_order_id != null ? 'disabled' : ''}
                                                         ref={register({
                                                             required: 'Job No Field Required'
                                                         })}
@@ -197,25 +232,30 @@ const Add = (props) => {
 
                                             <div className="form-group row">
                                                 <label className="col-sm-3 col-form-label required" htmlFor="send_date">Send Date</label>
-                                                <div className="col-sm-9">
-                                                    <input className="form-control digits" id="send_date" name="send_date" type="text" value={designToFactoryInput.send_date} readOnly={'readonly'} ref={register({ required: true })} />
-                                                    {errors.send_date && 'Send Date is required'}
-                                                    <div className="valid-feedback">Looks good!</div>
-                                                </div>
+                                                <div className="col-md-9">
+                                                 <input 
+                                                                type="date" 
+                                                                className="form-control" 
+                                                                name="finished_date"
+                                                                ref={register({required: true })}
+                                                                value={getDate ? getDate : moment().format("YYYY-MM-DD")}
+                                                                onChange={(e)=>setGetDate(e.target.value)}
+                                                            />
+                                                        </div>
                                             </div>
 
                                             <div className="form-group row">
                                                 <label className="col-sm-3 col-form-label required" htmlFor="job_no">Attached</label>
                                                 <div className="col-sm-9">
                                                     <Typeahead
-                                                        id="job_order_id"
-                                                        name="job_order_id"
+                                                        id="job_attach"
+                                                        name="job_attach"
                                                         labelKey={option => `${option.name}`}
-                                                        options={typeHeadOptions['job_orders']}
-                                                        placeholder="Select Job No..."
-                                                        onChange={(e) => dropDownChange(e, 'job_order_id')}
-                                                        selected={jobNoValue}
-                                                        disabled={job_order_id != null ? 'disabled' : ''}
+                                                        options={typeHeadOptions['job_attach']}
+                                                        placeholder="Select attach No..."
+                                                        onChange={(e) => attachChange(e, 'job_attach')}
+                                                        // selected={jobNoValue}
+                                                        // disabled={job_order_id != null ? 'disabled' : ''}
                                                         ref={register({
                                                             required: 'Job No Field Required'
                                                         })}
@@ -226,9 +266,16 @@ const Add = (props) => {
 
                                             <div className="form-group row">
                                                 <label className="col-sm-3 col-form-label" htmlFor="remark">Remarks</label>
-                                                <div className="col-sm-9">
-                                                    <input className="form-control" id="remark" name="remark" type="text" placeholder="Remarks" ref={register({})} />
-                                                </div>
+                                                <div className="col-md-9">
+                                                            <input 
+                                                                type="text" 
+                                                                className="form-control" 
+                                                                name="remarks" 
+                                                                onChange={inputChangeHandler} 
+                                                                ref={register({required: true })}
+                                                                value={designToFactoryInput.remarks ? designToFactoryInput.remarks : ''} 
+                                                            />
+                                                        </div>
                                             </div>
                                            
 
@@ -269,7 +316,7 @@ const Add = (props) => {
                                                             <tr style={trStyleNormal}>
                                                                 <td align="right">Job Status</td>
                                                                 <td>:</td>
-                                                                <td>{designToFactoryInput.total_cylinder_qty}</td>
+                                                                <td>{designToFactoryInput.job_type}</td>
                                                             </tr>
 
                                                         </tbody>

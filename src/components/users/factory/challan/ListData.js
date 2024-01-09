@@ -50,10 +50,10 @@ export default function ListData(props) {
         setIsLoading(true);
         userGetMethod(`${filterJobOrderChallanAPI}?challan_status=${jobActiveStatus}&page=${1}&perPage=${perPage}&searchText=${searchText}`)
         .then(response => {
-            setCurrentPage(response.data.jobOrders.current_page)
-            setPerPage(response.data.jobOrders.per_page)
-            setTotalData(response.data.jobOrders.total)
-            setJobOrderData(response.data.jobOrders.data)
+            setCurrentPage(response.data.challans.current_page)
+            setPerPage(response.data.challans.per_page)
+            setTotalData(response.data.challans.total)
+            setJobOrderData(response.data.challans.data)
             setIsLoading(false);
         })
         .catch(error => console.log(error)); 
@@ -80,10 +80,10 @@ export default function ListData(props) {
         // TABLE DATA READY
         userGetMethod(`${filterJobOrderChallanAPI}?challan_status=${jobActiveStatus}&page=${pageNumber}&perPage=${perPage}&searchText=${searchText}`)
             .then(response => {
-                setCurrentPage(response.data.jobOrders.current_page)
-                setPerPage(response.data.jobOrders.per_page)
-                setTotalData(response.data.jobOrders.total)
-                setJobOrderData(response.data.jobOrders.data)
+                setCurrentPage(response.data.challans.current_page)
+                setPerPage(response.data.challans.per_page)
+                setTotalData(response.data.challans.total)
+                setJobOrderData(response.data.challans.data)
                 setIsLoading(false);
             })
             .catch(error => console.log(error))
@@ -93,6 +93,7 @@ export default function ListData(props) {
         // window.open(url, '_blank', 'height=800,width=1200');
         const url = `${process.env.PUBLIC_URL}/challanForm/${item.id}`;
         const stateParams = { menuId, job_order_id: item.id };
+        window.open(url, '_blank', 'height=800,width=1200', { params: stateParams })
 
         // const queryString = Object.keys(stateParams)
         // .map((key) => `${key}=${stateParams[key]}`)
@@ -100,7 +101,6 @@ export default function ListData(props) {
 
         // Open a new window with the URL and dimensions
         // window.open(`${url}`, '_blank', 'height=800,width=1200');
-        window.open(url, '_blank', 'height=800,width=1200', { params: stateParams })
 
         // Use history to navigate and pass state to the new route
         // history.push({
@@ -114,10 +114,10 @@ export default function ListData(props) {
         // TABLE DATA READY
         userGetMethod(`${filterJobOrderChallanAPI}?challan_status=${jobActiveStatus}&perPage=${perPage}&searchText=${searchText}`)
             .then(response => {
-                setCurrentPage(response.data.jobOrders.current_page)
-                setPerPage(response.data.jobOrders.per_page)
-                setTotalData(response.data.jobOrders.total)
-                setJobOrderData(response.data.jobOrders.data)
+                setCurrentPage(response.data.challans.current_page)
+                setPerPage(response.data.challans.per_page)
+                setTotalData(response.data.challans.total)
+                setJobOrderData(response.data.challans.data)
                 setIsLoading(false)
             })
             .catch(error => console.log(error))
@@ -207,7 +207,7 @@ export default function ListData(props) {
                                                                         <td>{item.job_no}</td>
                                                                         <td>{item.job_name}</td>
                                                                         <td>{item.client_name}</td>
-                                                                        <td>{item.marketing_p_name}</td>
+                                                                        <td>{item.marketing_person}</td>
                                                                         <td>{item.printer_name}</td>
                                                                         <td>{item.job_type}</td>
                                                                         <td className="">

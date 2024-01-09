@@ -330,6 +330,8 @@ export const DE_CHROME_SCHEDULE_START_CYCLE = 'api/user/deChromeScheduleStartCyc
 export const challanAPI = 'api/user/challan';
 export const filterJobOrderChallanAPI = 'api/user/filterJobOrderChallanAPI';
 export const ShowJobOrderChallanAPI = 'api/user/ShowJobOrderChallanAPI';
+export const challanAllJobAPI = 'api/user/ChallanJob'
+export const challanAttachAPI = 'api/user/attachedFinishedJob'
 
 //bill
 export const billAPI = 'api/user/bill';
